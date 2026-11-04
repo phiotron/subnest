@@ -49,7 +49,13 @@ class SettingsScreen extends ConsumerWidget {
             title: Text(l.settingsReminderTime),
             trailing: Text(time.format(context)),
             onTap: () async {
-              final picked = await showTimePicker(context: context, initialTime: time);
+              // dialOnly: the keyboard-input mode overflows (BoxConstraints not normalized) on small
+              // phones when the soft keyboard opens — seen on a Galaxy A13, Flutter 3.47.
+              final picked = await showTimePicker(
+                context: context,
+                initialTime: time,
+                initialEntryMode: TimePickerEntryMode.dialOnly,
+              );
               if (picked != null) await repo.setReminderTime(picked.hour, picked.minute);
             },
           ),

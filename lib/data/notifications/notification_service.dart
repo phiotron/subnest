@@ -14,7 +14,8 @@ import '../../l10n/generated/app_localizations.dart';
 import '../settings_repository.dart';
 
 /// Local reminders (F3). Strategy: after any change to subscriptions/settings, on app start
-/// and on resume, cancel everything and schedule exactly `ReminderPlanner.plan(...)`.
+/// and on resume, cancel all *pending* notifications and schedule exactly `ReminderPlanner.plan(...)`.
+/// Already-delivered notifications stay in the shade (never `cancelAll`, which removes them too).
 /// The plugin's boot receiver restores pending notifications after a reboot on Android;
 /// iOS keeps them across reboots natively.
 ///
@@ -113,12 +114,11 @@ class NotificationService {
     );
     final l10n = _l10n(settings);
     final byId = {for (final s in subs) s.id: s};
-    await _plugin.cancelAll();
-    var id = 1;
+    await _plugin.cancelAllPendingNotifications();
     for (final r in plan) {
       final s = byId[r.subscriptionId]!;
       await _plugin.zonedSchedule(
-        id: id++,
+        id: notificationId(r.subscriptionId, r.kind),
         scheduledDate: tz.TZDateTime(
           tz.local,
           r.fireAt.year,
@@ -136,6 +136,17 @@ class NotificationService {
       );
     }
     lastScheduledCount = plan.length;
+  }
+
+  /// Stable id per (subscription, kind): a later reminder of the same kind replaces the old one,
+  /// but never a delivered notification of another subscription. Range 1..2^28 (test ids are 900001+
+  /// — a collision is possible but harmless).
+  static int notificationId(String subscriptionId, ReminderKind kind) {
+    var h = 0x811c9dc5; // FNV-1a 32-bit
+    for (final c in subscriptionId.codeUnits) {
+      h = ((h ^ c) * 0x01000193) & 0xFFFFFFFF;
+    }
+    return (h & 0x3FFFFFF) * 4 + kind.index + 1;
   }
 
   /// Developer/QA helper: shows one notification now and schedules one in [delay].

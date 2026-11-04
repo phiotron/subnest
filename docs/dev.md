@@ -32,7 +32,9 @@ build được ngay; CI nên chạy `merge_arb --check` + `build_runner` rồi `
 Cài đặt → **Gửi nhắc thử**: 1 thông báo ngay + 1 thông báo hẹn giờ sau 10 giây (đi qua `zonedSchedule` giống nhắc
 thật). Chạm thông báo → mở màn *Chờ xác nhận*. Nhắc thật: thêm subscription có Ngày gia hạn = hôm nay và giờ nhắc
 (Cài đặt → Giờ nhắc) vài phút sau → nhận "… gia hạn hôm nay — chạm để xác nhận" → chạm mở tấm xác nhận.
-Xem thông báo đang chờ trên Android: `adb shell dumpsys alarm | grep com.phiotron.subnest`.
+Xem thông báo đang chờ trên Android: `adb shell dumpsys alarm | grep -A2 com.phiotron.subnest` (dòng `origWhen=`); thông báo
+đang hiện: `adb shell dumpsys notification --noredact | grep com.phiotron.subnest`. Alarm là **inexact** nên có thể trễ ~5 phút.
+Lên lịch lại chỉ huỷ thông báo *đang chờ* (`cancelAllPendingNotifications`), không xoá thông báo người dùng chưa đọc.
 
 ## 2. Cấu trúc thư mục
 
