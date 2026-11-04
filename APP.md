@@ -86,11 +86,17 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #1 Khởi động | 2026-11-04 | (đang mở A, B, D) | Đã chốt brief, product.md, CONTEXT, ADR 0001 |
+| #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI (đề xuất) | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter chạy trên Galaxy A13 (analyze sạch, 94 test xanh — phiên điều phối chạy lại xác nhận); catalog 99 dịch vụ; store/legal EN+VI |
 
 **Việc dở / bước tiếp:**
-- Chờ A, B, D báo cáo → kiểm tra thật (test, build) → mở E.
+- **E CI & signing** (sau A): build AAB ký + iOS `--no-codesign` trên macOS runner (iOS chưa build lần nào; AppDelegate/Info.plist sửa chưa kiểm).
+  Bản AAB đầu tiên người dùng tự upload lên closed testing (Play bắt lần đầu làm tay).
+- **Người dùng quyết:** email hỗ trợ · tên developer trên store · nơi host privacy policy (đề xuất: repo GitHub Pages public cấp xưởng). Xem `store/README.md`.
 - Người dùng: Claude Design, Apple Developer, gom tester.
+- Mang sang #2: tra lại giá catalog (147/255 giá là `approx` — nên dùng trình duyệt theo vùng); placeholder chưa có: biểu đồ S9,
+  lưới tháng S8, vuốt hàng S2, chỉnh giá từng tile S1.3, đổi màu/emoji tile S4, mục Giới thiệu S10; giữ TimePicker `dialOnly`.
+- Nhắc dùng alarm inexact (trễ ≤ ~5 phút) — chấp nhận ở bản 1, không xin exact alarm.
+- Bài học song song: có lúc file của phiên này bị phiên khác `git add` sẵn → brief luôn yêu cầu `git commit -- <đường dẫn>`.
 
 ## Retro (điền khi phát hành)
 - Tổng phiên điều phối / phiên con:
