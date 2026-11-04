@@ -1,0 +1,11 @@
+{
+  "notificationsChannelName": "Nhắc nhở",
+  "notificationsChannelDescription": "Nhắc gia hạn và hết dùng thử",
+  "notificationsRenewalSoon": "{name} gia hạn sau {count, plural, other{{count} ngày}} — {amount}",
+  "notificationsTrialEndingTitle": "Dùng thử {name} hết sau {count, plural, other{{count} ngày}}.",
+  "notificationsTrialEndingBody": "Huỷ ngay nếu không muốn bị tính phí.",
+  "notificationsDueToday": "Hôm nay gia hạn {name} — chạm để xác nhận",
+  "notificationsTestTitle": "Nhắc nhở Subnest đã bật",
+  "notificationsTestScheduledTitle": "Nhắc thử đã hẹn giờ",
+  "notificationsTestBody": "Nhắc gia hạn sẽ trông như thế này."
+}

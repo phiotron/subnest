@@ -1,0 +1,14 @@
+{
+  "notificationsChannelName": "Reminders",
+  "notificationsChannelDescription": "Renewal and free-trial reminders",
+  "notificationsRenewalSoon": "{name} renews in {count, plural, =1{1 day} other{{count} days}} — {amount}",
+  "@notificationsRenewalSoon": {"placeholders": {"name": {"type": "String"}, "count": {"type": "int"}, "amount": {"type": "String"}}},
+  "notificationsTrialEndingTitle": "Your {name} trial ends in {count, plural, =1{1 day} other{{count} days}}.",
+  "@notificationsTrialEndingTitle": {"placeholders": {"name": {"type": "String"}, "count": {"type": "int"}}},
+  "notificationsTrialEndingBody": "Cancel now if you don't want to be charged.",
+  "notificationsDueToday": "{name} renews today — tap to confirm",
+  "@notificationsDueToday": {"placeholders": {"name": {"type": "String"}}},
+  "notificationsTestTitle": "Subnest reminders are on",
+  "notificationsTestScheduledTitle": "Scheduled test reminder",
+  "notificationsTestBody": "This is how renewal reminders will look."
+}

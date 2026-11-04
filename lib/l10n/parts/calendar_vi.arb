@@ -1,0 +1,7 @@
+{
+  "calendarMonthTotal": "Tổng tháng: {amount}",
+  "calendarEmpty": "Tháng này không có khoản nào.",
+  "calendarPaid": "Đã trả",
+  "calendarSkipped": "Không trả",
+  "calendarUpcoming": "Sắp tới"
+}

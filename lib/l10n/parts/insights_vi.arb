@@ -1,0 +1,11 @@
+{
+  "insightsEmpty": "Thêm subscription để xem thống kê.",
+  "insightsThisMonth": "Tháng này",
+  "insightsActualVsProjected": "Thực trả {actual} · dự kiến {projected}",
+  "insightsLastMonth": "Tháng trước đã trả: {amount}",
+  "insightsTwelveMonths": "12 tháng (thực trả · dự kiến)",
+  "insightsByCategory": "Theo danh mục (mỗi tháng)",
+  "insightsTop": "Đắt nhất",
+  "insightsSavingsTitle": "Tiết kiệm",
+  "insightsSavings": "{count, plural, other{Bạn đang tiết kiệm {amount}/năm nhờ huỷ {count} dịch vụ}}"
+}

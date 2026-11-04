@@ -1,0 +1,7 @@
+{
+  "catalogSearchHint": "Tìm dịch vụ",
+  "catalogCustom": "+ Tạo dịch vụ tuỳ chỉnh",
+  "catalogCustomNamed": "Không thấy? Tạo “{name}”",
+  "catalogFromPerMonth": "từ {amount}/tháng",
+  "catalogChoosePlan": "Chọn gói {name}"
+}

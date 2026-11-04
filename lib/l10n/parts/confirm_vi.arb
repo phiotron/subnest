@@ -1,0 +1,15 @@
+{
+  "confirmTitle": "{name} · kỳ {date}",
+  "confirmMorePending": "{count, plural, other{Còn {count} kỳ chưa xác nhận}}",
+  "confirmAmount": "Số tiền đã trả",
+  "confirmPaid": "Đã trả",
+  "confirmSkip": "Không trả kỳ này",
+  "confirmLater": "Để sau",
+  "confirmNext": "Kỳ tới: {date}",
+  "confirmNothing": "{name} không có kỳ nào cần xác nhận.",
+  "confirmAwaitingTitle": "Chờ xác nhận",
+  "confirmAllDone": "Bạn đã xác nhận hết 🎉",
+  "confirmAll": "Xác nhận tất cả · {amount}",
+  "confirmAllDialogTitle": "{count, plural, other{Xác nhận {count} khoản?}}",
+  "confirmAllDialogBody": "Tất cả sẽ được đánh dấu đã trả theo giá hiện tại."
+}

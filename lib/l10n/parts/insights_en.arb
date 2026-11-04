@@ -1,0 +1,14 @@
+{
+  "insightsEmpty": "Add subscriptions to see insights.",
+  "insightsThisMonth": "This month",
+  "insightsActualVsProjected": "Paid {actual} · expected {projected}",
+  "@insightsActualVsProjected": {"placeholders": {"actual": {"type": "String"}, "projected": {"type": "String"}}},
+  "insightsLastMonth": "Last month paid: {amount}",
+  "@insightsLastMonth": {"placeholders": {"amount": {"type": "String"}}},
+  "insightsTwelveMonths": "12 months (paid · expected)",
+  "insightsByCategory": "By category (monthly)",
+  "insightsTop": "Most expensive",
+  "insightsSavingsTitle": "Savings",
+  "insightsSavings": "{count, plural, =1{You're saving {amount}/year by cancelling 1 service} other{You're saving {amount}/year by cancelling {count} services}}",
+  "@insightsSavings": {"placeholders": {"amount": {"type": "String"}, "count": {"type": "int"}}}
+}

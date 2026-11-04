@@ -1,0 +1,8 @@
+{
+  "calendarMonthTotal": "Month total: {amount}",
+  "@calendarMonthTotal": {"placeholders": {"amount": {"type": "String"}}},
+  "calendarEmpty": "Nothing due this month.",
+  "calendarPaid": "Paid",
+  "calendarSkipped": "Not paid",
+  "calendarUpcoming": "Upcoming"
+}

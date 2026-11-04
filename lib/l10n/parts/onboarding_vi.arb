@@ -1,0 +1,17 @@
+{
+  "onboardingSkip": "Bỏ qua",
+  "onboardingWelcomeTitle": "Mọi subscription, một tổ",
+  "onboardingBenefitRemind": "Nhắc trước khi bị trừ tiền",
+  "onboardingBenefitTotal": "Biết chính xác mỗi tháng tốn bao nhiêu",
+  "onboardingBenefitPrivate": "Riêng tư — dữ liệu chỉ trên máy bạn",
+  "onboardingStart": "Bắt đầu",
+  "onboardingCurrencyTitle": "Tiền tệ chính",
+  "onboardingCurrencyHint": "Dùng để cộng tổng chi. Mỗi subscription vẫn có tiền tệ riêng.",
+  "onboardingQuickAddTitle": "Bạn đang dùng gì?",
+  "onboardingLater": "Để sau",
+  "onboardingSelected": "{count, plural, =0{Tiếp tục} other{Thêm {count} · Tiếp tục}}",
+  "onboardingRemindersTitle": "Bật nhắc nhở",
+  "onboardingRemindersExample": "“Netflix gia hạn sau 3 ngày — 260.000đ”",
+  "onboardingEnableReminders": "Bật nhắc nhở",
+  "onboardingNoThanks": "Không, cảm ơn"
+}

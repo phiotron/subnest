@@ -1,0 +1,21 @@
+{
+  "confirmTitle": "{name} · period {date}",
+  "@confirmTitle": {"placeholders": {"name": {"type": "String"}, "date": {"type": "String"}}},
+  "confirmMorePending": "{count, plural, =1{1 more period to confirm} other{{count} more periods to confirm}}",
+  "@confirmMorePending": {"placeholders": {"count": {"type": "int"}}},
+  "confirmAmount": "Amount paid",
+  "confirmPaid": "Paid",
+  "confirmSkip": "Not paying this period",
+  "confirmLater": "Later",
+  "confirmNext": "Next renewal: {date}",
+  "@confirmNext": {"placeholders": {"date": {"type": "String"}}},
+  "confirmNothing": "{name} has nothing to confirm.",
+  "@confirmNothing": {"placeholders": {"name": {"type": "String"}}},
+  "confirmAwaitingTitle": "To confirm",
+  "confirmAllDone": "You're all caught up 🎉",
+  "confirmAll": "Confirm all · {amount}",
+  "@confirmAll": {"placeholders": {"amount": {"type": "String"}}},
+  "confirmAllDialogTitle": "{count, plural, =1{Confirm 1 payment?} other{Confirm {count} payments?}}",
+  "@confirmAllDialogTitle": {"placeholders": {"count": {"type": "int"}}},
+  "confirmAllDialogBody": "All of them will be marked as paid at their current price."
+}

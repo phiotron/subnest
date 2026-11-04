@@ -1,0 +1,10 @@
+{
+  "catalogSearchHint": "Search services",
+  "catalogCustom": "+ Create a custom service",
+  "catalogCustomNamed": "Not listed? Create “{name}”",
+  "@catalogCustomNamed": {"placeholders": {"name": {"type": "String"}}},
+  "catalogFromPerMonth": "from {amount}/month",
+  "@catalogFromPerMonth": {"placeholders": {"amount": {"type": "String"}}},
+  "catalogChoosePlan": "Choose a {name} plan",
+  "@catalogChoosePlan": {"placeholders": {"name": {"type": "String"}}}
+}

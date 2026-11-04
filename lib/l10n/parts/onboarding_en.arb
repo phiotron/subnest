@@ -1,0 +1,18 @@
+{
+  "onboardingSkip": "Skip",
+  "onboardingWelcomeTitle": "All your subscriptions, one nest",
+  "onboardingBenefitRemind": "Get reminded before you're charged",
+  "onboardingBenefitTotal": "Know exactly what you spend each month",
+  "onboardingBenefitPrivate": "Private — your data stays on your phone",
+  "onboardingStart": "Get started",
+  "onboardingCurrencyTitle": "Your primary currency",
+  "onboardingCurrencyHint": "Used to add up your totals. Each subscription keeps its own currency.",
+  "onboardingQuickAddTitle": "What do you pay for?",
+  "onboardingLater": "Later",
+  "onboardingSelected": "{count, plural, =0{Continue} other{Add {count} · Continue}}",
+  "@onboardingSelected": {"placeholders": {"count": {"type": "int"}}},
+  "onboardingRemindersTitle": "Turn on reminders",
+  "onboardingRemindersExample": "“Netflix renews in 3 days — ₫260,000”",
+  "onboardingEnableReminders": "Turn on reminders",
+  "onboardingNoThanks": "No, thanks"
+}

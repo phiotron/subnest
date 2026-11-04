@@ -1,0 +1,555 @@
+{
+  "@@locale": "en",
+  "commonAppName": "Subnest",
+  "commonTabHome": "Home",
+  "commonTabCalendar": "Calendar",
+  "commonTabInsights": "Insights",
+  "commonTabSettings": "Settings",
+  "commonSave": "Save",
+  "commonCancel": "Cancel",
+  "commonDelete": "Delete",
+  "commonEdit": "Edit",
+  "commonClose": "Close",
+  "commonContinue": "Continue",
+  "commonDone": "Done",
+  "commonPerMonth": "per month",
+  "commonPerYear": "per year",
+  "commonCycleDays": "{count, plural, =1{Daily} other{Every {count} days}}",
+  "@commonCycleDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCycleWeeks": "{count, plural, =1{Weekly} other{Every {count} weeks}}",
+  "@commonCycleWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCycleMonths": "{count, plural, =1{Monthly} other{Every {count} months}}",
+  "@commonCycleMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCycleYears": "{count, plural, =1{Yearly} other{Every {count} years}}",
+  "@commonCycleYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCycleQuarterly": "Quarterly",
+  "commonUnitDay": "days",
+  "commonUnitWeek": "weeks",
+  "commonUnitMonth": "months",
+  "commonUnitYear": "years",
+  "commonStatusTrial": "Free trial",
+  "commonStatusActive": "Active",
+  "commonStatusCancelled": "Cancelled",
+  "commonStatusAwaiting": "To confirm",
+  "commonCategory": "{category, select, video{Video} music{Music} ai{AI} storage{Storage} software{Software} gaming{Games} reading{Reading} health{Health} education{Learning} telecom{Telecom} other{Other}}",
+  "@commonCategory": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "commonCategoryAll": "All",
+  "commonDaysLeft": "{count, plural, =0{Today} =1{Tomorrow} other{In {count} days}}",
+  "@commonDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonDaysOverdue": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@commonDaysOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonReminderDefault": "Default",
+  "commonReminderOff": "Off",
+  "commonReminderOnTheDay": "On the day",
+  "commonReminderDaysBefore": "{count, plural, =1{1 day before} other{{count} days before}}",
+  "@commonReminderDaysBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonSharedWith": "÷{count}",
+  "@commonSharedWith": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonNotFound": "This subscription no longer exists.",
+  "calendarMonthTotal": "Month total: {amount}",
+  "@calendarMonthTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarEmpty": "Nothing due this month.",
+  "calendarPaid": "Paid",
+  "calendarSkipped": "Not paid",
+  "calendarUpcoming": "Upcoming",
+  "catalogSearchHint": "Search services",
+  "catalogCustom": "+ Create a custom service",
+  "catalogCustomNamed": "Not listed? Create “{name}”",
+  "@catalogCustomNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "catalogFromPerMonth": "from {amount}/month",
+  "@catalogFromPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "catalogChoosePlan": "Choose a {name} plan",
+  "@catalogChoosePlan": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmTitle": "{name} · period {date}",
+  "@confirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmMorePending": "{count, plural, =1{1 more period to confirm} other{{count} more periods to confirm}}",
+  "@confirmMorePending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmAmount": "Amount paid",
+  "confirmPaid": "Paid",
+  "confirmSkip": "Not paying this period",
+  "confirmLater": "Later",
+  "confirmNext": "Next renewal: {date}",
+  "@confirmNext": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmNothing": "{name} has nothing to confirm.",
+  "@confirmNothing": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAwaitingTitle": "To confirm",
+  "confirmAllDone": "You're all caught up 🎉",
+  "confirmAll": "Confirm all · {amount}",
+  "@confirmAll": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAllDialogTitle": "{count, plural, =1{Confirm 1 payment?} other{Confirm {count} payments?}}",
+  "@confirmAllDialogTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmAllDialogBody": "All of them will be marked as paid at their current price.",
+  "homeAdd": "Add subscription",
+  "homeCounts": "{active} paying · {trial} on trial",
+  "@homeCounts": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "trial": {
+        "type": "int"
+      }
+    }
+  },
+  "homeTrialSoon": "{amount}/month after trials end",
+  "@homeTrialSoon": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeRatesOffline": "Approximate exchange rates (not updated yet)",
+  "homeRatesStale": "{days, plural, =1{Exchange rates updated 1 day ago} other{Exchange rates updated {days} days ago}}",
+  "@homeRatesStale": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeRatesFresh": "Exchange rates updated today",
+  "homeNotificationsOff": "Reminders are off",
+  "homeEnable": "Turn on",
+  "homeAwaiting": "{count, plural, =1{1 payment to confirm} other{{count} payments to confirm}}",
+  "@homeAwaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeView": "View",
+  "homeTrialEnding": "{name} trial ends {days, plural, =0{today} =1{tomorrow} other{in {days} days}}",
+  "@homeTrialEnding": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeHowToCancel": "How to cancel",
+  "homeUpcoming": "Next 7 days",
+  "homeTabActive": "Paying",
+  "homeTabTrial": "Trial",
+  "homeTabCancelled": "Cancelled",
+  "homeTabEmpty": "Nothing here.",
+  "homeSort": "Sort",
+  "homeSortDueDate": "Renewal date",
+  "homeSortPrice": "Price",
+  "homeSortName": "Name",
+  "homeSavings": "You're saving {amount}/year",
+  "@homeSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCancelledOn": "Cancelled {date}",
+  "@homeCancelledOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeEmpty": "Track every subscription in one nest.",
+  "homeAddFirst": "Add your first subscription",
+  "insightsEmpty": "Add subscriptions to see insights.",
+  "insightsThisMonth": "This month",
+  "insightsActualVsProjected": "Paid {actual} · expected {projected}",
+  "@insightsActualVsProjected": {
+    "placeholders": {
+      "actual": {
+        "type": "String"
+      },
+      "projected": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsLastMonth": "Last month paid: {amount}",
+  "@insightsLastMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsTwelveMonths": "12 months (paid · expected)",
+  "insightsByCategory": "By category (monthly)",
+  "insightsTop": "Most expensive",
+  "insightsSavingsTitle": "Savings",
+  "insightsSavings": "{count, plural, =1{You're saving {amount}/year by cancelling 1 service} other{You're saving {amount}/year by cancelling {count} services}}",
+  "@insightsSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationsChannelName": "Reminders",
+  "notificationsChannelDescription": "Renewal and free-trial reminders",
+  "notificationsRenewalSoon": "{name} renews in {count, plural, =1{1 day} other{{count} days}} — {amount}",
+  "@notificationsRenewalSoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsTrialEndingTitle": "Your {name} trial ends in {count, plural, =1{1 day} other{{count} days}}.",
+  "@notificationsTrialEndingTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationsTrialEndingBody": "Cancel now if you don't want to be charged.",
+  "notificationsDueToday": "{name} renews today — tap to confirm",
+  "@notificationsDueToday": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsTestTitle": "Subnest reminders are on",
+  "notificationsTestScheduledTitle": "Scheduled test reminder",
+  "notificationsTestBody": "This is how renewal reminders will look.",
+  "onboardingSkip": "Skip",
+  "onboardingWelcomeTitle": "All your subscriptions, one nest",
+  "onboardingBenefitRemind": "Get reminded before you're charged",
+  "onboardingBenefitTotal": "Know exactly what you spend each month",
+  "onboardingBenefitPrivate": "Private — your data stays on your phone",
+  "onboardingStart": "Get started",
+  "onboardingCurrencyTitle": "Your primary currency",
+  "onboardingCurrencyHint": "Used to add up your totals. Each subscription keeps its own currency.",
+  "onboardingQuickAddTitle": "What do you pay for?",
+  "onboardingLater": "Later",
+  "onboardingSelected": "{count, plural, =0{Continue} other{Add {count} · Continue}}",
+  "@onboardingSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingRemindersTitle": "Turn on reminders",
+  "onboardingRemindersExample": "“Netflix renews in 3 days — ₫260,000”",
+  "onboardingEnableReminders": "Turn on reminders",
+  "onboardingNoThanks": "No, thanks",
+  "settingsCurrencySection": "Currency",
+  "settingsPrimaryCurrency": "Primary currency",
+  "settingsSearchCurrency": "Search currency",
+  "settingsRates": "Exchange rates",
+  "settingsRatesNeverUpdated": "Using built-in approximate rates",
+  "settingsRatesUpdatedAt": "Updated {date}",
+  "@settingsRatesUpdatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsRatesUpdateNow": "Update now",
+  "settingsRatesUpdated": "Exchange rates updated",
+  "settingsRatesFailed": "Couldn't update — check your connection",
+  "settingsRatesNoneUsed": "All your subscriptions use your primary currency.",
+  "settingsRatesAuto": "Automatic",
+  "settingsRatesManual": "Set by you",
+  "settingsRatesUseAuto": "Use automatic",
+  "settingsRatesAttribution": "Rates by Exchange Rate API",
+  "settingsRemindersSection": "Reminders",
+  "settingsDefaultReminder": "Remind me by default",
+  "settingsReminderTime": "Reminder time",
+  "settingsPermission": "Notifications",
+  "settingsPermissionOn": "Allowed",
+  "settingsPermissionOff": "Blocked in system settings",
+  "settingsPermissionAllow": "Allow",
+  "settingsTestReminder": "Send a test reminder",
+  "settingsTestReminderHint": "One now and one in 10 seconds",
+  "settingsTestReminderSent": "Test reminder sent",
+  "settingsAppearanceSection": "Appearance & language",
+  "settingsTheme": "Theme",
+  "settingsFollowSystem": "System",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsLanguage": "Language",
+  "settingsBackupSection": "Backup & restore",
+  "settingsBackup": "Backup & restore",
+  "settingsNeverBackedUp": "Never backed up",
+  "settingsLastBackup": "Last backup: {date}",
+  "@settingsLastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsBackupNudge": "It's been a while — save a backup somewhere safe.",
+  "settingsExportJson": "Export backup (JSON)",
+  "settingsExportCsv": "Export spreadsheet (CSV)",
+  "settingsRestore": "Restore from file",
+  "settingsRestoreHint": "Pick a Subnest backup (.json)",
+  "settingsRestoreInvalid": "That file isn't a Subnest backup.",
+  "settingsRestoreTitle": "{count, plural, =1{Restore 1 subscription?} other{Restore {count} subscriptions?}}",
+  "@settingsRestoreTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsRestoreBody": "Replace deletes your current data first. Merge keeps it and adds what's missing.",
+  "settingsRestoreReplace": "Replace",
+  "settingsRestoreMerge": "Merge",
+  "settingsRestoreDone": "{count, plural, =1{Restored 1 subscription} other{Restored {count} subscriptions}}",
+  "@settingsRestoreDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsAboutSection": "About",
+  "settingsPrivacyNote": "Your data stays on this device. Subnest collects nothing.",
+  "subscriptionDetailMyShare": "Your share {share} · plan {price} ÷ {count}",
+  "@subscriptionDetailMyShare": {
+    "placeholders": {
+      "share": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionDetailAwaiting": "{count, plural, =1{1 period to confirm} other{{count} periods to confirm}}",
+  "@subscriptionDetailAwaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionDetailConfirm": "Confirm",
+  "subscriptionDetailNextDue": "Next renewal",
+  "subscriptionDetailTrialEnds": "Trial ends",
+  "subscriptionDetailCycle": "Billing cycle",
+  "subscriptionDetailReminder": "Reminder",
+  "subscriptionDetailCategory": "Category",
+  "subscriptionDetailPaymentMethod": "Payment method",
+  "subscriptionDetailStarted": "Started",
+  "subscriptionDetailCancelledOn": "Cancelled on",
+  "subscriptionDetailTotalPaid": "Total paid",
+  "subscriptionDetailNotes": "Notes",
+  "subscriptionDetailHistory": "Payment history",
+  "subscriptionDetailPaid": "Paid",
+  "subscriptionDetailSkipped": "Not paid this period",
+  "subscriptionDetailNoHistory": "No payments yet.",
+  "subscriptionDetailHowToCancel": "How to cancel this service",
+  "subscriptionDetailMarkCancelled": "Mark as cancelled",
+  "subscriptionDetailRestore": "Restore",
+  "subscriptionDetailSaved": "Nice! You're saving {amount}/year",
+  "@subscriptionDetailSaved": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailEditAmount": "Amount paid",
+  "subscriptionDetailDeleteTitle": "Delete {name}?",
+  "@subscriptionDetailDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailDeleteBody": "This removes the subscription and its whole payment history. To keep the history, mark it as cancelled instead.",
+  "subscriptionFormAddTitle": "New subscription",
+  "subscriptionFormEditTitle": "Edit subscription",
+  "subscriptionFormName": "Name",
+  "subscriptionFormNameRequired": "Enter a name",
+  "subscriptionFormPrice": "Price",
+  "subscriptionFormPriceAfterTrial": "Price after trial",
+  "subscriptionFormPriceRequired": "Price must be greater than 0",
+  "subscriptionFormEvery": "Every",
+  "subscriptionFormNextDue": "Next renewal date",
+  "subscriptionFormThen": "Then: {dates}",
+  "@subscriptionFormThen": {
+    "placeholders": {
+      "dates": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFormTrial": "On a free trial",
+  "subscriptionFormTrialEnds": "Trial ends on",
+  "subscriptionFormTrialEndInvalid": "Trial end can't be in the past",
+  "subscriptionFormShared": "Shared with others",
+  "subscriptionFormPeople": "{count} people",
+  "@subscriptionFormPeople": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionFormMyShare": "Your share: {amount}",
+  "@subscriptionFormMyShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFormCategory": "Category",
+  "subscriptionFormReminder": "Remind me",
+  "subscriptionFormAdvanced": "More",
+  "subscriptionFormPaymentMethod": "Payment method (e.g. Visa ••4242, MoMo)",
+  "subscriptionFormManageUrl": "Cancel / manage link",
+  "subscriptionFormNotes": "Notes",
+  "subscriptionFormAddButton": "Add subscription",
+  "subscriptionFormSaveChanges": "Save changes",
+  "subscriptionFormPriceFromNext": "New price applies from the next period. Past payments are unchanged."
+}
