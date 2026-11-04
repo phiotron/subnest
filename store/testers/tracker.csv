@@ -1,0 +1,16 @@
+id,name,gmail,platform,device_os,lang,invited_on,joined_group_on,opted_in_on,installed,day14_on,still_in_on_day14,feedback,notes
+T01,Tester Example A,tester.a@example.com,Android,Android 14,vi,2026-11-10,2026-11-10,2026-11-10,yes,2026-11-24,,,sample row - replace
+T02,Tester Example B,tester.b@example.com,Android,Android 12,en,2026-11-10,2026-11-11,,no,,,,"joined group, not opted in yet - remind"
+T03,Tester Example C,tester.c@example.com,iOS,iOS 18,vi,2026-11-10,,,,,,,"iPhone - add to TestFlight list later"
+T04,,,,,,,,,,,,,
+T05,,,,,,,,,,,,,
+T06,,,,,,,,,,,,,
+T07,,,,,,,,,,,,,
+T08,,,,,,,,,,,,,
+T09,,,,,,,,,,,,,
+T10,,,,,,,,,,,,,
+T11,,,,,,,,,,,,,
+T12,,,,,,,,,,,,,
+T13,,,,,,,,,,,,,
+T14,,,,,,,,,,,,,
+T15,,,,,,,,,,,,,
