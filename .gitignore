@@ -1,0 +1,9 @@
+# Secrets — never commit (phiên A: append Flutter's standard ignores below)
+*.jks
+*.keystore
+key.properties
+*.p12
+*.p8
+*.mobileprovision
+.env
+.env.*
