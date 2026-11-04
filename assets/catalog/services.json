@@ -1,0 +1,5206 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-04",
+  "priceSurveyDate": "2026-11-04",
+  "regions": {
+    "VN": "VND",
+    "US": "USD"
+  },
+  "services": [
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "category": "video",
+      "color": "#E50914",
+      "monogram": "N",
+      "market": "global",
+      "aliases": [
+        "netflix",
+        "nf",
+        "phim"
+      ],
+      "cancelUrl": "https://www.netflix.com/cancelplan",
+      "manageUrl": "https://www.netflix.com/account",
+      "plans": [
+        {
+          "id": "mobile",
+          "name": "Mobile",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 74000
+            }
+          }
+        },
+        {
+          "id": "standard-ads",
+          "name": "Standard with ads",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 8.99
+            }
+          }
+        },
+        {
+          "id": "basic",
+          "name": "Basic",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 114000
+            }
+          }
+        },
+        {
+          "id": "standard",
+          "name": "Standard",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 231000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 19.99
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 273000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 26.99
+            }
+          }
+        }
+      ],
+      "note": "VN gồm VAT 10% (tăng từ 07/2025); US sau đợt tăng 03/2026."
+    },
+    {
+      "id": "youtube-premium",
+      "name": "YouTube Premium",
+      "category": "video",
+      "color": "#FF0000",
+      "monogram": "YT",
+      "market": "global",
+      "aliases": [
+        "youtube",
+        "yt premium",
+        "youtube khong quang cao"
+      ],
+      "cancelUrl": "https://www.youtube.com/paid_memberships",
+      "manageUrl": "https://www.youtube.com/paid_memberships",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 79000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 15.99
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 149000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 26.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "student",
+          "name": "Student",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 8.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "lite",
+          "name": "Premium Lite",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 49000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 8.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "US tăng 04/2026. VN Lite 49.000đ là giá web (qua app ~65.000đ). Mua qua iOS đắt hơn."
+    },
+    {
+      "id": "disney-plus",
+      "name": "Disney+",
+      "category": "video",
+      "color": "#113CCF",
+      "monogram": "D+",
+      "market": "global",
+      "aliases": [
+        "disney",
+        "disney plus",
+        "hotstar"
+      ],
+      "cancelUrl": "https://www.disneyplus.com/account/subscription",
+      "manageUrl": "https://www.disneyplus.com/account",
+      "plans": [
+        {
+          "id": "basic-ads",
+          "name": "Basic (with ads)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.49
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 21.49
+            }
+          }
+        }
+      ],
+      "note": "Không bán chính thức tại VN. US tăng 21/10/2026."
+    },
+    {
+      "id": "prime-video",
+      "name": "Prime Video",
+      "category": "video",
+      "color": "#1A98FF",
+      "monogram": "PV",
+      "market": "global",
+      "aliases": [
+        "amazon prime video",
+        "prime video",
+        "amazon video"
+      ],
+      "cancelUrl": "https://www.primevideo.com/settings",
+      "manageUrl": "https://www.primevideo.com/settings",
+      "plans": [
+        {
+          "id": "standalone",
+          "name": "Prime Video (with ads)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 8.99
+            }
+          }
+        },
+        {
+          "id": "ad-free",
+          "name": "Prime Video ad-free",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.98,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Ad-free = 8.99 + add-on ~2.99. Giá VN chưa xác minh."
+    },
+    {
+      "id": "apple-tv",
+      "name": "Apple TV",
+      "category": "video",
+      "color": "#1D1D1F",
+      "monogram": "tv",
+      "market": "global",
+      "aliases": [
+        "apple tv+",
+        "apple tv plus",
+        "appletv"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/118428",
+      "manageUrl": "https://tv.apple.com/settings",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Apple TV",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Apple công bố tăng giá cuối 08/2026, chưa xác minh giá mới — cần cập nhật. Giá VN chưa xác minh."
+    },
+    {
+      "id": "hbo-max",
+      "name": "HBO Max",
+      "category": "video",
+      "color": "#002BE7",
+      "monogram": "H",
+      "market": "global",
+      "aliases": [
+        "max",
+        "hbo",
+        "hbo go"
+      ],
+      "cancelUrl": "https://help.hbomax.com/us/Answer/Detail/000002513",
+      "manageUrl": "https://auth.hbomax.com/subscription",
+      "plans": [
+        {
+          "id": "basic-ads",
+          "name": "Basic with Ads",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "standard",
+          "name": "Standard",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 18.49,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 22.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá sau đợt tăng 10/2025; chưa xác minh 2026."
+    },
+    {
+      "id": "hulu",
+      "name": "Hulu",
+      "category": "video",
+      "color": "#1CE783",
+      "monogram": "h",
+      "market": "global",
+      "aliases": [
+        "hulu"
+      ],
+      "cancelUrl": "https://secure.hulu.com/account/cancel",
+      "manageUrl": "https://secure.hulu.com/account",
+      "plans": [
+        {
+          "id": "ads",
+          "name": "Hulu (With Ads)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "no-ads",
+          "name": "Hulu (No Ads)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 18.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "peacock",
+      "name": "Peacock",
+      "category": "video",
+      "color": "#0B0B0B",
+      "monogram": "P",
+      "market": "global",
+      "aliases": [
+        "peacock",
+        "nbc"
+      ],
+      "cancelUrl": "https://www.peacocktv.com/account/plans",
+      "manageUrl": "https://www.peacocktv.com/account",
+      "plans": [
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium-plus",
+          "name": "Premium Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 16.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Peacock tăng giá lần nữa trong 2026 — giá mới chưa xác minh."
+    },
+    {
+      "id": "paramount-plus",
+      "name": "Paramount+",
+      "category": "video",
+      "color": "#0064FF",
+      "monogram": "P+",
+      "market": "global",
+      "aliases": [
+        "paramount",
+        "paramount plus"
+      ],
+      "cancelUrl": "https://www.paramountplus.com/account/",
+      "manageUrl": "https://www.paramountplus.com/account/",
+      "plans": [
+        {
+          "id": "essential",
+          "name": "Essential",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 8.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 13.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "crunchyroll",
+      "name": "Crunchyroll",
+      "category": "video",
+      "color": "#F47521",
+      "monogram": "CR",
+      "market": "global",
+      "aliases": [
+        "crunchyroll",
+        "anime"
+      ],
+      "cancelUrl": "https://www.crunchyroll.com/account/membership",
+      "manageUrl": "https://www.crunchyroll.com/account/membership",
+      "plans": [
+        {
+          "id": "fan",
+          "name": "Fan",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 7.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "mega-fan",
+          "name": "Mega Fan",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "ultimate-fan",
+          "name": "Ultimate Fan",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 15.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fpt-play",
+      "name": "FPT Play",
+      "category": "video",
+      "color": "#F26522",
+      "monogram": "FP",
+      "market": "vn",
+      "aliases": [
+        "fpt play",
+        "fptplay",
+        "ngoai hang anh",
+        "bong da"
+      ],
+      "cancelUrl": "https://fptplay.vn/tai-khoan",
+      "manageUrl": "https://fptplay.vn/tai-khoan",
+      "plans": [
+        {
+          "id": "max",
+          "name": "MAX",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 99000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "vip",
+          "name": "VIP",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 139000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "vvip1",
+          "name": "V.VIP 1",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 155000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá lấy từ mục mua trong app (App Store VN), không ghi ngày. Bản quyền Ngoại hạng Anh từ 2026."
+    },
+    {
+      "id": "vieon",
+      "name": "VieON",
+      "category": "video",
+      "color": "#E3051B",
+      "monogram": "Vi",
+      "market": "vn",
+      "aliases": [
+        "vieon",
+        "vie on",
+        "vie channel"
+      ],
+      "cancelUrl": "https://vieon.vn/tai-khoan",
+      "manageUrl": "https://vieon.vn/tai-khoan",
+      "plans": [
+        {
+          "id": "vip",
+          "name": "VIP",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 79000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Theo niêm yết đại lý (FPT Shop); các gói khác 69.000–229.000đ."
+    },
+    {
+      "id": "galaxy-play",
+      "name": "Galaxy Play",
+      "category": "video",
+      "color": "#8B2CF5",
+      "monogram": "GP",
+      "market": "vn",
+      "aliases": [
+        "galaxy play",
+        "fim+",
+        "galaxy"
+      ],
+      "cancelUrl": "https://galaxyplay.vn/account",
+      "manageUrl": "https://galaxyplay.vn/account",
+      "plans": [
+        {
+          "id": "cao-cap",
+          "name": "Cao Cấp",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 79000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "sieu-viet",
+          "name": "Siêu Việt",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 129000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá gốc theo niêm yết đại lý, thường có khuyến mãi."
+    },
+    {
+      "id": "tv360",
+      "name": "TV360",
+      "category": "video",
+      "color": "#EE0033",
+      "monogram": "TV",
+      "market": "vn",
+      "aliases": [
+        "tv360",
+        "viettel tv",
+        "truyen hinh viettel"
+      ],
+      "cancelUrl": "https://tv360.vn/account",
+      "manageUrl": "https://tv360.vn/account",
+      "plans": [
+        {
+          "id": "standard",
+          "name": "Standard",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 25000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Nguồn đại lý không ghi ngày; nhiều gói data Viettel đã kèm TV360."
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "category": "music",
+      "color": "#1DB954",
+      "monogram": "S",
+      "market": "global",
+      "aliases": [
+        "spotify",
+        "nghe nhac"
+      ],
+      "cancelUrl": "https://www.spotify.com/account/subscription/",
+      "manageUrl": "https://www.spotify.com/account/overview/",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 65000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 12.99
+            }
+          }
+        },
+        {
+          "id": "student",
+          "name": "Student",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 33000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 6.99
+            }
+          }
+        },
+        {
+          "id": "duo",
+          "name": "Duo",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 18.99
+            }
+          },
+          "members": 2
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 21.99
+            }
+          },
+          "members": 6
+        }
+      ],
+      "note": "VN tăng ~10% (2025); giá Duo/Family VN chưa xác minh. US tăng 02/2026."
+    },
+    {
+      "id": "apple-music",
+      "name": "Apple Music",
+      "category": "music",
+      "color": "#FA243C",
+      "monogram": "AM",
+      "market": "global",
+      "aliases": [
+        "apple music",
+        "itunes"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/118428",
+      "manageUrl": "https://music.apple.com/account/settings",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 65000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 10.99
+            }
+          }
+        },
+        {
+          "id": "student",
+          "name": "Student",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 35000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 5.99
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 99000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 16.99
+            }
+          },
+          "members": 6
+        }
+      ]
+    },
+    {
+      "id": "youtube-music",
+      "name": "YouTube Music",
+      "category": "music",
+      "color": "#C4302B",
+      "monogram": "YM",
+      "market": "global",
+      "aliases": [
+        "youtube music",
+        "yt music"
+      ],
+      "cancelUrl": "https://www.youtube.com/paid_memberships",
+      "manageUrl": "https://www.youtube.com/paid_memberships",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 65000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "US có thể đã tăng cùng YouTube Premium (04/2026)."
+    },
+    {
+      "id": "zing-mp3",
+      "name": "Zing MP3",
+      "category": "music",
+      "color": "#9B4DE0",
+      "monogram": "Z",
+      "market": "vn",
+      "aliases": [
+        "zing",
+        "zing mp3",
+        "zingmp3",
+        "zing vip",
+        "zing plus"
+      ],
+      "cancelUrl": "https://zingmp3.vn/vip",
+      "manageUrl": "https://zingmp3.vn/vip",
+      "plans": [
+        {
+          "id": "plus-12m",
+          "name": "Plus 12 tháng",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 250000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá niêm yết đại lý (Di Động Việt), không ghi ngày."
+    },
+    {
+      "id": "tidal",
+      "name": "TIDAL",
+      "category": "music",
+      "color": "#000000",
+      "monogram": "T",
+      "market": "global",
+      "aliases": [
+        "tidal",
+        "hifi"
+      ],
+      "cancelUrl": "https://account.tidal.com/subscription",
+      "manageUrl": "https://account.tidal.com/",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 16.99,
+              "approx": true
+            }
+          },
+          "members": 6
+        }
+      ]
+    },
+    {
+      "id": "deezer",
+      "name": "Deezer",
+      "category": "music",
+      "color": "#A238FF",
+      "monogram": "Dz",
+      "market": "global",
+      "aliases": [
+        "deezer"
+      ],
+      "cancelUrl": "https://www.deezer.com/account/subscription",
+      "manageUrl": "https://www.deezer.com/account",
+      "plans": [
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          },
+          "members": 6
+        }
+      ]
+    },
+    {
+      "id": "amazon-music",
+      "name": "Amazon Music Unlimited",
+      "category": "music",
+      "color": "#25D1DA",
+      "monogram": "Am",
+      "market": "global",
+      "aliases": [
+        "amazon music",
+        "music unlimited"
+      ],
+      "cancelUrl": "https://www.amazon.com/music/settings",
+      "manageUrl": "https://www.amazon.com/music/settings",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "individual-prime",
+          "name": "Individual (Prime member)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "soundcloud",
+      "name": "SoundCloud Go+",
+      "category": "music",
+      "color": "#FF5500",
+      "monogram": "SC",
+      "market": "global",
+      "aliases": [
+        "soundcloud",
+        "go+"
+      ],
+      "cancelUrl": "https://soundcloud.com/settings/subscriptions",
+      "manageUrl": "https://soundcloud.com/settings/subscriptions",
+      "plans": [
+        {
+          "id": "go-plus",
+          "name": "Go+",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "category": "ai",
+      "color": "#10A37F",
+      "monogram": "GP",
+      "market": "global",
+      "aliases": [
+        "chatgpt",
+        "openai",
+        "gpt",
+        "chat gpt"
+      ],
+      "cancelUrl": "https://help.openai.com/en/articles/7232927",
+      "manageUrl": "https://chatgpt.com/#settings/Subscription",
+      "plans": [
+        {
+          "id": "go",
+          "name": "Go",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 132000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 8,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "plus",
+          "name": "Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "USD",
+              "amount": 20,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 20
+            }
+          }
+        },
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 200
+            }
+          }
+        }
+      ],
+      "note": "VN: Go bán bằng VND (từ 10/2025); Plus trên web tính USD, qua App Store ~499.000đ."
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "category": "ai",
+      "color": "#D97757",
+      "monogram": "Cl",
+      "market": "global",
+      "aliases": [
+        "claude",
+        "anthropic",
+        "claude ai"
+      ],
+      "cancelUrl": "https://claude.ai/settings/billing",
+      "manageUrl": "https://claude.ai/settings/billing",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 20
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 200
+            }
+          }
+        },
+        {
+          "id": "max-5x",
+          "name": "Max 5x",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 100
+            }
+          }
+        },
+        {
+          "id": "max-20x",
+          "name": "Max 20x",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 200
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini (Google AI)",
+      "category": "ai",
+      "color": "#4285F4",
+      "monogram": "G",
+      "market": "global",
+      "aliases": [
+        "gemini",
+        "google ai pro",
+        "google ai plus",
+        "google ai ultra",
+        "bard"
+      ],
+      "cancelUrl": "https://one.google.com/settings",
+      "manageUrl": "https://one.google.com/settings",
+      "plans": [
+        {
+          "id": "ai-plus",
+          "name": "Google AI Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 122000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "ai-pro",
+          "name": "Google AI Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 489000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 19.99
+            }
+          }
+        },
+        {
+          "id": "ai-ultra",
+          "name": "Google AI Ultra",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 6000000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 249.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá VN theo báo chí 09/2025. Gói AI có kèm dung lượng Google One."
+    },
+    {
+      "id": "copilot",
+      "name": "Microsoft Copilot Pro",
+      "category": "ai",
+      "color": "#7F5AF0",
+      "monogram": "Cp",
+      "market": "global",
+      "aliases": [
+        "copilot",
+        "copilot pro",
+        "bing chat"
+      ],
+      "cancelUrl": "https://account.microsoft.com/services",
+      "manageUrl": "https://account.microsoft.com/services",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Copilot Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 20,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Từ 10/2025 Microsoft đẩy người dùng mới sang Microsoft 365 Premium; Copilot Pro có thể không còn bán mới."
+    },
+    {
+      "id": "midjourney",
+      "name": "Midjourney",
+      "category": "ai",
+      "color": "#0D0D0D",
+      "monogram": "Mj",
+      "market": "global",
+      "aliases": [
+        "midjourney",
+        "mj",
+        "ai ve anh"
+      ],
+      "cancelUrl": "https://www.midjourney.com/account",
+      "manageUrl": "https://www.midjourney.com/account",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Basic",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10
+            }
+          }
+        },
+        {
+          "id": "basic-annual",
+          "name": "Basic (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 96
+            }
+          }
+        },
+        {
+          "id": "standard",
+          "name": "Standard",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 30
+            }
+          }
+        },
+        {
+          "id": "standard-annual",
+          "name": "Standard (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 288
+            }
+          }
+        },
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 60
+            }
+          }
+        },
+        {
+          "id": "mega",
+          "name": "Mega",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 120
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity",
+      "category": "ai",
+      "color": "#20808D",
+      "monogram": "Px",
+      "market": "global",
+      "aliases": [
+        "perplexity",
+        "pplx"
+      ],
+      "cancelUrl": "https://www.perplexity.ai/settings/account",
+      "manageUrl": "https://www.perplexity.ai/settings/account",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 20
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 200
+            }
+          }
+        },
+        {
+          "id": "max",
+          "name": "Max",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 200
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "grok",
+      "name": "SuperGrok",
+      "category": "ai",
+      "color": "#16181C",
+      "monogram": "Gk",
+      "market": "global",
+      "aliases": [
+        "grok",
+        "supergrok",
+        "xai"
+      ],
+      "cancelUrl": "https://grok.com/settings",
+      "manageUrl": "https://grok.com/settings",
+      "plans": [
+        {
+          "id": "supergrok",
+          "name": "SuperGrok",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 30,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "category": "ai",
+      "color": "#2B2B2B",
+      "monogram": "Cu",
+      "market": "global",
+      "aliases": [
+        "cursor",
+        "cursor ai"
+      ],
+      "cancelUrl": "https://cursor.com/settings",
+      "manageUrl": "https://cursor.com/settings",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 20
+            }
+          }
+        },
+        {
+          "id": "pro-plus",
+          "name": "Pro+",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 60,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "ultra",
+          "name": "Ultra",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 200,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "github-copilot",
+      "name": "GitHub Copilot",
+      "category": "ai",
+      "color": "#24292F",
+      "monogram": "GH",
+      "market": "global",
+      "aliases": [
+        "github copilot",
+        "copilot github"
+      ],
+      "cancelUrl": "https://github.com/settings/billing",
+      "manageUrl": "https://github.com/settings/copilot",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 100
+            }
+          }
+        },
+        {
+          "id": "pro-plus",
+          "name": "Pro+",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 39
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "elevenlabs",
+      "name": "ElevenLabs",
+      "category": "ai",
+      "color": "#1A1A1A",
+      "monogram": "11",
+      "market": "global",
+      "aliases": [
+        "elevenlabs",
+        "eleven labs",
+        "ai giong noi"
+      ],
+      "cancelUrl": "https://elevenlabs.io/app/subscription",
+      "manageUrl": "https://elevenlabs.io/app/subscription",
+      "plans": [
+        {
+          "id": "starter",
+          "name": "Starter",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 5,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "creator",
+          "name": "Creator",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 22,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "icloud",
+      "name": "iCloud+",
+      "category": "storage",
+      "color": "#3693F3",
+      "monogram": "iC",
+      "market": "global",
+      "aliases": [
+        "icloud",
+        "icloud+",
+        "apple storage",
+        "luu tru apple"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/102619",
+      "manageUrl": "https://support.apple.com/en-us/108047",
+      "plans": [
+        {
+          "id": "50gb",
+          "name": "50 GB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 25000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 0.99
+            }
+          }
+        },
+        {
+          "id": "200gb",
+          "name": "200 GB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 89000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 2.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "2tb",
+          "name": "2 TB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 299000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "6tb",
+          "name": "6 TB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 899000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 29.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "12tb",
+          "name": "12 TB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 1799000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 59.99
+            }
+          },
+          "members": 6
+        }
+      ],
+      "note": "VN tăng giá ~06/2026; giá 2 TB mới chỉ có một nguồn."
+    },
+    {
+      "id": "google-one",
+      "name": "Google One",
+      "category": "storage",
+      "color": "#1E8E3E",
+      "monogram": "G1",
+      "market": "global",
+      "aliases": [
+        "google one",
+        "google drive",
+        "google photos",
+        "luu tru google"
+      ],
+      "cancelUrl": "https://one.google.com/settings",
+      "manageUrl": "https://one.google.com/settings",
+      "plans": [
+        {
+          "id": "basic-100gb",
+          "name": "Basic 100 GB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 45000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 1.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "basic-100gb-annual",
+          "name": "Basic 100 GB (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "premium-2tb",
+          "name": "Premium 2 TB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "premium-2tb-annual",
+          "name": "Premium 2 TB (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 99.99
+            }
+          },
+          "members": 6
+        }
+      ],
+      "note": "Chưa xác minh giá VND hiện hành (cần đăng nhập tài khoản VN để xem)."
+    },
+    {
+      "id": "dropbox",
+      "name": "Dropbox",
+      "category": "storage",
+      "color": "#0061FF",
+      "monogram": "Db",
+      "market": "global",
+      "aliases": [
+        "dropbox"
+      ],
+      "cancelUrl": "https://www.dropbox.com/account/plan",
+      "manageUrl": "https://www.dropbox.com/account/plan",
+      "plans": [
+        {
+          "id": "plus",
+          "name": "Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99
+            }
+          }
+        },
+        {
+          "id": "plus-annual",
+          "name": "Plus (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 119.88
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "microsoft-365",
+      "name": "Microsoft 365",
+      "category": "storage",
+      "color": "#D83B01",
+      "monogram": "M",
+      "market": "global",
+      "aliases": [
+        "microsoft 365",
+        "office 365",
+        "onedrive",
+        "word",
+        "excel",
+        "office"
+      ],
+      "cancelUrl": "https://account.microsoft.com/services",
+      "manageUrl": "https://account.microsoft.com/services",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Basic (100 GB)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 1.99
+            }
+          }
+        },
+        {
+          "id": "basic-annual",
+          "name": "Basic (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99
+            }
+          }
+        },
+        {
+          "id": "personal",
+          "name": "Personal",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          }
+        },
+        {
+          "id": "personal-annual",
+          "name": "Personal (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 99.99
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "family-annual",
+          "name": "Family (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 129.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá VND chưa xác minh (đại lý báo Family ~2.599.000đ/năm)."
+    },
+    {
+      "id": "zcloud",
+      "name": "zCloud (Zalo)",
+      "category": "storage",
+      "color": "#0068FF",
+      "monogram": "zC",
+      "market": "vn",
+      "aliases": [
+        "zcloud",
+        "zalo",
+        "zalo cloud",
+        "luu tru zalo"
+      ],
+      "cancelUrl": "https://zalo.me/zcloud",
+      "manageUrl": "https://zalo.me/zcloud",
+      "plans": [
+        {
+          "id": "mini",
+          "name": "zCloud Mini 10 GB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 20000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "standard",
+          "name": "zCloud 100 GB",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 49200,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "standard-annual",
+          "name": "zCloud 100 GB (năm)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 590000,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "backblaze",
+      "name": "Backblaze",
+      "category": "storage",
+      "color": "#E21E29",
+      "monogram": "Bb",
+      "market": "global",
+      "aliases": [
+        "backblaze",
+        "backup"
+      ],
+      "cancelUrl": "https://secure.backblaze.com/account_settings.htm",
+      "manageUrl": "https://secure.backblaze.com/account_settings.htm",
+      "plans": [
+        {
+          "id": "personal",
+          "name": "Personal Backup",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "personal-annual",
+          "name": "Personal Backup (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "canva",
+      "name": "Canva",
+      "category": "software",
+      "color": "#00C4CC",
+      "monogram": "Ca",
+      "market": "global",
+      "aliases": [
+        "canva",
+        "canva pro",
+        "thiet ke"
+      ],
+      "cancelUrl": "https://www.canva.com/settings/billing-and-plans",
+      "manageUrl": "https://www.canva.com/settings/billing-and-plans",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 15
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 120
+            }
+          }
+        }
+      ],
+      "note": "Chưa xác minh giá VND chính thức (một nguồn: ~289.000đ/tháng)."
+    },
+    {
+      "id": "adobe-cc",
+      "name": "Adobe Creative Cloud",
+      "category": "software",
+      "color": "#FA0F00",
+      "monogram": "Ad",
+      "market": "global",
+      "aliases": [
+        "adobe",
+        "photoshop",
+        "lightroom",
+        "illustrator",
+        "premiere",
+        "acrobat",
+        "creative cloud"
+      ],
+      "cancelUrl": "https://account.adobe.com/plans",
+      "manageUrl": "https://account.adobe.com/plans",
+      "plans": [
+        {
+          "id": "cc-pro",
+          "name": "Creative Cloud Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 69.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "photography-20gb",
+          "name": "Photography (20 GB)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 14.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "photoshop",
+          "name": "Photoshop",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 22.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "acrobat-pro",
+          "name": "Acrobat Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá theo tháng của gói cam kết 1 năm; huỷ giữa kỳ có thể mất phí."
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "category": "software",
+      "color": "#191919",
+      "monogram": "No",
+      "market": "global",
+      "aliases": [
+        "notion",
+        "ghi chu"
+      ],
+      "cancelUrl": "https://www.notion.so/profile/plans",
+      "manageUrl": "https://www.notion.so/profile/plans",
+      "plans": [
+        {
+          "id": "plus",
+          "name": "Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12
+            }
+          }
+        },
+        {
+          "id": "plus-annual",
+          "name": "Plus (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 120
+            }
+          }
+        },
+        {
+          "id": "business",
+          "name": "Business",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 24,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "1password",
+      "name": "1Password",
+      "category": "software",
+      "color": "#0572EC",
+      "monogram": "1P",
+      "market": "global",
+      "aliases": [
+        "1password",
+        "one password",
+        "mat khau"
+      ],
+      "cancelUrl": "https://my.1password.com/billing",
+      "manageUrl": "https://my.1password.com/billing",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 35.88
+            }
+          }
+        },
+        {
+          "id": "families",
+          "name": "Families",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 59.88
+            }
+          },
+          "members": 5
+        }
+      ]
+    },
+    {
+      "id": "bitwarden",
+      "name": "Bitwarden",
+      "category": "software",
+      "color": "#175DDC",
+      "monogram": "Bw",
+      "market": "global",
+      "aliases": [
+        "bitwarden",
+        "mat khau"
+      ],
+      "cancelUrl": "https://vault.bitwarden.com/#/settings/subscription",
+      "manageUrl": "https://vault.bitwarden.com/#/settings/subscription",
+      "plans": [
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "families",
+          "name": "Families",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 40,
+              "approx": true
+            }
+          },
+          "members": 6
+        }
+      ]
+    },
+    {
+      "id": "nordvpn",
+      "name": "NordVPN",
+      "category": "software",
+      "color": "#4687FF",
+      "monogram": "Nv",
+      "market": "global",
+      "aliases": [
+        "nordvpn",
+        "nord",
+        "vpn"
+      ],
+      "cancelUrl": "https://my.nordaccount.com/billing/",
+      "manageUrl": "https://my.nordaccount.com/",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Basic (monthly)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Gói năm/2 năm thường có giá khuyến mãi lần đầu, gia hạn giá cao hơn."
+    },
+    {
+      "id": "expressvpn",
+      "name": "ExpressVPN",
+      "category": "software",
+      "color": "#DA3940",
+      "monogram": "Ex",
+      "market": "global",
+      "aliases": [
+        "expressvpn",
+        "express vpn",
+        "vpn"
+      ],
+      "cancelUrl": "https://www.expressvpn.com/subscriptions",
+      "manageUrl": "https://www.expressvpn.com/subscriptions",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.95,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "surfshark",
+      "name": "Surfshark",
+      "category": "software",
+      "color": "#1EBFBF",
+      "monogram": "Ss",
+      "market": "global",
+      "aliases": [
+        "surfshark",
+        "vpn"
+      ],
+      "cancelUrl": "https://my.surfshark.com/account/subscription",
+      "manageUrl": "https://my.surfshark.com/account",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Starter (monthly)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 15.45,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "grammarly",
+      "name": "Grammarly",
+      "category": "software",
+      "color": "#15C39A",
+      "monogram": "Gr",
+      "market": "global",
+      "aliases": [
+        "grammarly",
+        "ngu phap"
+      ],
+      "cancelUrl": "https://account.grammarly.com/subscription",
+      "manageUrl": "https://account.grammarly.com/subscription",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 30,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 144,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "category": "software",
+      "color": "#A259FF",
+      "monogram": "F",
+      "market": "global",
+      "aliases": [
+        "figma"
+      ],
+      "cancelUrl": "https://www.figma.com/settings",
+      "manageUrl": "https://www.figma.com/settings",
+      "plans": [
+        {
+          "id": "professional",
+          "name": "Professional (Full seat)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 20,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "professional-annual",
+          "name": "Professional (Full seat, annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 192,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "capcut",
+      "name": "CapCut",
+      "category": "software",
+      "color": "#1F1F1F",
+      "monogram": "CC",
+      "market": "global",
+      "aliases": [
+        "capcut",
+        "cap cut",
+        "edit video"
+      ],
+      "cancelUrl": "https://www.capcut.com/my-subscription",
+      "manageUrl": "https://www.capcut.com/my-subscription",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 199000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá theo vùng và đổi thường xuyên; nguồn VN mâu thuẫn (199.000–290.000đ/tháng)."
+    },
+    {
+      "id": "zoom",
+      "name": "Zoom Workplace Pro",
+      "category": "software",
+      "color": "#0B5CFF",
+      "monogram": "Zm",
+      "market": "global",
+      "aliases": [
+        "zoom",
+        "hop truc tuyen"
+      ],
+      "cancelUrl": "https://zoom.us/billing",
+      "manageUrl": "https://zoom.us/billing",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 15.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 159.9,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "evernote",
+      "name": "Evernote",
+      "category": "software",
+      "color": "#00A82D",
+      "monogram": "Ev",
+      "market": "global",
+      "aliases": [
+        "evernote",
+        "ghi chu"
+      ],
+      "cancelUrl": "https://www.evernote.com/Settings.action",
+      "manageUrl": "https://www.evernote.com/Settings.action",
+      "plans": [
+        {
+          "id": "personal",
+          "name": "Personal",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 14.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "personal-annual",
+          "name": "Personal (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 129.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "todoist",
+      "name": "Todoist",
+      "category": "software",
+      "color": "#E44332",
+      "monogram": "Td",
+      "market": "global",
+      "aliases": [
+        "todoist",
+        "to do",
+        "viec can lam"
+      ],
+      "cancelUrl": "https://app.todoist.com/app/settings/subscription",
+      "manageUrl": "https://app.todoist.com/app/settings/subscription",
+      "plans": [
+        {
+          "id": "pro",
+          "name": "Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 5,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 48,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "proton",
+      "name": "Proton",
+      "category": "software",
+      "color": "#6D4AFF",
+      "monogram": "Pr",
+      "market": "global",
+      "aliases": [
+        "proton",
+        "protonmail",
+        "proton vpn",
+        "proton drive"
+      ],
+      "cancelUrl": "https://account.proton.me/dashboard",
+      "manageUrl": "https://account.proton.me/dashboard",
+      "plans": [
+        {
+          "id": "mail-plus",
+          "name": "Mail Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 4.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "unlimited",
+          "name": "Proton Unlimited",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "unlimited-annual",
+          "name": "Proton Unlimited (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 119.88,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bkav-pro",
+      "name": "Bkav Pro",
+      "category": "software",
+      "color": "#1E4E9D",
+      "monogram": "Bk",
+      "market": "vn",
+      "aliases": [
+        "bkav",
+        "bkav pro",
+        "diet virus",
+        "antivirus"
+      ],
+      "cancelUrl": "https://www.bkav.com.vn",
+      "manageUrl": "https://www.bkav.com.vn",
+      "plans": [
+        {
+          "id": "1pc",
+          "name": "Internet Security 1 PC",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 189000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá niêm yết đại lý (Hacom)."
+    },
+    {
+      "id": "xbox-game-pass",
+      "name": "Xbox Game Pass",
+      "category": "gaming",
+      "color": "#107C10",
+      "monogram": "X",
+      "market": "global",
+      "aliases": [
+        "xbox",
+        "game pass",
+        "xbox game pass",
+        "pc game pass"
+      ],
+      "cancelUrl": "https://account.microsoft.com/services",
+      "manageUrl": "https://account.microsoft.com/services",
+      "plans": [
+        {
+          "id": "essential",
+          "name": "Essential",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 14.99
+            }
+          }
+        },
+        {
+          "id": "ultimate",
+          "name": "Ultimate",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 22.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "pc",
+          "name": "PC Game Pass",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 13.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Ultimate tăng lên 29.99 (10/2025) rồi giảm (04/2026) theo nguồn thứ ba — cần xác minh."
+    },
+    {
+      "id": "playstation-plus",
+      "name": "PlayStation Plus",
+      "category": "gaming",
+      "color": "#0070D1",
+      "monogram": "PS",
+      "market": "global",
+      "aliases": [
+        "playstation",
+        "ps plus",
+        "psn",
+        "ps5"
+      ],
+      "cancelUrl": "https://www.playstation.com/en-us/support/subscriptions/cancel-playstation-subscription/",
+      "manageUrl": "https://www.playstation.com/acct/management",
+      "plans": [
+        {
+          "id": "essential",
+          "name": "Essential",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 10.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "essential-annual",
+          "name": "Essential (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99
+            }
+          }
+        },
+        {
+          "id": "extra-annual",
+          "name": "Extra (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 134.99
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 17.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium-annual",
+          "name": "Premium (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 159.99
+            }
+          }
+        }
+      ],
+      "note": "Không có PlayStation Store chính thức cho VN."
+    },
+    {
+      "id": "nintendo-switch-online",
+      "name": "Nintendo Switch Online",
+      "category": "gaming",
+      "color": "#E60012",
+      "monogram": "NS",
+      "market": "global",
+      "aliases": [
+        "nintendo",
+        "switch online",
+        "nso"
+      ],
+      "cancelUrl": "https://accounts.nintendo.com/shop/subscription",
+      "manageUrl": "https://accounts.nintendo.com/shop/subscription",
+      "plans": [
+        {
+          "id": "individual-1m",
+          "name": "Individual (1 month)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 3.99
+            }
+          }
+        },
+        {
+          "id": "individual-3m",
+          "name": "Individual (3 months)",
+          "cycle": {
+            "unit": "month",
+            "count": 3
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 7.99
+            }
+          }
+        },
+        {
+          "id": "individual-12m",
+          "name": "Individual (12 months)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family (12 months)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 34.99
+            }
+          },
+          "members": 8
+        },
+        {
+          "id": "expansion-individual",
+          "name": "+ Expansion Pack (Individual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 49.99
+            }
+          }
+        },
+        {
+          "id": "expansion-family",
+          "name": "+ Expansion Pack (Family)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99
+            }
+          },
+          "members": 8
+        }
+      ]
+    },
+    {
+      "id": "apple-arcade",
+      "name": "Apple Arcade",
+      "category": "gaming",
+      "color": "#FF3B30",
+      "monogram": "Ar",
+      "market": "global",
+      "aliases": [
+        "apple arcade",
+        "arcade"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/118428",
+      "manageUrl": "https://support.apple.com/en-us/118428",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Apple Arcade",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 6.99
+            }
+          }
+        }
+      ],
+      "note": "Giá VN chưa xác minh."
+    },
+    {
+      "id": "google-play-pass",
+      "name": "Google Play Pass",
+      "category": "gaming",
+      "color": "#01875F",
+      "monogram": "PP",
+      "market": "global",
+      "aliases": [
+        "play pass",
+        "google play pass"
+      ],
+      "cancelUrl": "https://play.google.com/store/account/subscriptions",
+      "manageUrl": "https://play.google.com/store/account/subscriptions",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 4.99
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 29.99
+            }
+          },
+          "members": 6
+        }
+      ]
+    },
+    {
+      "id": "ea-play",
+      "name": "EA Play",
+      "category": "gaming",
+      "color": "#FF4747",
+      "monogram": "EA",
+      "market": "global",
+      "aliases": [
+        "ea play",
+        "ea",
+        "origin"
+      ],
+      "cancelUrl": "https://myaccount.ea.com/cp-ui/subscription/index",
+      "manageUrl": "https://myaccount.ea.com/cp-ui/subscription/index",
+      "plans": [
+        {
+          "id": "ea-play",
+          "name": "EA Play",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 5.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "ea-play-annual",
+          "name": "EA Play (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 39.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "ea-play-pro",
+          "name": "EA Play Pro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 16.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ubisoft-plus",
+      "name": "Ubisoft+",
+      "category": "gaming",
+      "color": "#0E3B80",
+      "monogram": "U+",
+      "market": "global",
+      "aliases": [
+        "ubisoft",
+        "ubisoft plus",
+        "uplay"
+      ],
+      "cancelUrl": "https://store.ubisoft.com/us/my-account",
+      "manageUrl": "https://store.ubisoft.com/us/my-account",
+      "plans": [
+        {
+          "id": "classics",
+          "name": "Classics",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 7.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 17.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "geforce-now",
+      "name": "GeForce NOW",
+      "category": "gaming",
+      "color": "#76B900",
+      "monogram": "GF",
+      "market": "global",
+      "aliases": [
+        "geforce now",
+        "nvidia",
+        "cloud gaming"
+      ],
+      "cancelUrl": "https://www.nvidia.com/en-us/account/",
+      "manageUrl": "https://www.nvidia.com/en-us/account/",
+      "plans": [
+        {
+          "id": "performance",
+          "name": "Performance",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "ultimate",
+          "name": "Ultimate",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "roblox-premium",
+      "name": "Roblox Premium",
+      "category": "gaming",
+      "color": "#232527",
+      "monogram": "Rb",
+      "market": "global",
+      "aliases": [
+        "roblox",
+        "robux"
+      ],
+      "cancelUrl": "https://www.roblox.com/my/account#!/billing",
+      "manageUrl": "https://www.roblox.com/premium/membership",
+      "plans": [
+        {
+          "id": "p450",
+          "name": "Premium 450",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 4.99
+            }
+          }
+        },
+        {
+          "id": "p1000",
+          "name": "Premium 1000",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          }
+        },
+        {
+          "id": "p2200",
+          "name": "Premium 2200",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "discord-nitro",
+      "name": "Discord Nitro",
+      "category": "gaming",
+      "color": "#5865F2",
+      "monogram": "Dc",
+      "market": "global",
+      "aliases": [
+        "discord",
+        "nitro"
+      ],
+      "cancelUrl": "https://discord.com/settings/subscriptions",
+      "manageUrl": "https://discord.com/settings/subscriptions",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Nitro Basic",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 2.99
+            }
+          }
+        },
+        {
+          "id": "nitro",
+          "name": "Nitro",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          }
+        },
+        {
+          "id": "nitro-annual",
+          "name": "Nitro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 99.99
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "kindle-unlimited",
+      "name": "Kindle Unlimited",
+      "category": "reading",
+      "color": "#FF9900",
+      "monogram": "KU",
+      "market": "global",
+      "aliases": [
+        "kindle",
+        "kindle unlimited",
+        "ebook",
+        "sach dien tu"
+      ],
+      "cancelUrl": "https://www.amazon.com/kindle-dbs/ku/ku-central",
+      "manageUrl": "https://www.amazon.com/kindle-dbs/ku/ku-central",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Kindle Unlimited",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "audible",
+      "name": "Audible",
+      "category": "reading",
+      "color": "#F8991C",
+      "monogram": "Au",
+      "market": "global",
+      "aliases": [
+        "audible",
+        "audiobook",
+        "sach noi"
+      ],
+      "cancelUrl": "https://www.audible.com/account/overview",
+      "manageUrl": "https://www.audible.com/account/overview",
+      "plans": [
+        {
+          "id": "standard",
+          "name": "Standard",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 8.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium-plus",
+          "name": "Premium Plus",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 14.95
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "category": "reading",
+      "color": "#12100E",
+      "monogram": "Md",
+      "market": "global",
+      "aliases": [
+        "medium"
+      ],
+      "cancelUrl": "https://medium.com/me/membership",
+      "manageUrl": "https://medium.com/me/membership",
+      "plans": [
+        {
+          "id": "member",
+          "name": "Member",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 5
+            }
+          }
+        },
+        {
+          "id": "member-annual",
+          "name": "Member (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "apple-news-plus",
+      "name": "Apple News+",
+      "category": "reading",
+      "color": "#FA2D48",
+      "monogram": "N+",
+      "market": "global",
+      "aliases": [
+        "apple news",
+        "news+"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/118428",
+      "manageUrl": "https://support.apple.com/en-us/118428",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Apple News+",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.99
+            }
+          }
+        }
+      ],
+      "note": "Không có tại VN."
+    },
+    {
+      "id": "nytimes",
+      "name": "The New York Times",
+      "category": "reading",
+      "color": "#121212",
+      "monogram": "NY",
+      "market": "global",
+      "aliases": [
+        "nyt",
+        "new york times",
+        "nytimes"
+      ],
+      "cancelUrl": "https://myaccount.nytimes.com/seg/subscription",
+      "manageUrl": "https://myaccount.nytimes.com/seg/subscription",
+      "plans": [
+        {
+          "id": "all-access",
+          "name": "All Access",
+          "cycle": {
+            "unit": "week",
+            "count": 4
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 25,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Kỳ thanh toán 4 tuần; giá thường (sau khuyến mãi lần đầu) chưa chắc chắn."
+    },
+    {
+      "id": "voiz-fm",
+      "name": "Voiz FM",
+      "category": "reading",
+      "color": "#FF4E45",
+      "monogram": "VZ",
+      "market": "vn",
+      "aliases": [
+        "voiz",
+        "voiz fm",
+        "sach noi",
+        "podcast"
+      ],
+      "cancelUrl": "https://voiz.vn",
+      "manageUrl": "https://voiz.vn",
+      "plans": [
+        {
+          "id": "daily",
+          "name": "Gói ngày",
+          "cycle": {
+            "unit": "day",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 2000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "App ghi 'chỉ từ 2.000đ/ngày'; giá gói tháng/năm chưa xác minh."
+    },
+    {
+      "id": "strava",
+      "name": "Strava",
+      "category": "health",
+      "color": "#FC4C02",
+      "monogram": "St",
+      "market": "global",
+      "aliases": [
+        "strava",
+        "chay bo",
+        "dap xe"
+      ],
+      "cancelUrl": "https://www.strava.com/account",
+      "manageUrl": "https://www.strava.com/account",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Subscription",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Subscription (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "headspace",
+      "name": "Headspace",
+      "category": "health",
+      "color": "#FF7E1D",
+      "monogram": "Hs",
+      "market": "global",
+      "aliases": [
+        "headspace",
+        "thien",
+        "meditation"
+      ],
+      "cancelUrl": "https://www.headspace.com/subscriptions",
+      "manageUrl": "https://www.headspace.com/subscriptions",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 12.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 69.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "calm",
+      "name": "Calm",
+      "category": "health",
+      "color": "#3B82F6",
+      "monogram": "Cm",
+      "market": "global",
+      "aliases": [
+        "calm",
+        "thien",
+        "ngu ngon"
+      ],
+      "cancelUrl": "https://www.calm.com/profile/manage-subscription",
+      "manageUrl": "https://www.calm.com/profile/manage-subscription",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 16.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "myfitnesspal",
+      "name": "MyFitnessPal",
+      "category": "health",
+      "color": "#0066EE",
+      "monogram": "MF",
+      "market": "global",
+      "aliases": [
+        "myfitnesspal",
+        "calo",
+        "an kieng"
+      ],
+      "cancelUrl": "https://www.myfitnesspal.com/account/subscription",
+      "manageUrl": "https://www.myfitnesspal.com/account/subscription",
+      "plans": [
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium-annual",
+          "name": "Premium (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "apple-fitness-plus",
+      "name": "Apple Fitness+",
+      "category": "health",
+      "color": "#A6E22E",
+      "monogram": "Fi",
+      "market": "global",
+      "aliases": [
+        "fitness+",
+        "apple fitness"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/118428",
+      "manageUrl": "https://support.apple.com/en-us/118428",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99
+            }
+          },
+          "members": 6
+        }
+      ],
+      "note": "Không có tại VN."
+    },
+    {
+      "id": "fitbit-premium",
+      "name": "Fitbit Premium",
+      "category": "health",
+      "color": "#00B0B9",
+      "monogram": "Fb",
+      "market": "global",
+      "aliases": [
+        "fitbit",
+        "google fitbit"
+      ],
+      "cancelUrl": "https://www.fitbit.com/settings/subscription",
+      "manageUrl": "https://www.fitbit.com/settings/subscription",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 79.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "duolingo",
+      "name": "Duolingo",
+      "category": "education",
+      "color": "#58CC02",
+      "monogram": "Du",
+      "market": "global",
+      "aliases": [
+        "duolingo",
+        "super duolingo",
+        "duolingo max",
+        "hoc tieng anh"
+      ],
+      "cancelUrl": "https://www.duolingo.com/settings/subscription",
+      "manageUrl": "https://www.duolingo.com/settings/subscription",
+      "plans": [
+        {
+          "id": "super-monthly",
+          "name": "Super (monthly)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 99000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 12.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "super-annual",
+          "name": "Super (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 599000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 83.88,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "super-family",
+          "name": "Super Family (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 899000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 119.99,
+              "approx": true
+            }
+          },
+          "members": 6
+        }
+      ],
+      "note": "VN suy từ giá quy tháng của gói năm (49.917đ × 12); giá thực tế thay đổi theo khuyến mãi."
+    },
+    {
+      "id": "coursera",
+      "name": "Coursera Plus",
+      "category": "education",
+      "color": "#0056D2",
+      "monogram": "Co",
+      "market": "global",
+      "aliases": [
+        "coursera",
+        "khoa hoc online"
+      ],
+      "cancelUrl": "https://www.coursera.org/my-purchases",
+      "manageUrl": "https://www.coursera.org/my-purchases",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 59
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 399
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "elsa-speak",
+      "name": "ELSA Speak",
+      "category": "education",
+      "color": "#3BA0FF",
+      "monogram": "EL",
+      "market": "vn",
+      "aliases": [
+        "elsa",
+        "elsa speak",
+        "phat am",
+        "hoc tieng anh"
+      ],
+      "cancelUrl": "https://vn.elsaspeak.com",
+      "manageUrl": "https://vn.elsaspeak.com",
+      "plans": [
+        {
+          "id": "pro-6m",
+          "name": "Pro 6 tháng",
+          "cycle": {
+            "unit": "month",
+            "count": 6
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 645000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "pro-annual",
+          "name": "Pro (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 1095000,
+              "approx": true
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 141.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "pro-monthly",
+          "name": "Pro (monthly)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium-annual",
+          "name": "Premium (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 1716000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Startup gốc Việt. Có gói trọn đời (không định kỳ) — không đưa vào."
+    },
+    {
+      "id": "quizlet",
+      "name": "Quizlet Plus",
+      "category": "education",
+      "color": "#4255FF",
+      "monogram": "Qz",
+      "market": "global",
+      "aliases": [
+        "quizlet",
+        "flashcard"
+      ],
+      "cancelUrl": "https://quizlet.com/settings",
+      "manageUrl": "https://quizlet.com/settings",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 7.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 35.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "monkey-junior",
+      "name": "Monkey Junior",
+      "category": "education",
+      "color": "#FFB300",
+      "monogram": "MJ",
+      "market": "vn",
+      "aliases": [
+        "monkey",
+        "monkey junior",
+        "monkey stories",
+        "tieng anh tre em"
+      ],
+      "cancelUrl": "https://monkey.edu.vn",
+      "manageUrl": "https://monkey.edu.vn",
+      "plans": [
+        {
+          "id": "junior-annual",
+          "name": "Monkey Junior 1 năm",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 799000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "stories-annual",
+          "name": "Monkey Stories 1 năm",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 699000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá theo App Store VN; web/đại lý thường có giá khuyến mãi thấp hơn."
+    },
+    {
+      "id": "viettel-mobile",
+      "name": "Viettel (di động)",
+      "category": "telecom",
+      "color": "#EE0033",
+      "monogram": "Vt",
+      "market": "vn",
+      "aliases": [
+        "viettel",
+        "goi cuoc viettel",
+        "4g viettel",
+        "5g viettel",
+        "data"
+      ],
+      "cancelUrl": "https://vietteltelecom.vn",
+      "manageUrl": "https://vietteltelecom.vn",
+      "plans": [
+        {
+          "id": "sd90",
+          "name": "SD90",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 90000
+            }
+          }
+        },
+        {
+          "id": "mxh100",
+          "name": "MXH100",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 100000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "5g150",
+          "name": "5G150",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 150000
+            }
+          }
+        }
+      ],
+      "note": "Huỷ gia hạn qua My Viettel hoặc tin nhắn tới 191."
+    },
+    {
+      "id": "vinaphone",
+      "name": "VinaPhone",
+      "category": "telecom",
+      "color": "#00A3E0",
+      "monogram": "VN",
+      "market": "vn",
+      "aliases": [
+        "vinaphone",
+        "vina",
+        "goi cuoc vinaphone",
+        "4g vinaphone"
+      ],
+      "cancelUrl": "https://vinaphone.com.vn",
+      "manageUrl": "https://vinaphone.com.vn",
+      "plans": [
+        {
+          "id": "big90",
+          "name": "BIG90",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 90000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "big120",
+          "name": "BIG120",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 120000,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "mobifone",
+      "name": "MobiFone",
+      "category": "telecom",
+      "color": "#1D4F91",
+      "monogram": "Mb",
+      "market": "vn",
+      "aliases": [
+        "mobifone",
+        "mobi",
+        "goi cuoc mobifone",
+        "4g mobifone"
+      ],
+      "cancelUrl": "https://www.mobifone.vn",
+      "manageUrl": "https://www.mobifone.vn",
+      "plans": [
+        {
+          "id": "kc90",
+          "name": "KC90",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 90000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "tk135",
+          "name": "TK135",
+          "cycle": {
+            "unit": "day",
+            "count": 30
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 135000,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "viettel-internet",
+      "name": "Internet Viettel",
+      "category": "telecom",
+      "color": "#B5002A",
+      "monogram": "VI",
+      "market": "vn",
+      "aliases": [
+        "internet viettel",
+        "wifi viettel",
+        "cap quang viettel"
+      ],
+      "cancelUrl": "https://viettel.vn/internet",
+      "manageUrl": "https://viettel.vn/internet",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Gói cơ bản",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 195000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá sàn sau đợt điều chỉnh của các nhà mạng; thay đổi theo khu vực/hợp đồng."
+    },
+    {
+      "id": "fpt-internet",
+      "name": "Internet FPT",
+      "category": "telecom",
+      "color": "#F37021",
+      "monogram": "FI",
+      "market": "vn",
+      "aliases": [
+        "fpt",
+        "internet fpt",
+        "wifi fpt",
+        "cap quang fpt",
+        "fpt telecom"
+      ],
+      "cancelUrl": "https://fpt.vn",
+      "manageUrl": "https://fpt.vn",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Gói cơ bản",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 195000,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "family-500",
+          "name": "Gia đình 500 Mbps",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 350000,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Giá tham khảo từ trang tổng hợp, thay đổi theo khu vực/hợp đồng."
+    },
+    {
+      "id": "vnpt-internet",
+      "name": "Internet VNPT",
+      "category": "telecom",
+      "color": "#0068B3",
+      "monogram": "VP",
+      "market": "vn",
+      "aliases": [
+        "vnpt",
+        "internet vnpt",
+        "wifi vnpt",
+        "cap quang vnpt",
+        "home net"
+      ],
+      "cancelUrl": "https://vnpt.com.vn",
+      "manageUrl": "https://vnpt.com.vn",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Gói cơ bản",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 190000,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "amazon-prime",
+      "name": "Amazon Prime",
+      "category": "other",
+      "color": "#00A8E1",
+      "monogram": "aP",
+      "market": "global",
+      "aliases": [
+        "amazon",
+        "amazon prime",
+        "prime"
+      ],
+      "cancelUrl": "https://www.amazon.com/mc/pipelines/cancellation",
+      "manageUrl": "https://www.amazon.com/mc",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 14.99
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 139
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "apple-one",
+      "name": "Apple One",
+      "category": "other",
+      "color": "#2C2C2E",
+      "monogram": "A1",
+      "market": "global",
+      "aliases": [
+        "apple one",
+        "apple bundle"
+      ],
+      "cancelUrl": "https://support.apple.com/en-us/118428",
+      "manageUrl": "https://support.apple.com/en-us/118428",
+      "plans": [
+        {
+          "id": "individual",
+          "name": "Individual",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 19.95,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 25.95,
+              "approx": true
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "premier",
+          "name": "Premier",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 37.95,
+              "approx": true
+            }
+          },
+          "members": 6
+        }
+      ],
+      "note": "Có thể đã tăng cùng Apple TV (08/2026). Không có tại VN."
+    },
+    {
+      "id": "x-premium",
+      "name": "X Premium",
+      "category": "other",
+      "color": "#000000",
+      "monogram": "X",
+      "market": "global",
+      "aliases": [
+        "x",
+        "twitter",
+        "twitter blue",
+        "x premium"
+      ],
+      "cancelUrl": "https://x.com/settings/manage_subscriptions",
+      "manageUrl": "https://x.com/settings/manage_subscriptions",
+      "plans": [
+        {
+          "id": "basic",
+          "name": "Basic",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 3,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 8,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "premium-plus",
+          "name": "Premium+",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 40,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "telegram-premium",
+      "name": "Telegram Premium",
+      "category": "other",
+      "color": "#229ED9",
+      "monogram": "Tg",
+      "market": "global",
+      "aliases": [
+        "telegram"
+      ],
+      "cancelUrl": "https://telegram.org/faq_premium",
+      "manageUrl": "https://telegram.org/faq_premium",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 4.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 35.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "uber-one",
+      "name": "Uber One",
+      "category": "other",
+      "color": "#000000",
+      "monogram": "U1",
+      "market": "global",
+      "aliases": [
+        "uber",
+        "uber one",
+        "uber eats"
+      ],
+      "cancelUrl": "https://account.uber.com/",
+      "manageUrl": "https://account.uber.com/",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 9.99
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 96
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "linkedin-premium",
+      "name": "LinkedIn Premium",
+      "category": "other",
+      "color": "#0A66C2",
+      "monogram": "in",
+      "market": "global",
+      "aliases": [
+        "linkedin",
+        "linkedin premium"
+      ],
+      "cancelUrl": "https://www.linkedin.com/premium/manage/",
+      "manageUrl": "https://www.linkedin.com/premium/manage/",
+      "plans": [
+        {
+          "id": "career",
+          "name": "Career",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 29.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "business",
+          "name": "Business",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 59.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "snapchat-plus",
+      "name": "Snapchat+",
+      "category": "other",
+      "color": "#FFFC00",
+      "monogram": "Sn",
+      "market": "global",
+      "aliases": [
+        "snapchat",
+        "snap",
+        "snapchat plus"
+      ],
+      "cancelUrl": "https://accounts.snapchat.com/",
+      "manageUrl": "https://accounts.snapchat.com/",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Monthly",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 3.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "annual",
+          "name": "Annual",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 29.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "youtube-tv",
+      "name": "YouTube TV",
+      "category": "video",
+      "color": "#FF0033",
+      "monogram": "YV",
+      "market": "global",
+      "aliases": [
+        "youtube tv",
+        "live tv"
+      ],
+      "cancelUrl": "https://tv.youtube.com/settings/membership",
+      "manageUrl": "https://tv.youtube.com/settings/membership",
+      "plans": [
+        {
+          "id": "base",
+          "name": "Base Plan",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 82.99,
+              "approx": true
+            }
+          }
+        }
+      ],
+      "note": "Chỉ có tại Mỹ."
+    },
+    {
+      "id": "twitch-turbo",
+      "name": "Twitch Turbo",
+      "category": "gaming",
+      "color": "#9146FF",
+      "monogram": "Tw",
+      "market": "global",
+      "aliases": [
+        "twitch",
+        "turbo"
+      ],
+      "cancelUrl": "https://www.twitch.tv/subscriptions",
+      "manageUrl": "https://www.twitch.tv/subscriptions",
+      "plans": [
+        {
+          "id": "turbo",
+          "name": "Turbo",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "peloton-app",
+      "name": "Peloton App",
+      "category": "health",
+      "color": "#181A1D",
+      "monogram": "Pe",
+      "market": "global",
+      "aliases": [
+        "peloton",
+        "tap the duc"
+      ],
+      "cancelUrl": "https://members.onepeloton.com/preferences/subscriptions",
+      "manageUrl": "https://members.onepeloton.com/preferences/subscriptions",
+      "plans": [
+        {
+          "id": "app-one",
+          "name": "App One",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 15.99,
+              "approx": true
+            }
+          }
+        },
+        {
+          "id": "app-plus",
+          "name": "App+",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 28.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "everand",
+      "name": "Everand (Scribd)",
+      "category": "reading",
+      "color": "#1E7B85",
+      "monogram": "Er",
+      "market": "global",
+      "aliases": [
+        "scribd",
+        "everand",
+        "ebook",
+        "sach dien tu"
+      ],
+      "cancelUrl": "https://www.everand.com/account-settings",
+      "manageUrl": "https://www.everand.com/account-settings",
+      "plans": [
+        {
+          "id": "monthly",
+          "name": "Everand",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 11.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "blinkist",
+      "name": "Blinkist",
+      "category": "reading",
+      "color": "#2CE080",
+      "monogram": "Bl",
+      "market": "global",
+      "aliases": [
+        "blinkist",
+        "tom tat sach"
+      ],
+      "cancelUrl": "https://www.blinkist.com/en/nc/settings",
+      "manageUrl": "https://www.blinkist.com/en/nc/settings",
+      "plans": [
+        {
+          "id": "premium-annual",
+          "name": "Premium (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 99.99,
+              "approx": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
