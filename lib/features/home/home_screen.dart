@@ -61,7 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _turnOnReminders() async {
-    await ref.read(notificationServiceProvider).requestPermission();
+    await ref.read(notificationServiceProvider).requestPermissionOrOpenSettings();
     ref.invalidate(notificationsEnabledProvider);
   }
 

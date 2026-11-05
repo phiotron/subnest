@@ -192,6 +192,18 @@ void main() {
       await tester.tap(find.text('Turn on'));
       await settle(tester);
       expect(app.notifications.permissionRequests, 1);
+      expect(app.notifications.settingsOpened, 0);
+      await closeApp(tester);
+    });
+
+    testWidgets('Turn on after the user denied the OS prompt → opens system notification settings', (tester) async {
+      // Real phone (2026-11-05): once denied, Android stops showing the prompt and "Turn on" did nothing.
+      final app = await pumpApp(tester, remindersOn: false);
+      app.notifications.grant = false;
+      await tester.tap(find.text('Turn on'));
+      await settle(tester);
+      expect(app.notifications.permissionRequests, 1);
+      expect(app.notifications.settingsOpened, 1);
       await closeApp(tester);
     });
 

@@ -260,10 +260,20 @@ class FixedToday extends TodayNotifier {
 /// Records permission requests instead of calling the plugin.
 class FakeNotifications extends NotificationService {
   int permissionRequests = 0;
+  int settingsOpened = 0;
+
+  /// What the OS answers; `false` answers at once, like a permission the user already denied.
+  bool grant = true;
 
   @override
   Future<bool> requestPermission() async {
     permissionRequests++;
+    return grant;
+  }
+
+  @override
+  Future<bool> openSettings() async {
+    settingsOpened++;
     return true;
   }
 

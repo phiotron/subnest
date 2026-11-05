@@ -85,6 +85,32 @@ class NotificationService {
     return await ios?.requestPermissions(alert: true, badge: true, sound: true) ?? false;
   }
 
+  /// Asks for permission; when the OS no longer shows its prompt (Android after the user denied it,
+  /// iOS after the first answer) the request returns "no" at once — then open Subnest's page in
+  /// the system settings instead, so "Turn on" is never a dead button (S-31). A denial in the
+  /// prompt itself takes the user's time, so it is respected (S-40: never nag).
+  Future<bool> requestPermissionOrOpenSettings({Duration promptShownAfter = const Duration(milliseconds: 600)}) async {
+    final watch = Stopwatch()..start();
+    if (await requestPermission()) return true;
+    if (watch.elapsed < promptShownAfter) await openSettings();
+    return false;
+  }
+
+  /// Subnest's notification page in the system settings (falls back to the app's settings page).
+  Future<bool> openSettings() async {
+    if (!_ready) return false;
+    try {
+      if (Platform.isAndroid) {
+        final android = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+        return await android?.openAppNotificationSettings() ?? false;
+      }
+      final ios = _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
+      return await ios?.openAppNotificationSettings() ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   /// Whether the user currently allows notifications (for the "Reminders are off" banner).
   Future<bool> areEnabled() async {
     if (!_ready) return false;
@@ -127,7 +153,7 @@ class NotificationService {
           r.fireAt.hour,
           r.fireAt.minute,
         ),
-        notificationDetails: _details(l10n),
+        notificationDetails: _details(l10n, body: _body(l10n, r, s)),
         // Inexact: no SCHEDULE_EXACT_ALARM permission (Play policy); may arrive a few minutes late.
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         title: _title(l10n, r, s),
@@ -172,13 +198,16 @@ class NotificationService {
     );
   }
 
-  NotificationDetails _details(AppLocalizations l10n) => NotificationDetails(
+  /// A body (trial ending) uses the big-text style so the expanded notification shows all of it
+  /// (real phone: one line, cut after "Huỷ ngay nếu…").
+  NotificationDetails _details(AppLocalizations l10n, {String? body}) => NotificationDetails(
     android: AndroidNotificationDetails(
       _channelId,
       l10n.notificationsChannelName,
       channelDescription: l10n.notificationsChannelDescription,
       importance: Importance.high,
       priority: Priority.high,
+      styleInformation: body == null ? null : BigTextStyleInformation(body),
     ),
     iOS: const DarwinNotificationDetails(),
   );
