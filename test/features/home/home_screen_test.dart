@@ -3,8 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/widgets.dart';
+import 'package:subnest/data/providers.dart';
 import 'package:subnest/domain/domain.dart';
 import 'package:subnest/features/home/home_screen.dart';
+import 'package:subnest/features/home/subscription_labels.dart';
 
 import 'ui_harness.dart';
 
@@ -324,6 +326,31 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Spotify trial ends in 2 days'), findsNothing);
       expect(find.text('Keeping Spotify. The first charge is on Fri, 6 Nov.'), findsOneWidget);
+      await closeApp(tester);
+    });
+
+    testWidgets('Keep it is stored: the card stays hidden after a restart; cleared once the trial ends', (tester) async {
+      // Real phone QA: "Keep it" only lasted for the session — the card came back after reopening.
+      final app = await pumpApp(tester);
+      await tester.tap(find.text('Keep it'));
+      await settle(tester);
+      final settings = app.container.read(settingsRepositoryProvider);
+      expect((await tester.runAsync(settings.load))!.keptTrials, {'spotify'});
+      // "Restart": a fresh provider reads the stored set.
+      app.container.invalidate(keptTrialsProvider);
+      await settle(tester);
+      expect(app.container.read(keptTrialsProvider), {'spotify'});
+      expect(find.text('Spotify trial ends in 2 days'), findsNothing);
+      // The trial turns Active (or is cancelled) → the id is dropped from the store.
+      final repo = app.container.read(subscriptionRepositoryProvider);
+      await tester.runAsync(() async {
+        final s = (await repo.get('spotify'))!;
+        await repo.save(s.copyWith(status: SubscriptionStatus.active));
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      });
+      await settle(tester);
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+      expect((await tester.runAsync(settings.load))!.keptTrials, isEmpty);
       await closeApp(tester);
     });
 

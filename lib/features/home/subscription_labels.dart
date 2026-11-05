@@ -16,14 +16,34 @@ final catalogByIdProvider = Provider<Map<String, CatalogService>>((ref) {
   return {for (final s in list) s.id: s};
 });
 
-/// Trials the user chose to keep ("Keep it") this session — hides the trial-ending card.
+/// Trials the user chose to keep ("Keep it") — hides the trial-ending card. Stored in Settings so it
+/// survives restarts (real phone QA: the card came back after reopening the app); ids of trials that
+/// became Active, were cancelled or deleted are dropped from the store.
 final keptTrialsProvider = NotifierProvider<KeptTrials, Set<String>>(KeptTrials.new);
 
 class KeptTrials extends Notifier<Set<String>> {
   @override
-  Set<String> build() => const {};
+  Set<String> build() {
+    final stored = ref.watch(settingsProvider).value?.keptTrials ?? const <String>{};
+    final subs = ref.watch(subscriptionsProvider).value;
+    if (subs == null || stored.isEmpty) return stored;
+    final today = ref.watch(todayProvider);
+    final live = {
+      for (final s in subs)
+        if (stored.contains(s.id) && BillingRules.effectiveStatus(s, today) == SubscriptionStatus.trial) s.id,
+    };
+    if (live.length != stored.length) {
+      final repo = ref.read(settingsRepositoryProvider);
+      Future.microtask(() => repo.setKeptTrials(live));
+    }
+    return live;
+  }
 
-  void keep(String id) => state = {...state, id};
+  Future<void> keep(String id) async {
+    final next = {...state, id};
+    state = next;
+    await ref.read(settingsRepositoryProvider).setKeptTrials(next);
+  }
 }
 
 /// Short service name for sentences ("Did you pay Netflix?"): the Catalog service name when the

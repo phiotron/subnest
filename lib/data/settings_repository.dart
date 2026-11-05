@@ -17,6 +17,7 @@ class AppSettings {
     this.onboardingDone = false,
     this.lastBackupAt,
     this.ratesFetchedAt,
+    this.keptTrials = const {},
   });
 
   final String primaryCurrency;
@@ -32,6 +33,10 @@ class AppSettings {
   final bool onboardingDone;
   final DateTime? lastBackupAt;
   final DateTime? ratesFetchedAt;
+
+  /// Trials the user chose to keep ("Keep it" on the trial-ending card/banner): the card stays hidden
+  /// for them. Pruned once a trial becomes Active or is cancelled/deleted (`keptTrialsProvider`).
+  final Set<String> keptTrials;
 }
 
 /// Picks the Primary currency for a device locale like `vi_VN` → VND, `en_US` → USD.
@@ -66,6 +71,7 @@ class SettingsRepository {
   static const kOnboardingDone = 'onboardingDone';
   static const kLastBackupAt = 'lastBackupAt';
   static const kRatesFetchedAt = 'ratesFetchedAt';
+  static const kKeptTrials = 'keptTrials'; // subscription ids, comma-separated (key-value store, no schema change)
 
   /// Keys copied into / restored from a JSON backup.
   static const backupKeys = [kPrimaryCurrency, kDefaultReminderDays, kReminderTime, kThemeMode, kLocale];
@@ -91,6 +97,7 @@ class SettingsRepository {
       onboardingDone: m[kOnboardingDone] == 'true',
       lastBackupAt: DateTime.tryParse(m[kLastBackupAt] ?? ''),
       ratesFetchedAt: DateTime.tryParse(m[kRatesFetchedAt] ?? ''),
+      keptTrials: {...?m[kKeptTrials]?.split(',').where((e) => e.isNotEmpty)},
     );
   }
 
@@ -121,4 +128,6 @@ class SettingsRepository {
   Future<void> setLastBackupAt(DateTime at) => set(kLastBackupAt, at.toIso8601String());
 
   Future<void> setRatesFetchedAt(DateTime at) => set(kRatesFetchedAt, at.toIso8601String());
+
+  Future<void> setKeptTrials(Set<String> ids) => set(kKeptTrials, ids.isEmpty ? null : (ids.toList()..sort()).join(','));
 }
