@@ -16,6 +16,8 @@ Future<void> showRateOverrideSheet(BuildContext context, {required String from, 
     );
 
 /// Use the automatic rate, or set your own; preview what one subscription then costs a month.
+/// [from] is the subscription currency, [to] the main currency; the sheet shows and stores the rate
+/// as "1 «stronger» = X «weaker»" ([SettingsFormat.ratePair]) — the domain reads either direction.
 class RateOverrideSheet extends ConsumerStatefulWidget {
   const RateOverrideSheet({super.key, required this.from, required this.to});
 
@@ -30,19 +32,26 @@ class _RateOverrideSheetState extends ConsumerState<RateOverrideSheet> {
   late final TextEditingController _controller;
   late bool _useAuto;
   late final bool _wasOverridden;
+
+  /// Display / storage direction: (1 [_a] = X [_b]).
+  late final String _a;
+  late final String _b;
   bool _showError = false;
 
   ExchangeRates get _rates => ref.read(ratesProvider).value ?? ExchangeRates.empty;
 
   /// Provider rate, ignoring any override.
-  double? get _autoRate => ExchangeRates(usdRates: _rates.usdRates).rate(widget.from, widget.to);
+  double? get _autoRate => ExchangeRates(usdRates: _rates.usdRates).rate(_a, _b);
 
   @override
   void initState() {
     super.initState();
+    final pair = SettingsFormat.ratePair(_rates, widget.from, widget.to);
+    _a = pair.$1;
+    _b = pair.$2;
     _wasOverridden = _rates.isOverridden(widget.from, widget.to);
     _useAuto = !_wasOverridden;
-    final start = _rates.rate(widget.from, widget.to);
+    final start = _rates.rate(_a, _b);
     _controller = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || start == null) return;
@@ -68,7 +77,7 @@ class _RateOverrideSheetState extends ConsumerState<RateOverrideSheet> {
         setState(() => _showError = true);
         return;
       }
-      await repo.setOverride(widget.from, widget.to, v);
+      await repo.setOverride(_a, _b, v);
     }
     if (mounted) Navigator.pop(context);
   }
@@ -108,16 +117,16 @@ class _RateOverrideSheetState extends ConsumerState<RateOverrideSheet> {
             // "USD → VND" — the arrow is an icon: Be Vietnam Pro has no U+2192.
             Semantics(
               header: true,
-              label: '${widget.from} → ${widget.to}',
+              label: '$_a → $_b',
               excludeSemantics: true,
               child: Row(
                 children: [
-                  Text(widget.from, style: titleStyle),
+                  Text(_a, style: titleStyle),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppSpace.s2),
                     child: Icon(LucideIcons.arrowRight, size: 20, color: c.ink),
                   ),
-                  Text(widget.to, style: titleStyle),
+                  Text(_b, style: titleStyle),
                 ],
               ),
             ),
@@ -151,8 +160,8 @@ class _RateOverrideSheetState extends ConsumerState<RateOverrideSheet> {
               const SizedBox(height: AppSpace.s5),
               _RateBox(
                 controller: _controller,
-                from: widget.from,
-                to: widget.to,
+                from: _a,
+                to: _b,
                 preview: _preview(l, rates),
                 error: _showError ? l.settingsRateInvalid : null,
                 onChanged: () => setState(() => _showError = false),
@@ -178,7 +187,13 @@ class _RateOverrideSheetState extends ConsumerState<RateOverrideSheet> {
         .firstOrNull;
     if (s == null) return null;
     final calc = SpendingCalculator(
-      rates: rates.copyWith(overrides: {...rates.overrides, ExchangeRates.pairKey(widget.from, widget.to): v}),
+      rates: rates.copyWith(
+        overrides: {
+          for (final e in rates.overrides.entries)
+            if (e.key != ExchangeRates.pairKey(_a, _b) && e.key != ExchangeRates.pairKey(_b, _a)) e.key: e.value,
+          ExchangeRates.pairKey(_a, _b): v,
+        },
+      ),
       primaryCurrency: widget.to,
     );
     final monthly = calc.monthlyCost(s);
@@ -269,7 +284,7 @@ class _RateBox extends StatelessWidget {
               ],
             )
           else if (preview != null)
-            Text(preview!, style: AppType.meta.copyWith(color: c.inkMuted)),
+            Text(preview!, semanticsLabel: context.l10n.spokenLabel(preview!), style: AppType.meta.copyWith(color: c.inkMuted)),
         ],
       ),
     );

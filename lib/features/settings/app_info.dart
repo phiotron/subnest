@@ -5,7 +5,7 @@ library;
 /// `package_info_plus` is not a dependency yet, so this is kept in sync by
 /// `test/features/settings/app_info_test.dart`, which fails when pubspec changes.
 const String kAppVersion = '1.0.0';
-const String kAppBuild = '1';
+const String kAppBuild = '2';
 
 /// TODO(A001-subnest): set the public privacy-policy URL once it is hosted (store/legal/
 /// privacy-policy.*.html). While `null`, "Privacy policy" opens the bundled copy in the app
@@ -25,5 +25,5 @@ const String kAndroidPackage = 'com.phiotron.subnest';
 /// "Rate Subnest" row is hidden on iOS (no dead button).
 const String? kAppStoreId = null;
 
-/// "1.0.0 (1)".
+/// "1.0.0 (2)".
 String get appVersionLabel => '$kAppVersion ($kAppBuild)';

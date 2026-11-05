@@ -124,12 +124,16 @@ class _Preview extends ConsumerWidget {
     final l = context.l10n;
     if (days == ReminderDays.off) return ListNote(l.settingsPreviewOff, top: 0);
     final today = ref.watch(todayProvider);
+    // The next real renewal it would be about: Active, not waiting for a confirmation (that one
+    // already had its reminder — real phone QA showed "Gym Fit renews in 3 days" for a period due today).
     final subs = [
       for (final s in ref.watch(subscriptionsProvider).value ?? const <Subscription>[])
-        if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.cancelled) s,
+        if (BillingRules.effectiveStatus(s, today) == SubscriptionStatus.active &&
+            !BillingRules.isAwaitingConfirmation(s, today))
+          s,
     ]..sort((a, b) => a.dueDate.compareTo(b.dueDate));
     final primary = ref.watch(primaryCurrencyProvider);
-    final name = subs.isEmpty ? 'Netflix' : subs.first.name;
+    final name = subs.isEmpty ? l.settingsPreviewSampleName : subs.first.name;
     final share = subs.isEmpty ? Money.major(primary == 'VND' ? 260000 : 15.49, primary) : subs.first.myShare;
     final body = days == ReminderDays.onTheDay
         ? l.notificationsDueToday(name)

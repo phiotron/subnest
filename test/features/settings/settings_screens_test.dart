@@ -4,9 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/widgets.dart';
 import 'package:subnest/data/settings_repository.dart';
+import 'package:subnest/data/subscription_repository.dart';
 import 'package:subnest/domain/domain.dart';
 import 'package:subnest/features/settings/legal_screen.dart';
 import 'package:subnest/features/settings/settings_actions.dart';
+import 'package:subnest/features/settings/settings_format.dart';
 
 import 'settings_harness.dart';
 
@@ -32,7 +34,7 @@ void main() {
       expect(find.text('Last backup was 42 days ago'), findsOneWidget);
       await tester.scrollUntilVisible(find.text(en.settingsPrivacyNote), 300);
       expect(find.text('Last backup: 24 Sep 2026'), findsOneWidget);
-      expect(find.text('1.0.0 (1)'), findsOneWidget);
+      expect(find.text('1.0.0 (2)'), findsOneWidget);
       for (final label in [
         en.settingsPrivacyPolicy,
         en.settingsTerms,
@@ -96,7 +98,7 @@ void main() {
       final uri = f.platform.opened.single;
       expect(uri.scheme, 'mailto');
       expect(uri.path, 'phamphuongphuongnd@gmail.com');
-      expect(Uri.decodeComponent(uri.query), contains('Subnest feedback (1.0.0 (1))'));
+      expect(Uri.decodeComponent(uri.query), contains('Subnest feedback (1.0.0 (2))'));
 
       f.platform.externalOk = false;
       await tester.tap(find.text(en.settingsFeedback));
@@ -163,6 +165,23 @@ void main() {
       expect(find.text(en.settingsPreviewOff), findsOneWidget);
     });
 
+    settingsTest('preview skips periods waiting for confirmation and trials; sample text when none', (tester) async {
+      // Real phone QA: the preview said "Gym Fit renews in 3 days" while Gym Fit was due today, unconfirmed.
+      final f = await SettingsFixture.create();
+      final subs = SubscriptionRepository(f.db, clock: () => kNow);
+      final netflix = (await subs.get('netflix'))!;
+      final chatgpt = (await subs.get('chatgpt'))!;
+      // ChatGPT is now overdue (waiting for confirmation) → the preview uses Netflix (8 Nov).
+      await subs.save(chatgpt.copyWith(anchorDate: const LocalDate(2026, 11, 1)));
+      await pumpSettings(tester, f, location: '/settings/reminders');
+      expect(find.text('Netflix renews in 3 days — ₫260,000'), findsOneWidget);
+      await tester.runAsync(() async {
+        await subs.save(netflix.copyWith(status: SubscriptionStatus.trial, trialEndDate: const LocalDate(2026, 11, 8)));
+      });
+      await settle(tester);
+      expect(find.text('Your subscription renews in 3 days — ₫260,000'), findsOneWidget);
+    });
+
     settingsTest('time row opens the dial-only time picker', (tester) async {
       final f = await SettingsFixture.create();
       await pumpSettings(tester, f, location: '/settings/reminders');
@@ -187,18 +206,61 @@ void main() {
       expect(find.text(en.settingsRatesOfflineTitle), findsNothing);
     });
 
+    settingsTest('fresh rates + failed retry: no "offline" in the rate line (real phone QA)', (tester) async {
+      final f = await SettingsFixture.create(ratesAge: const Duration(minutes: 5));
+      f.online = false;
+      await pumpSettings(tester, f, location: '/settings/rates');
+      await tester.tap(find.text(en.settingsRatesUpdateNow));
+      await settle(tester);
+      expect(find.text('Auto · updated 5 min ago'), findsOneWidget);
+      expect(find.textContaining('Offline ·'), findsNothing);
+    });
+
     settingsTest('stale + no connection → offline state; Update now retries', (tester) async {
       final f = await SettingsFixture.create(ratesAge: const Duration(days: 3));
       f.online = false;
       await pumpSettings(tester, f, location: '/settings/rates');
       expect(find.text(en.settingsRatesOfflineTitle), findsOneWidget);
-      expect(find.text('Auto · from 3 days ago (offline)'), findsOneWidget);
+      expect(find.text('Offline · rates from 3 days ago'), findsOneWidget);
       f.online = true;
       await tester.tap(find.text(en.settingsRatesUpdateNow));
       await settle(tester);
       expect(find.text(en.settingsRatesOfflineTitle), findsNothing);
       expect(find.text(en.settingsRatesUpdated), findsOneWidget);
       expect(find.bySemanticsLabel(RegExp('^1 USD equals 25,410 VND')), findsOneWidget);
+    });
+
+    settingsTest('main currency USD, subscription in VND: shown and typed as "1 USD = X VND"', (tester) async {
+      // Real phone QA: the pair read "1 VND equals 0.0000389 USD" — nobody thinks in that direction.
+      final f = await SettingsFixture.create();
+      await f.settings.setPrimaryCurrency('USD');
+      await pumpSettings(tester, f, location: '/settings/rates');
+      expect(find.bySemanticsLabel(RegExp('^1 USD equals 25,400 VND')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp('^1 VND equals')), findsNothing);
+      await tester.tap(find.bySemanticsLabel(RegExp('^1 USD equals 25,400 VND')));
+      await settle(tester);
+      expect(find.bySemanticsLabel('USD → VND'), findsOneWidget);
+      await tester.tap(find.byType(AppToggle));
+      await settle(tester);
+      expect(find.text('Your rate · 1 USD ='), findsOneWidget);
+      await tester.enterText(find.byType(TextField), '26,000');
+      await settle(tester);
+      // Netflix ₫260,000 at 26,000 VND per USD.
+      expect(find.text(r'Netflix becomes ≈ $10.00/month'), findsOneWidget);
+      await tester.tap(find.text(en.settingsRateSave));
+      await settle(tester);
+      final rates = await f.rates.load();
+      expect(rates.rate('USD', 'VND'), 26000);
+      expect(rates.rate('VND', 'USD'), closeTo(1 / 26000, 1e-12));
+      expect(find.bySemanticsLabel(RegExp('^1 USD equals 26,000 VND')), findsOneWidget);
+    });
+
+    test('ratePair: stronger currency first, unknown rate keeps the order', () {
+      const rates = ExchangeRates(usdRates: {'USD': 1, 'VND': 25400, 'EUR': 0.92});
+      expect(SettingsFormat.ratePair(rates, 'VND', 'USD'), ('USD', 'VND'));
+      expect(SettingsFormat.ratePair(rates, 'USD', 'VND'), ('USD', 'VND'));
+      expect(SettingsFormat.ratePair(rates, 'USD', 'EUR'), ('EUR', 'USD'));
+      expect(SettingsFormat.ratePair(rates, 'XYZ', 'USD'), ('XYZ', 'USD'));
     });
 
     settingsTest('override sheet: set my rate, validate, restore automatic', (tester) async {

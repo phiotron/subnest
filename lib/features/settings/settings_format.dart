@@ -30,6 +30,14 @@ abstract final class SettingsFormat {
   /// Name `BackupService.exportJson` gives the file it shares (`subnest-backup-<local date>.json`).
   static String backupFileName(DateTime exportedAt) => 'subnest-backup-${LocalDate.fromDateTime(exportedAt)}.json';
 
+  /// The pair as people say it: "1 «stronger currency» = X «weaker»" ("1 USD = 25,700 VND"), whatever
+  /// the main currency is (real phone QA: "1 VND = 0.0000389 USD" with USD as main currency).
+  /// Uses the automatic rate so the direction doesn't flip with an override; unknown rate → as given.
+  static (String, String) ratePair(ExchangeRates rates, String a, String b) {
+    final r = ExchangeRates(usdRates: rates.usdRates).rate(a, b) ?? rates.rate(a, b);
+    return r != null && r < 1 ? (b, a) : (a, b);
+  }
+
   /// Exchange rate for display: `25,400` · `25.400` (VI) · `1.0846` · `0.0000394`.
   static String rate(double value, String localeName, {bool grouping = true}) {
     final int digits;

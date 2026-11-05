@@ -53,7 +53,10 @@ class _RatesScreenState extends ConsumerState<RatesScreen> {
       final at = rates.fetchedAt;
       if (at == null) return l.settingsRateBuiltIn;
       final ago = SettingsFormat.ago(l, at, now);
-      return status.offline ? l.settingsRateAutoOffline(ago) : l.settingsRateAuto(ago);
+      // A failed refresh right after a successful one isn't news: the rates are current, so only
+      // say "offline" once they are at least an hour old (real phone: "Auto · from just now (offline)").
+      final stale = now.difference(at) >= const Duration(hours: 1);
+      return status.offline && stale ? l.settingsRateAutoOffline(ago) : l.settingsRateAuto(ago);
     }
 
     return Scaffold(
@@ -76,12 +79,17 @@ class _RatesScreenState extends ConsumerState<RatesScreen> {
                 dividerIndent: AppSpace.s4,
                 children: [
                   for (final from in used)
-                    _PairRow(
-                      from: from,
-                      to: primary,
-                      rate: rates.rate(from, primary),
-                      subtitle: sub(from),
-                      onTap: () => showRateOverrideSheet(context, from: from, to: primary),
+                    Builder(
+                      builder: (context) {
+                        final (a, b) = SettingsFormat.ratePair(rates, from, primary);
+                        return _PairRow(
+                          from: a,
+                          to: b,
+                          rate: rates.rate(a, b),
+                          subtitle: sub(from),
+                          onTap: () => showRateOverrideSheet(context, from: from, to: primary),
+                        );
+                      },
                     ),
                 ],
               ),
