@@ -37,8 +37,12 @@ class _Done {
 }
 
 class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
-  LocalDate? _amountFor;
+  /// What the prefilled amount was computed from: (period, My share, currency).
+  (LocalDate, int, String)? _amountFor;
   double? _amount;
+
+  /// The user typed an amount for this period (kept while only the price changes).
+  bool _amountEdited = false;
   bool _amountError = false;
   bool _busy = false;
 
@@ -143,10 +147,18 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
     final l = context.l10n;
     final c = context.colors;
     final period = pending.first;
-    if (_amountFor != period) {
-      _amountFor = period;
-      _amount = toMajorUnits(s.myShareMinor, s.currency);
-      _amountError = false;
+    final basis = (period, s.myShareMinor, s.currency);
+    if (_amountFor != basis) {
+      // New period, another currency, or a changed price the user hasn't overridden → prefill again.
+      // (Real phone: after a restore the first frame had the old VND share and the sheet kept it
+      // as "$65,000" once the USD data arrived.)
+      final old = _amountFor;
+      if (old == null || old.$1 != period || old.$3 != s.currency || !_amountEdited) {
+        _amount = toMajorUnits(s.myShareMinor, s.currency);
+        _amountEdited = false;
+        _amountError = false;
+      }
+      _amountFor = basis;
     }
     final primary = ref.watch(primaryCurrencyProvider);
     final calc = ref.watch(spendingCalculatorProvider);
@@ -228,6 +240,7 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
           errorText: _amountError ? l.confirmAmountRequired : null,
           onChanged: (v) => setState(() {
             _amount = v;
+            _amountEdited = true;
             if (v != null) _amountError = false;
           }),
         ),

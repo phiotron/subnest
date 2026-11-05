@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/widgets.dart';
+import 'package:subnest/data/providers.dart';
 import 'package:subnest/domain/domain.dart';
 import 'package:subnest/features/confirm/awaiting_screen.dart';
 import 'package:subnest/features/confirm/confirm_sheet.dart';
@@ -48,6 +49,31 @@ void main() {
       await settle(tester);
       expect(find.byType(ConfirmSheet), findsNothing);
       expect(find.text('1 payment to confirm'), findsOneWidget);
+      await closeApp(tester);
+    });
+
+    testWidgets('prefilled amount follows a changed subscription (price, currency) until edited', (tester) async {
+      // Real phone (2026-11-05): after restoring a backup where Netflix was in USD, the sheet first
+      // showed the old share (65,000 VND) as "$65,000" — Paid would have saved the wrong amount.
+      final app = await pumpApp(tester, push: '/confirm/netflix');
+      final field = find.descendant(of: find.byType(AmountField), matching: find.byType(TextField));
+      expect(tester.widget<TextField>(field).controller!.text, '65,000');
+      final repo = app.container.read(subscriptionRepositoryProvider);
+      await tester.runAsync(() async {
+        final s = (await repo.get('netflix'))!;
+        await repo.save(s.copyWith(priceMinor: 2699, currency: 'USD'));
+      });
+      await settle(tester);
+      expect(tester.widget<TextField>(field).controller!.text, '6.75');
+      // Once the user types an amount, a later price change in the same currency keeps it.
+      await tester.enterText(field, '7');
+      await tester.pumpAndSettle();
+      await tester.runAsync(() async {
+        final s = (await repo.get('netflix'))!;
+        await repo.save(s.copyWith(priceMinor: 2999));
+      });
+      await settle(tester);
+      expect(tester.widget<TextField>(field).controller!.text, '7');
       await closeApp(tester);
     });
 
