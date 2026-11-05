@@ -10,21 +10,24 @@ import 'package:subnest/features/settings/settings_format.dart';
 
 import 'settings_harness.dart';
 
-String _read(String path) => File(path).readAsStringSync().replaceAll('\r\n', '\n');
+String _read(String path) => _lf(File(path).readAsStringSync());
+
+/// A Windows checkout (core.autocrlf) may give either file CRLF line ends.
+String _lf(String s) => s.replaceAll('\r\n', '\n');
 
 void main() {
   setUpAll(initializeDateFormatting);
 
   group('bundled texts stay in sync with their sources', () {
     test('privacy policy and terms = store/legal/*.md', () {
-      expect(LegalTexts.privacyEn, _read('store/legal/privacy-policy.en.md'));
-      expect(LegalTexts.privacyVi, _read('store/legal/privacy-policy.vi.md'));
-      expect(LegalTexts.termsEn, _read('store/legal/terms.en.md'));
-      expect(LegalTexts.termsVi, _read('store/legal/terms.vi.md'));
+      expect(_lf(LegalTexts.privacyEn), _read('store/legal/privacy-policy.en.md'));
+      expect(_lf(LegalTexts.privacyVi), _read('store/legal/privacy-policy.vi.md'));
+      expect(_lf(LegalTexts.termsEn), _read('store/legal/terms.en.md'));
+      expect(_lf(LegalTexts.termsVi), _read('store/legal/terms.vi.md'));
     });
 
     test('Be Vietnam Pro licence = assets/fonts/BeVietnamPro/OFL.txt', () {
-      expect(AppLicenses.beVietnamProOfl, _read('assets/fonts/BeVietnamPro/OFL.txt'));
+      expect(_lf(AppLicenses.beVietnamProOfl), _read('assets/fonts/BeVietnamPro/OFL.txt'));
       expect(AppLicenses.lucideIsc, startsWith('ISC License'));
     });
 
