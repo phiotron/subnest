@@ -86,22 +86,24 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #2 Hoàn thiện | 2026-11-05 | F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
+| #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 
 **Việc dở / bước tiếp:**
-- **QA trên máy thật** (chưa làm — các phiên UI chỉ kiểm bằng widget test + ảnh render): luồng §6 trên Galaxy A13, TalkBack (S-50),
-  share sheet/file picker/mở cài đặt thông báo/`mailto:`/`market://`, thông báo thật, khởi động bản release.
-- **Privacy policy URL**: chờ người dùng gửi link repo public (vd `github.com/phiotron/phiotron-legal`) → đẩy `store/legal/*.html`, bật Pages,
-  điền `kPrivacyPolicyUrl` (`lib/features/settings/`) + store forms. App hiện mở bản privacy trong app.
-- **Ảnh store**: icon 512, feature graphic 1024×500, ảnh chụp (Play giới hạn tỷ lệ ≤ 2:1 — mockup 780×1688 không dùng thẳng được) → chụp từ app thật.
-- **Closed testing**: người dùng tạo app Play Console + upload AAB (docs/ci.md §4); tăng version `+2` cho bản có UI thật.
-- **Widget S11 (stretch)**: chưa làm → bản 1.1 trừ khi còn thời gian.
-- **Apple Developer** chưa có → ký iOS + TestFlight (docs/ci.md §5) để sau.
-- Lệch nhỏ: màu/monogram catalog (vd ChatGPT "GP" xanh) khác mockup "C" đen — dữ liệu catalog, không phải UI. Giá Netflix Premium catalog 273.000đ (mockup 260.000đ minh hoạ).
-- Khoá upload: người dùng tự tạo 2026-11-05 (khoá cũ do Claude tạo đã bỏ, chưa từng upload). CI chưa chạy `gen_tokens --check`.
-- Nhắc dùng alarm inexact (trễ ≤ ~5 phút) — chấp nhận ở bản 1.
-- Bài học song song: brief luôn yêu cầu `git commit -- <đường dẫn>`; phiên có commit chưa push chặn push của phiên khác (H phải chờ G).
+- **QA máy thật ✅ (2026-11-05, Galaxy A13)**: 6 luồng §6 chạy trọn; 16 lỗi tìm thấy, 11 đã sửa (S6 số tiền cũ, 12 vùng chạm thiếu
+  hành động TalkBack, nút "Bật lại" chết, bàn phím che nút sau date picker, sao lưu huỷ vẫn ghi, gãy chữ ở 320dp×200%, thông báo xấu →
+  icon đơn sắc + teal + body). Khởi động nguội release ~0,9–1,1 s. Phiên điều phối chạy lại: analyze sạch, **622 test xanh**, merge_arb OK.
+  Báo cáo: `notes/2026-11-05-qa-device.md`.
+- **Ảnh store ✅**: `store/screenshots/{en,vi}/` (8 + 8), `store/graphics/icon-512.png`, `feature-1024x500(-vi).png`.
+- **Người dùng còn phải làm:** (1) kiểm TalkBack bằng tay ~5 phút (các bước trong notes QA); (2) gửi link repo privacy policy;
+  (3) tạo app Play Console + upload AAB closed testing (docs/ci.md §4); (4) gom 12–15 tester; (5) Apple Developer.
+- Lỗi thấp còn lại (không chặn): #12 "≈" không được đọc · #13 câu tỷ giá offline · #14 chiều hiển thị ghi đè tỷ giá (UX) ·
+  #15 mẫu xem trước nhắc · #16 "Giữ lại" trial chỉ ẩn trong phiên (cần trường dữ liệu).
+- Trước upload bản UI thật: tăng `version` → `1.0.0+2`. Widget S11 → bản 1.1. Ký iOS/TestFlight chờ Apple Developer.
+- Lệch nhỏ catalog: ChatGPT monogram "GP" xanh (mockup "C" đen); ảnh store EN thiếu màn Thư viện (máy vùng VN).
+- Khoá upload do người dùng tự tạo 2026-11-05. CI chưa chạy `gen_tokens --check`. Nhắc dùng alarm inexact (trễ ~1–5 phút).
+- Bài học song song: `git commit -- <đường dẫn>`; commit chưa push của một phiên chặn push phiên khác; 2 phiên hết hạn mức giữa chừng →
+  brief nên chia nhỏ hơn / commit WIP sớm.
 
 ## Retro (điền khi phát hành)
 - Tổng phiên điều phối / phiên con:
