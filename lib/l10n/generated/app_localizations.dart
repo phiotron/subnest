@@ -566,6 +566,18 @@ abstract class AppLocalizations {
   /// **'Overview'**
   String get coreTabOverview;
 
+  /// No description provided for @coreChangeCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Change currency'**
+  String get coreChangeCurrency;
+
+  /// No description provided for @coreEditAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit amount'**
+  String get coreEditAmount;
+
   /// No description provided for @homeAdd.
   ///
   /// In en, this message translates to:

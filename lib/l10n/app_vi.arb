@@ -78,6 +78,8 @@
   "coreFewer": "Bớt",
   "coreMore": "Thêm",
   "coreTabOverview": "Tổng quan",
+  "coreChangeCurrency": "Đổi tiền tệ",
+  "coreEditAmount": "Sửa số tiền",
   "homeAdd": "Thêm subscription",
   "homeCounts": "{active} đang trả · {trial} dùng thử",
   "homeTrialSoon": "{amount}/tháng khi hết dùng thử",

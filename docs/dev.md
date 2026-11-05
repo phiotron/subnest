@@ -107,8 +107,8 @@ test/                       domain/ (luật) · data/ (DB in-memory, backup, t�
 
 ## 4. Chuỗi (l10n) tách theo feature
 
-- Mỗi feature một cặp file `lib/l10n/parts/<part>_en.arb` + `<part>_vi.arb`. Part `common` (core) và
-  `notifications` (thông báo) thuộc phiên Core.
+- Mỗi feature một cặp file `lib/l10n/parts/<part>_en.arb` + `<part>_vi.arb`. Part `common` và `notifications`
+  (thông báo) thuộc phiên Core; part `core` (chuỗi của component trong `lib/core/widgets/`) thuộc phiên design system.
 - **Key phải bắt đầu bằng tên part dạng camelCase**: part `subscription_form` → `subscriptionFormSaveChanges`.
   Script báo lỗi nếu sai, trùng key giữa các part, hoặc VI thiếu/thừa key so với EN.
 - Metadata (`"@key": {"placeholders": …}`) chỉ đặt trong file `_en`. Plural/select theo ICU
@@ -183,6 +183,8 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 | Card / nhóm / hàng cài đặt | `AppCard(color:, onTap:)` · `AppGroup(children, dividerIndent)` · `SettingRow(icon, label, subtitle, value, trailing, onTap, external:, danger:)` · `SectionHeader(label, actionLabel)` (eyebrow viết hoa) |
 | Tiêu đề | tab: `LargeTitle(title, eyebrow, trailing)` · màn đẩy: `Scaffold(appBar: AppTopBar(title, close:, trailing:))` |
 | Sheet / dialog / toast | `showAppSheet(context, builder:, required:)` + `AppSheet(title, child, actions)` · `showAppDialog(context, title, body, content, actions)` · `showAppToast(context, msg)` · route `/confirm/:id` tự lấy style sheet từ theme |
+| Chọn một (gói S3, sắp xếp S2, lựa chọn S4/S10) | `RadioRowGroup<T>(options: [RadioOption(value, title, subtitle, trailing)], value, onChanged, style: RadioRowStyle.card/flat)` · hàng lẻ `RadioRow<T>(value, groupValue, onChanged, title, …)` · giá bên phải `RadioRow.price(context, '₫260,000', suffix: '/mo')`. Card = ô `surface-2` rời (S3); flat = trong nhóm có hairline (sort, cài đặt). ≥ 48dp, ở chữ ≥ 150% phần giá xuống dưới |
+| Nhập tiền (S4 giá, S6 số đã trả) | `AmountField(value, currency, onChanged, label, onCurrencyTap, showEditButton, conversion: '≈ ₫508,000', helper, helperIcon, errorText, boxed)` — `value` là **đơn vị lớn** (`null` = trống) → lưu bằng `toMinorUnits`; tự nhóm số theo locale khi gõ, ký hiệu tiền đúng vị trí (₫ trước EN, đ sau VI), `.`/`,` gõ vào = dấu thập phân (tiền có xu), tối đa 12 chữ số; `boxed` = ô `surface-2` của tấm xác nhận S6. Đổi `currency` → tự định dạng lại |
 | Chọn ngày | `showAppDatePicker(context, initial, today, doneLabel, footer:)` → `LocalDate?` (tuần bắt đầu thứ Hai) · inline `AppDatePicker` |
 | Tab bar | `AppTabBar` (đã gắn trong `AppShell`) |
 | Ngày | `AppDates.relative(l10n, date, today:)` ("in 3 days"/"còn 3 ngày"; > 30 ngày → "2 Feb 2027"/"2/2/2027") · `.short` · `.full` · `.weekdayShort` ("Fri, 6 Nov"/"T6, 6/11") · `.weekdayLong` (eyebrow S2) · `.monthTitle` · `.weekdayHeaders` |
@@ -195,7 +197,10 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 - **130% chữ**: chữ to lên, **tile/icon/tab bar giữ nguyên**; `display`/`amountLg`/`headline` lớn tối đa 44/38/32 — dùng
   `TextScaleCap(max: AppTextScale.display, …)` hoặc `textScaler: AppTextScale.capped(context, AppTextScale.headline)`.
   Hàng cao lên; dòng 2 của hàng và giá trị cài đặt được xuống 2 dòng. Không scale lưới layout.
-- Vùng chạm ≥ 44 cho mọi control (component đã đảm bảo; có test `iOSTapTargetGuideline`).
+- Vùng chạm: design `tap-min` = 44 (component cũ đạt, test `iOSTapTargetGuideline`); **tiêu chuẩn xưởng S-50 = 48dp** —
+  `RadioRow`, `AmountField`, `SettingRow`, nút, tab bar, hàng subscription đạt 48; `AppChip`, `AppSegmentedControl`,
+  `AppToggle`, `AppStepper`, link của `SectionHeader` mới 44 (chờ phiên điều phối quyết nâng). Màn mới: test bằng
+  `androidTapTargetGuideline` (48dp). Chữ **200%**: mọi trang gallery không vỡ ở 360 × 800 VI.
 - "Chờ xác nhận" luôn **hổ phách + icon clock + chữ**, không bao giờ đỏ. `danger` chỉ cho xoá và lỗi nhập.
 - Một hành động chính (`brand`) mỗi màn. Giọng văn bình tĩnh, ngôi thứ hai, không dấu chấm than; emoji chỉ ở empty state ăn mừng.
 - Không hard-code hex / cỡ chữ / padding trong feature; thiếu component → ghi notes cho phiên điều phối (đừng chép rồi sửa trong feature).

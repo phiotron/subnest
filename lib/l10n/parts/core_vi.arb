@@ -16,5 +16,7 @@
   "coreNextMonth": "Tháng sau",
   "coreFewer": "Bớt",
   "coreMore": "Thêm",
-  "coreTabOverview": "Tổng quan"
+  "coreTabOverview": "Tổng quan",
+  "coreChangeCurrency": "Đổi tiền tệ",
+  "coreEditAmount": "Sửa số tiền"
 }

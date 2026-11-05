@@ -259,6 +259,8 @@
   "coreFewer": "Fewer",
   "coreMore": "More",
   "coreTabOverview": "Overview",
+  "coreChangeCurrency": "Change currency",
+  "coreEditAmount": "Edit amount",
   "homeAdd": "Add subscription",
   "homeCounts": "{active} paying · {trial} on trial",
   "@homeCounts": {

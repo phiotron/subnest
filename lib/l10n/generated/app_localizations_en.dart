@@ -383,6 +383,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coreTabOverview => 'Overview';
 
   @override
+  String get coreChangeCurrency => 'Change currency';
+
+  @override
+  String get coreEditAmount => 'Edit amount';
+
+  @override
   String get homeAdd => 'Add subscription';
 
   @override

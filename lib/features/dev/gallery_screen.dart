@@ -34,12 +34,14 @@ class GalleryScreen extends StatefulWidget {
   final bool initialNarrow;
 
   static const pages = [
+    // index 6 = 'Form inputs' (RadioRow, AmountField) — appended so older ?page= links stay valid.
     'Tokens',
     'Tiles & badges',
     'Buttons & controls',
     'Rows & hero',
     'Banners & empty',
     'Sheets & pickers',
+    'Form inputs',
   ];
 
   @override
@@ -92,7 +94,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
                               2 => _controlsPage(context),
                               3 => _rows(context),
                               4 => _banners(context),
-                              _ => _sheets(context),
+                              5 => _sheets(context),
+                              _ => _forms(context),
                             },
                           ),
                         ),
@@ -819,6 +822,113 @@ class _GalleryScreenState extends State<GalleryScreen> {
     ];
   }
 
+  // ---- Form inputs ---------------------------------------------------------------------------
+
+  String _plan = 'premium';
+  double? _price = 260000;
+  double? _usd = 20;
+  double? _empty;
+  double? _paid = 65000;
+  String _cur = 'VND';
+
+  List<Widget> _forms(BuildContext context) {
+    final l = context.l10n;
+    final mo = t('/mo', '/th');
+    final plans = [
+      ('mobile', 'Mobile', t('480p · 1 phone or tablet', '480p · 1 điện thoại/máy tính bảng'), 74000.0),
+      ('basic', 'Basic', t('720p · 1 screen', '720p · 1 màn hình'), 114000.0),
+      ('standard', 'Standard', t('1080p · 2 screens', '1080p · 2 màn hình'), 230000.0),
+      ('premium', 'Premium', t('4K + HDR · 4 screens', '4K + HDR · 4 màn hình'), 260000.0),
+    ];
+    return [
+      _h(context, 'AmountField · form (S4)'),
+      AppCard(
+        child: AmountField(
+          label: t('Price', 'Giá'),
+          value: _price,
+          currency: _cur,
+          onChanged: (v) => setState(() => _price = v),
+          onCurrencyTap: () => setState(() => _cur = _cur == 'VND' ? 'USD' : 'VND'),
+          conversion: _cur == 'USD' && _price != null ? '≈ ${_money(context, _price! * 25400)}' : null,
+        ),
+      ),
+      const SizedBox(height: AppSpace.s3),
+      AppCard(
+        child: AmountField(
+          label: t('Price', 'Giá'),
+          value: _usd,
+          currency: 'USD',
+          onChanged: (v) => setState(() => _usd = v),
+          onCurrencyTap: () {},
+          conversion: _usd == null ? null : '≈ ${_money(context, _usd! * 25400)}',
+        ),
+      ),
+      const SizedBox(height: AppSpace.s3),
+      AppCard(
+        child: AmountField(
+          label: t('Price after trial', 'Giá sau dùng thử'),
+          value: _empty,
+          currency: 'VND',
+          onChanged: (v) => setState(() => _empty = v),
+          onCurrencyTap: () {},
+          errorText: (_empty ?? 0) > 0 ? null : t('Price must be more than 0', 'Giá phải lớn hơn 0'),
+        ),
+      ),
+      _h(context, 'AmountField · boxed (S6)'),
+      AmountField(
+        boxed: true,
+        label: t('Amount paid', 'Số tiền đã trả'),
+        value: _paid,
+        currency: 'VND',
+        onChanged: (v) => setState(() => _paid = v),
+        showEditButton: true,
+        helper: '${t('Your share · plan', 'Phần của bạn · gói')} ${_money(context, 260000)} ÷ 4',
+        helperIcon: AppIcons.shared,
+      ),
+      _h(context, 'RadioRow · card (S3 plan sheet)'),
+      RadioRowGroup<String>(
+        value: _plan,
+        onChanged: (v) => setState(() => _plan = v),
+        options: [
+          for (final (id, name, sub, price) in plans)
+            RadioOption(
+              value: id,
+              title: name,
+              subtitle: sub,
+              trailing: RadioRow.price(context, _money(context, price), suffix: mo),
+            ),
+        ],
+      ),
+      const SizedBox(height: AppSpace.s3),
+      AppButton.primary(
+        label: t(
+          'Continue with ${plans.firstWhere((p) => p.$1 == _plan).$2}',
+          'Tiếp tục với ${plans.firstWhere((p) => p.$1 == _plan).$2}',
+        ),
+        expand: true,
+        onPressed: () {},
+      ),
+      _h(context, 'RadioRow · flat (sort / settings)'),
+      RadioRowGroup<int>(
+        style: RadioRowStyle.flat,
+        value: _sortBy,
+        onChanged: (v) => setState(() => _sortBy = v),
+        options: [
+          RadioOption(value: 0, title: t('Due date', 'Ngày gia hạn'), subtitle: t('Soonest first', 'Gần nhất trước')),
+          RadioOption(
+            value: 1,
+            title: t('Price', 'Giá'),
+            subtitle: t('Highest monthly cost first', 'Chi phí quy tháng cao nhất trước'),
+          ),
+          RadioOption(value: 2, title: t('Name', 'Tên'), subtitle: 'A → Z'),
+          RadioOption(value: 3, title: l.commonReminderOff),
+        ],
+      ),
+    ];
+  }
+
+  int _sortBy = 0;
+
   void _sortSheet(BuildContext context) {
     var sel = 0;
     showAppSheet<void>(
@@ -827,26 +937,25 @@ class _GalleryScreenState extends State<GalleryScreen> {
         builder: (ctx, set) => AppSheet(
           title: t('Sort subscriptions', 'Sắp xếp subscription'),
           actions: [AppButton.tonal(label: ctx.l10n.commonDone, expand: true, onPressed: () => Navigator.pop(ctx))],
-          child: AppGroup(
-            dividerIndent: 0,
-            children: [
-              for (final (i, (a, b)) in [
-                (
-                  t('Due date', 'Ngày gia hạn'),
-                  t('Soonest first · awaiting always on top', 'Gần nhất trước · khoản chờ xác nhận luôn ở trên'),
+          child: RadioRowGroup<int>(
+            style: RadioRowStyle.flat,
+            value: sel,
+            onChanged: (v) => set(() => sel = v),
+            options: [
+              RadioOption(
+                value: 0,
+                title: t('Due date', 'Ngày gia hạn'),
+                subtitle: t(
+                  'Soonest first · awaiting always on top',
+                  'Gần nhất trước · khoản chờ xác nhận luôn ở trên',
                 ),
-                (t('Price', 'Giá'), t('Highest monthly cost first', 'Chi phí quy tháng cao nhất trước')),
-                (t('Name', 'Tên'), 'A → Z'),
-              ].indexed)
-                RadioListTile<int>(
-                  value: i,
-                  // ignore: deprecated_member_use
-                  groupValue: sel,
-                  // ignore: deprecated_member_use
-                  onChanged: (v) => set(() => sel = v!),
-                  title: Text(a),
-                  subtitle: Text(b),
-                ),
+              ),
+              RadioOption(
+                value: 1,
+                title: t('Price', 'Giá'),
+                subtitle: t('Highest monthly cost first', 'Chi phí quy tháng cao nhất trước'),
+              ),
+              RadioOption(value: 2, title: t('Name', 'Tên'), subtitle: 'A → Z'),
             ],
           ),
         ),

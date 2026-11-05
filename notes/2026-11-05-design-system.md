@@ -67,13 +67,15 @@ Tất cả trong `import '../../core/widgets/widgets.dart';` — chi tiết + "d
 | `EmptyState` · `NestArt` | `(title, body, art, actionLabel, actionIcon, onAction)` · `NestArt(kind: nest/empty/party/chart/welcome, width)` — minh hoạ tổ chim vẽ bằng CustomPainter theo token |
 | `AppCard` · `AppGroup` · `SettingRow` · `SectionHeader` · `LargeTitle` · `AppTopBar` | card/nhóm có hairline thụt `dividerIndent` · hàng cài đặt (icon, label, subtitle, value, trailing, external, danger) · eyebrow + link · tiêu đề tab · top bar 52px |
 | `showAppSheet` + `AppSheet` · `showAppDialog` + `AppDialog` · `showAppToast` | sheet (`required:` = không kéo/chạm nền để đóng) · dialog scale-in 200 ms · toast |
+| `RadioRow` · `RadioRowGroup` · `RadioMark` *(bổ sung 05/11, theo yêu cầu phiên điều phối)* | `RadioRowGroup<T>(options: [RadioOption(value, title, subtitle, trailing)], value, onChanged, style: card/flat)`; `RadioRow.price(context, amount, suffix:)`; ≥ 48dp; chữ ≥ 150% → giá xuống dưới |
+| `AmountField` · `AmountFormat` · `AmountInputFormatter` *(bổ sung 05/11)* | `(value (major units, null = trống), currency, onChanged, label, onCurrencyTap, showEditButton, conversion, helper, helperIcon, errorText, boxed, autofocus, focusNode, enabled, maxIntegerDigits)`; nhóm số theo locale khi gõ, giữ con trỏ, `.`/`,` = thập phân, tự thu nhỏ chữ cho vừa, `amount-lg` ≤ 38px ở chữ lớn, mọi nút ≥ 48dp |
 | `AppDatePicker` · `showAppDatePicker` | tuần bắt đầu thứ Hai, today viền, chọn tô `brand`, ngày quá khứ mờ; sheet trả `LocalDate?` + dòng footer tuỳ ý |
 | `AppTabBar` | đã dùng trong `AppShell` |
 | `AppDates` · `perCycle` | `relative` (≤ 30 ngày → "in 3 days"/"còn 3 ngày", rồi "2 Feb 2027"/"2/2/2027"), `short`, `full`, `weekdayShort`, `weekdayLong`, `monthTitle`, `weekdayHeaders`; tiền dùng `l10n.money/amount` của lõi (đã đúng ₫260,000 / 260.000đ / $20.00) |
 
 ## Kiểm tra
 
-- `flutter analyze` → *No issues found*. `flutter test` → **130 passed**. `dart run tool/gen_tokens.dart --check` và
+- `flutter analyze` → *No issues found*. `flutter test` → **130 passed** (đợt bổ sung RadioRow/AmountField: **141 passed**, chạy trên bản checkout sạch tại HEAD vì thư mục chung đang có thay đổi dở của I/J). `dart run tool/gen_tokens.dart --check` và
   `dart run tool/merge_arb.dart --check` → OK.
 - Test mới (`test/core/design_system_test.dart`): token khớp tokens.json + mapping ColorScheme; chữ trên 12 màu tile chọn đúng
   như ghi chú design và ≥ 4.5:1; tile không lớn ở 130%; ngày tương đối/ngày/hậu tố chu kỳ EN+VI; date picker bắt đầu thứ Hai;
@@ -95,6 +97,8 @@ Tất cả trong `import '../../core/widgets/widgets.dart';` — chi tiết + "d
 | `compare-dialog-light.png` | mockup S5 xoá ↔ `AppDialog` |
 | `compare-splash-light.png`, `splash-android12-device.png` | splash mockup ↔ splash Android 12 thật |
 | `gallery-{1..6}-*-{light,dark}.png` | 6 trang gallery, mỗi ảnh 2 màn (đầu + cuộn) |
+| `compare-plan-sheet-light.png`, `compare-amount-light.png` *(bổ sung)* | mockup S3 plan sheet ↔ `RadioRowGroup`; mockup S4 giá ↔ `AmountField` |
+| `gallery-7-form-inputs-{light,dark}.png` *(bổ sung)* | trang 7 gallery: `AmountField` (VND, USD + quy đổi, lỗi, boxed S6) + `RadioRow` card/flat |
 
 ## Chỗ lệch so với mockup
 
@@ -110,8 +114,9 @@ Tất cả trong `import '../../core/widgets/widgets.dart';` — chi tiết + "d
    giờ không ai dùng (phiên Core có thể xoá).
 6. Badge dùng thử: mockup ghi "Trial", chuỗi lõi `commonStatusTrial` = "Free trial" → `SubscriptionRow(badgeLabel:)` cho ghi đè.
 7. Icon Lucide của gói là bản Lucide mới hơn 0.460 → vài nét có thể khác chút; 54 tên khớp đủ.
-8. Sort sheet trong gallery dùng `RadioListTile` (API `groupValue` đã deprecated trong Flutter 3.47) — chỉ là demo; chưa có
-   component "plan/radio row" riêng (xem việc dở).
+8. ~~Sort sheet trong gallery dùng `RadioListTile`~~ → đã đổi sang `RadioRowGroup` (bổ sung 05/11).
+9. `AmountField` khi chưa sửa hiện giá trị không có số 0 thừa ("$20" chứ không "$20.00"); placeholder "0.00" mờ. Con trỏ
+   khi chèn giữa đứng sau dấu phân cách nhóm ("15,|234"), tương đương về logic.
 
 ## Dependency đã thêm
 
@@ -125,10 +130,13 @@ Tất cả trong `import '../../core/widgets/widgets.dart';` — chi tiết + "d
 ## Việc dở / rủi ro
 
 - **Màn placeholder vẫn dùng `AppTheme.warning/success` (deprecated)** — G sửa `home`, `subscription_detail` khi thay màn.
-- Chưa có component riêng cho: hàng chọn gói/radio (`plan` + `radio` trong S3/S4/sort sheet), ô nhập tiền lớn `amount-lg`
-  có caret + nút tiền tệ (S4/S6), thanh tìm kiếm (S3), lưới chọn dịch vụ onboarding, ô lịch tháng S8 (`cd`), confetti/check
-  "Đã trả". Đều là widget riêng của 1 feature → để phiên G/H/I tự làm trong `features/<feature>/widgets/` bằng token; nếu 2
-  phiên cùng cần (radio row: H + G sort) thì phiên điều phối nên giao một bên làm vào `core/widgets`.
+- ~~Thiếu radio row + ô nhập tiền~~ → **đã thêm `RadioRow`/`RadioRowGroup` và `AmountField`** (bổ sung 05/11, gallery trang 7
+  "Form inputs", 11 test mới). Còn chưa có component riêng cho: thanh tìm kiếm (S3), lưới chọn dịch vụ onboarding, ô lịch tháng
+  S8 (`cd`), confetti/check "Đã trả" — widget riêng của 1 feature, phiên G/H/I tự làm trong `features/<feature>/widgets/`.
+- **S-50 (48dp)**: component cũ thiết kế theo `tap-min` 44 của design. Đo bằng `androidTapTargetGuideline` trên gallery: chưa
+  đạt 48 = `AppChip`, `AppSegmentedControl` (thường + mini), `AppToggle`, `AppStepper`, link `SectionHeader`. Nâng lên 48 chỉ là
+  tăng lề trong suốt (+4dp layout mỗi control, hình không đổi) nhưng đổi chiều cao các màn I/J đang ráp → chờ phiên điều phối
+  quyết. **Chữ 200%**: cả 7 trang gallery không tràn ở 360 × 800 VI (đã đo).
 - **`flutter_launcher_icons` làm hỏng `project.pbxproj`** (đổi `ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES`
   thành `AppIcon`) và `flutter_native_splash` viết lại toàn bộ `Info.plist` → tôi đã hoàn tác cả hai; ghi trong `docs/dev.md` §1.
   Chưa build iOS kiểm icon/LaunchScreen (cần chạy workflow `ios.yml` của E — chạy tay trên GitHub).

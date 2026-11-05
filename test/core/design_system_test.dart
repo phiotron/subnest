@@ -486,4 +486,173 @@ void main() {
       });
     }
   });
+
+  group('form inputs (S-50: 48dp, 200% text)', () {
+    test('amount format per locale and currency', () {
+      final en = AmountFormat(currency: 'VND', localeName: 'en');
+      final vi = AmountFormat(currency: 'VND', localeName: 'vi');
+      final usd = AmountFormat(currency: 'USD', localeName: 'en');
+      expect((en.prefix, en.suffix, en.group, en.decimals), ('₫', '', ',', 0));
+      expect((vi.prefix, vi.suffix, vi.group), ('', 'đ', '.'));
+      expect((usd.prefix, usd.decimal, usd.decimals, usd.zero), (r'$', '.', 2, '0.00'));
+      expect(en.editText(260000), '260,000');
+      expect(vi.editText(1690000), '1.690.000');
+      expect(usd.editText(9.99), '9.99');
+      expect(usd.editText(null), '');
+      expect(vi.parse('1.690.000'), 1690000);
+      expect(AmountFormat(currency: 'USD', localeName: 'vi').parse('12,5'), 12.5);
+    });
+
+    TextEditingValue edit(AmountFormat f, String old, int oldCaret, String text, int caret) =>
+        AmountInputFormatter(f).formatEditUpdate(
+          TextEditingValue(text: old, selection: TextSelection.collapsed(offset: oldCaret)),
+          TextEditingValue(text: text, selection: TextSelection.collapsed(offset: caret)),
+        );
+
+    test('formatter groups while typing and keeps the caret', () {
+      final en = AmountFormat(currency: 'VND', localeName: 'en');
+      expect(edit(en, '123', 3, '1234', 4).text, '1,234');
+      // Insert in the middle: "1|,234" + 5 -> "15,|234" (caret keeps its place counted from the right)
+      final mid = edit(en, '1,234', 1, '15,234', 2);
+      expect((mid.text, mid.selection.baseOffset), ('15,234', 3));
+      // Backspace over the group separator deletes the digit before it.
+      final back = edit(en, '1,234', 2, '1234', 1);
+      expect((back.text, back.selection.baseOffset), ('234', 0));
+      // Decimals: '.' or ',' typed -> locale decimal; extra digits cut; VND ignores separators.
+      final usd = AmountFormat(currency: 'USD', localeName: 'en');
+      expect(edit(usd, '12', 2, '12,', 3).text, '12.');
+      expect(edit(usd, '12.5', 4, '12.567', 6).text, '12.56');
+      final viUsd = AmountFormat(currency: 'USD', localeName: 'vi');
+      expect(edit(viUsd, '1.234', 5, '1.234.', 6).text, '1.234,');
+      expect(edit(en, '12', 2, '12.', 3).text, '12');
+      expect(edit(en, '999,999,999,999', 15, '999,999,999,9999', 16).text, '999,999,999,999', reason: 'max 12 digits');
+    });
+
+    testWidgets('amount field reports major units and shows symbol, error and pill', (tester) async {
+      double? value = 260000;
+      var currencyTaps = 0;
+      await pumpUi(
+        tester,
+        StatefulBuilder(
+          builder: (context, set) => AmountField(
+            label: 'Price',
+            value: value,
+            currency: 'VND',
+            onChanged: (v) => set(() => value = v),
+            onCurrencyTap: () => currencyTaps++,
+            errorText: (value ?? 0) > 0 ? null : 'Price must be more than 0',
+          ),
+        ),
+      );
+      expect(find.text('₫'), findsOneWidget);
+      expect(find.text('260,000'), findsOneWidget);
+      expect(find.text('Price must be more than 0'), findsNothing);
+      await tester.enterText(find.byType(TextField), '1234567');
+      await tester.pumpAndSettle();
+      expect(value, 1234567);
+      expect(find.text('1,234,567'), findsOneWidget);
+      await tester.enterText(find.byType(TextField), '');
+      await tester.pumpAndSettle();
+      expect(value, isNull);
+      expect(find.text('Price must be more than 0'), findsOneWidget);
+      await tester.tap(find.text('VND'));
+      expect(currencyTaps, 1);
+    });
+
+    testWidgets('boxed amount field: pencil focuses the input; VI puts đ after', (tester) async {
+      await pumpUi(
+        tester,
+        AmountField(boxed: true, value: 65000, currency: 'VND', onChanged: (_) {}, showEditButton: true, helper: 'x'),
+        locale: 'vi',
+      );
+      expect(find.text('65.000'), findsOneWidget);
+      expect(find.text('đ'), findsOneWidget);
+      await tester.tap(find.byTooltip('Sửa số tiền'));
+      await tester.pump();
+      final editable = tester.state<EditableTextState>(find.byType(EditableText));
+      expect(editable.widget.focusNode.hasFocus, isTrue);
+    });
+
+    testWidgets('radio rows select one; trailing moves under the text at 200%', (tester) async {
+      var plan = 'b';
+      Future<void> pump(double scale) => pumpUi(
+        tester,
+        StatefulBuilder(
+          builder: (context, set) => RadioRowGroup<String>(
+            value: plan,
+            onChanged: (v) => set(() => plan = v),
+            options: [
+              RadioOption(
+                value: 'a',
+                title: 'Mobile',
+                subtitle: '480p',
+                trailing: RadioRow.price(context, '₫74,000', suffix: '/mo'),
+              ),
+              RadioOption(
+                value: 'b',
+                title: 'Premium',
+                subtitle: '4K',
+                trailing: RadioRow.price(context, '₫260,000', suffix: '/mo'),
+              ),
+            ],
+          ),
+        ),
+        textScale: scale,
+        size: const Size(360, 800),
+      );
+      await pump(1);
+      await tester.tap(find.text('Mobile'));
+      await tester.pumpAndSettle();
+      expect(plan, 'a');
+      expect(tester.getTopLeft(find.textContaining('74,000')).dy, lessThan(tester.getBottomLeft(find.text('480p')).dy));
+      await pump(2);
+      expect(tester.getTopLeft(find.textContaining('74,000')).dy, greaterThan(tester.getBottomLeft(find.text('480p')).dy));
+      expect(tester.takeException(), isNull);
+    });
+
+    for (final dark in [false, true]) {
+      testWidgets('Form inputs page at 200% VI 360 ${dark ? 'dark' : 'light'} has no overflow', (tester) async {
+        await pumpUi(
+          tester,
+          GalleryScreen(initialPage: 6, initialDark: dark),
+          size: const Size(360, 800),
+          locale: 'vi',
+          textScale: 2,
+          scroll: false,
+          settle: false,
+        );
+        for (var i = 0; i < 14; i++) {
+          await tester.drag(find.byType(ListView), const Offset(0, -400));
+          await tester.pump();
+        }
+        expect(tester.takeException(), isNull);
+      });
+    }
+
+    testWidgets('form inputs meet the 48dp touch target (Android guideline, S-50)', (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpUi(
+        tester,
+        Column(
+          children: [
+            AmountField(label: 'Price', value: 20, currency: 'USD', onChanged: (_) {}, onCurrencyTap: () {}),
+            AmountField(boxed: true, value: 65000, currency: 'VND', onChanged: (_) {}, showEditButton: true),
+            RadioRowGroup<int>(
+              value: 0,
+              onChanged: (_) {},
+              options: const [RadioOption(value: 0, title: 'A'), RadioOption(value: 1, title: 'B')],
+            ),
+            RadioRowGroup<int>(
+              style: RadioRowStyle.flat,
+              value: 0,
+              onChanged: (_) {},
+              options: const [RadioOption(value: 0, title: 'A'), RadioOption(value: 1, title: 'B')],
+            ),
+          ],
+        ),
+      );
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      handle.dispose();
+    });
+  });
 }

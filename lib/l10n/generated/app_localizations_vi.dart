@@ -379,6 +379,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get coreTabOverview => 'Tổng quan';
 
   @override
+  String get coreChangeCurrency => 'Đổi tiền tệ';
+
+  @override
+  String get coreEditAmount => 'Sửa số tiền';
+
+  @override
   String get homeAdd => 'Thêm subscription';
 
   @override
