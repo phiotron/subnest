@@ -4,135 +4,226 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
+import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../data/settings_repository.dart';
 import '../../domain/domain.dart';
+import 'app_info.dart';
+import 'appearance_sheet.dart';
+import 'backup_actions.dart';
+import 'reminders_screen.dart';
+import 'settings_actions.dart';
+import 'settings_format.dart';
+import 'settings_platform.dart';
+import 'widgets/settings_bits.dart';
 
-/// S10 Settings — PLACEHOLDER UI. Owned by the Settings & backup session (J).
+/// S10 Settings (png 48, 49): Money · Reminders · Appearance · Backup · About + privacy card.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
+    final c = context.colors;
     final settings = ref.watch(settingsProvider).value;
-    final repo = ref.read(settingsRepositoryProvider);
-    final notificationsOn = ref.watch(notificationsEnabledProvider).value;
     if (settings == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    final time = TimeOfDay(hour: settings.reminderHour, minute: settings.reminderMinute);
+    final notificationsOn = ref.watch(notificationsEnabledProvider).value;
+    final now = ref.watch(clockProvider)();
+    final platform = ref.watch(settingsPlatformProvider);
+
+    void openReminders() => Navigator.of(context).push(RemindersScreen.route());
+
+    final lastBackup = settings.lastBackupAt;
+    final backupOverdue = SettingsFormat.backupOverdue(lastBackup, now);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l.commonTabSettings)),
-      body: ListView(
-        children: [
-          _Header(l.settingsCurrencySection),
-          ListTile(
-            title: Text(l.settingsPrimaryCurrency),
-            trailing: Text(settings.primaryCurrency),
-            onTap: () => context.push(AppRoutes.settingsCurrency),
-          ),
-          ListTile(
-            title: Text(l.settingsRates),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.push(AppRoutes.settingsRates),
-          ),
-          _Header(l.settingsRemindersSection),
-          ListTile(
-            title: Text(l.settingsDefaultReminder),
-            trailing: DropdownButton<int>(
-              value: settings.defaultReminderDays,
-              items: [for (final d in ReminderDays.choices) DropdownMenuItem(value: d, child: Text(l.reminder(d)))],
-              onChanged: (d) => repo.setDefaultReminderDays(d!),
-            ),
-          ),
-          ListTile(
-            title: Text(l.settingsReminderTime),
-            trailing: Text(time.format(context)),
-            onTap: () async {
-              // dialOnly: the keyboard-input mode overflows (BoxConstraints not normalized) on small
-              // phones when the soft keyboard opens — seen on a Galaxy A13, Flutter 3.47.
-              final picked = await showTimePicker(
-                context: context,
-                initialTime: time,
-                initialEntryMode: TimePickerEntryMode.dialOnly,
-              );
-              if (picked != null) await repo.setReminderTime(picked.hour, picked.minute);
-            },
-          ),
-          ListTile(
-            title: Text(l.settingsPermission),
-            subtitle: Text(notificationsOn == false ? l.settingsPermissionOff : l.settingsPermissionOn),
-            trailing: notificationsOn == false
-                ? TextButton(
-                    onPressed: () async {
-                      await ref.read(notificationServiceProvider).requestPermission();
-                      ref.invalidate(notificationsEnabledProvider);
-                    },
-                    child: Text(l.settingsPermissionAllow),
-                  )
-                : null,
-          ),
-          ListTile(
-            title: Text(l.settingsTestReminder),
-            subtitle: Text(l.settingsTestReminderHint),
-            onTap: () async {
-              await ref.read(notificationServiceProvider).sendTest(settings, route: AppRoutes.awaiting);
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.settingsTestReminderSent)));
-              }
-            },
-          ),
-          _Header(l.settingsAppearanceSection),
-          ListTile(
-            title: Text(l.settingsTheme),
-            trailing: DropdownButton<AppThemeMode>(
-              value: settings.themeMode,
-              items: [
-                DropdownMenuItem(value: AppThemeMode.system, child: Text(l.settingsFollowSystem)),
-                DropdownMenuItem(value: AppThemeMode.light, child: Text(l.settingsThemeLight)),
-                DropdownMenuItem(value: AppThemeMode.dark, child: Text(l.settingsThemeDark)),
+      body: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s6),
+          children: [
+            LargeTitle(title: l.commonTabSettings),
+            // ---- Money ----
+            SectionHeader(label: l.settingsSectionMoney),
+            AppGroup(
+              dividerIndent: 52,
+              children: [
+                ValueRow(
+                  icon: AppIcons.currency,
+                  label: l.settingsPrimaryCurrency,
+                  value: settings.primaryCurrency,
+                  onTap: () => context.push(AppRoutes.settingsCurrency),
+                ),
+                ValueRow(
+                  icon: AppIcons.refresh,
+                  label: l.settingsRates,
+                  value: _ratesSummary(ref, l, now),
+                  onTap: () => context.push(AppRoutes.settingsRates),
+                ),
               ],
-              onChanged: (m) => repo.setThemeMode(m!),
             ),
-          ),
-          ListTile(
-            title: Text(l.settingsLanguage),
-            trailing: DropdownButton<String?>(
-              value: settings.localeCode,
-              items: [
-                DropdownMenuItem<String?>(value: null, child: Text(l.settingsFollowSystem)),
-                const DropdownMenuItem<String?>(value: 'en', child: Text('English')),
-                const DropdownMenuItem<String?>(value: 'vi', child: Text('Tiếng Việt')),
+            // ---- Reminders ----
+            SectionHeader(label: l.settingsSectionReminders),
+            AppGroup(
+              dividerIndent: 52,
+              children: [
+                ValueRow(
+                  icon: AppIcons.reminder,
+                  label: l.settingsRemindMe,
+                  value: reminderValue(l, settings.defaultReminderDays),
+                  onTap: openReminders,
+                ),
+                ValueRow(
+                  icon: AppIcons.awaiting,
+                  label: l.settingsReminderTime,
+                  value: TimeOfDay(hour: settings.reminderHour, minute: settings.reminderMinute).format(context),
+                  onTap: () => SettingsActions.pickReminderTime(context, ref, settings),
+                ),
+                ValueRow(
+                  icon: AppIcons.reminderRing,
+                  label: l.settingsNotifications,
+                  value: switch (notificationsOn) {
+                    null => '',
+                    true => l.settingsNotificationsOn,
+                    false => l.settingsNotificationsOff,
+                  },
+                  valueColor: notificationsOn == false ? c.warningInk : null,
+                  valueWeight: notificationsOn == false ? FontWeight.w600 : null,
+                  onTap: openReminders,
+                ),
               ],
-              onChanged: repo.setLocale,
             ),
-          ),
-          _Header(l.settingsBackupSection),
-          ListTile(
-            title: Text(l.settingsBackup),
-            subtitle: Text(
-              settings.lastBackupAt == null
+            // ---- Appearance ----
+            SectionHeader(label: l.settingsSectionAppearance),
+            AppGroup(
+              dividerIndent: 52,
+              children: [
+                ValueRow(
+                  icon: AppIcons.theme,
+                  label: l.settingsTheme,
+                  value: switch (settings.themeMode) {
+                    AppThemeMode.system => l.settingsSystem,
+                    AppThemeMode.light => l.settingsThemeLight,
+                    AppThemeMode.dark => l.settingsThemeDark,
+                  },
+                  onTap: () => showAppearanceSheet(context),
+                ),
+                ValueRow(
+                  icon: AppIcons.language,
+                  label: l.settingsLanguage,
+                  value: settings.localeCode == null
+                      ? l.settingsSystem
+                      : SettingsFormat.languageName(settings.localeCode!),
+                  onTap: () => showAppearanceSheet(context),
+                ),
+              ],
+            ),
+            // ---- Backup ----
+            SectionHeader(label: l.settingsSectionBackup),
+            if (backupOverdue) ...[
+              AppBanner(
+                kind: BannerKind.warning,
+                icon: AppIcons.backup,
+                title: lastBackup == null
+                    ? l.settingsBackupNeverTitle
+                    : l.settingsBackupOverdueTitle(SettingsFormat.daysBetween(lastBackup, now)),
+                body: l.settingsBackupOverdueBody,
+                actionLabel: l.settingsBackupAction,
+                onAction: () => context.push(AppRoutes.settingsBackup),
+              ),
+              const SizedBox(height: AppSpace.s2),
+            ],
+            AppGroup(
+              dividerIndent: 52,
+              children: [
+                SettingRow(
+                  icon: AppIcons.json,
+                  label: l.settingsExportJson,
+                  subtitle: l.settingsExportJsonHint,
+                  trailing: Icon(AppIcons.restoreFile, size: 18, color: c.inkMuted),
+                  onTap: () => BackupActions.exportJson(context, ref),
+                ),
+                SettingRow(
+                  icon: AppIcons.csv,
+                  label: l.settingsExportCsv,
+                  subtitle: l.settingsExportCsvHint,
+                  trailing: Icon(AppIcons.restoreFile, size: 18, color: c.inkMuted),
+                  onTap: () => BackupActions.exportCsv(context, ref),
+                ),
+                SettingRow(
+                  icon: AppIcons.backup,
+                  label: l.settingsRestore,
+                  onTap: () => BackupActions.restore(context, ref),
+                ),
+              ],
+            ),
+            ListNote(
+              lastBackup == null
                   ? l.settingsNeverBackedUp
-                  : l.settingsLastBackup(l.date(LocalDate.fromDateTime(settings.lastBackupAt!))),
+                  : l.settingsLastBackup(AppDates.full(l, LocalDate.fromDateTime(lastBackup))),
             ),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.push(AppRoutes.settingsBackup),
-          ),
-          _Header(l.settingsAboutSection),
-          ListTile(title: Text(l.settingsPrivacyNote), leading: const Icon(Icons.lock_outline)),
-        ],
+            // ---- About ----
+            SectionHeader(label: l.settingsSectionAbout),
+            AppGroup(
+              dividerIndent: 52,
+              children: [
+                ValueRow(icon: AppIcons.info, label: l.settingsVersion, value: appVersionLabel, chevron: false),
+                SettingRow(
+                  icon: AppIcons.secure,
+                  label: l.settingsPrivacyPolicy,
+                  external: kPrivacyPolicyUrl != null,
+                  onTap: () => SettingsActions.openPrivacyPolicy(context, ref),
+                ),
+                SettingRow(
+                  icon: LucideIcons.fileText,
+                  label: l.settingsTerms,
+                  external: kTermsUrl != null,
+                  onTap: () => SettingsActions.openTerms(context, ref),
+                ),
+                SettingRow(
+                  icon: LucideIcons.scrollText,
+                  label: l.settingsLicenses,
+                  onTap: () => SettingsActions.openLicenses(context),
+                ),
+                if (SettingsActions.canRate(platform))
+                  SettingRow(
+                    icon: AppIcons.rate,
+                    label: l.settingsRateApp,
+                    external: true,
+                    onTap: () => SettingsActions.rateApp(context, ref),
+                  ),
+                SettingRow(
+                  icon: AppIcons.mail,
+                  label: l.settingsFeedback,
+                  external: true,
+                  onTap: () => SettingsActions.sendFeedback(context, ref),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s6),
+            PrivacyNote(l.settingsPrivacyNote),
+          ],
+        ),
       ),
     );
   }
+
+  /// "Auto · 2 h ago" · "Built-in" · "Set by you" (when every converted pair is overridden).
+  String _ratesSummary(WidgetRef ref, AppLocalizations l, DateTime now) {
+    final rates = ref.watch(ratesProvider).value ?? ExchangeRates.empty;
+    final primary = ref.watch(primaryCurrencyProvider);
+    final used = usedForeignCurrencies(ref.watch(subscriptionsProvider).value, primary);
+    if (used.isNotEmpty && used.every((c) => rates.isOverridden(c, primary))) return l.settingsRatesSummaryManual;
+    final at = rates.fetchedAt;
+    if (at == null) return l.settingsRatesSummaryBuiltIn;
+    return l.settingsRatesSummaryAuto(SettingsFormat.ago(l, at, now, short: true));
+  }
 }
 
-class _Header extends StatelessWidget {
-  const _Header(this.text);
-  final String text;
+/// "3 days before" / "On the day" / "Off".
+String reminderValue(AppLocalizations l, int days) =>
+    days == ReminderDays.off ? l.settingsReminderOff : l.settingsReminderValue(days);
 
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
-    child: Text(text, style: Theme.of(context).textTheme.titleSmall),
-  );
-}
+/// Currencies (other than [primary]) used by the subscriptions, sorted.
+List<String> usedForeignCurrencies(List<Subscription>? subs, String primary) =>
+    ({for (final s in subs ?? const <Subscription>[]) s.currency}..remove(primary)).toList()..sort();

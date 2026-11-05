@@ -809,7 +809,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsTrialEndingBody.
   ///
   /// In en, this message translates to:
-  /// **'Cancel now if you don\'t want to be charged.'**
+  /// **'Cancel now if you don’t want to be charged.'**
   String get notificationsTrialEndingBody;
 
   /// No description provided for @notificationsDueToday.
@@ -926,23 +926,35 @@ abstract class AppLocalizations {
   /// **'No, thanks'**
   String get onboardingNoThanks;
 
-  /// No description provided for @settingsCurrencySection.
+  /// No description provided for @settingsSectionMoney.
   ///
   /// In en, this message translates to:
-  /// **'Currency'**
-  String get settingsCurrencySection;
+  /// **'Money'**
+  String get settingsSectionMoney;
 
   /// No description provided for @settingsPrimaryCurrency.
   ///
   /// In en, this message translates to:
-  /// **'Primary currency'**
+  /// **'Main currency'**
   String get settingsPrimaryCurrency;
 
   /// No description provided for @settingsSearchCurrency.
   ///
   /// In en, this message translates to:
-  /// **'Search currency'**
+  /// **'Search currency or country'**
   String get settingsSearchCurrency;
+
+  /// No description provided for @settingsCurrencyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals and insights add up in this currency. Each subscription keeps its own.'**
+  String get settingsCurrencyNote;
+
+  /// No description provided for @settingsCurrencyNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No currency matches “{query}”'**
+  String settingsCurrencyNoMatch(String query);
 
   /// No description provided for @settingsRates.
   ///
@@ -950,17 +962,59 @@ abstract class AppLocalizations {
   /// **'Exchange rates'**
   String get settingsRates;
 
-  /// No description provided for @settingsRatesNeverUpdated.
+  /// No description provided for @settingsRatesSummaryAuto.
   ///
   /// In en, this message translates to:
-  /// **'Using built-in approximate rates'**
-  String get settingsRatesNeverUpdated;
+  /// **'Auto · {ago}'**
+  String settingsRatesSummaryAuto(String ago);
 
-  /// No description provided for @settingsRatesUpdatedAt.
+  /// No description provided for @settingsRatesSummaryBuiltIn.
   ///
   /// In en, this message translates to:
-  /// **'Updated {date}'**
-  String settingsRatesUpdatedAt(String date);
+  /// **'Built-in'**
+  String get settingsRatesSummaryBuiltIn;
+
+  /// No description provided for @settingsRatesSummaryManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Set by you'**
+  String get settingsRatesSummaryManual;
+
+  /// No description provided for @settingsRatesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals convert to {currency}. Rates update once a day when you’re online; set your own to override.'**
+  String settingsRatesIntro(String currency);
+
+  /// No description provided for @settingsRateAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto · updated {ago}'**
+  String settingsRateAuto(String ago);
+
+  /// No description provided for @settingsRateAutoOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto · from {ago} (offline)'**
+  String settingsRateAutoOffline(String ago);
+
+  /// No description provided for @settingsRateBuiltIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto · built-in estimate'**
+  String get settingsRateBuiltIn;
+
+  /// No description provided for @settingsRateManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Set by you'**
+  String get settingsRateManual;
+
+  /// No description provided for @settingsRatePairLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'1 {from} equals {rate} {to}'**
+  String settingsRatePairLabel(String from, String rate, String to);
 
   /// No description provided for @settingsRatesUpdateNow.
   ///
@@ -974,35 +1028,29 @@ abstract class AppLocalizations {
   /// **'Exchange rates updated'**
   String get settingsRatesUpdated;
 
-  /// No description provided for @settingsRatesFailed.
+  /// No description provided for @settingsRatesOfflineTitle.
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t update — check your connection'**
-  String get settingsRatesFailed;
+  /// **'You’re offline'**
+  String get settingsRatesOfflineTitle;
+
+  /// No description provided for @settingsRatesOfflineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Using the last rates we fetched. They update when you’re back online.'**
+  String get settingsRatesOfflineBody;
+
+  /// No description provided for @settingsRatesListedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only currencies your subscriptions use are listed.'**
+  String get settingsRatesListedNote;
 
   /// No description provided for @settingsRatesNoneUsed.
   ///
   /// In en, this message translates to:
-  /// **'All your subscriptions use your primary currency.'**
-  String get settingsRatesNoneUsed;
-
-  /// No description provided for @settingsRatesAuto.
-  ///
-  /// In en, this message translates to:
-  /// **'Automatic'**
-  String get settingsRatesAuto;
-
-  /// No description provided for @settingsRatesManual.
-  ///
-  /// In en, this message translates to:
-  /// **'Set by you'**
-  String get settingsRatesManual;
-
-  /// No description provided for @settingsRatesUseAuto.
-  ///
-  /// In en, this message translates to:
-  /// **'Use automatic'**
-  String get settingsRatesUseAuto;
+  /// **'All your subscriptions are in {currency}, so nothing needs converting.'**
+  String settingsRatesNoneUsed(String currency);
 
   /// No description provided for @settingsRatesAttribution.
   ///
@@ -1010,17 +1058,107 @@ abstract class AppLocalizations {
   /// **'Rates by Exchange Rate API'**
   String get settingsRatesAttribution;
 
-  /// No description provided for @settingsRemindersSection.
+  /// No description provided for @settingsAgoJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get settingsAgoJustNow;
+
+  /// No description provided for @settingsAgoMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 min ago} other{{count} min ago}}'**
+  String settingsAgoMinutes(int count);
+
+  /// No description provided for @settingsAgoHoursShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h ago'**
+  String settingsAgoHoursShort(int count);
+
+  /// No description provided for @settingsAgoHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour ago} other{{count} hours ago}}'**
+  String settingsAgoHours(int count);
+
+  /// No description provided for @settingsAgoDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
+  String settingsAgoDays(int count);
+
+  /// No description provided for @settingsRateUseAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Use automatic rate'**
+  String get settingsRateUseAuto;
+
+  /// No description provided for @settingsRateAutoValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate} · updated {ago}'**
+  String settingsRateAutoValue(String rate, String ago);
+
+  /// No description provided for @settingsRateAutoValueBuiltIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate} · built-in estimate'**
+  String settingsRateAutoValueBuiltIn(String rate);
+
+  /// No description provided for @settingsRateYours.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rate · 1 {from} ='**
+  String settingsRateYours(String from);
+
+  /// No description provided for @settingsRatePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} becomes {amount}/month'**
+  String settingsRatePreview(String name, String amount);
+
+  /// No description provided for @settingsRateInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a rate above 0'**
+  String get settingsRateInvalid;
+
+  /// No description provided for @settingsRateSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save my rate'**
+  String get settingsRateSave;
+
+  /// No description provided for @settingsRateRestoreAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore automatic'**
+  String get settingsRateRestoreAuto;
+
+  /// No description provided for @settingsSectionReminders.
   ///
   /// In en, this message translates to:
   /// **'Reminders'**
-  String get settingsRemindersSection;
+  String get settingsSectionReminders;
 
-  /// No description provided for @settingsDefaultReminder.
+  /// No description provided for @settingsRemindMe.
   ///
   /// In en, this message translates to:
-  /// **'Remind me by default'**
-  String get settingsDefaultReminder;
+  /// **'Remind me'**
+  String get settingsRemindMe;
+
+  /// No description provided for @settingsReminderValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{On the day} =1{1 day before} other{{count} days before}}'**
+  String settingsReminderValue(int count);
+
+  /// No description provided for @settingsReminderOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get settingsReminderOff;
 
   /// No description provided for @settingsReminderTime.
   ///
@@ -1028,29 +1166,89 @@ abstract class AppLocalizations {
   /// **'Reminder time'**
   String get settingsReminderTime;
 
-  /// No description provided for @settingsPermission.
+  /// No description provided for @settingsNotifications.
   ///
   /// In en, this message translates to:
   /// **'Notifications'**
-  String get settingsPermission;
+  String get settingsNotifications;
 
-  /// No description provided for @settingsPermissionOn.
+  /// No description provided for @settingsNotificationsOn.
   ///
   /// In en, this message translates to:
-  /// **'Allowed'**
-  String get settingsPermissionOn;
+  /// **'On'**
+  String get settingsNotificationsOn;
 
-  /// No description provided for @settingsPermissionOff.
+  /// No description provided for @settingsNotificationsOff.
   ///
   /// In en, this message translates to:
-  /// **'Blocked in system settings'**
-  String get settingsPermissionOff;
+  /// **'Off'**
+  String get settingsNotificationsOff;
 
-  /// No description provided for @settingsPermissionAllow.
+  /// No description provided for @settingsNotificationsOffTitle.
   ///
   /// In en, this message translates to:
-  /// **'Allow'**
-  String get settingsPermissionAllow;
+  /// **'Notifications are off for Subnest'**
+  String get settingsNotificationsOffTitle;
+
+  /// No description provided for @settingsNotificationsOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders can’t reach you until you allow them in system settings.'**
+  String get settingsNotificationsOffBody;
+
+  /// No description provided for @settingsOpenSystemSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get settingsOpenSystemSettings;
+
+  /// No description provided for @settingsOpenSystemSettingsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your phone’s Settings › Apps › Subnest › Notifications.'**
+  String get settingsOpenSystemSettingsFailed;
+
+  /// No description provided for @settingsRemindBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me before a renewal'**
+  String get settingsRemindBefore;
+
+  /// No description provided for @settingsRemindChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{On day} =1{1 day} other{{count} days}}'**
+  String settingsRemindChoice(int count);
+
+  /// No description provided for @settingsRemindTrialNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Trials get the same reminder before they end.'**
+  String get settingsRemindTrialNote;
+
+  /// No description provided for @settingsReminderTimeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get settingsReminderTimeShort;
+
+  /// No description provided for @settingsRemindersNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this for a single subscription from its edit screen. Applies to new reminders; existing ones move to the new time.'**
+  String get settingsRemindersNote;
+
+  /// No description provided for @settingsPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get settingsPreview;
+
+  /// No description provided for @settingsPreviewOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are off. Renewals still show up in the app as they come due.'**
+  String get settingsPreviewOff;
 
   /// No description provided for @settingsTestReminder.
   ///
@@ -1061,7 +1259,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsTestReminderHint.
   ///
   /// In en, this message translates to:
-  /// **'One now and one in 10 seconds'**
+  /// **'Debug only · one now and one in 10 seconds'**
   String get settingsTestReminderHint;
 
   /// No description provided for @settingsTestReminderSent.
@@ -1070,11 +1268,17 @@ abstract class AppLocalizations {
   /// **'Test reminder sent'**
   String get settingsTestReminderSent;
 
-  /// No description provided for @settingsAppearanceSection.
+  /// No description provided for @settingsSectionAppearance.
   ///
   /// In en, this message translates to:
-  /// **'Appearance & language'**
-  String get settingsAppearanceSection;
+  /// **'Appearance'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsAppearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearanceTitle;
 
   /// No description provided for @settingsTheme.
   ///
@@ -1082,11 +1286,23 @@ abstract class AppLocalizations {
   /// **'Theme'**
   String get settingsTheme;
 
-  /// No description provided for @settingsFollowSystem.
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsSystem.
   ///
   /// In en, this message translates to:
   /// **'System'**
-  String get settingsFollowSystem;
+  String get settingsSystem;
+
+  /// No description provided for @settingsSystemShort.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsSystemShort;
 
   /// No description provided for @settingsThemeLight.
   ///
@@ -1100,53 +1316,107 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeDark;
 
-  /// No description provided for @settingsLanguage.
+  /// No description provided for @settingsLanguageFromPhone.
   ///
   /// In en, this message translates to:
-  /// **'Language'**
-  String get settingsLanguage;
+  /// **'{language} (from your phone)'**
+  String settingsLanguageFromPhone(String language);
 
-  /// No description provided for @settingsBackupSection.
+  /// No description provided for @settingsSectionBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get settingsSectionBackup;
+
+  /// No description provided for @settingsBackupTitle.
   ///
   /// In en, this message translates to:
   /// **'Backup & restore'**
-  String get settingsBackupSection;
+  String get settingsBackupTitle;
 
-  /// No description provided for @settingsBackup.
+  /// No description provided for @settingsBackupOverdueTitle.
   ///
   /// In en, this message translates to:
-  /// **'Backup & restore'**
-  String get settingsBackup;
+  /// **'Last backup was {count, plural, =1{1 day} other{{count} days}} ago'**
+  String settingsBackupOverdueTitle(int count);
 
-  /// No description provided for @settingsNeverBackedUp.
+  /// No description provided for @settingsBackupNeverTitle.
   ///
   /// In en, this message translates to:
-  /// **'Never backed up'**
-  String get settingsNeverBackedUp;
+  /// **'You haven’t backed up yet'**
+  String get settingsBackupNeverTitle;
 
-  /// No description provided for @settingsLastBackup.
+  /// No description provided for @settingsBackupOverdueBody.
   ///
   /// In en, this message translates to:
-  /// **'Last backup: {date}'**
-  String settingsLastBackup(String date);
+  /// **'Your data lives only on this phone. Export a copy now.'**
+  String get settingsBackupOverdueBody;
 
-  /// No description provided for @settingsBackupNudge.
+  /// No description provided for @settingsBackupAction.
   ///
   /// In en, this message translates to:
-  /// **'It\'s been a while — save a backup somewhere safe.'**
-  String get settingsBackupNudge;
+  /// **'Back up'**
+  String get settingsBackupAction;
+
+  /// No description provided for @settingsBackupDaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'It’s been {count, plural, =1{1 day} other{{count} days}} since your last backup'**
+  String settingsBackupDaysTitle(int count);
+
+  /// No description provided for @settingsBackupWhyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest keeps nothing online, so a backup is the only way to move to a new phone.'**
+  String get settingsBackupWhyBody;
 
   /// No description provided for @settingsExportJson.
   ///
   /// In en, this message translates to:
-  /// **'Export backup (JSON)'**
+  /// **'Export backup'**
   String get settingsExportJson;
+
+  /// No description provided for @settingsExportJsonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON · everything, to restore later'**
+  String get settingsExportJsonHint;
+
+  /// No description provided for @settingsExportJsonLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything, as a .json file to restore later'**
+  String get settingsExportJsonLong;
 
   /// No description provided for @settingsExportCsv.
   ///
   /// In en, this message translates to:
-  /// **'Export spreadsheet (CSV)'**
+  /// **'Export spreadsheet'**
   String get settingsExportCsv;
+
+  /// No description provided for @settingsExportCsvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV · opens in Excel or Sheets'**
+  String get settingsExportCsvHint;
+
+  /// No description provided for @settingsExportCsvLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions and payments as .csv'**
+  String get settingsExportCsvLong;
+
+  /// No description provided for @settingsExported.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved — keep it somewhere safe'**
+  String get settingsExported;
+
+  /// No description provided for @settingsExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t create the file. Please try again.'**
+  String get settingsExportFailed;
 
   /// No description provided for @settingsRestore.
   ///
@@ -1157,32 +1427,38 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRestoreHint.
   ///
   /// In en, this message translates to:
-  /// **'Pick a Subnest backup (.json)'**
+  /// **'Pick a Subnest .json backup'**
   String get settingsRestoreHint;
 
-  /// No description provided for @settingsRestoreInvalid.
+  /// No description provided for @settingsLastBackup.
   ///
   /// In en, this message translates to:
-  /// **'That file isn\'t a Subnest backup.'**
-  String get settingsRestoreInvalid;
+  /// **'Last backup: {date}'**
+  String settingsLastBackup(String date);
+
+  /// No description provided for @settingsLastBackupFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup: {date} · {file}'**
+  String settingsLastBackupFile(String date, String file);
+
+  /// No description provided for @settingsNeverBackedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get settingsNeverBackedUp;
 
   /// No description provided for @settingsRestoreTitle.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{Restore 1 subscription?} other{Restore {count} subscriptions?}}'**
-  String settingsRestoreTitle(int count);
+  /// **'Restore this backup?'**
+  String get settingsRestoreTitle;
 
-  /// No description provided for @settingsRestoreBody.
+  /// No description provided for @settingsRestoreHolds.
   ///
   /// In en, this message translates to:
-  /// **'Replace deletes your current data first. Merge keeps it and adds what\'s missing.'**
-  String get settingsRestoreBody;
-
-  /// No description provided for @settingsRestoreReplace.
-  ///
-  /// In en, this message translates to:
-  /// **'Replace'**
-  String get settingsRestoreReplace;
+  /// **'It holds {subs, plural, =1{1 subscription} other{{subs} subscriptions}} and {payments, plural, =1{1 payment} other{{payments} payments}}.'**
+  String settingsRestoreHolds(int subs, int payments);
 
   /// No description provided for @settingsRestoreMerge.
   ///
@@ -1190,22 +1466,124 @@ abstract class AppLocalizations {
   /// **'Merge'**
   String get settingsRestoreMerge;
 
+  /// No description provided for @settingsRestoreMergeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add what’s missing, keep your current data'**
+  String get settingsRestoreMergeHint;
+
+  /// No description provided for @settingsRestoreReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get settingsRestoreReplace;
+
+  /// No description provided for @settingsRestoreReplaceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete current data and use the backup'**
+  String get settingsRestoreReplaceHint;
+
+  /// No description provided for @settingsRestoreAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get settingsRestoreAction;
+
+  /// No description provided for @settingsRestoreReplaceAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace my data'**
+  String get settingsRestoreReplaceAction;
+
+  /// No description provided for @settingsRestoreInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'That file isn’t a Subnest backup.'**
+  String get settingsRestoreInvalid;
+
+  /// No description provided for @settingsRestoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t restore that backup. Nothing was changed.'**
+  String get settingsRestoreFailed;
+
   /// No description provided for @settingsRestoreDone.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{Restored 1 subscription} other{Restored {count} subscriptions}}'**
   String settingsRestoreDone(int count);
 
-  /// No description provided for @settingsAboutSection.
+  /// No description provided for @settingsSectionAbout.
   ///
   /// In en, this message translates to:
   /// **'About'**
-  String get settingsAboutSection;
+  String get settingsSectionAbout;
+
+  /// No description provided for @settingsVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
+  /// No description provided for @settingsPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get settingsPrivacyPolicy;
+
+  /// No description provided for @settingsTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of use'**
+  String get settingsTerms;
+
+  /// No description provided for @settingsLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licenses'**
+  String get settingsLicenses;
+
+  /// No description provided for @settingsRateApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Subnest'**
+  String get settingsRateApp;
+
+  /// No description provided for @settingsFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get settingsFeedback;
+
+  /// No description provided for @settingsFeedbackSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest feedback ({version})'**
+  String settingsFeedbackSubject(String version);
+
+  /// No description provided for @settingsNoEmailApp.
+  ///
+  /// In en, this message translates to:
+  /// **'No email app found. Write to {email}'**
+  String settingsNoEmailApp(String email);
+
+  /// No description provided for @settingsLinkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t open the page.'**
+  String get settingsLinkFailed;
+
+  /// No description provided for @settingsLegalese.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by Phiotron. Subnest keeps your data on this device.'**
+  String get settingsLegalese;
 
   /// No description provided for @settingsPrivacyNote.
   ///
   /// In en, this message translates to:
-  /// **'Your data stays on this device. Subnest collects nothing.'**
+  /// **'Your data stays on this phone. Subnest collects nothing.'**
   String get settingsPrivacyNote;
 
   /// No description provided for @subscriptionDetailMyShare.

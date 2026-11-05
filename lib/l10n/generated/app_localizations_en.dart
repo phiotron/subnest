@@ -566,7 +566,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsTrialEndingBody =>
-      'Cancel now if you don\'t want to be charged.';
+      'Cancel now if you don’t want to be charged.';
 
   @override
   String notificationsDueToday(String name) {
@@ -640,23 +640,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingNoThanks => 'No, thanks';
 
   @override
-  String get settingsCurrencySection => 'Currency';
+  String get settingsSectionMoney => 'Money';
 
   @override
-  String get settingsPrimaryCurrency => 'Primary currency';
+  String get settingsPrimaryCurrency => 'Main currency';
 
   @override
-  String get settingsSearchCurrency => 'Search currency';
+  String get settingsSearchCurrency => 'Search currency or country';
+
+  @override
+  String get settingsCurrencyNote =>
+      'Totals and insights add up in this currency. Each subscription keeps its own.';
+
+  @override
+  String settingsCurrencyNoMatch(String query) {
+    return 'No currency matches “$query”';
+  }
 
   @override
   String get settingsRates => 'Exchange rates';
 
   @override
-  String get settingsRatesNeverUpdated => 'Using built-in approximate rates';
+  String settingsRatesSummaryAuto(String ago) {
+    return 'Auto · $ago';
+  }
 
   @override
-  String settingsRatesUpdatedAt(String date) {
-    return 'Updated $date';
+  String get settingsRatesSummaryBuiltIn => 'Built-in';
+
+  @override
+  String get settingsRatesSummaryManual => 'Set by you';
+
+  @override
+  String settingsRatesIntro(String currency) {
+    return 'Totals convert to $currency. Rates update once a day when you’re online; set your own to override.';
+  }
+
+  @override
+  String settingsRateAuto(String ago) {
+    return 'Auto · updated $ago';
+  }
+
+  @override
+  String settingsRateAutoOffline(String ago) {
+    return 'Auto · from $ago (offline)';
+  }
+
+  @override
+  String get settingsRateBuiltIn => 'Auto · built-in estimate';
+
+  @override
+  String get settingsRateManual => 'Set by you';
+
+  @override
+  String settingsRatePairLabel(String from, String rate, String to) {
+    return '1 $from equals $rate $to';
   }
 
   @override
@@ -666,62 +704,205 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsRatesUpdated => 'Exchange rates updated';
 
   @override
-  String get settingsRatesFailed => 'Couldn\'t update — check your connection';
+  String get settingsRatesOfflineTitle => 'You’re offline';
 
   @override
-  String get settingsRatesNoneUsed =>
-      'All your subscriptions use your primary currency.';
+  String get settingsRatesOfflineBody =>
+      'Using the last rates we fetched. They update when you’re back online.';
 
   @override
-  String get settingsRatesAuto => 'Automatic';
+  String get settingsRatesListedNote =>
+      'Only currencies your subscriptions use are listed.';
 
   @override
-  String get settingsRatesManual => 'Set by you';
-
-  @override
-  String get settingsRatesUseAuto => 'Use automatic';
+  String settingsRatesNoneUsed(String currency) {
+    return 'All your subscriptions are in $currency, so nothing needs converting.';
+  }
 
   @override
   String get settingsRatesAttribution => 'Rates by Exchange Rate API';
 
   @override
-  String get settingsRemindersSection => 'Reminders';
+  String get settingsAgoJustNow => 'just now';
 
   @override
-  String get settingsDefaultReminder => 'Remind me by default';
+  String settingsAgoMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count min ago',
+      one: '1 min ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAgoHoursShort(int count) {
+    return '$count h ago';
+  }
+
+  @override
+  String settingsAgoHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours ago',
+      one: '1 hour ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAgoDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsRateUseAuto => 'Use automatic rate';
+
+  @override
+  String settingsRateAutoValue(String rate, String ago) {
+    return '$rate · updated $ago';
+  }
+
+  @override
+  String settingsRateAutoValueBuiltIn(String rate) {
+    return '$rate · built-in estimate';
+  }
+
+  @override
+  String settingsRateYours(String from) {
+    return 'Your rate · 1 $from =';
+  }
+
+  @override
+  String settingsRatePreview(String name, String amount) {
+    return '$name becomes $amount/month';
+  }
+
+  @override
+  String get settingsRateInvalid => 'Enter a rate above 0';
+
+  @override
+  String get settingsRateSave => 'Save my rate';
+
+  @override
+  String get settingsRateRestoreAuto => 'Restore automatic';
+
+  @override
+  String get settingsSectionReminders => 'Reminders';
+
+  @override
+  String get settingsRemindMe => 'Remind me';
+
+  @override
+  String settingsReminderValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days before',
+      one: '1 day before',
+      zero: 'On the day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsReminderOff => 'Off';
 
   @override
   String get settingsReminderTime => 'Reminder time';
 
   @override
-  String get settingsPermission => 'Notifications';
+  String get settingsNotifications => 'Notifications';
 
   @override
-  String get settingsPermissionOn => 'Allowed';
+  String get settingsNotificationsOn => 'On';
 
   @override
-  String get settingsPermissionOff => 'Blocked in system settings';
+  String get settingsNotificationsOff => 'Off';
 
   @override
-  String get settingsPermissionAllow => 'Allow';
+  String get settingsNotificationsOffTitle =>
+      'Notifications are off for Subnest';
+
+  @override
+  String get settingsNotificationsOffBody =>
+      'Reminders can’t reach you until you allow them in system settings.';
+
+  @override
+  String get settingsOpenSystemSettings => 'Open settings';
+
+  @override
+  String get settingsOpenSystemSettingsFailed =>
+      'Open your phone’s Settings › Apps › Subnest › Notifications.';
+
+  @override
+  String get settingsRemindBefore => 'Remind me before a renewal';
+
+  @override
+  String settingsRemindChoice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+      zero: 'On day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsRemindTrialNote =>
+      'Trials get the same reminder before they end.';
+
+  @override
+  String get settingsReminderTimeShort => 'Time';
+
+  @override
+  String get settingsRemindersNote =>
+      'You can change this for a single subscription from its edit screen. Applies to new reminders; existing ones move to the new time.';
+
+  @override
+  String get settingsPreview => 'Preview';
+
+  @override
+  String get settingsPreviewOff =>
+      'Reminders are off. Renewals still show up in the app as they come due.';
 
   @override
   String get settingsTestReminder => 'Send a test reminder';
 
   @override
-  String get settingsTestReminderHint => 'One now and one in 10 seconds';
+  String get settingsTestReminderHint =>
+      'Debug only · one now and one in 10 seconds';
 
   @override
   String get settingsTestReminderSent => 'Test reminder sent';
 
   @override
-  String get settingsAppearanceSection => 'Appearance & language';
+  String get settingsSectionAppearance => 'Appearance';
+
+  @override
+  String get settingsAppearanceTitle => 'Appearance';
 
   @override
   String get settingsTheme => 'Theme';
 
   @override
-  String get settingsFollowSystem => 'System';
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsSystem => 'System';
+
+  @override
+  String get settingsSystemShort => 'System';
 
   @override
   String get settingsThemeLight => 'Light';
@@ -730,16 +911,83 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeDark => 'Dark';
 
   @override
-  String get settingsLanguage => 'Language';
+  String settingsLanguageFromPhone(String language) {
+    return '$language (from your phone)';
+  }
 
   @override
-  String get settingsBackupSection => 'Backup & restore';
+  String get settingsSectionBackup => 'Backup';
 
   @override
-  String get settingsBackup => 'Backup & restore';
+  String get settingsBackupTitle => 'Backup & restore';
 
   @override
-  String get settingsNeverBackedUp => 'Never backed up';
+  String settingsBackupOverdueTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return 'Last backup was $_temp0 ago';
+  }
+
+  @override
+  String get settingsBackupNeverTitle => 'You haven’t backed up yet';
+
+  @override
+  String get settingsBackupOverdueBody =>
+      'Your data lives only on this phone. Export a copy now.';
+
+  @override
+  String get settingsBackupAction => 'Back up';
+
+  @override
+  String settingsBackupDaysTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return 'It’s been $_temp0 since your last backup';
+  }
+
+  @override
+  String get settingsBackupWhyBody =>
+      'Subnest keeps nothing online, so a backup is the only way to move to a new phone.';
+
+  @override
+  String get settingsExportJson => 'Export backup';
+
+  @override
+  String get settingsExportJsonHint => 'JSON · everything, to restore later';
+
+  @override
+  String get settingsExportJsonLong =>
+      'Everything, as a .json file to restore later';
+
+  @override
+  String get settingsExportCsv => 'Export spreadsheet';
+
+  @override
+  String get settingsExportCsvHint => 'CSV · opens in Excel or Sheets';
+
+  @override
+  String get settingsExportCsvLong => 'Subscriptions and payments as .csv';
+
+  @override
+  String get settingsExported => 'Saved — keep it somewhere safe';
+
+  @override
+  String get settingsExportFailed =>
+      'Couldn’t create the file. Please try again.';
+
+  @override
+  String get settingsRestore => 'Restore from file';
+
+  @override
+  String get settingsRestoreHint => 'Pick a Subnest .json backup';
 
   @override
   String settingsLastBackup(String date) {
@@ -747,44 +995,59 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsBackupNudge =>
-      'It\'s been a while — save a backup somewhere safe.';
-
-  @override
-  String get settingsExportJson => 'Export backup (JSON)';
-
-  @override
-  String get settingsExportCsv => 'Export spreadsheet (CSV)';
-
-  @override
-  String get settingsRestore => 'Restore from file';
-
-  @override
-  String get settingsRestoreHint => 'Pick a Subnest backup (.json)';
-
-  @override
-  String get settingsRestoreInvalid => 'That file isn\'t a Subnest backup.';
-
-  @override
-  String settingsRestoreTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Restore $count subscriptions?',
-      one: 'Restore 1 subscription?',
-    );
-    return '$_temp0';
+  String settingsLastBackupFile(String date, String file) {
+    return 'Last backup: $date · $file';
   }
 
   @override
-  String get settingsRestoreBody =>
-      'Replace deletes your current data first. Merge keeps it and adds what\'s missing.';
+  String get settingsNeverBackedUp => 'No backup yet';
+
+  @override
+  String get settingsRestoreTitle => 'Restore this backup?';
+
+  @override
+  String settingsRestoreHolds(int subs, int payments) {
+    String _temp0 = intl.Intl.pluralLogic(
+      subs,
+      locale: localeName,
+      other: '$subs subscriptions',
+      one: '1 subscription',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      payments,
+      locale: localeName,
+      other: '$payments payments',
+      one: '1 payment',
+    );
+    return 'It holds $_temp0 and $_temp1.';
+  }
+
+  @override
+  String get settingsRestoreMerge => 'Merge';
+
+  @override
+  String get settingsRestoreMergeHint =>
+      'Add what’s missing, keep your current data';
 
   @override
   String get settingsRestoreReplace => 'Replace';
 
   @override
-  String get settingsRestoreMerge => 'Merge';
+  String get settingsRestoreReplaceHint =>
+      'Delete current data and use the backup';
+
+  @override
+  String get settingsRestoreAction => 'Restore';
+
+  @override
+  String get settingsRestoreReplaceAction => 'Replace my data';
+
+  @override
+  String get settingsRestoreInvalid => 'That file isn’t a Subnest backup.';
+
+  @override
+  String get settingsRestoreFailed =>
+      'Couldn’t restore that backup. Nothing was changed.';
 
   @override
   String settingsRestoreDone(int count) {
@@ -798,11 +1061,46 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsAboutSection => 'About';
+  String get settingsSectionAbout => 'About';
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get settingsPrivacyPolicy => 'Privacy policy';
+
+  @override
+  String get settingsTerms => 'Terms of use';
+
+  @override
+  String get settingsLicenses => 'Open-source licenses';
+
+  @override
+  String get settingsRateApp => 'Rate Subnest';
+
+  @override
+  String get settingsFeedback => 'Send feedback';
+
+  @override
+  String settingsFeedbackSubject(String version) {
+    return 'Subnest feedback ($version)';
+  }
+
+  @override
+  String settingsNoEmailApp(String email) {
+    return 'No email app found. Write to $email';
+  }
+
+  @override
+  String get settingsLinkFailed => 'Couldn’t open the page.';
+
+  @override
+  String get settingsLegalese =>
+      'Made by Phiotron. Subnest keeps your data on this device.';
 
   @override
   String get settingsPrivacyNote =>
-      'Your data stays on this device. Subnest collects nothing.';
+      'Your data stays on this phone. Subnest collects nothing.';
 
   @override
   String subscriptionDetailMyShare(String share, String price, int count) {

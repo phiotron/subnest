@@ -628,23 +628,61 @@ class AppLocalizationsVi extends AppLocalizations {
   String get onboardingNoThanks => 'Không, cảm ơn';
 
   @override
-  String get settingsCurrencySection => 'Tiền tệ';
+  String get settingsSectionMoney => 'Tiền';
 
   @override
   String get settingsPrimaryCurrency => 'Tiền tệ chính';
 
   @override
-  String get settingsSearchCurrency => 'Tìm tiền tệ';
+  String get settingsSearchCurrency => 'Tìm tiền tệ hoặc quốc gia';
+
+  @override
+  String get settingsCurrencyNote =>
+      'Tổng chi và thống kê được cộng theo loại tiền này. Mỗi subscription vẫn giữ loại tiền riêng.';
+
+  @override
+  String settingsCurrencyNoMatch(String query) {
+    return 'Không có loại tiền nào khớp “$query”';
+  }
 
   @override
   String get settingsRates => 'Tỷ giá';
 
   @override
-  String get settingsRatesNeverUpdated => 'Đang dùng tỷ giá gần đúng có sẵn';
+  String settingsRatesSummaryAuto(String ago) {
+    return 'Tự động · $ago';
+  }
 
   @override
-  String settingsRatesUpdatedAt(String date) {
-    return 'Cập nhật $date';
+  String get settingsRatesSummaryBuiltIn => 'Có sẵn';
+
+  @override
+  String get settingsRatesSummaryManual => 'Bạn đặt tay';
+
+  @override
+  String settingsRatesIntro(String currency) {
+    return 'Tổng chi quy về $currency. Tỷ giá tự cập nhật mỗi ngày khi có mạng; bạn có thể tự đặt để ghi đè.';
+  }
+
+  @override
+  String settingsRateAuto(String ago) {
+    return 'Tự động · cập nhật $ago';
+  }
+
+  @override
+  String settingsRateAutoOffline(String ago) {
+    return 'Tự động · từ $ago (offline)';
+  }
+
+  @override
+  String get settingsRateBuiltIn => 'Tự động · tỷ giá ước tính có sẵn';
+
+  @override
+  String get settingsRateManual => 'Bạn đặt tay';
+
+  @override
+  String settingsRatePairLabel(String from, String rate, String to) {
+    return '1 $from bằng $rate $to';
   }
 
   @override
@@ -654,63 +692,199 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsRatesUpdated => 'Đã cập nhật tỷ giá';
 
   @override
-  String get settingsRatesFailed =>
-      'Không cập nhật được — kiểm tra kết nối mạng';
+  String get settingsRatesOfflineTitle => 'Bạn đang offline';
 
   @override
-  String get settingsRatesNoneUsed =>
-      'Mọi subscription đều dùng tiền tệ chính.';
+  String get settingsRatesOfflineBody =>
+      'Đang dùng tỷ giá gần nhất. Sẽ cập nhật khi có mạng trở lại.';
 
   @override
-  String get settingsRatesAuto => 'Tự động';
+  String get settingsRatesListedNote =>
+      'Chỉ hiện các loại tiền mà subscription của bạn đang dùng.';
 
   @override
-  String get settingsRatesManual => 'Bạn đặt tay';
+  String settingsRatesNoneUsed(String currency) {
+    return 'Mọi subscription của bạn đều tính bằng $currency, không cần quy đổi.';
+  }
 
   @override
-  String get settingsRatesUseAuto => 'Dùng tự động';
+  String get settingsRatesAttribution => 'Rates by Exchange Rate API';
 
   @override
-  String get settingsRatesAttribution => 'Tỷ giá từ Exchange Rate API';
+  String get settingsAgoJustNow => 'vừa xong';
 
   @override
-  String get settingsRemindersSection => 'Nhắc nhở';
+  String settingsAgoMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count phút trước',
+    );
+    return '$_temp0';
+  }
 
   @override
-  String get settingsDefaultReminder => 'Mặc định nhắc trước';
+  String settingsAgoHoursShort(int count) {
+    return '$count giờ trước';
+  }
+
+  @override
+  String settingsAgoHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count giờ trước',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsAgoDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày trước',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsRateUseAuto => 'Dùng tỷ giá tự động';
+
+  @override
+  String settingsRateAutoValue(String rate, String ago) {
+    return '$rate · cập nhật $ago';
+  }
+
+  @override
+  String settingsRateAutoValueBuiltIn(String rate) {
+    return '$rate · ước tính có sẵn';
+  }
+
+  @override
+  String settingsRateYours(String from) {
+    return 'Tỷ giá của bạn · 1 $from =';
+  }
+
+  @override
+  String settingsRatePreview(String name, String amount) {
+    return '$name thành $amount/tháng';
+  }
+
+  @override
+  String get settingsRateInvalid => 'Nhập tỷ giá lớn hơn 0';
+
+  @override
+  String get settingsRateSave => 'Lưu tỷ giá này';
+
+  @override
+  String get settingsRateRestoreAuto => 'Khôi phục tự động';
+
+  @override
+  String get settingsSectionReminders => 'Nhắc nhở';
+
+  @override
+  String get settingsRemindMe => 'Nhắc trước';
+
+  @override
+  String settingsReminderValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày',
+      zero: 'Đúng ngày',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsReminderOff => 'Tắt';
 
   @override
   String get settingsReminderTime => 'Giờ nhắc';
 
   @override
-  String get settingsPermission => 'Thông báo';
+  String get settingsNotifications => 'Thông báo';
 
   @override
-  String get settingsPermissionOn => 'Đã cho phép';
+  String get settingsNotificationsOn => 'Bật';
 
   @override
-  String get settingsPermissionOff => 'Đang bị chặn trong cài đặt hệ thống';
+  String get settingsNotificationsOff => 'Tắt';
 
   @override
-  String get settingsPermissionAllow => 'Cho phép';
+  String get settingsNotificationsOffTitle => 'Thông báo của Subnest đang tắt';
+
+  @override
+  String get settingsNotificationsOffBody =>
+      'Bạn sẽ không nhận được nhắc cho tới khi cho phép trong cài đặt hệ thống.';
+
+  @override
+  String get settingsOpenSystemSettings => 'Mở cài đặt';
+
+  @override
+  String get settingsOpenSystemSettingsFailed =>
+      'Mở Cài đặt của máy › Ứng dụng › Subnest › Thông báo.';
+
+  @override
+  String get settingsRemindBefore => 'Nhắc trước khi gia hạn';
+
+  @override
+  String settingsRemindChoice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày',
+      zero: 'Đúng ngày',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsRemindTrialNote =>
+      'Dùng thử cũng được nhắc như vậy trước khi hết.';
+
+  @override
+  String get settingsReminderTimeShort => 'Giờ nhắc';
+
+  @override
+  String get settingsRemindersNote =>
+      'Có thể chỉnh riêng từng subscription trong màn sửa. Áp dụng cho nhắc mới; nhắc đã lên lịch sẽ chuyển sang giờ mới.';
+
+  @override
+  String get settingsPreview => 'Xem trước';
+
+  @override
+  String get settingsPreviewOff =>
+      'Nhắc đang tắt. Các khoản tới hạn vẫn hiện trong app.';
 
   @override
   String get settingsTestReminder => 'Gửi nhắc thử';
 
   @override
-  String get settingsTestReminderHint => 'Một cái ngay và một cái sau 10 giây';
+  String get settingsTestReminderHint =>
+      'Chỉ bản debug · 1 ngay và 1 sau 10 giây';
 
   @override
   String get settingsTestReminderSent => 'Đã gửi nhắc thử';
 
   @override
-  String get settingsAppearanceSection => 'Giao diện & ngôn ngữ';
+  String get settingsSectionAppearance => 'Giao diện & ngôn ngữ';
+
+  @override
+  String get settingsAppearanceTitle => 'Giao diện & ngôn ngữ';
 
   @override
   String get settingsTheme => 'Giao diện';
 
   @override
-  String get settingsFollowSystem => 'Theo hệ thống';
+  String get settingsLanguage => 'Ngôn ngữ';
+
+  @override
+  String get settingsSystem => 'Theo hệ thống';
+
+  @override
+  String get settingsSystemShort => 'Hệ thống';
 
   @override
   String get settingsThemeLight => 'Sáng';
@@ -719,61 +893,139 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsThemeDark => 'Tối';
 
   @override
-  String get settingsLanguage => 'Ngôn ngữ';
-
-  @override
-  String get settingsBackupSection => 'Sao lưu & khôi phục';
-
-  @override
-  String get settingsBackup => 'Sao lưu & khôi phục';
-
-  @override
-  String get settingsNeverBackedUp => 'Chưa sao lưu lần nào';
-
-  @override
-  String settingsLastBackup(String date) {
-    return 'Lần sao lưu gần nhất: $date';
+  String settingsLanguageFromPhone(String language) {
+    return '$language (theo máy)';
   }
 
   @override
-  String get settingsBackupNudge =>
-      'Đã lâu chưa sao lưu — hãy lưu một bản ở nơi an toàn.';
+  String get settingsSectionBackup => 'Sao lưu';
 
   @override
-  String get settingsExportJson => 'Xuất bản sao lưu (JSON)';
+  String get settingsBackupTitle => 'Sao lưu & khôi phục';
 
   @override
-  String get settingsExportCsv => 'Xuất bảng tính (CSV)';
+  String settingsBackupOverdueTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày',
+    );
+    return 'Lần sao lưu gần nhất cách đây $_temp0';
+  }
+
+  @override
+  String get settingsBackupNeverTitle => 'Bạn chưa sao lưu lần nào';
+
+  @override
+  String get settingsBackupOverdueBody =>
+      'Dữ liệu chỉ nằm trên máy này. Hãy xuất một bản ngay.';
+
+  @override
+  String get settingsBackupAction => 'Sao lưu';
+
+  @override
+  String settingsBackupDaysTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày',
+    );
+    return 'Đã $_temp0 kể từ lần sao lưu gần nhất';
+  }
+
+  @override
+  String get settingsBackupWhyBody =>
+      'Subnest không lưu gì trên mạng, nên sao lưu là cách duy nhất để chuyển sang máy mới.';
+
+  @override
+  String get settingsExportJson => 'Xuất bản sao lưu';
+
+  @override
+  String get settingsExportJsonHint => 'JSON · đầy đủ, để khôi phục sau';
+
+  @override
+  String get settingsExportJsonLong =>
+      'Toàn bộ dữ liệu, file .json để khôi phục sau';
+
+  @override
+  String get settingsExportCsv => 'Xuất bảng tính';
+
+  @override
+  String get settingsExportCsvHint => 'CSV · mở bằng Excel hoặc Sheets';
+
+  @override
+  String get settingsExportCsvLong => 'Subscription và thanh toán dạng .csv';
+
+  @override
+  String get settingsExported => 'Đã lưu — hãy cất ở nơi an toàn';
+
+  @override
+  String get settingsExportFailed => 'Không tạo được file. Hãy thử lại.';
 
   @override
   String get settingsRestore => 'Khôi phục từ file';
 
   @override
-  String get settingsRestoreHint => 'Chọn file sao lưu Subnest (.json)';
+  String get settingsRestoreHint => 'Chọn file sao lưu .json của Subnest';
 
   @override
-  String get settingsRestoreInvalid =>
-      'File này không phải bản sao lưu Subnest.';
-
-  @override
-  String settingsRestoreTitle(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Khôi phục $count subscription?',
-    );
-    return '$_temp0';
+  String settingsLastBackup(String date) {
+    return 'Sao lưu gần nhất: $date';
   }
 
   @override
-  String get settingsRestoreBody =>
-      'Thay thế sẽ xoá dữ liệu hiện tại trước. Gộp giữ dữ liệu hiện tại và thêm phần còn thiếu.';
+  String settingsLastBackupFile(String date, String file) {
+    return 'Sao lưu gần nhất: $date · $file';
+  }
+
+  @override
+  String get settingsNeverBackedUp => 'Chưa sao lưu lần nào';
+
+  @override
+  String get settingsRestoreTitle => 'Khôi phục bản sao lưu này?';
+
+  @override
+  String settingsRestoreHolds(int subs, int payments) {
+    String _temp0 = intl.Intl.pluralLogic(
+      subs,
+      locale: localeName,
+      other: '$subs subscription',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      payments,
+      locale: localeName,
+      other: '$payments khoản thanh toán',
+    );
+    return 'Gồm $_temp0 và $_temp1.';
+  }
+
+  @override
+  String get settingsRestoreMerge => 'Gộp';
+
+  @override
+  String get settingsRestoreMergeHint =>
+      'Thêm phần còn thiếu, giữ dữ liệu hiện tại';
 
   @override
   String get settingsRestoreReplace => 'Thay thế';
 
   @override
-  String get settingsRestoreMerge => 'Gộp';
+  String get settingsRestoreReplaceHint =>
+      'Xoá dữ liệu hiện tại và dùng bản sao lưu';
+
+  @override
+  String get settingsRestoreAction => 'Khôi phục';
+
+  @override
+  String get settingsRestoreReplaceAction => 'Thay dữ liệu của tôi';
+
+  @override
+  String get settingsRestoreInvalid =>
+      'File này không phải bản sao lưu của Subnest.';
+
+  @override
+  String get settingsRestoreFailed =>
+      'Không khôi phục được bản sao lưu này. Dữ liệu chưa bị thay đổi.';
 
   @override
   String settingsRestoreDone(int count) {
@@ -786,7 +1038,42 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get settingsAboutSection => 'Giới thiệu';
+  String get settingsSectionAbout => 'Giới thiệu';
+
+  @override
+  String get settingsVersion => 'Phiên bản';
+
+  @override
+  String get settingsPrivacyPolicy => 'Chính sách quyền riêng tư';
+
+  @override
+  String get settingsTerms => 'Điều khoản sử dụng';
+
+  @override
+  String get settingsLicenses => 'Giấy phép mã nguồn mở';
+
+  @override
+  String get settingsRateApp => 'Đánh giá Subnest';
+
+  @override
+  String get settingsFeedback => 'Gửi góp ý';
+
+  @override
+  String settingsFeedbackSubject(String version) {
+    return 'Góp ý Subnest ($version)';
+  }
+
+  @override
+  String settingsNoEmailApp(String email) {
+    return 'Không tìm thấy ứng dụng email. Hãy viết tới $email';
+  }
+
+  @override
+  String get settingsLinkFailed => 'Không mở được trang.';
+
+  @override
+  String get settingsLegalese =>
+      'Phát triển bởi Phiotron. Subnest giữ dữ liệu của bạn trên máy này.';
 
   @override
   String get settingsPrivacyNote =>
