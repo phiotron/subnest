@@ -440,14 +440,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
         ),
       ),
       _h(context, 'Toggle · Stepper'),
-      Row(
+      Wrap(
+        spacing: AppSpace.s3,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           AppToggle(value: _toggle, onChanged: (v) => setState(() => _toggle = v), semanticLabel: 'Toggle'),
-          const SizedBox(width: AppSpace.s3),
           AppToggle(value: !_toggle, onChanged: (v) => setState(() => _toggle = !v)),
-          const SizedBox(width: AppSpace.s3),
           const AppToggle(value: true, onChanged: null),
-          const Spacer(),
           AppStepper(
             value: _stepper,
             min: 2,
@@ -817,6 +816,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
       ),
       _h(context, 'DatePicker (inline, Monday first)'),
       AppCard(
+        // Narrow side padding like the date sheet (12): 7 columns stay ≥ 48dp wide.
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: AppSpace.s4),
         child: AppDatePicker(selected: _picked, today: _today, onChanged: (d) => setState(() => _picked = d)),
       ),
     ];

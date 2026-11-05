@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
+import 'touch.dart';
 
 /// Card: `surface`, radius-lg, `shadow-card` (light) / 1px `line` ring (dark).
 /// [color] overrides the fill (e.g. `warning-soft` cards drop the shadow).
 class AppCard extends StatelessWidget {
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(AppSpace.s4), this.color, this.onTap});
+  const AppCard({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.all(AppSpace.s4),
+    this.color,
+    this.onTap,
+  });
 
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -24,7 +31,12 @@ class AppCard extends StatelessWidget {
         color: color ?? c.surface,
         borderRadius: radius,
         clipBehavior: Clip.antiAlias,
-        child: onTap == null ? Padding(padding: padding, child: child) : InkWell(onTap: onTap, child: Padding(padding: padding, child: child)),
+        child: onTap == null
+            ? Padding(padding: padding, child: child)
+            : InkWell(
+                onTap: onTap,
+                child: Padding(padding: padding, child: child),
+              ),
       ),
     );
   }
@@ -87,7 +99,7 @@ class SectionHeader extends StatelessWidget {
               onPressed: onAction,
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpace.s1),
-                minimumSize: const Size(AppSize.tapMin, AppSize.tapMin),
+                minimumSize: const Size(AppTouch.min, AppTouch.min),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(actionLabel!, style: AppType.label.copyWith(color: c.brand)),
@@ -135,7 +147,8 @@ class SettingRow extends StatelessWidget {
     final c = context.colors;
     final fg = danger ? c.danger : c.ink;
     final iconColor = danger ? c.danger : c.inkMuted;
-    final end = trailing ??
+    final end =
+        trailing ??
         (onTap != null && chevron
             ? Icon(external ? AppIcons.external : AppIcons.next, size: 18, color: c.inkMuted)
             : null);
@@ -156,7 +169,10 @@ class SettingRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(label, style: AppType.body.copyWith(fontWeight: FontWeight.w500, height: 20 / 15, color: fg)),
+                    Text(
+                      label,
+                      style: AppType.body.copyWith(fontWeight: FontWeight.w500, height: 20 / 15, color: fg),
+                    ),
                     if (subtitle != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 2),

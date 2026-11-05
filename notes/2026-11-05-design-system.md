@@ -133,10 +133,16 @@ Tất cả trong `import '../../core/widgets/widgets.dart';` — chi tiết + "d
 - ~~Thiếu radio row + ô nhập tiền~~ → **đã thêm `RadioRow`/`RadioRowGroup` và `AmountField`** (bổ sung 05/11, gallery trang 7
   "Form inputs", 11 test mới). Còn chưa có component riêng cho: thanh tìm kiếm (S3), lưới chọn dịch vụ onboarding, ô lịch tháng
   S8 (`cd`), confetti/check "Đã trả" — widget riêng của 1 feature, phiên G/H/I tự làm trong `features/<feature>/widgets/`.
-- **S-50 (48dp)**: component cũ thiết kế theo `tap-min` 44 của design. Đo bằng `androidTapTargetGuideline` trên gallery: chưa
-  đạt 48 = `AppChip`, `AppSegmentedControl` (thường + mini), `AppToggle`, `AppStepper`, link `SectionHeader`. Nâng lên 48 chỉ là
-  tăng lề trong suốt (+4dp layout mỗi control, hình không đổi) nhưng đổi chiều cao các màn I/J đang ráp → chờ phiên điều phối
-  quyết. **Chữ 200%**: cả 7 trang gallery không tràn ở 360 × 800 VI (đã đo).
+- ~~S-50 (48dp) chưa đạt ở chip/segmented/toggle/stepper~~ → **đã nâng mọi component core lên ≥ 48dp** (đợt 3, theo yêu cầu
+  phiên điều phối): `AppChip` (layout 48, pill 36, chip hẹp có 2 bên trong suốt tới 48), `AppSegmentedControl` (thường: track
+  44 nhìn thấy; mini: 36), `AppToggle` 52 × 48, `AppStepper` (nút 48, track 44 vẽ lùi 2px), nút action của `AppBanner`, link
+  `SectionHeader`, `AppIconButton`, ô ngày date picker (cả ô 48 cao, vòng tròn 44; sheet dùng lề 12 cho lưới → 7 cột ≥ 48dp
+  ở màn 360). Thêm hằng `AppTouch.min` (`touch.dart`). Kích thước nhìn thấy có test giữ đúng mockup. Hệ quả: các control này
+  cao thêm 4dp trong layout; hàng chip nên dùng `Wrap(runSpacing: -4)` để giữ khe 8. Test 48dp (`androidTapTargetGuideline`)
+  chạy trên **cả 7 trang** gallery ở màn 390.
+- **Sửa lỗi trợ năng**: tab bar, ô ngày date picker và nút tiền tệ dùng `Semantics(excludeSemantics: true)` nên **mất hành
+  động chạm** với TalkBack/VoiceOver — đã truyền `onTap` vào Semantics, có test bấm qua semantics.
+- **Chữ 200%**: cả 7 trang gallery không tràn ở 360 × 800 VI (đã đo).
 - **`flutter_launcher_icons` làm hỏng `project.pbxproj`** (đổi `ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES`
   thành `AppIcon`) và `flutter_native_splash` viết lại toàn bộ `Info.plist` → tôi đã hoàn tác cả hai; ghi trong `docs/dev.md` §1.
   Chưa build iOS kiểm icon/LaunchScreen (cần chạy workflow `ios.yml` của E — chạy tay trên GitHub).

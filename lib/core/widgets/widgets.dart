@@ -21,3 +21,4 @@ export 'subscription_row.dart';
 export 'summary_hero.dart';
 export 'surfaces.dart';
 export 'toggle_stepper.dart';
+export 'touch.dart';

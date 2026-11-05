@@ -337,6 +337,7 @@ class _CurrencyPill extends StatelessWidget {
       button: true,
       label: '$tooltip: $code',
       excludeSemantics: true,
+      onTap: onTap,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,

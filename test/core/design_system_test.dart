@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -477,11 +478,14 @@ void main() {
       }
     }
 
-    for (var page = 1; page < GalleryScreen.pages.length; page++) {
-      testWidgets('${GalleryScreen.pages[page]}: controls meet the 44px touch target (iOS guideline)', (tester) async {
+    for (var page = 0; page < GalleryScreen.pages.length; page++) {
+      testWidgets('${GalleryScreen.pages[page]}: controls meet the 48dp touch target (S-50, Android guideline)', (
+        tester,
+      ) async {
         final handle = tester.ensureSemantics();
-        await pumpUi(tester, GalleryScreen(initialPage: page), size: const Size(390, 3000), scroll: false, settle: false);
-        await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
+        // pumpUi adds 16px padding around the page → 422 wide = a 390dp phone.
+        await pumpUi(tester, GalleryScreen(initialPage: page), size: const Size(422, 3000), scroll: false, settle: false);
+        await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
         handle.dispose();
       });
     }
@@ -652,6 +656,109 @@ void main() {
         ),
       );
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      handle.dispose();
+    });
+  });
+
+  group('touch targets + screen readers (S-50)', () {
+    testWidgets('visible sizes stay as in the mockup while hit areas are 48dp', (tester) async {
+      await pumpUi(
+        tester,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppChip(label: 'AI', selected: false, onTap: () {}),
+            AppSegmentedControl<int>(
+              selected: 0,
+              onChanged: (_) {},
+              segments: const [AppSegment(value: 0, label: 'A'), AppSegment(value: 1, label: 'B')],
+            ),
+            AppSegmentedControl<int>(
+              mini: true,
+              selected: 0,
+              onChanged: (_) {},
+              segments: const [AppSegment(value: 0, label: 'Month'), AppSegment(value: 1, label: 'Year')],
+            ),
+            AppToggle(value: true, onChanged: (_) {}),
+            AppStepper(value: 2, onChanged: (_) {}),
+          ],
+        ),
+      );
+      // Layout (hit) sizes
+      expect(tester.getSize(find.byType(AppChip)).height, AppTouch.min);
+      expect(tester.getSize(find.byType(AppChip)).width, greaterThanOrEqualTo(AppTouch.min));
+      expect(tester.getSize(find.byType(AppSegmentedControl<int>).first).height, AppTouch.min);
+      expect(tester.getSize(find.byType(AppSegmentedControl<int>).last).height, AppTouch.min);
+      expect(tester.getSize(find.byType(AppToggle)).height, AppTouch.min);
+      expect(tester.getSize(find.byType(AppStepper)).height, AppTouch.min);
+      // Visible sizes (mockup): chip pill 36, toggle 52×32, stepper circles 36.
+      final pill = find.descendant(of: find.byType(AppChip), matching: find.byType(AnimatedContainer));
+      expect(tester.getSize(pill).height, 36);
+      final toggle = find.descendant(of: find.byType(AppToggle), matching: find.byType(AnimatedContainer)).first;
+      expect(tester.getSize(toggle), const Size(52, 32));
+      final circles = find.descendant(of: find.byType(AppStepper), matching: find.byType(Container));
+      expect(tester.getSize(circles.first), const Size(36, 36));
+    });
+
+    testWidgets('date picker sheet: 48dp day cells even on a 360dp screen', (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpUi(
+        tester,
+        Builder(
+          builder: (context) => AppButton(
+            label: 'open',
+            onPressed: () => showAppDatePicker(
+              context,
+              initial: const LocalDate(2026, 11, 4),
+              today: const LocalDate(2026, 11, 4),
+              doneLabel: 'Done',
+            ),
+          ),
+        ),
+        size: const Size(360, 800),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      final cell = find.ancestor(of: find.text('20'), matching: find.byType(GestureDetector)).first;
+      expect(tester.getSize(cell).width, greaterThanOrEqualTo(AppTouch.min));
+      expect(tester.getSize(cell).height, greaterThanOrEqualTo(AppTouch.min));
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      handle.dispose();
+    });
+
+    testWidgets('screen readers can activate tabs, day cells and the currency pill', (tester) async {
+      final handle = tester.ensureSemantics();
+      var tab = 0;
+      LocalDate? day;
+      var currency = 0;
+      await pumpUi(
+        tester,
+        Column(
+          children: [
+            AppTabBar(
+              currentIndex: tab,
+              onSelected: (i) => tab = i,
+              items: const [
+                AppTabItem(icon: AppIcons.tabHome, label: 'Overview'),
+                AppTabItem(icon: AppIcons.tabCalendar, label: 'Calendar'),
+              ],
+            ),
+            AppDatePicker(selected: null, today: const LocalDate(2026, 11, 4), onChanged: (d) => day = d),
+            AmountField(value: 1, currency: 'VND', onChanged: (_) {}, onCurrencyTap: () => currency++),
+          ],
+        ),
+      );
+      void tapNode(Finder f) {
+        final node = tester.getSemantics(f);
+        final owner = tester.renderObject(find.byType(AppTabBar)).owner!.semanticsOwner!;
+        expect(node.getSemanticsData().hasAction(SemanticsAction.tap), isTrue, reason: node.toString());
+        owner.performAction(node.id, SemanticsAction.tap);
+      }
+
+      tapNode(find.bySemanticsLabel('Calendar'));
+      tapNode(find.bySemanticsLabel('20 Nov 2026'));
+      tapNode(find.bySemanticsLabel(RegExp('Change currency')));
+      expect((tab, day, currency), (1, const LocalDate(2026, 11, 20), 1));
       handle.dispose();
     });
   });

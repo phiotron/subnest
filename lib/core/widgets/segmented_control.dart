@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import 'touch.dart';
 
 /// One segment of [AppSegmentedControl].
 class AppSegment<T> {
@@ -16,9 +17,9 @@ class AppSegment<T> {
 /// Segmented control (design Components › SegmentedControl).
 ///
 /// * Default: `surface-2` track, radius-md, 4px padding, equal-width 36px segments (radius-sm),
-///   label 14/600 `ink-muted`; selected = `brand-soft` / `on-brand-soft`. 44px tall overall.
+///   label 14/600 `ink-muted`; selected = `brand-soft` / `on-brand-soft`. 44px visible, 48dp hit area.
 /// * [mini]: pill track (3px padding), 30px pill segments ≥ 56 wide, 13/600 — the hero's Month/Year.
-///   Laid out 44px tall (transparent margin) for the touch target.
+///   Laid out 48dp tall (transparent margin) for the touch target (S-50).
 ///
 /// Labels never wrap: on narrow widths they scale down to fit.
 class AppSegmentedControl<T> extends StatelessWidget {
@@ -39,9 +40,9 @@ class AppSegmentedControl<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final radius = mini ? AppRadius.full : AppRadius.md;
-    // The track is painted behind; each segment's hit area spans the full 44px height
+    // The track is painted behind; each segment's hit area spans the full 48dp height
     // (track padding + mini margin) so taps on the track edge still select it.
-    final margin = mini ? 4.0 : 0.0;
+    final margin = mini ? (AppTouch.min - 36) / 2 : (AppTouch.min - 44) / 2;
     final items = [for (var i = 0; i < segments.length; i++) _segment(context, segments[i], i)];
     return Semantics(
       container: true,
@@ -68,7 +69,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
     final c = context.colors;
     final on = s.value == selected;
     final pad = mini ? 3.0 : 4.0;
-    final margin = mini ? 4.0 : 0.0;
+    final margin = mini ? (AppTouch.min - 36) / 2 : (AppTouch.min - 44) / 2;
     final fg = on ? c.onBrandSoft : c.inkMuted;
     final style = AppType.label.copyWith(fontSize: mini ? 13 : 14, color: fg);
     final text = Text.rich(

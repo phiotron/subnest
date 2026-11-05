@@ -14,7 +14,13 @@ class AppTabItem {
 /// bottom safe-area inset. Each tab: 60×32 pill (selected `brand-soft` / `on-brand-soft`),
 /// 22px icon, 12px label (selected 700 `ink`, rest 500 `ink-muted`). Never grows with text size.
 class AppTabBar extends StatelessWidget {
-  const AppTabBar({super.key, required this.items, required this.currentIndex, required this.onSelected, this.onLongPress});
+  const AppTabBar({
+    super.key,
+    required this.items,
+    required this.currentIndex,
+    required this.onSelected,
+    this.onLongPress,
+  });
 
   final List<AppTabItem> items;
   final int currentIndex;
@@ -37,11 +43,7 @@ class AppTabBar extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(AppSpace.s2, AppSpace.s2, AppSpace.s2, bottom),
         child: SizedBox(
           height: AppSize.tabbarH - AppSpace.s2 - 1, // 1px top hairline
-          child: Row(
-            children: [
-              for (var i = 0; i < items.length; i++) Expanded(child: _tab(context, i)),
-            ],
-          ),
+          child: Row(children: [for (var i = 0; i < items.length; i++) Expanded(child: _tab(context, i))]),
         ),
       ),
     );
@@ -56,6 +58,7 @@ class AppTabBar extends StatelessWidget {
       button: true,
       label: item.label,
       excludeSemantics: true,
+      onTap: () => onSelected(i), // excluded children would otherwise drop the tap action
       child: InkResponse(
         onTap: () => onSelected(i),
         onLongPress: onLongPress == null ? null : () => onLongPress!(i),

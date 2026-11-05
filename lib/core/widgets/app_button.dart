@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
+import 'touch.dart';
 
 /// Button variants (design Components › Button).
 enum AppButtonKind {
@@ -39,20 +40,60 @@ class AppButton extends StatelessWidget {
     this.loading = false,
   });
 
-  const AppButton.primary({super.key, required this.label, required this.onPressed, this.icon, this.trailingIcon, this.small = false, this.expand = false, this.loading = false})
-    : kind = AppButtonKind.primary;
+  const AppButton.primary({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.trailingIcon,
+    this.small = false,
+    this.expand = false,
+    this.loading = false,
+  }) : kind = AppButtonKind.primary;
 
-  const AppButton.tonal({super.key, required this.label, required this.onPressed, this.icon, this.trailingIcon, this.small = false, this.expand = false, this.loading = false})
-    : kind = AppButtonKind.tonal;
+  const AppButton.tonal({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.trailingIcon,
+    this.small = false,
+    this.expand = false,
+    this.loading = false,
+  }) : kind = AppButtonKind.tonal;
 
-  const AppButton.outline({super.key, required this.label, required this.onPressed, this.icon, this.trailingIcon, this.small = false, this.expand = false, this.loading = false})
-    : kind = AppButtonKind.outline;
+  const AppButton.outline({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.trailingIcon,
+    this.small = false,
+    this.expand = false,
+    this.loading = false,
+  }) : kind = AppButtonKind.outline;
 
-  const AppButton.text({super.key, required this.label, required this.onPressed, this.icon, this.trailingIcon, this.small = false, this.expand = false, this.loading = false})
-    : kind = AppButtonKind.text;
+  const AppButton.text({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.trailingIcon,
+    this.small = false,
+    this.expand = false,
+    this.loading = false,
+  }) : kind = AppButtonKind.text;
 
-  const AppButton.danger({super.key, required this.label, required this.onPressed, this.icon, this.trailingIcon, this.small = false, this.expand = false, this.loading = false})
-    : kind = AppButtonKind.danger;
+  const AppButton.danger({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.trailingIcon,
+    this.small = false,
+    this.expand = false,
+    this.loading = false,
+  }) : kind = AppButtonKind.danger;
 
   final String label;
   final VoidCallback? onPressed;
@@ -118,7 +159,9 @@ class AppButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (lead != null) ...[lead, const SizedBox(width: AppSpace.s2)],
-        Flexible(child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
+        Flexible(
+          child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+        ),
         if (trailingIcon != null) ...[const SizedBox(width: AppSpace.s1), Icon(trailingIcon, size: 16)],
       ],
     );
@@ -144,10 +187,7 @@ class AppFab extends StatelessWidget {
     return Container(
       width: AppSize.fabSize,
       height: AppSize.fabSize,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        boxShadow: context.elevation.float,
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.lg), boxShadow: context.elevation.float),
       child: Material(
         color: c.brand,
         borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -169,9 +209,16 @@ class AppFab extends StatelessWidget {
   }
 }
 
-/// 44×44 round icon button (top bars, date-picker arrows). [color] defaults to `ink`.
+/// 48 × 48dp round icon button (top bars, date-picker arrows). [color] defaults to `ink`.
 class AppIconButton extends StatelessWidget {
-  const AppIconButton({super.key, required this.icon, required this.onPressed, required this.tooltip, this.size = 24, this.color});
+  const AppIconButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+    required this.tooltip,
+    this.size = 24,
+    this.color,
+  });
 
   final IconData icon;
   final VoidCallback? onPressed;
@@ -185,7 +232,7 @@ class AppIconButton extends StatelessWidget {
     tooltip: tooltip,
     iconSize: size,
     color: color ?? context.colors.ink,
-    constraints: const BoxConstraints.tightFor(width: AppSize.tapMin, height: AppSize.tapMin),
+    constraints: const BoxConstraints.tightFor(width: AppTouch.min, height: AppTouch.min),
     padding: EdgeInsets.zero,
     icon: Icon(icon),
   );

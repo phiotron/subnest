@@ -7,6 +7,7 @@ import 'app_button.dart';
 import 'app_icons.dart';
 import 'formatters.dart';
 import 'sheet_dialog.dart';
+import 'touch.dart';
 
 /// Month grid date picker (design Components › DatePicker): weeks start on **Monday**, 44px round
 /// day cells (tabular 16px), `today` = `brand` ring + bold, selected = `brand` fill, days before
@@ -63,7 +64,12 @@ class _AppDatePickerState extends State<AppDatePicker> {
       children: [
         Row(
           children: [
-            AppIconButton(icon: AppIcons.back, size: 20, tooltip: l.corePrevMonth, onPressed: canPrev ? () => _shift(-1) : null),
+            AppIconButton(
+              icon: AppIcons.back,
+              size: 20,
+              tooltip: l.corePrevMonth,
+              onPressed: canPrev ? () => _shift(-1) : null,
+            ),
             Expanded(
               child: Text(
                 AppDates.monthTitle(l, _month.year, _month.month),
@@ -71,7 +77,12 @@ class _AppDatePickerState extends State<AppDatePicker> {
                 style: AppType.titleSm.copyWith(color: c.ink),
               ),
             ),
-            AppIconButton(icon: AppIcons.next, size: 20, tooltip: l.coreNextMonth, onPressed: canNext ? () => _shift(1) : null),
+            AppIconButton(
+              icon: AppIcons.next,
+              size: 20,
+              tooltip: l.coreNextMonth,
+              onPressed: canNext ? () => _shift(1) : null,
+            ),
           ],
         ),
         const SizedBox(height: 6),
@@ -93,14 +104,11 @@ class _AppDatePickerState extends State<AppDatePicker> {
           ),
         ),
         for (var r = 0; r < cells.length ~/ 7; r++)
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Row(
-              children: [
-                for (final d in cells.sublist(r * 7, r * 7 + 7))
-                  Expanded(child: d == null ? const SizedBox(height: 44) : _day(context, d)),
-              ],
-            ),
+          Row(
+            children: [
+              for (final d in cells.sublist(r * 7, r * 7 + 7))
+                Expanded(child: d == null ? const SizedBox(height: AppTouch.min) : _day(context, d)),
+            ],
           ),
       ],
     );
@@ -113,36 +121,40 @@ class _AppDatePickerState extends State<AppDatePicker> {
     final past = widget.dimPast && d.isBefore(widget.today);
     final enabled = _enabled(d);
     final color = on ? c.onBrand : (today ? c.brand : (past ? c.inkMuted : c.ink));
+    final tap = enabled ? () => widget.onChanged(d) : null;
+    // The whole cell (column width × 48dp) is the touch target; the visible circle stays 44.
     return Semantics(
       button: true,
       selected: on,
       enabled: enabled,
       label: AppDates.full(context.l10n, d),
       excludeSemantics: true,
-      child: Center(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: enabled ? () => widget.onChanged(d) : null,
-          child: Opacity(
-            opacity: !enabled ? .35 : (past && !on ? .6 : 1),
-            child: AnimatedContainer(
-              duration: AppMotion.of(context, AppMotion.fast),
-              width: 44,
-              height: 44,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: on ? c.brand : Colors.transparent,
-                border: today && !on ? Border.all(color: c.brand, width: 1.5) : null,
-              ),
-              child: Text(
-                '${d.day}',
-                textScaler: AppTextScale.capped(context, 1.15),
-                style: AppType.body.copyWith(
-                  fontSize: 16,
-                  fontWeight: on || today ? FontWeight.w700 : FontWeight.w400,
-                  color: color,
-                ).tabular,
+      onTap: tap,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: tap,
+        child: SizedBox(
+          height: AppTouch.min,
+          child: Center(
+            child: Opacity(
+              opacity: !enabled ? .35 : (past && !on ? .6 : 1),
+              child: AnimatedContainer(
+                duration: AppMotion.of(context, AppMotion.fast),
+                width: 44,
+                height: 44,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: on ? c.brand : Colors.transparent,
+                  border: today && !on ? Border.all(color: c.brand, width: 1.5) : null,
+                ),
+                child: Text(
+                  '${d.day}',
+                  textScaler: AppTextScale.capped(context, 1.15),
+                  style: AppType.body
+                      .copyWith(fontSize: 16, fontWeight: on || today ? FontWeight.w700 : FontWeight.w400, color: color)
+                      .tabular,
+                ),
               ),
             ),
           ),
@@ -155,6 +167,9 @@ class _AppDatePickerState extends State<AppDatePicker> {
 /// Date-picker sheet: [AppDatePicker] + a footer (hairline, optional [footer] text such as
 /// "Then 4 Jan · 4 Feb · 4 Mar", and a tonal Done button). Returns the picked date, or `null`
 /// when dismissed. [footer] is rebuilt with the current selection.
+///
+/// The grid uses 12px side padding (header/footer keep the sheet's 20) so that on a 360dp screen
+/// each of the 7 day columns is still 48dp wide (S-50).
 Future<LocalDate?> showAppDatePicker(
   BuildContext context, {
   required LocalDate? initial,
@@ -168,41 +183,54 @@ Future<LocalDate?> showAppDatePicker(
   var value = initial;
   return showAppSheet<LocalDate>(
     context,
+    bare: true,
     builder: (ctx) => StatefulBuilder(
       builder: (ctx, setState) {
         final c = ctx.colors;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppDatePicker(
-              selected: value,
-              today: today,
-              firstDate: firstDate,
-              lastDate: lastDate,
-              dimPast: dimPast,
-              onChanged: (d) => setState(() => value = d),
-            ),
-            const SizedBox(height: AppSpace.s2),
-            Divider(height: 1, color: c.line),
-            const SizedBox(height: AppSpace.s3),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    value != null && footer != null ? footer(value!) : '',
-                    style: AppType.body.copyWith(color: c.inkMuted),
-                  ),
+        final mq = MediaQuery.of(ctx);
+        return Padding(
+          padding: EdgeInsets.fromLTRB(12, 0, 12, AppSpace.s4 + mq.viewPadding.bottom),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AppDatePicker(
+                selected: value,
+                today: today,
+                firstDate: firstDate,
+                lastDate: lastDate,
+                dimPast: dimPast,
+                onChanged: (d) => setState(() => value = d),
+              ),
+              const SizedBox(height: AppSpace.s2),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.s5 - 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Divider(height: 1, color: c.line),
+                    const SizedBox(height: AppSpace.s3),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            value != null && footer != null ? footer(value!) : '',
+                            style: AppType.body.copyWith(color: c.inkMuted),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpace.s3),
+                        AppButton.primary(
+                          label: doneLabel,
+                          small: true,
+                          onPressed: value == null ? null : () => Navigator.pop(ctx, value),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                const SizedBox(width: AppSpace.s3),
-                AppButton.primary(
-                  label: doneLabel,
-                  small: true,
-                  onPressed: value == null ? null : () => Navigator.pop(ctx, value),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         );
       },
     ),

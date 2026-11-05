@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
+import 'touch.dart';
 
 /// Selectable chip (category filters, cycle quick-chips, payment method): 36px pill.
 /// Rest: `surface-2` / `ink` 14/500. Selected: `brand` / `on-brand` 14/600 with a check.
 ///
-/// Layout height is 44 (36 visible + 4 transparent above and below) so the touch target meets
-/// `tap-min`; put chips in `Wrap(spacing: 8, runSpacing: 0)` to get the design's 8px row gap.
+/// Layout height is 48 (36 visible + 6 transparent above and below; narrow chips get transparent
+/// sides up to 48 wide) so the touch target meets S-50. Put chips in
+/// `Wrap(spacing: 8, runSpacing: -4)` for the design's 8px visible row gap (hit areas then overlap
+/// by 4px, which is fine), or `runSpacing: 0` for a 12px gap.
 class AppChip extends StatelessWidget {
   const AppChip({
     super.key,
@@ -43,7 +46,7 @@ class AppChip extends StatelessWidget {
     final pill = AnimatedContainer(
       duration: AppMotion.of(context, AppMotion.fast),
       curve: AppMotion.ease,
-      constraints: const BoxConstraints(minHeight: 36, minWidth: AppSize.tapMin),
+      constraints: const BoxConstraints(minHeight: 36, minWidth: 44),
       padding: EdgeInsets.symmetric(horizontal: fit ? 4 : 14, vertical: 6),
       decoration: ShapeDecoration(color: selected ? c.brand : c.surface2, shape: const StadiumBorder()),
       child: Row(
@@ -63,7 +66,13 @@ class AppChip extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
-        child: Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: pill),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: AppTouch.min),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: (AppTouch.min - 36) / 2),
+            child: fit ? pill : Center(widthFactor: 1, child: pill),
+          ),
+        ),
       ),
     );
   }
@@ -123,8 +132,11 @@ class StatusBadge extends StatelessWidget {
             label,
             maxLines: 1,
             softWrap: false,
-            style: (large ? AppType.meta.copyWith(fontWeight: FontWeight.w600) : AppType.caption.copyWith(letterSpacing: 0))
-                .copyWith(color: fg),
+            style:
+                (large
+                        ? AppType.meta.copyWith(fontWeight: FontWeight.w600)
+                        : AppType.caption.copyWith(letterSpacing: 0))
+                    .copyWith(color: fg),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'app_button.dart';
 import 'app_icons.dart';
+import 'touch.dart';
 
 enum BannerKind {
   /// `warning-soft` — awaiting confirmation, trial ending.
@@ -65,10 +66,7 @@ class AppBanner extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(title, style: AppType.label.copyWith(color: titleColor)),
-        if (body != null) ...[
-          const SizedBox(height: 2),
-          Text(body!, style: AppType.meta.copyWith(color: bodyColor)),
-        ],
+        if (body != null) ...[const SizedBox(height: 2), Text(body!, style: AppType.meta.copyWith(color: bodyColor))],
       ],
     );
 
@@ -80,9 +78,10 @@ class AppBanner extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: onAction,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.symmetric(vertical: (AppTouch.min - 36) / 2),
             child: Container(
               height: 36,
+              constraints: const BoxConstraints(minWidth: AppTouch.min),
               padding: const EdgeInsets.symmetric(horizontal: 14),
               alignment: Alignment.center,
               decoration: ShapeDecoration(color: actionBg, shape: const StadiumBorder()),
@@ -109,7 +108,11 @@ class AppBanner extends StatelessWidget {
           if (action == null) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [iconPart, const SizedBox(width: AppSpace.s3), Expanded(child: text)],
+              children: [
+                iconPart,
+                const SizedBox(width: AppSpace.s3),
+                Expanded(child: text),
+              ],
             );
           }
           final tp = TextPainter(
@@ -118,7 +121,7 @@ class AppBanner extends StatelessWidget {
             textScaler: MediaQuery.textScalerOf(context),
             maxLines: 1,
           )..layout();
-          final actionWidth = tp.width + 28;
+          final actionWidth = (tp.width + 28).clamp(AppTouch.min, double.infinity);
           tp.dispose();
           final room = box.maxWidth - 20 - AppSpace.s3 * 2 - actionWidth;
           if (room >= _minTextWidth) {
@@ -139,7 +142,11 @@ class AppBanner extends StatelessWidget {
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [iconPart, const SizedBox(width: AppSpace.s3), Expanded(child: text)],
+                children: [
+                  iconPart,
+                  const SizedBox(width: AppSpace.s3),
+                  Expanded(child: text),
+                ],
               ),
               const SizedBox(height: 6),
               Align(alignment: AlignmentDirectional.centerEnd, child: action),
@@ -183,12 +190,20 @@ class EmptyState extends StatelessWidget {
         children: [
           ?art,
           const SizedBox(height: AppSpace.s4 + AppSpace.s2),
-          Text(title, style: AppType.title.copyWith(color: c.ink), textAlign: TextAlign.center),
+          Text(
+            title,
+            style: AppType.title.copyWith(color: c.ink),
+            textAlign: TextAlign.center,
+          ),
           if (body != null) ...[
             const SizedBox(height: AppSpace.s2),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 290),
-              child: Text(body!, style: AppType.body.copyWith(color: c.inkMuted), textAlign: TextAlign.center),
+              child: Text(
+                body!,
+                style: AppType.body.copyWith(color: c.inkMuted),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
           if (actionLabel != null) ...[
@@ -230,10 +245,7 @@ class NestArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExcludeSemantics(
-    child: CustomPaint(
-      size: Size(width, width * _viewHeight / 200),
-      painter: _NestPainter(kind, context.colors),
-    ),
+    child: CustomPaint(size: Size(width, width * _viewHeight / 200), painter: _NestPainter(kind, context.colors)),
   );
 }
 

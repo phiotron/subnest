@@ -175,7 +175,7 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 | Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn) |
 | Hero tổng chi (S2, tổng tháng S8) | `SpendHero(label, amount, format, approx, yearly, onPeriodChanged, segments, leadingMeta, trailingMeta, footer)` — tự đếm số 240 ms; `SpendStrip`, `CountUpText` dùng riêng được |
 | Nút | `AppButton.primary/tonal/outline/text/danger` (+ `AppButtonKind.dangerText`), `small:` (40, pill), `expand:` (full width), `icon:`, `loading:`; FAB `AppFab`; icon 44px `AppIconButton` |
-| Chip / badge | `AppChip(selected, fit:)` (đặt trong `Wrap(spacing: 8, runSpacing: 0)`; `fit` = 4 chip chu kỳ 1 hàng) · `StatusBadge.awaiting/trial/paid` hoặc `StatusBadge(kind:, icon:, large:)` · `ShareMark(count)` |
+| Chip / badge | `AppChip(selected, fit:)` (đặt trong `Wrap(spacing: 8, runSpacing: -4)`; `fit` = 4 chip chu kỳ 1 hàng) · `StatusBadge.awaiting/trial/paid` hoặc `StatusBadge(kind:, icon:, large:)` · `ShareMark(count)` |
 | Segmented | `AppSegmentedControl<T>(segments: [AppSegment(value, label, count)], selected, onChanged, mini:)` (mini = Tháng/Năm) |
 | Bật/tắt, tăng/giảm | `AppToggle(value, onChanged)` · `AppStepper(value, min, max, onChanged)` |
 | Banner | `AppBanner(kind: warning/info/success/danger/neutral, icon, title, body, actionLabel, onAction)` — nút tự rơi xuống dòng khi hẹp |
@@ -197,10 +197,14 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 - **130% chữ**: chữ to lên, **tile/icon/tab bar giữ nguyên**; `display`/`amountLg`/`headline` lớn tối đa 44/38/32 — dùng
   `TextScaleCap(max: AppTextScale.display, …)` hoặc `textScaler: AppTextScale.capped(context, AppTextScale.headline)`.
   Hàng cao lên; dòng 2 của hàng và giá trị cài đặt được xuống 2 dòng. Không scale lưới layout.
-- Vùng chạm: design `tap-min` = 44 (component cũ đạt, test `iOSTapTargetGuideline`); **tiêu chuẩn xưởng S-50 = 48dp** —
-  `RadioRow`, `AmountField`, `SettingRow`, nút, tab bar, hàng subscription đạt 48; `AppChip`, `AppSegmentedControl`,
-  `AppToggle`, `AppStepper`, link của `SectionHeader` mới 44 (chờ phiên điều phối quyết nâng). Màn mới: test bằng
-  `androidTapTargetGuideline` (48dp). Chữ **200%**: mọi trang gallery không vỡ ở 360 × 800 VI.
+- Vùng chạm: **mọi component core ≥ 48dp (S-50)** — kích thước *nhìn thấy* vẫn như mockup (`tap-min` 44 của design),
+  vùng chạm nới bằng lề trong suốt; hằng số `AppTouch.min` (48). Hệ quả layout: `AppChip` cao 48 (pill 36) → đặt trong
+  `Wrap(spacing: 8, runSpacing: -4)` để khe nhìn thấy giữa 2 hàng chip vẫn 8; `AppSegmentedControl`, `AppToggle`,
+  `AppStepper` cao 48; ô ngày của date picker cao 48 (sheet dùng lề 12 cho lưới để 7 cột ≥ 48dp ở màn 360). Widget riêng
+  của feature: dùng `IconButton`/`TextButton` của theme (đã đệm 48) hoặc `SizedBox(height: AppTouch.min)`; test màn bằng
+  `meetsGuideline(androidTapTargetGuideline)`. Chữ **200%**: mọi trang gallery không vỡ ở 360 × 800 VI.
+- Trình đọc màn hình: khi bọc control bằng `Semantics(excludeSemantics: true)` phải truyền lại `onTap:` — nếu không
+  TalkBack/VoiceOver không bấm được (đã sửa ở tab bar, ô ngày, nút tiền tệ; có test).
 - "Chờ xác nhận" luôn **hổ phách + icon clock + chữ**, không bao giờ đỏ. `danger` chỉ cho xoá và lỗi nhập.
 - Một hành động chính (`brand`) mỗi màn. Giọng văn bình tĩnh, ngôi thứ hai, không dấu chấm than; emoji chỉ ở empty state ăn mừng.
 - Không hard-code hex / cỡ chữ / padding trong feature; thiếu component → ghi notes cho phiên điều phối (đừng chép rồi sửa trong feature).
