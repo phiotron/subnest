@@ -113,6 +113,7 @@ class _MonthBarChartState extends State<MonthBarChart> {
                               selected: sel == i,
                               label: _tip(l, series[i]),
                               excludeSemantics: true,
+                              onTap: () => setState(() => _selected = sel == i ? null : i),
                               child: GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () => setState(() => _selected = sel == i ? null : i),
@@ -195,8 +196,6 @@ class _BarsPainter extends CustomPainter {
     for (final t in ticks) {
       final ty = y(t).roundToDouble() + .5;
       canvas.drawLine(Offset(0, ty), Offset(w, ty), grid);
-      final tp = _text(tickLabel(t), axisStyle);
-      tp.paint(canvas, Offset(w - tp.width, ty - 4 - tp.height));
     }
 
     final slot = w / series.length;
@@ -255,6 +254,19 @@ class _BarsPainter extends CustomPainter {
         ..color = colors.lineStrong
         ..strokeWidth = 1,
     );
+
+    // Tick labels last, on a card-coloured chip: the right-most bar used to hide them
+    // (real phone: "500k" showed only as "k" behind a tall current-month bar).
+    for (final t in ticks) {
+      final ty = y(t).roundToDouble() + .5;
+      final tp = _text(tickLabel(t), axisStyle);
+      final at = Offset(w - tp.width, ty - 4 - tp.height);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius((at & tp.size).inflate(2), const Radius.circular(4)),
+        Paint()..color = colors.surface,
+      );
+      tp.paint(canvas, at);
+    }
   }
 
   static RRect _topRounded(Rect r, double radius) {
