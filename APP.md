@@ -103,6 +103,8 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 - **Nhánh (từ 2026-11-05):** thư mục app luôn ở `dev`; CI không chạy `dev`; `main` chỉ kiểm; build chỉ khi tag/chạy tay (WORKFLOW §7).
   Sự cố 17:01: thư mục bị một phiên khác `checkout main` → phiên điều phối đã chuyển lại `dev` (không mất gì).
 - Widget S11 → bản 1.1. Ký iOS/TestFlight chờ Apple Developer.
+- **Catalog v3 ✅** (2026-11-05, `7a0b78e`): giá `approx` 114 → **37/284** (WebSearch vùng Mỹ + `allowed_domains` trang hãng); sửa 25 giá cũ sai;
+  37 còn lại có lý do trong `notes/2026-11-05-catalog-us-prices.md`. Đã vào `main`; AAB `1.0.0+2` build lại 17:26 (có catalog v3 + link privacy).
 - Lệch nhỏ catalog: ChatGPT monogram "GP" xanh (mockup "C" đen); ảnh store EN thiếu màn Thư viện (máy vùng VN).
 - Khoá upload do người dùng tự tạo 2026-11-05. CI chưa chạy `gen_tokens --check`. Nhắc dùng alarm inexact (trễ ~1–5 phút).
 - Bài học song song: `git commit -- <đường dẫn>`; commit chưa push của một phiên chặn push phiên khác; 2 phiên hết hạn mức giữa chừng →
