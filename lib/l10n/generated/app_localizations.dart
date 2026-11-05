@@ -320,17 +320,77 @@ abstract class AppLocalizations {
   /// **'This subscription no longer exists.'**
   String get commonNotFound;
 
+  /// No description provided for @calendarViewMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get calendarViewMonth;
+
+  /// No description provided for @calendarViewAgenda.
+  ///
+  /// In en, this message translates to:
+  /// **'Agenda'**
+  String get calendarViewAgenda;
+
+  /// Month navigator title. name = month name (EN), number = month number (VI).
+  ///
+  /// In en, this message translates to:
+  /// **'{name} {year}'**
+  String calendarMonthYear(String name, String number, String year);
+
+  /// Agenda section for the next month.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}'**
+  String calendarMonthName(String name, String number);
+
   /// No description provided for @calendarMonthTotal.
   ///
   /// In en, this message translates to:
-  /// **'Month total: {amount}'**
-  String calendarMonthTotal(String amount);
+  /// **'{name} total'**
+  String calendarMonthTotal(String name, String number);
+
+  /// No description provided for @calendarPaidIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid in {name}'**
+  String calendarPaidIn(String name, String number);
+
+  /// No description provided for @calendarCountPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing due} =1{1 payment} other{{count} payments}}'**
+  String calendarCountPayments(int count);
+
+  /// No description provided for @calendarCountPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} paid'**
+  String calendarCountPaid(int count);
+
+  /// No description provided for @calendarCountSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skipped'**
+  String calendarCountSkipped(int count);
+
+  /// No description provided for @calendarCountToConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} to confirm'**
+  String calendarCountToConfirm(int count);
 
   /// No description provided for @calendarEmpty.
   ///
   /// In en, this message translates to:
   /// **'Nothing due this month.'**
   String get calendarEmpty;
+
+  /// No description provided for @calendarNothingDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing due this day.'**
+  String get calendarNothingDue;
 
   /// No description provided for @calendarPaid.
   ///
@@ -341,7 +401,7 @@ abstract class AppLocalizations {
   /// No description provided for @calendarSkipped.
   ///
   /// In en, this message translates to:
-  /// **'Not paid'**
+  /// **'Skipped'**
   String get calendarSkipped;
 
   /// No description provided for @calendarUpcoming.
@@ -349,6 +409,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upcoming'**
   String get calendarUpcoming;
+
+  /// No description provided for @calendarDidNotPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn’t pay this period'**
+  String get calendarDidNotPay;
+
+  /// No description provided for @calendarFirstCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'First charge after trial'**
+  String get calendarFirstCharge;
+
+  /// No description provided for @calendarConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get calendarConfirm;
+
+  /// No description provided for @calendarTodayPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Today · {date}'**
+  String calendarTodayPrefix(String date);
+
+  /// No description provided for @calendarGroupThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get calendarGroupThisWeek;
+
+  /// No description provided for @calendarGroupLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later in {name}'**
+  String calendarGroupLater(String name, String number);
+
+  /// No description provided for @calendarGroupEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier in {name}'**
+  String calendarGroupEarlier(String name, String number);
+
+  /// Screen-reader label of a calendar day cell.
+  ///
+  /// In en, this message translates to:
+  /// **'{date}, {items}'**
+  String calendarDayLabel(String date, String items);
+
+  /// No description provided for @calendarLegendLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Legend'**
+  String get calendarLegendLabel;
+
+  /// No description provided for @calendarMissingRates.
+  ///
+  /// In en, this message translates to:
+  /// **'Amounts in {currencies} aren’t in the total — no exchange rate yet.'**
+  String calendarMissingRates(String currencies);
 
   /// No description provided for @catalogSearchHint.
   ///
@@ -728,41 +848,167 @@ abstract class AppLocalizations {
   /// **'Add your first subscription'**
   String get homeAddFirst;
 
-  /// No description provided for @insightsEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'Add subscriptions to see insights.'**
-  String get insightsEmpty;
-
-  /// No description provided for @insightsThisMonth.
+  /// No description provided for @insightsRangeMonth.
   ///
   /// In en, this message translates to:
   /// **'This month'**
-  String get insightsThisMonth;
+  String get insightsRangeMonth;
 
-  /// No description provided for @insightsActualVsProjected.
+  /// No description provided for @insightsRange12.
   ///
   /// In en, this message translates to:
-  /// **'Paid {actual} · expected {projected}'**
-  String insightsActualVsProjected(String actual, String projected);
+  /// **'12 months'**
+  String get insightsRange12;
 
-  /// No description provided for @insightsLastMonth.
+  /// No description provided for @insightsRangeYear.
   ///
   /// In en, this message translates to:
-  /// **'Last month paid: {amount}'**
-  String insightsLastMonth(String amount);
+  /// **'This year'**
+  String get insightsRangeYear;
 
-  /// No description provided for @insightsTwelveMonths.
+  /// No description provided for @insightsPaidLabel.
   ///
   /// In en, this message translates to:
-  /// **'12 months (paid · expected)'**
-  String get insightsTwelveMonths;
+  /// **'{range, select, month{Paid · this month} year{Paid · this year} other{Paid · last 12 months}}'**
+  String insightsPaidLabel(String range);
+
+  /// No description provided for @insightsTrendMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{range, select, month{{percent}% more than last month} year{{percent}% more than last year} other{{percent}% more than the 12 months before}}'**
+  String insightsTrendMore(String range, int percent);
+
+  /// No description provided for @insightsTrendLess.
+  ///
+  /// In en, this message translates to:
+  /// **'{range, select, month{{percent}% less than last month} year{{percent}% less than last year} other{{percent}% less than the 12 months before}}'**
+  String insightsTrendLess(String range, int percent);
+
+  /// No description provided for @insightsTrendSame.
+  ///
+  /// In en, this message translates to:
+  /// **'{range, select, month{Same as last month} year{Same as last year} other{Same as the 12 months before}}'**
+  String insightsTrendSame(String range);
+
+  /// No description provided for @insightsLegendPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get insightsLegendPaid;
+
+  /// No description provided for @insightsLegendExpected.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected, not yet confirmed'**
+  String get insightsLegendExpected;
+
+  /// No description provided for @insightsByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'By month'**
+  String get insightsByMonth;
+
+  /// No description provided for @insightsTapBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a bar'**
+  String get insightsTapBar;
+
+  /// No description provided for @insightsTipPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} paid'**
+  String insightsTipPaid(String amount);
+
+  /// No description provided for @insightsTipExpected.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} expected'**
+  String insightsTipExpected(String amount);
+
+  /// No description provided for @insightsChartLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid per month, {from} to {to}'**
+  String insightsChartLabel(String from, String to);
+
+  /// Short axis/centre number: 1.07M, 500K.
+  ///
+  /// In en, this message translates to:
+  /// **'{unit, select, k{{n}K} m{{n}M} b{{n}B} other{{n}}}'**
+  String insightsCompact(String unit, String n);
+
+  /// No description provided for @insightsAnd.
+  ///
+  /// In en, this message translates to:
+  /// **'and'**
+  String get insightsAnd;
+
+  /// Months in a sentence: EN names ('February and March'), VI numbers ('Tháng 2 và 3').
+  ///
+  /// In en, this message translates to:
+  /// **'{names}'**
+  String insightsMonthList(String names, String numbers);
+
+  /// No description provided for @insightsPeakYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} jump with the yearly {names} renewals.'**
+  String insightsPeakYearly(String months, String names);
+
+  /// No description provided for @insightsPeak.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} jump with the {names} renewals.'**
+  String insightsPeak(String months, String names);
+
+  /// No description provided for @insightsPeakPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} are higher than usual.'**
+  String insightsPeakPlain(String months);
 
   /// No description provided for @insightsByCategory.
   ///
   /// In en, this message translates to:
-  /// **'By category (monthly)'**
+  /// **'By category'**
   String get insightsByCategory;
+
+  /// No description provided for @insightsMonthlyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'monthly, active'**
+  String get insightsMonthlyActive;
+
+  /// No description provided for @insightsSliceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{category}: {amount} per month, {percent}%'**
+  String insightsSliceLabel(String category, String amount, int percent);
+
+  /// No description provided for @insightsCategoryShare.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of your monthly spend'**
+  String insightsCategoryShare(int percent);
+
+  /// No description provided for @insightsPerMonthShort.
+  ///
+  /// In en, this message translates to:
+  /// **'/mo'**
+  String get insightsPerMonthShort;
+
+  /// No description provided for @insightsCycleNoteOne.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is billed {price} — counted here as its monthly share.'**
+  String insightsCycleNoteOne(String name, String price);
+
+  /// No description provided for @insightsCycleNoteMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans not billed monthly are counted here as their monthly share.'**
+  String get insightsCycleNoteMany;
 
   /// No description provided for @insightsTop.
   ///
@@ -770,17 +1016,53 @@ abstract class AppLocalizations {
   /// **'Most expensive'**
   String get insightsTop;
 
-  /// No description provided for @insightsSavingsTitle.
+  /// No description provided for @insightsSaving.
   ///
   /// In en, this message translates to:
-  /// **'Savings'**
-  String get insightsSavingsTitle;
+  /// **'You’re saving'**
+  String get insightsSaving;
 
-  /// No description provided for @insightsSavings.
+  /// No description provided for @insightsSavingBy.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{You\'re saving {amount}/year by cancelling 1 service} other{You\'re saving {amount}/year by cancelling {count} services}}'**
-  String insightsSavings(String amount, int count);
+  /// **'by cancelling {names}'**
+  String insightsSavingBy(String names);
+
+  /// No description provided for @insightsSavingByCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{by cancelling 1 service} other{by cancelling {count} services}}'**
+  String insightsSavingByCount(int count);
+
+  /// No description provided for @insightsOverlapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{category, select, music{You pay for {count} music services} other{You pay for {count} video services}}'**
+  String insightsOverlapTitle(String category, int count);
+
+  /// No description provided for @insightsOverlapBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =2{{names} together are {amount}/month. Need both?} other{{names} together are {amount}/month. Need all of them?}}'**
+  String insightsOverlapBody(int count, String names, String amount);
+
+  /// No description provided for @insightsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add subscriptions to see insights'**
+  String get insightsEmptyTitle;
+
+  /// No description provided for @insightsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your spending by month and category shows up here once you’ve added a few.'**
+  String get insightsEmptyBody;
+
+  /// No description provided for @insightsEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a subscription'**
+  String get insightsEmptyAction;
 
   /// No description provided for @notificationsChannelName.
   ///

@@ -193,21 +193,111 @@ class AppLocalizationsVi extends AppLocalizations {
   String get commonNotFound => 'Subscription này không còn tồn tại.';
 
   @override
-  String calendarMonthTotal(String amount) {
-    return 'Tổng tháng: $amount';
+  String get calendarViewMonth => 'Tháng';
+
+  @override
+  String get calendarViewAgenda => 'Danh sách';
+
+  @override
+  String calendarMonthYear(String name, String number, String year) {
+    return 'Tháng $number/$year';
+  }
+
+  @override
+  String calendarMonthName(String name, String number) {
+    return 'Tháng $number';
+  }
+
+  @override
+  String calendarMonthTotal(String name, String number) {
+    return 'Tổng tháng $number';
+  }
+
+  @override
+  String calendarPaidIn(String name, String number) {
+    return 'Đã trả trong tháng $number';
+  }
+
+  @override
+  String calendarCountPayments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count khoản',
+      zero: 'Không có khoản nào',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String calendarCountPaid(int count) {
+    return '$count đã trả';
+  }
+
+  @override
+  String calendarCountSkipped(int count) {
+    return '$count bỏ qua';
+  }
+
+  @override
+  String calendarCountToConfirm(int count) {
+    return '$count chờ xác nhận';
   }
 
   @override
   String get calendarEmpty => 'Tháng này không có khoản nào.';
 
   @override
+  String get calendarNothingDue => 'Không có khoản nào ngày này.';
+
+  @override
   String get calendarPaid => 'Đã trả';
 
   @override
-  String get calendarSkipped => 'Không trả';
+  String get calendarSkipped => 'Bỏ qua';
 
   @override
   String get calendarUpcoming => 'Sắp tới';
+
+  @override
+  String get calendarDidNotPay => 'Không trả kỳ này';
+
+  @override
+  String get calendarFirstCharge => 'Lần trừ đầu';
+
+  @override
+  String get calendarConfirm => 'Xác nhận';
+
+  @override
+  String calendarTodayPrefix(String date) {
+    return 'Hôm nay · $date';
+  }
+
+  @override
+  String get calendarGroupThisWeek => 'Tuần này';
+
+  @override
+  String calendarGroupLater(String name, String number) {
+    return 'Cuối tháng $number';
+  }
+
+  @override
+  String calendarGroupEarlier(String name, String number) {
+    return 'Đầu tháng $number';
+  }
+
+  @override
+  String calendarDayLabel(String date, String items) {
+    return '$date, $items';
+  }
+
+  @override
+  String get calendarLegendLabel => 'Chú thích';
+
+  @override
+  String calendarMissingRates(String currencies) {
+    return 'Khoản bằng $currencies chưa được cộng vào tổng — chưa có tỷ giá.';
+  }
 
   @override
   String get catalogSearchHint => 'Tìm dịch vụ';
@@ -491,42 +581,193 @@ class AppLocalizationsVi extends AppLocalizations {
   String get homeAddFirst => 'Thêm subscription đầu tiên';
 
   @override
-  String get insightsEmpty => 'Thêm subscription để xem thống kê.';
+  String get insightsRangeMonth => 'Tháng này';
 
   @override
-  String get insightsThisMonth => 'Tháng này';
+  String get insightsRange12 => '12 tháng';
 
   @override
-  String insightsActualVsProjected(String actual, String projected) {
-    return 'Thực trả $actual · dự kiến $projected';
+  String get insightsRangeYear => 'Năm nay';
+
+  @override
+  String insightsPaidLabel(String range) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Đã trả · tháng này',
+      'year': 'Đã trả · năm nay',
+      'other': 'Đã trả · 12 tháng qua',
+    });
+    return '$_temp0';
   }
 
   @override
-  String insightsLastMonth(String amount) {
-    return 'Tháng trước đã trả: $amount';
+  String insightsTrendMore(String range, int percent) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Nhiều hơn $percent% so với tháng trước',
+      'year': 'Nhiều hơn $percent% so với năm ngoái',
+      'other': 'Nhiều hơn $percent% so với 12 tháng trước đó',
+    });
+    return '$_temp0';
   }
 
   @override
-  String get insightsTwelveMonths => '12 tháng (thực trả · dự kiến)';
+  String insightsTrendLess(String range, int percent) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Ít hơn $percent% so với tháng trước',
+      'year': 'Ít hơn $percent% so với năm ngoái',
+      'other': 'Ít hơn $percent% so với 12 tháng trước đó',
+    });
+    return '$_temp0';
+  }
 
   @override
-  String get insightsByCategory => 'Theo danh mục (mỗi tháng)';
+  String insightsTrendSame(String range) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Bằng tháng trước',
+      'year': 'Bằng năm ngoái',
+      'other': 'Bằng 12 tháng trước đó',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get insightsLegendPaid => 'Đã trả';
+
+  @override
+  String get insightsLegendExpected => 'Dự kiến, chưa xác nhận';
+
+  @override
+  String get insightsByMonth => 'Theo tháng';
+
+  @override
+  String get insightsTapBar => 'Chạm vào cột';
+
+  @override
+  String insightsTipPaid(String amount) {
+    return '$amount đã trả';
+  }
+
+  @override
+  String insightsTipExpected(String amount) {
+    return '$amount dự kiến';
+  }
+
+  @override
+  String insightsChartLabel(String from, String to) {
+    return 'Số đã trả mỗi tháng, từ $from đến $to';
+  }
+
+  @override
+  String insightsCompact(String unit, String n) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'k': '${n}k',
+      'm': '${n}tr',
+      'b': '$n tỷ',
+      'other': '$n',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get insightsAnd => 'và';
+
+  @override
+  String insightsMonthList(String names, String numbers) {
+    return 'Tháng $numbers';
+  }
+
+  @override
+  String insightsPeakYearly(String months, String names) {
+    return '$months tăng vọt vì gia hạn gói năm $names.';
+  }
+
+  @override
+  String insightsPeak(String months, String names) {
+    return '$months tăng vọt vì gia hạn $names.';
+  }
+
+  @override
+  String insightsPeakPlain(String months) {
+    return '$months cao hơn bình thường.';
+  }
+
+  @override
+  String get insightsByCategory => 'Theo danh mục';
+
+  @override
+  String get insightsMonthlyActive => 'mỗi tháng, đang trả';
+
+  @override
+  String insightsSliceLabel(String category, String amount, int percent) {
+    return '$category: $amount mỗi tháng, $percent%';
+  }
+
+  @override
+  String insightsCategoryShare(int percent) {
+    return '$percent% chi tiêu mỗi tháng';
+  }
+
+  @override
+  String get insightsPerMonthShort => '/th';
+
+  @override
+  String insightsCycleNoteOne(String name, String price) {
+    return '$name trả $price — ở đây tính theo tháng.';
+  }
+
+  @override
+  String get insightsCycleNoteMany =>
+      'Các gói không trả theo tháng được tính theo tháng ở đây.';
 
   @override
   String get insightsTop => 'Đắt nhất';
 
   @override
-  String get insightsSavingsTitle => 'Tiết kiệm';
+  String get insightsSaving => 'Bạn đang tiết kiệm';
 
   @override
-  String insightsSavings(String amount, int count) {
+  String insightsSavingBy(String names) {
+    return 'nhờ huỷ $names';
+  }
+
+  @override
+  String insightsSavingByCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Bạn đang tiết kiệm $amount/năm nhờ huỷ $count dịch vụ',
+      other: 'nhờ huỷ $count dịch vụ',
     );
     return '$_temp0';
   }
+
+  @override
+  String insightsOverlapTitle(String category, int count) {
+    String _temp0 = intl.Intl.selectLogic(category, {
+      'music': 'Bạn trả $count dịch vụ nhạc',
+      'other': 'Bạn trả $count dịch vụ video',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String insightsOverlapBody(int count, String names, String amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$names tổng cộng $amount/tháng. Cần tất cả không?',
+      two: '$names tổng cộng $amount/tháng. Cần cả hai?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get insightsEmptyTitle => 'Thêm subscription để xem thống kê';
+
+  @override
+  String get insightsEmptyBody =>
+      'Chi tiêu theo tháng và danh mục sẽ hiện ở đây khi bạn đã thêm vài subscription.';
+
+  @override
+  String get insightsEmptyAction => 'Thêm subscription';
 
   @override
   String get notificationsChannelName => 'Nhắc nhở';

@@ -195,21 +195,112 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonNotFound => 'This subscription no longer exists.';
 
   @override
-  String calendarMonthTotal(String amount) {
-    return 'Month total: $amount';
+  String get calendarViewMonth => 'Month';
+
+  @override
+  String get calendarViewAgenda => 'Agenda';
+
+  @override
+  String calendarMonthYear(String name, String number, String year) {
+    return '$name $year';
+  }
+
+  @override
+  String calendarMonthName(String name, String number) {
+    return '$name';
+  }
+
+  @override
+  String calendarMonthTotal(String name, String number) {
+    return '$name total';
+  }
+
+  @override
+  String calendarPaidIn(String name, String number) {
+    return 'Paid in $name';
+  }
+
+  @override
+  String calendarCountPayments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count payments',
+      one: '1 payment',
+      zero: 'Nothing due',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String calendarCountPaid(int count) {
+    return '$count paid';
+  }
+
+  @override
+  String calendarCountSkipped(int count) {
+    return '$count skipped';
+  }
+
+  @override
+  String calendarCountToConfirm(int count) {
+    return '$count to confirm';
   }
 
   @override
   String get calendarEmpty => 'Nothing due this month.';
 
   @override
+  String get calendarNothingDue => 'Nothing due this day.';
+
+  @override
   String get calendarPaid => 'Paid';
 
   @override
-  String get calendarSkipped => 'Not paid';
+  String get calendarSkipped => 'Skipped';
 
   @override
   String get calendarUpcoming => 'Upcoming';
+
+  @override
+  String get calendarDidNotPay => 'Didn’t pay this period';
+
+  @override
+  String get calendarFirstCharge => 'First charge after trial';
+
+  @override
+  String get calendarConfirm => 'Confirm';
+
+  @override
+  String calendarTodayPrefix(String date) {
+    return 'Today · $date';
+  }
+
+  @override
+  String get calendarGroupThisWeek => 'This week';
+
+  @override
+  String calendarGroupLater(String name, String number) {
+    return 'Later in $name';
+  }
+
+  @override
+  String calendarGroupEarlier(String name, String number) {
+    return 'Earlier in $name';
+  }
+
+  @override
+  String calendarDayLabel(String date, String items) {
+    return '$date, $items';
+  }
+
+  @override
+  String get calendarLegendLabel => 'Legend';
+
+  @override
+  String calendarMissingRates(String currencies) {
+    return 'Amounts in $currencies aren’t in the total — no exchange rate yet.';
+  }
 
   @override
   String get catalogSearchHint => 'Search services';
@@ -497,43 +588,194 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeAddFirst => 'Add your first subscription';
 
   @override
-  String get insightsEmpty => 'Add subscriptions to see insights.';
+  String get insightsRangeMonth => 'This month';
 
   @override
-  String get insightsThisMonth => 'This month';
+  String get insightsRange12 => '12 months';
 
   @override
-  String insightsActualVsProjected(String actual, String projected) {
-    return 'Paid $actual · expected $projected';
+  String get insightsRangeYear => 'This year';
+
+  @override
+  String insightsPaidLabel(String range) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Paid · this month',
+      'year': 'Paid · this year',
+      'other': 'Paid · last 12 months',
+    });
+    return '$_temp0';
   }
 
   @override
-  String insightsLastMonth(String amount) {
-    return 'Last month paid: $amount';
+  String insightsTrendMore(String range, int percent) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': '$percent% more than last month',
+      'year': '$percent% more than last year',
+      'other': '$percent% more than the 12 months before',
+    });
+    return '$_temp0';
   }
 
   @override
-  String get insightsTwelveMonths => '12 months (paid · expected)';
+  String insightsTrendLess(String range, int percent) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': '$percent% less than last month',
+      'year': '$percent% less than last year',
+      'other': '$percent% less than the 12 months before',
+    });
+    return '$_temp0';
+  }
 
   @override
-  String get insightsByCategory => 'By category (monthly)';
+  String insightsTrendSame(String range) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Same as last month',
+      'year': 'Same as last year',
+      'other': 'Same as the 12 months before',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get insightsLegendPaid => 'Paid';
+
+  @override
+  String get insightsLegendExpected => 'Expected, not yet confirmed';
+
+  @override
+  String get insightsByMonth => 'By month';
+
+  @override
+  String get insightsTapBar => 'Tap a bar';
+
+  @override
+  String insightsTipPaid(String amount) {
+    return '$amount paid';
+  }
+
+  @override
+  String insightsTipExpected(String amount) {
+    return '$amount expected';
+  }
+
+  @override
+  String insightsChartLabel(String from, String to) {
+    return 'Paid per month, $from to $to';
+  }
+
+  @override
+  String insightsCompact(String unit, String n) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'k': '${n}K',
+      'm': '${n}M',
+      'b': '${n}B',
+      'other': '$n',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get insightsAnd => 'and';
+
+  @override
+  String insightsMonthList(String names, String numbers) {
+    return '$names';
+  }
+
+  @override
+  String insightsPeakYearly(String months, String names) {
+    return '$months jump with the yearly $names renewals.';
+  }
+
+  @override
+  String insightsPeak(String months, String names) {
+    return '$months jump with the $names renewals.';
+  }
+
+  @override
+  String insightsPeakPlain(String months) {
+    return '$months are higher than usual.';
+  }
+
+  @override
+  String get insightsByCategory => 'By category';
+
+  @override
+  String get insightsMonthlyActive => 'monthly, active';
+
+  @override
+  String insightsSliceLabel(String category, String amount, int percent) {
+    return '$category: $amount per month, $percent%';
+  }
+
+  @override
+  String insightsCategoryShare(int percent) {
+    return '$percent% of your monthly spend';
+  }
+
+  @override
+  String get insightsPerMonthShort => '/mo';
+
+  @override
+  String insightsCycleNoteOne(String name, String price) {
+    return '$name is billed $price — counted here as its monthly share.';
+  }
+
+  @override
+  String get insightsCycleNoteMany =>
+      'Plans not billed monthly are counted here as their monthly share.';
 
   @override
   String get insightsTop => 'Most expensive';
 
   @override
-  String get insightsSavingsTitle => 'Savings';
+  String get insightsSaving => 'You’re saving';
 
   @override
-  String insightsSavings(String amount, int count) {
+  String insightsSavingBy(String names) {
+    return 'by cancelling $names';
+  }
+
+  @override
+  String insightsSavingByCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'You\'re saving $amount/year by cancelling $count services',
-      one: 'You\'re saving $amount/year by cancelling 1 service',
+      other: 'by cancelling $count services',
+      one: 'by cancelling 1 service',
     );
     return '$_temp0';
   }
+
+  @override
+  String insightsOverlapTitle(String category, int count) {
+    String _temp0 = intl.Intl.selectLogic(category, {
+      'music': 'You pay for $count music services',
+      'other': 'You pay for $count video services',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String insightsOverlapBody(int count, String names, String amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$names together are $amount/month. Need all of them?',
+      two: '$names together are $amount/month. Need both?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get insightsEmptyTitle => 'Add subscriptions to see insights';
+
+  @override
+  String get insightsEmptyBody =>
+      'Your spending by month and category shows up here once you’ve added a few.';
+
+  @override
+  String get insightsEmptyAction => 'Add a subscription';
 
   @override
   String get notificationsChannelName => 'Reminders';

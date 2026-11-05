@@ -1,75 +1,181 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n.dart';
+import '../../core/router/routes.dart';
+import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
+import '../../domain/stats/insights_stats.dart';
+import 'widgets/category_donut.dart';
+import 'widgets/category_sheet.dart';
+import 'widgets/insights_cards.dart';
+import 'widgets/insights_format.dart';
+import 'widgets/month_bar_chart.dart';
 
-/// S9 Insights — PLACEHOLDER UI (numbers as text; charts with fl_chart come with the
-/// Calendar & insights session (I)). All maths is in [SpendingCalculator].
-class InsightsScreen extends ConsumerWidget {
-  const InsightsScreen({super.key});
+/// S9 Insights (design png 44–47): range picker, Paid vs Expected summary with the change
+/// against the span before, 12-month bars, donut by category (tap → [CategorySheet]),
+/// Most expensive, Savings and a light Music/Video overlap hint. Empty state when there are no
+/// subscriptions. Maths: [SpendingCalculator] + [InsightsStats] (lib/domain/stats).
+class InsightsScreen extends ConsumerStatefulWidget {
+  const InsightsScreen({super.key, this.initialRange = InsightsRange.last12Months});
+
+  final InsightsRange initialRange;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<InsightsScreen> createState() => _InsightsScreenState();
+}
+
+class _InsightsScreenState extends ConsumerState<InsightsScreen> {
+  late InsightsRange _range = widget.initialRange;
+
+  @override
+  Widget build(BuildContext context) {
     final l = context.l10n;
-    final subs = ref.watch(subscriptionsProvider).value ?? const <Subscription>[];
+    final c = context.colors;
+    final subsAsync = ref.watch(subscriptionsProvider);
+    final subs = subsAsync.value;
     final periods = ref.watch(periodsProvider).value ?? const <ConfirmedPeriod>[];
     final today = ref.watch(todayProvider);
     final calc = ref.watch(spendingCalculatorProvider);
-    final primary = ref.watch(primaryCurrencyProvider);
     final summary = ref.watch(spendingSummaryProvider);
-    String money(double v) => l.amount(v, primary, approx: true);
+    final primary = calc.primaryCurrency;
 
-    if (subs.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(title: Text(l.commonTabInsights)),
-        body: Center(child: Text(l.insightsEmpty)),
+    final children = <Widget>[
+      LargeTitle(title: l.commonTabInsights),
+      const SizedBox(height: AppSpace.s4),
+      AppSegmentedControl<InsightsRange>(
+        segments: [
+          AppSegment(value: InsightsRange.thisMonth, label: l.insightsRangeMonth),
+          AppSegment(value: InsightsRange.last12Months, label: l.insightsRange12),
+          AppSegment(value: InsightsRange.thisYear, label: l.insightsRangeYear),
+        ],
+        selected: _range,
+        onChanged: (r) => setState(() => _range = r),
+      ),
+      const SizedBox(height: AppSpace.s4),
+    ];
+
+    if (subs == null) {
+      children.add(
+        const Padding(
+          padding: EdgeInsets.all(AppSpace.s8),
+          child: Center(child: CircularProgressIndicator()),
+        ),
       );
+    } else if (subs.isEmpty) {
+      children.add(
+        EmptyState(
+          art: const NestArt(kind: NestArtKind.chart, width: 180),
+          title: l.insightsEmptyTitle,
+          body: l.insightsEmptyBody,
+          actionLabel: l.insightsEmptyAction,
+          onAction: () => context.push(AppRoutes.catalog),
+        ),
+      );
+    } else {
+      children.addAll(_content(context, subs, periods, today, calc, summary, primary));
     }
 
-    final thisMonth = today.firstOfMonth;
-    final actual = calc.actualInMonth(periods, thisMonth);
-    final projected = calc.projectedInMonth(subs, thisMonth);
-    final lastMonthActual = calc.actualInMonth(periods, thisMonth.addMonths(-1));
-    final series = calc.monthlySeries(subs, periods, thisMonth);
-    final categories = calc.byCategory(subs, today);
-    final catTotal = categories.fold<double>(0, (a, e) => a + e.value);
-    final top = calc.top(subs, today);
-
     return Scaffold(
-      appBar: AppBar(title: Text(l.commonTabInsights)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _Section(l.insightsThisMonth),
-          Text(l.insightsActualVsProjected(money(actual), money(projected))),
-          Text(l.insightsLastMonth(money(lastMonthActual))),
-          _Section(l.insightsTwelveMonths),
-          for (final m in series)
-            Text('${m.month.month.toString().padLeft(2, '0')}/${m.month.year}: ${money(m.actual)} · ${money(m.projected)}'),
-          _Section(l.insightsByCategory),
-          for (final e in categories)
-            Text('${l.category(e.key)}: ${money(e.value)} (${catTotal == 0 ? 0 : (e.value / catTotal * 100).round()}%)'),
-          _Section(l.insightsTop),
-          for (final (s, cost) in top) Text('${s.name}: ${money(cost)}/${l.commonUnitMonth}'),
-          if (summary != null && summary.cancelledCount > 0) ...[
-            _Section(l.insightsSavingsTitle),
-            Text(l.insightsSavings(money(summary.savingsYearly), summary.cancelledCount)),
-          ],
-        ],
+      backgroundColor: c.bg,
+      body: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s6),
+          children: children,
+        ),
       ),
     );
   }
-}
 
-class _Section extends StatelessWidget {
-  const _Section(this.title);
-  final String title;
+  List<Widget> _content(
+    BuildContext context,
+    List<Subscription> subs,
+    List<ConfirmedPeriod> periods,
+    LocalDate today,
+    SpendingCalculator calc,
+    SpendingSummary? summary,
+    String primary,
+  ) {
+    final l = context.l10n;
+    final c = context.colors;
+    final stats = InsightsStats(calc);
+    bool foreign(String cur) => cur.toUpperCase() != primary.toUpperCase();
+    final approx = subs.any((s) => foreign(s.currency)) || periods.any((p) => foreign(p.currency));
 
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 6),
-    child: Text(title, style: Theme.of(context).textTheme.titleMedium),
-  );
+    final totals = stats.totals(subs, periods, _range, today);
+    final series = stats.chart(subs, periods, _range, today);
+    final peak = stats.peaks(subs, periods, series);
+    final slices = stats.categories(subs, today, hasOwnSlot: AppChartColors.hasSlot);
+    final top = calc.top(subs, today);
+    final cancelled = stats.cancelled(subs, today);
+    final overlaps = stats.overlaps(subs, today);
+
+    String? peakText;
+    if (peak != null) {
+      final months = l.monthList(peak.months);
+      final names = l.joinNames([for (final s in peak.causes) s.name]);
+      peakText = peak.causes.isEmpty
+          ? l.insightsPeakPlain(months)
+          : peak.allYearly
+          ? l.insightsPeakYearly(months, names)
+          : l.insightsPeak(months, names);
+    }
+
+    void openSub(Subscription s) => context.push(AppRoutes.subscriptionDetail(s.id));
+
+    return [
+      InsightsSummaryCard(range: _range, totals: totals, currency: primary, approx: approx),
+      const SizedBox(height: AppSpace.s3),
+      AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            InsightsCardHeader(title: l.insightsByMonth, hint: l.insightsTapBar),
+            MonthBarChart(series: series, current: today.firstOfMonth, currency: primary, approx: approx),
+            if (peakText != null) ...[
+              const SizedBox(height: AppSpace.s2),
+              Text(peakText, style: AppType.meta.copyWith(color: c.inkMuted)),
+            ],
+          ],
+        ),
+      ),
+      if (slices.isNotEmpty) ...[
+        const SizedBox(height: AppSpace.s3),
+        AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InsightsCardHeader(title: l.insightsByCategory, hint: l.insightsMonthlyActive),
+              CategoryDonut(
+                slices: slices,
+                currency: primary,
+                approx: approx,
+                onOpen: (s) => showCategorySheet(context, slice: s, today: today, currency: primary, approx: approx),
+              ),
+            ],
+          ),
+        ),
+      ],
+      if (top.isNotEmpty) ...[
+        const SizedBox(height: AppSpace.s3),
+        TopExpensiveCard(top: top, calc: calc, onOpen: openSub),
+      ],
+      if (summary != null && summary.savingsYearly > 0) ...[
+        const SizedBox(height: AppSpace.s3),
+        SavingsCard(
+          yearly: summary.savingsYearly,
+          cancelled: cancelled,
+          currency: primary,
+          approx: cancelled.any((s) => foreign(s.currency)),
+        ),
+      ],
+      for (final o in overlaps) ...[
+        const SizedBox(height: AppSpace.s3),
+        OverlapHintCard(hint: o, currency: primary, approx: o.subscriptions.any((s) => foreign(s.currency))),
+      ],
+    ];
+  }
 }
