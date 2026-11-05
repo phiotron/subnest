@@ -86,21 +86,22 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #2 Hoàn thiện | 2026-11-05 | F Design system (đang chạy) · B2 Tra giá catalog (đang chạy) · sau F: G, H, I, J | Mockup Claude Design về `design/` (58 màn × light/dark, tokens.json, brand teal `#0e6b63`/`#46cdb9`, font Be Vietnam Pro, icon Lucide) |
-| #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI (gần xong: iOS workflow xanh) | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter chạy trên Galaxy A13 (analyze sạch, 94 test xanh — phiên điều phối chạy lại xác nhận); catalog 99 dịch vụ; store/legal EN+VI |
+| #2 Hoàn thiện | 2026-11-05 | F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
+| #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 
 **Việc dở / bước tiếp:**
-- **E CI & signing** (sau A): build AAB ký + iOS `--no-codesign` trên macOS runner (iOS chưa build lần nào; AppDelegate/Info.plist sửa chưa kiểm).
-  Bản AAB đầu tiên người dùng tự upload lên closed testing (Play bắt lần đầu làm tay).
-- **Đã chốt 2026-11-05:** email hỗ trợ `phamphuongphuongnd@gmail.com` · developer **Phiotron** (phiên D điền vào `store/`) ·
-  privacy policy host trên GitHub Pages repo public chung do người dùng tạo (chờ link → đẩy `store/legal/*.html` + bật Pages → điền URL).
-- Phiên E dừng giữa chừng 2026-11-04 (đã có keystore ngoài repo) → đã nhắn chạy tiếp 2026-11-05.
-- Mockup Claude Design: người dùng đang làm (2026-11-05).
-- Người dùng: Claude Design, Apple Developer, gom tester.
-- Mang sang #2: tra lại giá catalog (147/255 giá là `approx` — nên dùng trình duyệt theo vùng); placeholder chưa có: biểu đồ S9,
-  lưới tháng S8, vuốt hàng S2, chỉnh giá từng tile S1.3, đổi màu/emoji tile S4, mục Giới thiệu S10; giữ TimePicker `dialOnly`.
-- Nhắc dùng alarm inexact (trễ ≤ ~5 phút) — chấp nhận ở bản 1, không xin exact alarm.
-- Bài học song song: có lúc file của phiên này bị phiên khác `git add` sẵn → brief luôn yêu cầu `git commit -- <đường dẫn>`.
+- **QA trên máy thật** (chưa làm — các phiên UI chỉ kiểm bằng widget test + ảnh render): luồng §6 trên Galaxy A13, TalkBack (S-50),
+  share sheet/file picker/mở cài đặt thông báo/`mailto:`/`market://`, thông báo thật, khởi động bản release.
+- **Privacy policy URL**: chờ người dùng gửi link repo public (vd `github.com/phiotron/phiotron-legal`) → đẩy `store/legal/*.html`, bật Pages,
+  điền `kPrivacyPolicyUrl` (`lib/features/settings/`) + store forms. App hiện mở bản privacy trong app.
+- **Ảnh store**: icon 512, feature graphic 1024×500, ảnh chụp (Play giới hạn tỷ lệ ≤ 2:1 — mockup 780×1688 không dùng thẳng được) → chụp từ app thật.
+- **Closed testing**: người dùng tạo app Play Console + upload AAB (docs/ci.md §4); tăng version `+2` cho bản có UI thật.
+- **Widget S11 (stretch)**: chưa làm → bản 1.1 trừ khi còn thời gian.
+- **Apple Developer** chưa có → ký iOS + TestFlight (docs/ci.md §5) để sau.
+- Lệch nhỏ: màu/monogram catalog (vd ChatGPT "GP" xanh) khác mockup "C" đen — dữ liệu catalog, không phải UI. Giá Netflix Premium catalog 273.000đ (mockup 260.000đ minh hoạ).
+- Khoá upload: người dùng tự tạo 2026-11-05 (khoá cũ do Claude tạo đã bỏ, chưa từng upload). CI chưa chạy `gen_tokens --check`.
+- Nhắc dùng alarm inexact (trễ ≤ ~5 phút) — chấp nhận ở bản 1.
+- Bài học song song: brief luôn yêu cầu `git commit -- <đường dẫn>`; phiên có commit chưa push chặn push của phiên khác (H phải chờ G).
 
 ## Retro (điền khi phát hành)
 - Tổng phiên điều phối / phiên con:
