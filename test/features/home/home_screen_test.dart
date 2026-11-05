@@ -375,8 +375,7 @@ void main() {
             await pumpApp(tester, setup: s, subscriptions: subs, remindersOn: false);
             expect(find.byType(HomeScreen), findsOneWidget);
             await scrollThrough(tester);
-            // Known core issue: awaiting badge in SubscriptionRow at ≥ 130% (see notes).
-            expectNoLayoutErrors(tester, allowCoreRowBadge: true);
+            expectNoLayoutErrors(tester);
             await closeApp(tester);
           }
           await pumpApp(tester, setup: s, subscriptions: const [], periods: const []);

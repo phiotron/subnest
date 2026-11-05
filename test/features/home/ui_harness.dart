@@ -454,22 +454,9 @@ Future<void> scrollThrough(WidgetTester tester, {Finder? scrollable}) async {
   await tester.pumpAndSettle();
 }
 
-/// Overflows of the core `StatusBadge` inside the core `SubscriptionRow` at large text
-/// (reported to the design-system session, see notes/2026-11-05-ui-home.md). Tolerated only where
-/// a test passes `allowCoreRowBadge: true`; everything else still fails.
-bool _isCoreRowBadge(FlutterErrorDetails d) {
-  final text = d.toString();
-  return text.contains('overflowed') &&
-      (text.contains('lib/core/widgets/chip_badge.dart:127') || text.contains('lib/core/widgets/subscription_row.dart'));
-}
-
 /// Fails on any layout exception (overflow) raised while pumping.
-void expectNoLayoutErrors(WidgetTester tester, {bool allowCoreRowBadge = false}) {
+void expectNoLayoutErrors(WidgetTester tester) {
   final e = tester.takeException();
-  if (e != null && allowCoreRowBadge && layoutErrors.isNotEmpty && layoutErrors.every(_isCoreRowBadge)) {
-    layoutErrors.clear();
-    return;
-  }
   if (e != null) {
     final where = layoutErrors
         .map((d) => d.toString().split(String.fromCharCode(10)))

@@ -49,7 +49,16 @@ class AwaitingScreen extends ConsumerWidget {
       for (final (s, due) in items) {
         final before = previous[s.id];
         previous[s.id] = due;
-        rows.add(_PendingRow(key: ValueKey('pending-${s.id}-$due'), subscription: s, due: due, queuedAfter: before, today: today));
+        rows.add(
+          _PendingRow(
+            key: ValueKey('pending-${s.id}-$due'),
+            subscription: s,
+            due: due,
+            queuedAfter: before,
+            today: today,
+            onQuickPay: () => _quickPay(context, ref, s, due, today),
+          ),
+        );
       }
       body = ListView(
         padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s6),
@@ -84,16 +93,41 @@ class AwaitingScreen extends ConsumerWidget {
                 top: false,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s3, AppSpace.s4, AppSpace.s3),
-                  child: AppButton.primary(
-                    label: l.confirmAllButton(total),
-                    icon: AppIcons.check,
-                    expand: true,
-                    onPressed: () => _confirmAll(context, ref, items),
+                  child: Builder(
+                    builder: (context) {
+                      // Large text: the total goes above the button so it never gets cut.
+                      final big = MediaQuery.textScalerOf(context).scale(10) >= 13;
+                      final button = AppButton.primary(
+                        label: big ? l.confirmAllAction : l.confirmAllButton(total),
+                        icon: AppIcons.check,
+                        expand: true,
+                        onPressed: () => _confirmAll(context, ref, items),
+                      );
+                      if (!big) return button;
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(total, textAlign: TextAlign.center, style: AppType.titleSm.copyWith(color: c.ink).tabular),
+                          const SizedBox(height: AppSpace.s2),
+                          button,
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
             ),
     );
+  }
+
+  /// Quick ✓: the oldest pending period paid at My share. The toast uses this screen's context
+  /// because the row itself disappears once the period is confirmed.
+  Future<void> _quickPay(BuildContext context, WidgetRef ref, Subscription s, LocalDate due, LocalDate today) async {
+    final l = context.l10n;
+    await ref.read(subscriptionRepositoryProvider).confirm(s.id, PeriodOutcome.payment);
+    HapticFeedback.lightImpact();
+    if (context.mounted) showAppToast(context, l.confirmQuickSaved(s.name, AppDates.short(l, due, today: today)));
   }
 
   Future<void> _confirmAll(BuildContext context, WidgetRef ref, List<(Subscription, LocalDate)> items) async {
@@ -172,8 +206,15 @@ class AwaitingScreen extends ConsumerWidget {
 
 /// One pending period: tile (warning dot, or dimmed when queued), name, "1 Oct · 34d ago"
 /// (+ "🔒 After 1 Oct" when queued), amount, quick ✓ (44px circle in a 48dp target).
-class _PendingRow extends ConsumerWidget {
-  const _PendingRow({super.key, required this.subscription, required this.due, required this.queuedAfter, required this.today});
+class _PendingRow extends StatelessWidget {
+  const _PendingRow({
+    super.key,
+    required this.subscription,
+    required this.due,
+    required this.queuedAfter,
+    required this.today,
+    required this.onQuickPay,
+  });
 
   final Subscription subscription;
   final LocalDate due;
@@ -181,9 +222,10 @@ class _PendingRow extends ConsumerWidget {
   /// The earlier pending period of the same subscription; `null` = this one can be confirmed.
   final LocalDate? queuedAfter;
   final LocalDate today;
+  final VoidCallback onQuickPay;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
     final s = subscription;
@@ -199,13 +241,14 @@ class _PendingRow extends ConsumerWidget {
         message: queued ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)) : l.confirmMarkPaid(s.name, dateText),
         excludeFromSemantics: true,
         child: InkResponse(
+          // A queued period can't be confirmed yet: explain instead of falling through to the row.
           onTap: queued
-              ? null
-              : () async {
-                  await ref.read(subscriptionRepositoryProvider).confirm(s.id, PeriodOutcome.payment);
-                  HapticFeedback.lightImpact();
-                  if (context.mounted) showAppToast(context, l.confirmQuickSaved(s.name, dateText));
-                },
+              ? () => showAppToast(
+                  context,
+                  l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)),
+                  icon: AppIcons.privacyKey,
+                )
+              : onQuickPay,
           radius: 24,
           child: SizedBox.square(
             dimension: AppTouch.min,
@@ -224,6 +267,15 @@ class _PendingRow extends ConsumerWidget {
         ),
       ),
     );
+
+    final amount = Text(
+      l.money(s.myShare),
+      maxLines: 1,
+      softWrap: false,
+      style: AppType.titleSm.copyWith(color: c.ink).tabular,
+    );
+    // Large text (≥ 130%): the amount moves under the date so the name keeps its width.
+    final stacked = MediaQuery.textScalerOf(context).scale(10) >= 13;
 
     return InkWell(
       onTap: () => context.push(AppRoutes.confirm(s.id)),
@@ -249,6 +301,7 @@ class _PendingRow extends ConsumerWidget {
                     Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppType.titleSm.copyWith(color: c.ink)),
                     const SizedBox(height: 2),
                     Text('$dateText · $ago', style: AppType.meta.copyWith(color: c.inkMuted)),
+                    if (stacked) ...[const SizedBox(height: 2), amount],
                     if (queued)
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
@@ -268,13 +321,7 @@ class _PendingRow extends ConsumerWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: AppSpace.s2),
-              Text(
-                l.money(s.myShare),
-                maxLines: 1,
-                softWrap: false,
-                style: AppType.titleSm.copyWith(color: c.ink).tabular,
-              ),
+              if (!stacked) ...[const SizedBox(width: AppSpace.s2), amount],
               const SizedBox(width: AppSpace.s1),
               quick,
             ],

@@ -9,6 +9,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/app.dart';
 import 'package:subnest/core/router/app_router.dart';
 import 'package:subnest/core/router/routes.dart';
+import 'package:subnest/core/widgets/widgets.dart';
 import 'package:subnest/data/db/app_database.dart';
 import 'package:subnest/data/notifications/notification_service.dart';
 import 'package:subnest/data/providers.dart';
@@ -68,50 +69,52 @@ void main() {
     expect(find.text('Netflix'), findsWidgets);
     expect(find.text('1 payment to confirm'), findsOneWidget);
 
-    // Awaiting list → confirm sheet → Paid.
-    await tester.tap(find.text('View'));
+    // Awaiting card → S7 → confirm sheet → Paid → Done.
+    await tester.tap(find.text('Review'));
     await settle();
     await tester.tap(find.text('Netflix'));
     await settle();
     expect(find.text('Amount paid'), findsOneWidget);
     await tester.tap(find.text('Paid'));
     await settle();
-    expect(find.text("You're all caught up 🎉"), findsOneWidget);
+    expect(find.text('Payment saved'), findsOneWidget);
+    await tester.tap(find.text('Done'));
+    await settle();
+    expect(find.text('You’re all caught up 🎉'), findsOneWidget);
     final periods = await container.read(subscriptionRepositoryProvider).allPeriods();
     expect(periods.single.amountMinor, 1599);
     await tester.pageBack();
     await settle();
     expect(find.text('1 payment to confirm'), findsNothing);
-    await tester.pump(const Duration(seconds: 5)); // let the "Next renewal" snackbar go away
-    await settle();
 
     // Add a custom subscription: FAB → catalog → custom → form → save → home.
-    await tester.tap(find.byType(FloatingActionButton));
+    await tester.tap(find.byType(AppFab));
     await settle();
-    await tester.tap(find.text('+ Create a custom service'));
+    await tester.tap(find.text('Create a custom service'));
     await settle();
-    await tester.enterText(find.widgetWithText(TextField, 'Name'), 'Gym');
-    await tester.enterText(find.widgetWithText(TextField, 'Price'), '25');
+    await tester.enterText(find.byType(TextField).first, 'Gym');
+    await tester.enterText(find.descendant(of: find.byType(AmountField), matching: find.byType(TextField)), '25');
     await settle();
-    await tester.ensureVisible(find.widgetWithText(FilledButton, 'Add subscription'));
-    await tester.tap(find.widgetWithText(FilledButton, 'Add subscription'));
+    await tester.ensureVisible(find.text('Add subscription').last);
+    await tester.tap(find.text('Add subscription').last);
     await settle();
     expect(find.text('Gym'), findsWidgets);
 
-    // Detail → mark as cancelled → shows in the Cancelled tab.
+    // Detail → mark as cancelled → celebration → See cancelled → Cancelled tab.
+    await tester.ensureVisible(find.text('Gym').last);
     await tester.tap(find.text('Gym').last);
     await settle();
-    expect(find.text('Payment history'), findsOneWidget);
+    expect(find.text('PAYMENT HISTORY'), findsOneWidget);
     await tester.ensureVisible(find.text('Mark as cancelled'));
     await tester.tap(find.text('Mark as cancelled'));
     await settle();
-    expect(find.text('Restore'), findsOneWidget);
-    await tester.pageBack();
+    await tester.tap(find.text('Mark as cancelled').last); // dialog
     await settle();
-    await tester.tap(find.text('Cancelled').first);
+    expect(find.text('Gym cancelled'), findsOneWidget);
+    await tester.tap(find.text('See cancelled'));
     await settle();
     expect(find.text('Gym'), findsOneWidget);
-    expect(find.textContaining("You're saving"), findsWidgets); // savings card (+ celebration snackbar)
+    expect(find.text('You’re saving'), findsOneWidget);
 
     // Insights tab shows numbers.
     await tester.tap(find.text('Insights'));

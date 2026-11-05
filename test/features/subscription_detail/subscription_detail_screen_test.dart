@@ -124,7 +124,7 @@ void main() {
       await closeApp(tester);
     });
 
-    testWidgets('Edit opens the form route', skip: true, (tester) async { // TODO: location after push from Edit — see notes
+    testWidgets('Edit opens the form route', (tester) async {
       await pumpApp(tester, location: '/home', push: '/subscription/netflix');
       await tester.tap(find.text('Edit'));
       await settle(tester);
