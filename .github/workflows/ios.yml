@@ -1,0 +1,56 @@
+# iOS build on a macOS runner. Manual / release tags only: on a private repo macOS minutes count x10.
+# Currently UNSIGNED (no Apple Developer account yet) - see docs/ci.md "When Apple Developer is ready".
+name: iOS
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.47.8'
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          flutter --version
+
+      - name: pub get
+        run: flutter pub get
+
+      - name: Info.plist / privacy manifest checks
+        run: |
+          PLIST=ios/Runner/Info.plist
+          test "$(/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' "$PLIST")" = "false"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :NSPrivacyTracking' ios/Runner/PrivacyInfo.xcprivacy)" = "false"
+          plutil -lint ios/Runner/PrivacyInfo.xcprivacy
+          grep -q 'PrivacyInfo.xcprivacy in Resources' ios/Runner.xcodeproj/project.pbxproj
+
+      - name: Build (no codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Check bundle
+        run: |
+          APP=build/ios/iphoneos/Runner.app
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP/Info.plist"
+          test -f "$APP/PrivacyInfo.xcprivacy"
+          du -sh "$APP"
