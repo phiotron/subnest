@@ -160,7 +160,14 @@ class AppButton extends StatelessWidget {
       children: [
         if (lead != null) ...[lead, const SizedBox(width: AppSpace.s2)],
         Flexible(
-          child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+          // ≥ 150% text the label may take two lines: real phone (320dp, 200%) cut S7's
+          // "Confirm all" to "Xác nhận tất …".
+          child: Text(
+            label,
+            maxLines: MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5 ? 2 : 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
         ),
         if (trailingIcon != null) ...[const SizedBox(width: AppSpace.s1), Icon(trailingIcon, size: 16)],
       ],

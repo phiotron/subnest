@@ -19,6 +19,37 @@ class AwaitingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = context.l10n;
+    // ≥ 150% text: the "Review" pill goes under the text (real phone, 320dp at 200%: the title
+    // wrapped one word per line and the amount broke between digits).
+    final stacked = MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5;
+    final pill = Container(
+      key: const ValueKey('awaiting-review'),
+      height: 36,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      alignment: Alignment.center,
+      decoration: ShapeDecoration(color: c.surface, shape: const StadiumBorder()),
+      child: Text(
+        l.homeAwaitingReview,
+        maxLines: 1,
+        softWrap: false,
+        style: AppType.label.copyWith(color: c.warningInk),
+      ),
+    );
+    final texts = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(l.homeAwaitingTitle(count), style: AppType.titleSm.copyWith(color: c.ink)),
+        const SizedBox(height: 2),
+        Text(
+          subtitle,
+          maxLines: stacked ? 3 : 2,
+          overflow: TextOverflow.ellipsis,
+          style: AppType.meta.copyWith(color: c.warningInk).tabular,
+        ),
+        if (stacked) ...[const SizedBox(height: AppSpace.s2), pill],
+      ],
+    );
     return MergeSemantics(
       child: Semantics(
         button: true,
@@ -27,6 +58,7 @@ class AwaitingCard extends StatelessWidget {
           onTap: onTap,
           padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: 14),
           child: Row(
+            crossAxisAlignment: stacked ? CrossAxisAlignment.start : CrossAxisAlignment.center,
             children: [
               Container(
                 width: 36,
@@ -35,35 +67,8 @@ class AwaitingCard extends StatelessWidget {
                 child: Icon(AppIcons.awaiting, size: 20, color: c.warningInk),
               ),
               const SizedBox(width: AppSpace.s3),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(l.homeAwaitingTitle(count), style: AppType.titleSm.copyWith(color: c.ink)),
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppType.meta.copyWith(color: c.warningInk).tabular,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: AppSpace.s3),
-              Container(
-                height: 36,
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                alignment: Alignment.center,
-                decoration: ShapeDecoration(color: c.surface, shape: const StadiumBorder()),
-                child: Text(
-                  l.homeAwaitingReview,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: AppType.label.copyWith(color: c.warningInk),
-                ),
-              ),
+              Expanded(child: texts),
+              if (!stacked) ...[const SizedBox(width: AppSpace.s3), pill],
             ],
           ),
         ),
@@ -173,8 +178,17 @@ class UpcomingCard extends StatelessWidget {
               Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppType.titleSm.copyWith(color: c.ink)),
               Text(when, style: AppType.meta.copyWith(color: c.inkMuted)),
               const SizedBox(height: 10),
-              Text(amount, maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: c.ink).tabular),
-              Text(amountMeta, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+              // Amounts never wrap between digits: they shrink to fit instead.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(amount, maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: c.ink).tabular),
+              ),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(amountMeta, maxLines: 1, softWrap: false, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+              ),
             ],
           ),
         ),
@@ -191,9 +205,11 @@ class UpcomingStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ≥ 150% text: wider cards (one and a bit per screen, scrolls) so names and amounts fit.
+    final large = MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5;
     return LayoutBuilder(
       builder: (context, box) {
-        final w = (box.maxWidth - AppSpace.s3) / 2;
+        final w = large ? box.maxWidth * .78 : (box.maxWidth - AppSpace.s3) / 2;
         final row = IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -205,7 +221,7 @@ class UpcomingStrip extends StatelessWidget {
             ],
           ),
         );
-        if (cards.length <= 2) return Align(alignment: AlignmentDirectional.centerStart, child: row);
+        if (cards.length <= (large ? 1 : 2)) return Align(alignment: AlignmentDirectional.centerStart, child: row);
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           clipBehavior: Clip.none,

@@ -340,6 +340,24 @@ void main() {
       expect(find.text('N1000'), findsOneWidget);
     });
 
+    testWidgets('button label wraps to two lines at 200% instead of an ellipsis', (tester) async {
+      // Real phone (320dp, 200%): S7's "Xác nhận tất cả · 215.000đ" showed as "Xác nhận tất …".
+      Future<Text> label(double scale) async {
+        await pumpUi(
+          tester,
+          AppButton.primary(label: 'Xác nhận tất cả · 215.000đ', icon: AppIcons.check, onPressed: () {}),
+          size: const Size(320, 700),
+          textScale: scale,
+          locale: 'vi',
+        );
+        return tester.widget<Text>(find.text('Xác nhận tất cả · 215.000đ'));
+      }
+
+      expect((await label(1)).maxLines, 1);
+      expect((await label(2)).maxLines, 2);
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('banner action drops under the text when narrow', (tester) async {
       Future<(double, double)> layout(Size size) async {
         await pumpUi(
@@ -580,6 +598,34 @@ void main() {
       await tester.pump();
       final editable = tester.state<EditableTextState>(find.byType(EditableText));
       expect(editable.widget.focusNode.hasFocus, isTrue);
+    });
+
+    testWidgets('radio row price under the text wraps instead of clipping (320dp, 200%)', (tester) async {
+      // Real phone: the plan sheet showed "114.000đ/thán".
+      await pumpUi(
+        tester,
+        Builder(
+          builder: (context) => RadioRowGroup<String>(
+            value: 'a',
+            onChanged: (_) {},
+            options: [
+              RadioOption(
+                value: 'a',
+                title: 'Basic',
+                subtitle: 'Hằng tháng',
+                trailing: RadioRow.price(context, '114.000đ', suffix: '/tháng'),
+              ),
+            ],
+          ),
+        ),
+        textScale: 2,
+        locale: 'vi',
+        size: const Size(320, 700),
+      );
+      final price = tester.renderObject<RenderParagraph>(find.textContaining('114.000đ'));
+      expect(price.didExceedMaxLines, isFalse);
+      expect(price.size.width, lessThanOrEqualTo(320));
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('radio rows select one; trailing moves under the text at 200%', (tester) async {

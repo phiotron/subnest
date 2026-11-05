@@ -547,6 +547,12 @@ class _InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    // ≥ 150% text: the value goes under the label (real phone, 320dp at 200%: the label column was
+    // squeezed to a few letters and words broke mid-word — "Nh/ắc/trư/ớc").
+    final stacked = MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5;
+    final valueStyle = strong
+        ? AppType.body.copyWith(color: c.ink, fontWeight: FontWeight.w700).tabular
+        : AppType.body.copyWith(color: c.inkMuted).tabular;
     return MergeSemantics(
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 56),
@@ -554,6 +560,7 @@ class _InfoRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: 10),
           child: LayoutBuilder(
             builder: (context, box) => Row(
+              crossAxisAlignment: stacked ? CrossAxisAlignment.start : CrossAxisAlignment.center,
               children: [
                 SizedBox(width: 24, child: Icon(icon, size: 20, color: c.inkMuted)),
                 const SizedBox(width: AppSpace.s3),
@@ -568,10 +575,16 @@ class _InfoRow extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 2),
                           child: Text(subtitle!, style: AppType.meta.copyWith(color: c.inkMuted)),
                         ),
+                      if (stacked && value != null)
+                        Padding(
+                          key: const ValueKey('info-value-below'),
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(value!, style: valueStyle),
+                        ),
                     ],
                   ),
                 ),
-                if (value != null) ...[
+                if (!stacked && value != null) ...[
                   const SizedBox(width: AppSpace.s3),
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: box.maxWidth * .6),
@@ -580,9 +593,7 @@ class _InfoRow extends StatelessWidget {
                       textAlign: TextAlign.end,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: strong
-                          ? AppType.body.copyWith(color: c.ink, fontWeight: FontWeight.w700).tabular
-                          : AppType.body.copyWith(color: c.inkMuted).tabular,
+                      style: valueStyle,
                     ),
                   ),
                 ],

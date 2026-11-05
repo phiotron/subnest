@@ -560,16 +560,17 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
             children: [
               LabelledRow(
                 label: Text(l.subscriptionFormCycle, style: AppType.label.copyWith(color: c.ink)),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
+                // Wrap: at 320dp × 200% the unit button moves to the next line (a Row overflowed by 6px).
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: AppSpace.s2,
+                  runSpacing: AppSpace.s2,
                   children: [
                     Text(l.subscriptionFormEvery, style: AppType.meta.copyWith(color: c.inkMuted)),
-                    const SizedBox(width: AppSpace.s2),
                     EveryCountField(
                       controller: _every,
                       onChanged: (n) => _update(() => d.cycle = BillingCycle(n, d.cycle.unit)),
                     ),
-                    const SizedBox(width: AppSpace.s2),
                     CycleUnitButton(
                       unit: d.cycle.unit,
                       every: d.cycle.every,
@@ -579,22 +580,33 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                 ),
               ),
               const SizedBox(height: AppSpace.s3),
-              Row(
-                children: [
-                  for (var i = 0; i < quick.length; i++) ...[
-                    if (i > 0) const SizedBox(width: AppSpace.s2),
-                    Expanded(
-                      child: AppChip(
-                        label: quickLabels[i],
-                        selected: d.cycle == quick[i],
-                        showCheck: false,
-                        fit: true,
-                        onTap: () => _setCycle(quick[i]),
+              // ≥ 150% text: a 2 × 2 grid (real phone, 320dp at 200%: one row cut the labels to "T…").
+              for (final row in MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5
+                  ? const [
+                      [0, 1],
+                      [2, 3],
+                    ]
+                  : const [
+                      [0, 1, 2, 3],
+                    ]) ...[
+                if (row.first > 0) const SizedBox(height: AppSpace.s2),
+                Row(
+                  children: [
+                    for (final i in row) ...[
+                      if (i != row.first) const SizedBox(width: AppSpace.s2),
+                      Expanded(
+                        child: AppChip(
+                          label: quickLabels[i],
+                          selected: d.cycle == quick[i],
+                          showCheck: false,
+                          fit: true,
+                          onTap: () => _setCycle(quick[i]),
+                        ),
                       ),
-                    ),
+                    ],
                   ],
-                ],
-              ),
+                ),
+              ],
             ],
           ),
         ),

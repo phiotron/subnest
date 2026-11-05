@@ -233,6 +233,23 @@ void main() {
       await closeApp(tester);
     });
 
+    testWidgets('320dp × 200% VI: info values sit under their labels (no mid-word breaks)', (tester) async {
+      // Real phone (2026-11-05), largest display size + largest font: "Nhắc trước" broke to "Nh/ắc/trư/ớc".
+      await pumpApp(
+        tester,
+        setup: const Setup(width: 320, height: 700, locale: 'vi', textScale: 2),
+        location: '/subscription/netflix',
+      );
+      final label = find.text('Chu kỳ');
+      await scrollToFinder(tester, label);
+      final value = find.text('Mỗi tháng');
+      expect(tester.getTopLeft(value).dy, greaterThan(tester.getBottomLeft(label).dy));
+      expect(tester.getTopLeft(value).dx, tester.getTopLeft(label).dx);
+      await scrollThrough(tester);
+      expectNoLayoutErrors(tester);
+      await closeApp(tester);
+    });
+
     testWidgets('unknown id shows a message, not a crash', (tester) async {
       await pumpApp(tester, location: '/subscription/nope');
       expect(find.text('This subscription no longer exists.'), findsOneWidget);

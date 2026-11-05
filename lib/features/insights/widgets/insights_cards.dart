@@ -114,15 +114,34 @@ class InsightsSummaryCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: hatch ? 6 : 0),
               child: MergeSemantics(
-                child: Row(
-                  children: [
-                    ChartSwatch(hatch: hatch),
-                    const SizedBox(width: AppSpace.s2),
-                    Expanded(child: Text(label, style: lg)),
-                    const SizedBox(width: AppSpace.s3),
-                    Text(money(v), style: value),
-                  ],
-                ),
+                // ≥ 150% text the amount goes under the label (real phone, 320dp at 200%: the label
+                // was squeezed to one letter per line).
+                child: MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: const EdgeInsets.only(top: 4), child: ChartSwatch(hatch: hatch)),
+                          const SizedBox(width: AppSpace.s2),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(label, style: lg),
+                                Text(money(v), key: ValueKey('legend-value-$hatch'), style: value),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          ChartSwatch(hatch: hatch),
+                          const SizedBox(width: AppSpace.s2),
+                          Expanded(child: Text(label, style: lg)),
+                          const SizedBox(width: AppSpace.s3),
+                          Text(money(v), style: value),
+                        ],
+                      ),
               ),
             ),
         ],

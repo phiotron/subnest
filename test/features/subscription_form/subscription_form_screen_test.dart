@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/widgets.dart';
@@ -226,6 +227,26 @@ void main() {
     await tester.enterText(_amount, '20');
     await settle(tester);
     expect(find.text('≈ ₫508,000'), findsOneWidget);
+  });
+
+  addTest('S4 at 320dp × 200% VI: cycle chips in a 2 × 2 grid, labels not cut', (tester) async {
+    // Real phone (2026-11-05), largest display + font: one row cut the chips to "T… T… Q… N…".
+    final f = await AddFixture.create();
+    await pumpAdd(
+      tester,
+      f,
+      location: '/home',
+      push: '/subscription/new?service=netflix&plan=premium',
+      setup: const Setup(width: 320, height: 700, locale: 'vi', textScale: 2),
+    );
+    await _scrollTo(tester, find.text('Năm'));
+    expect(tester.getTopLeft(find.text('Năm')).dy, greaterThan(tester.getBottomLeft(find.text('Tuần')).dy));
+    for (final label in ['Tuần', 'Tháng', 'Quý', 'Năm']) {
+      expect(tester.renderObject<RenderParagraph>(find.text(label)).didExceedMaxLines, isFalse, reason: label);
+    }
+    await tester.tap(find.text('Năm'));
+    await settle(tester);
+    expectNoLayoutErrors(tester, '320');
   });
 
   addTest('S4 cycle chips, unit menu, reminder, more details (png 26)', (tester) async {

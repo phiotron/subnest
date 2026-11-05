@@ -18,7 +18,10 @@ void main() {
         final childAt = rest.indexOf('child:');
         if (childAt < 0) continue;
         final head = rest.substring(0, childAt);
-        if (!head.contains('excludeSemantics: true') || head.contains('onTap')) continue;
+        // Also `excludeSemantics: label != null` and the like — anything but a literal false.
+        if (!head.contains('excludeSemantics:') || head.contains('excludeSemantics: false') || head.contains('onTap')) {
+          continue;
+        }
         final body = rest.substring(childAt, (childAt + 700).clamp(0, rest.length));
         final wrapsTap = RegExp(r'on(Tap|Pressed|LongPress|Changed)\s*:').hasMatch(body);
         if (head.contains('button: true') || wrapsTap) {

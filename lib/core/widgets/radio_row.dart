@@ -52,8 +52,9 @@ class RadioRow<T> extends StatelessWidget {
             ),
         ],
       ),
-      maxLines: 1,
-      softWrap: false,
+      // Beside the title (unbounded width) it stays on one line; under it at large text it may wrap
+      // instead of being clipped (real phone, 320dp at 200%: "114.000đ/thán").
+      maxLines: 2,
     );
   }
 

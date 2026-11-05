@@ -158,6 +158,8 @@ class MiniFieldButton extends StatelessWidget {
       button: true,
       label: semanticLabel,
       excludeSemantics: semanticLabel != null,
+      // Only when the children (and the InkWell's tap) are excluded; otherwise the InkWell provides it.
+      onTap: semanticLabel != null ? onTap : null,
       child: Material(
         color: c.surface2,
         shape: RoundedRectangleBorder(
@@ -174,8 +176,14 @@ class MiniFieldButton extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // One line that shrinks to fit: real phone (320dp, 200%) broke the date between
+                  // digits ("04/12/202" + "6").
                   Flexible(
-                    child: Text(label, style: AppType.titleSm.copyWith(color: fg).tabular),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(label, maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: fg).tabular),
+                    ),
                   ),
                   const SizedBox(width: AppSpace.s2),
                   Icon(icon, size: 18, color: fg),

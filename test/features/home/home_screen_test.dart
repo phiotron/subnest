@@ -380,6 +380,27 @@ void main() {
       }
     });
 
+    // Real phone (2026-11-05): the system's largest display size leaves 320dp; with 200% text the
+    // awaiting card squeezed its title one word per line and amounts wrapped between digits.
+    group('narrowest phone: 320dp × 200% text', () {
+      for (final locale in ['en', 'vi']) {
+        for (final dark in [false, true]) {
+          final s = Setup(width: 320, height: 700, locale: locale, dark: dark, textScale: 2);
+          testWidgets(s.name, (tester) async {
+            await pumpApp(tester, setup: s, subscriptions: Mock.all, remindersOn: false);
+            final pill = find.byKey(const ValueKey('awaiting-review'));
+            await scrollToFinder(tester, pill);
+            final title = find.textContaining(locale == 'en' ? 'to confirm' : 'cần xác nhận');
+            expect(tester.getTopLeft(pill).dy, greaterThan(tester.getBottomLeft(title.first).dy),
+                reason: 'Review goes under the text at large sizes');
+            await scrollThrough(tester);
+            expectNoLayoutErrors(tester);
+            await closeApp(tester);
+          });
+        }
+      }
+    });
+
     group('no overflow: 360/390 × EN/VI × light/dark × 100/130/200%', () {
       for (final s in layoutMatrix) {
         testWidgets(s.name, (tester) async {

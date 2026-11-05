@@ -29,6 +29,20 @@ void main() {
       expect(find.textContaining('more than'), findsNothing, reason: 'no spending in the 12 months before');
     });
 
+    testWidgets('320dp × 200% VI: legend amounts sit under their labels', (tester) async {
+      // Real phone (2026-11-05), largest display + font: "Đã trả" was squeezed to one letter per line.
+      await pumpScreen(
+        tester,
+        const InsightsScreen(),
+        setup: const ScreenSetup(tab: 2, width: 320, height: 2600, locale: 'vi', textScale: 2),
+      );
+      final label = find.text('Đã trả');
+      final value = find.byKey(const ValueKey('legend-value-false'));
+      expect(tester.getTopLeft(value).dy, greaterThanOrEqualTo(tester.getBottomLeft(label).dy));
+      expect(tester.getTopLeft(value).dx, tester.getTopLeft(label).dx);
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('range picker: this month compares with last month, this year', (tester) async {
       await pumpScreen(tester, const InsightsScreen(), setup: _tall);
       await tester.tap(find.text('This month'));
