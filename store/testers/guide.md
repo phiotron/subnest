@@ -12,7 +12,7 @@
    (Nhóm giúp thêm/bớt tester mà không phải sửa Play Console; tester rời nhóm = rời test.)
 2. Play Console → **Testing → Closed testing** → tạo track (vd "Alpha") → **Testers** → *Google Groups* → nhập email
    nhóm `subnest-testers@googlegroups.com`. Có thể kèm *Email list* cho người không muốn vào nhóm.
-3. Ghi **feedback URL or email** = `<SUPPORT_EMAIL>`.
+3. Ghi **feedback URL or email** = `phamphuongphuongnd@gmail.com`.
 4. Upload AAB (phiên E), *Countries/regions* = tất cả nước có tester, gửi review. Khi track được duyệt, copy
    **opt-in link** ("Join on the web") → `<OPT_IN_LINK>`.
 5. Gửi thư mời (`invite.md`), theo dõi bằng `tracker.csv`. **14 ngày tính từ khi có đủ 12 tester đã opt-in**,

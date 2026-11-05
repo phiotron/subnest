@@ -53,9 +53,9 @@ Kiểm: sau khi build archive, Xcode → *Generate Privacy Report* phải không
 | Primary category | **Finance** · Secondary: **Productivity** |
 | Content rights: contains, shows or accesses third-party content? | **No** — app chỉ hiện *tên* dịch vụ (văn bản) với tile chữ cái do app tự vẽ, không logo/nội dung của bên thứ ba. (Nếu sau này dùng logo thật → đổi thành Yes và phải có quyền.) |
 | Price | Free (Tier 0), mọi quốc gia |
-| Support URL (bắt buộc) | `<SUPPORT_URL>` — có thể là trang index đã host cùng privacy policy, có ghi email `<SUPPORT_EMAIL>` |
+| Support URL (bắt buộc) | `<SUPPORT_URL>` — có thể là trang index đã host cùng privacy policy, có ghi email `phamphuongphuongnd@gmail.com` |
 | Marketing URL | (tuỳ chọn) `<WEBSITE_URL>` |
-| Copyright | `2026 <DEVELOPER_NAME>` |
+| Copyright | `2026 Phiotron` |
 | License agreement | Apple Standard EULA (terms.*.md đã nhắc) |
 | Localizations | English (U.S.) — bản chính · Vietnamese — từ `store/listing/vi.md` |
 

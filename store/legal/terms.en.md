@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-11-04
 
-By using **Subnest: Subscription Tracker** ("Subnest", "the app"), published by <DEVELOPER_NAME> ("we"), you
+By using **Subnest: Subscription Tracker** ("Subnest", "the app"), published by Phiotron ("we"), you
 agree to these terms. If you got the app from the Apple App Store, Apple's Standard Licensed Application End
 User License Agreement also applies.
 
@@ -22,6 +22,6 @@ User License Agreement also applies.
    missed cancellations or other losses arising from your use of the app.
 7. **Changes.** We may update the app and these terms. Continued use after an update means you accept the new
    terms. The "Last updated" date shows the current version.
-8. **Contact.** <SUPPORT_EMAIL>
+8. **Contact.** phamphuongphuongnd@gmail.com
 
 Our [Privacy Policy](privacy-policy.en.html) explains how the app handles information.

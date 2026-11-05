@@ -3,7 +3,7 @@
 **Cập nhật lần cuối:** 2026-11-04
 
 Chính sách này giải thích cách ứng dụng di động **Subnest: Subscription Tracker** ("Subnest", "ứng dụng") trên
-Android và iOS xử lý thông tin của bạn. Subnest do <DEVELOPER_NAME> ("chúng tôi") phát hành.
+Android và iOS xử lý thông tin của bạn. Subnest do Phiotron ("chúng tôi") phát hành.
 
 ## Tóm tắt
 
@@ -104,4 +104,4 @@ Thay đổi quan trọng (ví dụ bắt đầu thu thập bất kỳ dữ liệ
 
 ## Liên hệ
 
-<DEVELOPER_NAME> — email: <SUPPORT_EMAIL>
+Phiotron — email: phamphuongphuongnd@gmail.com

@@ -3,7 +3,7 @@
 **Last updated:** 2026-11-04
 
 This policy explains how the mobile app **Subnest: Subscription Tracker** ("Subnest", "the app") for Android
-and iOS handles your information. Subnest is published by <DEVELOPER_NAME> ("we", "us").
+and iOS handles your information. Subnest is published by Phiotron ("we", "us").
 
 ## Summary
 
@@ -103,4 +103,4 @@ they take effect.
 
 ## Contact
 
-<DEVELOPER_NAME> — email: <SUPPORT_EMAIL>
+Phiotron — email: phamphuongphuongnd@gmail.com

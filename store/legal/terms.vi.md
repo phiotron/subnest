@@ -2,7 +2,7 @@
 
 **Cập nhật lần cuối:** 2026-11-04
 
-Khi dùng **Subnest: Subscription Tracker** ("Subnest", "ứng dụng") do <DEVELOPER_NAME> ("chúng tôi") phát hành,
+Khi dùng **Subnest: Subscription Tracker** ("Subnest", "ứng dụng") do Phiotron ("chúng tôi") phát hành,
 bạn đồng ý với các điều khoản này. Nếu bạn tải ứng dụng từ Apple App Store, Thoả thuận cấp phép người dùng cuối
 tiêu chuẩn (Standard EULA) của Apple cũng được áp dụng.
 
@@ -22,6 +22,6 @@ tiêu chuẩn (Standard EULA) của Apple cũng được áp dụng.
    khoản bị trừ tiền, việc lỡ huỷ gói hay thiệt hại khác phát sinh từ việc bạn dùng ứng dụng.
 7. **Thay đổi.** Chúng tôi có thể cập nhật ứng dụng và các điều khoản này. Tiếp tục dùng sau khi cập nhật nghĩa là
    bạn chấp nhận điều khoản mới. Ngày "Cập nhật lần cuối" cho biết phiên bản hiện hành.
-8. **Liên hệ.** <SUPPORT_EMAIL>
+8. **Liên hệ.** phamphuongphuongnd@gmail.com
 
 [Chính sách quyền riêng tư](privacy-policy.vi.html) giải thích cách ứng dụng xử lý thông tin.

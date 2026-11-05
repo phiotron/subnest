@@ -26,7 +26,7 @@
 ## 4. Content rating (IARC questionnaire)
 | Câu hỏi | Trả lời | Vì sao |
 |---|---|---|
-| Email address (IARC liên hệ) | `<SUPPORT_EMAIL>` | IARC gửi chứng nhận về email này. |
+| Email address (IARC liên hệ) | `phamphuongphuongnd@gmail.com` | IARC gửi chứng nhận về email này. |
 | Category | **All Other App Types** (utility, productivity, communication, other) | Không phải game, không phải mạng xã hội / tham chiếu. |
 | Violence (any) | No | |
 | Fear / horror | No | |
@@ -88,7 +88,7 @@ Các điểm dễ hỏi khi review Data safety:
 |---|---|
 | App category | **Finance** (phương án thay thế: Productivity — Finance cạnh tranh hơn nhưng đúng ý định tìm kiếm "subscription tracker") |
 | Tags | Budget, Bill reminder, Personal finance, Expense tracker (chọn tối đa 5 trong danh sách Google gợi ý) |
-| Contact email | `<SUPPORT_EMAIL>` (bắt buộc, hiển thị công khai) |
+| Contact email | `phamphuongphuongnd@gmail.com` (bắt buộc, hiển thị công khai) |
 | Website | `<WEBSITE_URL>` (tuỳ chọn — trang host privacy policy) |
 | Price | Free (⚠ app Free không bao giờ chuyển sang Paid được; IAP sau này vẫn thêm được) |
 | Countries | All countries/regions |

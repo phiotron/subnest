@@ -27,11 +27,10 @@ python store/tools/md_to_html.py
 (Trên Windows nếu lỗi in tiếng Việt: đặt `PYTHONIOENCODING=utf-8`.)
 
 ## Việc còn thiếu / người dùng cần quyết
-1. **Email hỗ trợ** `<SUPPORT_EMAIL>` — hiển thị công khai trên cả 2 store, trong privacy policy và nút "Gửi góp ý".
-   Đề xuất một hộp thư riêng cho xưởng (vd một Gmail mới chỉ dùng cho app, hoặc `support@<domain>`), không dùng email cá nhân hay email công việc.
-2. **Tên nhà phát triển** `<DEVELOPER_NAME>` — phải khớp tên developer trên Play Console / Apple (tài khoản cá nhân
-   thì Apple hiện **tên thật**). Bundle là `com.phiotron.*` → nếu Play hiện "Phiotron" thì privacy ghi
-   "Phiotron (<họ tên>)".
+1. ✅ **Email hỗ trợ** = `phamphuongphuongnd@gmail.com` (chốt 2026-11-05) — đã điền vào legal, forms, testers/guide.
+   Hiển thị công khai trên cả 2 store, trong privacy policy và nút "Gửi góp ý" (phiên UI Settings dùng đúng email này).
+2. ✅ **Tên nhà phát triển** = `Phiotron` (chốt 2026-11-05) — đã điền vào legal, forms. Lưu ý: tài khoản Apple cá nhân
+   hiện **tên thật** trên App Store; nếu khác "Phiotron" thì cân nhắc ghi "Phiotron (<họ tên>)" trong privacy.
 3. **Nơi host privacy policy** → điền `<PRIVACY_POLICY_URL>`, `<SUPPORT_URL>`, `<WEBSITE_URL>` (phương án bên dưới).
 4. **API tỷ giá:** privacy policy đang ghi **ExchangeRate-API (open.er-api.com)** theo gợi ý APP.md — phiên A chưa
    chốt (2026-11-04 chưa có code gọi API). Đổi nhà cung cấp → sửa 2 file privacy + chạy `md_to_html.py`.
@@ -57,8 +56,6 @@ redirect được, không phải làm lại nội dung. Tránh B vì không tái
 ## Placeholder cần thay
 | Placeholder | Ở đâu |
 |---|---|
-| `<SUPPORT_EMAIL>` | legal/*.md, forms/*.md, testers/guide.md §A |
-| `<DEVELOPER_NAME>` | legal/*.md, forms/app-store.md |
 | `<PRIVACY_POLICY_URL>`, `<SUPPORT_URL>`, `<WEBSITE_URL>` | forms/*.md (điền trên console) |
 | `<GROUP_LINK>`, `<OPT_IN_LINK>`, `<DEADLINE>`, `<YOUR_NAME>`, `<FEEDBACK_CONTACT>` | testers/*.md |
 
