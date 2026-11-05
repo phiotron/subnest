@@ -4,11 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
-import '../../core/widgets/service_tile.dart';
+import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
+import 'catalog_helpers.dart';
+import 'widgets/library_rows.dart';
+import 'widgets/plan_sheet.dart';
 
-/// S3 Choose a service — PLACEHOLDER UI. Owned by the Add & onboarding session (H).
+/// S3 Choose a service (png 16–19): search (focused on open, name + aliases, accent-insensitive),
+/// category chips, "+ Create a custom service", popular services with regional "from" prices,
+/// and a plan sheet for services with several plans. Picking opens S4 pre-filled.
 class CatalogScreen extends ConsumerStatefulWidget {
   const CatalogScreen({super.key});
 
@@ -17,114 +22,209 @@ class CatalogScreen extends ConsumerStatefulWidget {
 }
 
 class _CatalogScreenState extends ConsumerState<CatalogScreen> {
+  final _search = TextEditingController();
   String _query = '';
   SubscriptionCategory? _category;
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  void _setQuery(String v) => setState(() => _query = v);
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final region = ref.watch(catalogRegionProvider);
     final catalog = ref.watch(catalogProvider).value ?? const <CatalogService>[];
-    final results = catalog
-        .where((s) => (_category == null || s.category == _category) && s.matches(_query))
-        .toList()
-      ..sort((a, b) => (region == 'VN' && a.isVietnamese != b.isVietnamese) ? (a.isVietnamese ? -1 : 1) : 0);
+    final ordered = CatalogView.ordered(catalog, region);
+    final query = _query.trim();
+    final searching = query.isNotEmpty;
 
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          autofocus: true,
-          decoration: InputDecoration(hintText: l.catalogSearchHint, border: InputBorder.none),
-          onChanged: (v) => setState(() => _query = v),
+      appBar: AppTopBar(title: l.catalogTitle, close: true),
+      body: SafeArea(
+        top: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s3),
+              child: _SearchField(controller: _search, hint: l.catalogSearchHint, onChanged: _setQuery),
+            ),
+            if (!searching) _chips(context),
+            Expanded(
+              child: ListView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s6),
+                children: searching
+                    ? _searchResults(context, ordered, query, region)
+                    : _browse(context, ordered, region),
+              ),
+            ),
+          ],
         ),
       ),
-      body: Column(
+    );
+  }
+
+  Widget _chips(BuildContext context) {
+    final l = context.l10n;
+    Widget chip(String label, SubscriptionCategory? value) => Padding(
+      padding: const EdgeInsets.only(right: AppSpace.s2),
+      child: AppChip(
+        label: label,
+        selected: _category == value,
+        showCheck: false,
+        onTap: () => setState(() => _category = value),
+      ),
+    );
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s2, AppSpace.s2),
+      child: Row(
         children: [
-          SizedBox(
-            height: 48,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: ChoiceChip(
-                    label: Text(l.commonCategoryAll),
-                    selected: _category == null,
-                    onSelected: (_) => setState(() => _category = null),
-                  ),
-                ),
-                for (final c in SubscriptionCategory.values)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: ChoiceChip(
-                      label: Text(l.category(c)),
-                      selected: _category == c,
-                      onSelected: (_) => setState(() => _category = c),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.add_circle_outline),
-                  title: Text(_query.trim().isEmpty ? l.catalogCustom : l.catalogCustomNamed(_query.trim())),
-                  onTap: () => context.push(
-                    AppRoutes.subscriptionNew(name: _query.trim().isEmpty ? null : _query.trim()),
-                  ),
-                ),
-                for (final s in results)
-                  ListTile(
-                    leading: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram),
-                    title: Text(s.name),
-                    subtitle: Text(_fromLabel(context, s, region)),
-                    onTap: () => _pick(context, s, region),
-                  ),
-              ],
-            ),
-          ),
+          chip(l.commonCategoryAll, null),
+          for (final c in SubscriptionCategory.values) chip(l.category(c), c),
         ],
       ),
     );
   }
 
-  String _fromLabel(BuildContext context, CatalogService s, String region) {
+  List<Widget> _browse(BuildContext context, List<CatalogService> ordered, String region) {
     final l = context.l10n;
-    final from = s.fromPerMonth(region);
-    if (from == null) return l.category(s.category);
-    return '${l.category(s.category)} · ${l.catalogFromPerMonth(l.amount(from.$2, from.$1))}';
+    final custom = CustomServiceRow(
+      title: l.catalogCustom,
+      subtitle: l.catalogCustomSub,
+      onTap: () => context.push(AppRoutes.subscriptionNew()),
+    );
+    if (_category != null) {
+      return [custom, ..._rows(context, ordered.where((s) => s.category == _category), region)];
+    }
+    final popular = ordered.take(CatalogView.popularCount).toList();
+    final rest = ordered.skip(CatalogView.popularCount);
+    return [
+      custom,
+      SectionHeader(
+        label: region == 'VN' ? l.catalogPopularVietnam : l.catalogPopular,
+        padding: const EdgeInsets.only(top: AppSpace.s4, bottom: AppSpace.s1),
+      ),
+      ..._rows(context, popular, region),
+      if (rest.isNotEmpty) ...[
+        SectionHeader(
+          label: l.catalogMore,
+          padding: const EdgeInsets.only(top: AppSpace.s6, bottom: AppSpace.s1),
+        ),
+        ..._rows(context, rest, region),
+      ],
+    ];
   }
 
-  Future<void> _pick(BuildContext context, CatalogService s, String region) async {
-    var plan = s.plans.first;
-    if (s.plans.length > 1) {
-      final chosen = await showModalBottomSheet<CatalogPlan>(
-        context: context,
-        showDragHandle: true,
-        builder: (ctx) => SafeArea(
-          child: ListView(
-            shrinkWrap: true,
+  List<Widget> _searchResults(BuildContext context, List<CatalogService> ordered, String query, String region) {
+    final l = context.l10n;
+    final c = context.colors;
+    final hits = CatalogView.search(ordered, query);
+    void create() => context.push(AppRoutes.subscriptionNew(name: query));
+    if (hits.isEmpty) {
+      return [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpace.s2, AppSpace.s8, AppSpace.s2, AppSpace.s5),
+          child: Column(
             children: [
-              ListTile(title: Text(ctx.l10n.catalogChoosePlan(s.name))),
-              for (final p in s.plans)
-                ListTile(
-                  title: Text(p.name),
-                  subtitle: Text(ctx.l10n.cycle(p.cycle)),
-                  trailing: p.priceFor(region) == null
-                      ? null
-                      : Text(ctx.l10n.amount(p.priceFor(region)!.amount, p.priceFor(region)!.currency)),
-                  onTap: () => Navigator.pop(ctx, p),
-                ),
+              ExcludeSemantics(child: Icon(AppIcons.search, size: 28, color: c.inkMuted)),
+              const SizedBox(height: AppSpace.s3),
+              Text(
+                l.catalogNoResultTitle(query),
+                textAlign: TextAlign.center,
+                style: AppType.titleSm.copyWith(color: c.ink),
+              ),
+              const SizedBox(height: AppSpace.s1),
+              Text(
+                l.catalogNoResultBody,
+                textAlign: TextAlign.center,
+                style: AppType.meta.copyWith(color: c.inkMuted),
+              ),
             ],
           ),
         ),
-      );
-      if (chosen == null) return;
-      plan = chosen;
+        CustomServiceRow(title: l.catalogCreateNamed(query), subtitle: l.catalogCustomService, onTap: create),
+      ];
     }
-    if (context.mounted) context.push(AppRoutes.subscriptionNew(serviceId: s.id, planId: plan.id));
+    return [
+      Semantics(
+        liveRegion: true,
+        child: SectionHeader(
+          label: l.catalogResults(hits.length),
+          padding: const EdgeInsets.only(top: AppSpace.s2, bottom: AppSpace.s1),
+        ),
+      ),
+      ..._rows(context, hits, region),
+      Divider(height: 1, thickness: 1, color: context.colors.line),
+      CustomServiceRow(title: l.catalogCustomNamed(query), subtitle: l.catalogCustomService, onTap: create),
+    ];
+  }
+
+  Iterable<Widget> _rows(BuildContext context, Iterable<CatalogService> services, String region) sync* {
+    final l = context.l10n;
+    var first = true;
+    for (final s in services) {
+      if (!first) yield Divider(height: 1, thickness: 1, color: context.colors.line);
+      first = false;
+      yield LibraryRow(service: s, meta: CatalogView.rowMeta(l, s, region), onTap: () => _pick(s, region));
+    }
+  }
+
+  Future<void> _pick(CatalogService s, String region) async {
+    FocusScope.of(context).unfocus();
+    final plans = CatalogView.plans(s, region);
+    CatalogPlan? plan = plans.firstOrNull;
+    if (plans.length > 1) {
+      plan = await showPlanSheet(context, service: s, region: region);
+      if (plan == null) return;
+    }
+    if (!mounted) return;
+    await context.push(AppRoutes.subscriptionNew(serviceId: s.id, planId: plan?.id));
+  }
+}
+
+/// Search box (design `.search.focus`): `surface` field, search icon, clear button when filled.
+/// Focused on open so the keyboard is up (S3 spec).
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.controller, required this.hint, required this.onChanged});
+
+  final TextEditingController controller;
+  final String hint;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = context.l10n;
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller,
+      builder: (context, value, _) => TextField(
+        controller: controller,
+        autofocus: true,
+        onChanged: onChanged,
+        textInputAction: TextInputAction.search,
+        style: AppType.body.copyWith(color: c.ink),
+        decoration: InputDecoration(
+          hintText: hint,
+          prefixIcon: Icon(AppIcons.search, size: 20, color: c.inkMuted),
+          suffixIcon: value.text.isEmpty
+              ? null
+              : IconButton(
+                  tooltip: l.catalogClearSearch,
+                  icon: Icon(AppIcons.clear, size: 20, color: c.inkMuted),
+                  onPressed: () {
+                    controller.clear();
+                    onChanged('');
+                  },
+                ),
+        ),
+      ),
+    );
   }
 }

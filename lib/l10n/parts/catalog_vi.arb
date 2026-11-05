@@ -1,7 +1,24 @@
 {
-  "catalogSearchHint": "Tìm dịch vụ",
-  "catalogCustom": "+ Tạo dịch vụ tuỳ chỉnh",
+  "catalogTitle": "Thêm subscription",
+  "catalogSearchHint": "Tìm trong 100+ dịch vụ",
+  "catalogClearSearch": "Xoá tìm kiếm",
+  "catalogCustom": "Tạo dịch vụ tuỳ chỉnh",
+  "catalogCustomSub": "Cho dịch vụ không có trong thư viện",
   "catalogCustomNamed": "Không thấy? Tạo “{name}”",
-  "catalogFromPerMonth": "từ {amount}/tháng",
-  "catalogChoosePlan": "Chọn gói {name}"
+  "catalogCreateNamed": "Tạo “{name}”",
+  "catalogCustomService": "Dịch vụ tuỳ chỉnh",
+  "catalogPopularVietnam": "Phổ biến ở Việt Nam",
+  "catalogPopular": "Phổ biến",
+  "catalogMore": "Dịch vụ khác",
+  "catalogResults": "{count} kết quả",
+  "catalogNoResultTitle": "Không thấy “{name}”",
+  "catalogNoResultBody": "Tạo mới — bạn tự chọn màu và chữ cái.",
+  "catalogFrom": "từ {price}",
+  "catalogPlans": "{count} gói",
+  "catalogAddService": "Thêm {name}",
+  "catalogPlanSubVietnam": "Chọn gói · giá gợi ý tại Việt Nam",
+  "catalogPlanSub": "Chọn gói · giá gợi ý",
+  "catalogPlanMembers": "Tối đa {count} người",
+  "catalogPlanNote": "Bạn có thể sửa giá ở bước sau.",
+  "catalogContinueWith": "Tiếp tục với {plan}"
 }

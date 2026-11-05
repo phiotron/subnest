@@ -300,10 +300,19 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get catalogSearchHint => 'Tìm dịch vụ';
+  String get catalogTitle => 'Thêm subscription';
 
   @override
-  String get catalogCustom => '+ Tạo dịch vụ tuỳ chỉnh';
+  String get catalogSearchHint => 'Tìm trong 100+ dịch vụ';
+
+  @override
+  String get catalogClearSearch => 'Xoá tìm kiếm';
+
+  @override
+  String get catalogCustom => 'Tạo dịch vụ tuỳ chỉnh';
+
+  @override
+  String get catalogCustomSub => 'Cho dịch vụ không có trong thư viện';
 
   @override
   String catalogCustomNamed(String name) {
@@ -311,32 +320,115 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String catalogFromPerMonth(String amount) {
-    return 'từ $amount/tháng';
+  String catalogCreateNamed(String name) {
+    return 'Tạo “$name”';
   }
 
   @override
-  String catalogChoosePlan(String name) {
-    return 'Chọn gói $name';
+  String get catalogCustomService => 'Dịch vụ tuỳ chỉnh';
+
+  @override
+  String get catalogPopularVietnam => 'Phổ biến ở Việt Nam';
+
+  @override
+  String get catalogPopular => 'Phổ biến';
+
+  @override
+  String get catalogMore => 'Dịch vụ khác';
+
+  @override
+  String catalogResults(int count) {
+    return '$count kết quả';
   }
 
   @override
-  String confirmTitle(String name, String date) {
-    return '$name · kỳ $date';
+  String catalogNoResultTitle(String name) {
+    return 'Không thấy “$name”';
   }
 
   @override
-  String confirmMorePending(int count) {
+  String get catalogNoResultBody => 'Tạo mới — bạn tự chọn màu và chữ cái.';
+
+  @override
+  String catalogFrom(String price) {
+    return 'từ $price';
+  }
+
+  @override
+  String catalogPlans(int count) {
+    return '$count gói';
+  }
+
+  @override
+  String catalogAddService(String name) {
+    return 'Thêm $name';
+  }
+
+  @override
+  String get catalogPlanSubVietnam => 'Chọn gói · giá gợi ý tại Việt Nam';
+
+  @override
+  String get catalogPlanSub => 'Chọn gói · giá gợi ý';
+
+  @override
+  String catalogPlanMembers(int count) {
+    return 'Tối đa $count người';
+  }
+
+  @override
+  String get catalogPlanNote => 'Bạn có thể sửa giá ở bước sau.';
+
+  @override
+  String catalogContinueWith(String plan) {
+    return 'Tiếp tục với $plan';
+  }
+
+  @override
+  String confirmQuestion(String name) {
+    return 'Bạn đã trả $name chưa?';
+  }
+
+  @override
+  String get confirmDueToday => 'Đến hạn hôm nay';
+
+  @override
+  String get confirmOverdue => 'Quá hạn';
+
+  @override
+  String confirmMoreAfter(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Còn $count kỳ chưa xác nhận',
+      other: 'Còn $count kỳ sau',
     );
     return '$_temp0';
   }
 
   @override
+  String confirmPeriodOf(String date) {
+    return 'Kỳ $date';
+  }
+
+  @override
   String get confirmAmount => 'Số tiền đã trả';
+
+  @override
+  String confirmYourShare(String price, int count) {
+    return 'Phần của bạn · gói $price ÷ $count';
+  }
+
+  @override
+  String get confirmCurrentPrice => 'Giá hiện tại · sửa nếu đã đổi';
+
+  @override
+  String confirmMovesNext(String date) {
+    return 'Xác nhận xong, ngày gia hạn tiếp theo là $date.';
+  }
+
+  @override
+  String confirmNextUp(String date) {
+    return 'Tiếp theo: kỳ $date, cũng đang chờ.';
+  }
 
   @override
   String get confirmPaid => 'Đã trả';
@@ -348,28 +440,94 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmLater => 'Để sau';
 
   @override
-  String confirmNext(String date) {
+  String get confirmAmountRequired => 'Nhập số tiền bạn đã trả.';
+
+  @override
+  String get confirmSaved => 'Đã lưu thanh toán';
+
+  @override
+  String get confirmSkippedTitle => 'Đã ghi là không trả';
+
+  @override
+  String confirmNextPeriod(String date) {
     return 'Kỳ tới: $date';
   }
 
   @override
-  String confirmNothing(String name) {
-    return '$name không có kỳ nào cần xác nhận.';
+  String get confirmDone => 'Xong';
+
+  @override
+  String confirmSavedStep(String date, String amount) {
+    return 'Đã lưu kỳ $date · $amount';
+  }
+
+  @override
+  String confirmSkippedStep(String date) {
+    return 'Kỳ $date: đã ghi không trả';
+  }
+
+  @override
+  String get confirmNothingTitle => 'Không có gì cần xác nhận';
+
+  @override
+  String confirmNothingBody(String name, String date) {
+    return '$name đã xác nhận hết. Gia hạn tiếp theo: $date.';
+  }
+
+  @override
+  String confirmNothingCancelled(String name) {
+    return '$name đã huỷ nên không có gì cần xác nhận.';
   }
 
   @override
   String get confirmAwaitingTitle => 'Chờ xác nhận';
 
   @override
-  String get confirmAllDone => 'Bạn đã xác nhận hết 🎉';
+  String get confirmAwaitingIntro =>
+      'Kỳ cũ nhất lên trước. Mỗi kỳ được xác nhận lần lượt, nên ngày gia hạn chỉ nhảy khi kỳ trước đã xong.';
 
   @override
-  String confirmAll(String amount) {
+  String get confirmAwaitingFooter =>
+      'Chạm vào một dòng để sửa số tiền hoặc chọn không trả.';
+
+  @override
+  String confirmAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days ngày trước',
+      zero: 'hôm nay',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String confirmAfter(String date) {
+    return 'Sau kỳ $date';
+  }
+
+  @override
+  String confirmMarkPaid(String name, String date) {
+    return 'Đánh dấu $name kỳ $date đã trả';
+  }
+
+  @override
+  String confirmQueued(String date) {
+    return 'Xác nhận kỳ $date trước';
+  }
+
+  @override
+  String confirmQuickSaved(String name, String date) {
+    return 'Đã lưu $name kỳ $date là đã trả';
+  }
+
+  @override
+  String confirmAllButton(String amount) {
     return 'Xác nhận tất cả · $amount';
   }
 
   @override
-  String confirmAllDialogTitle(int count) {
+  String confirmAllTitle(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -379,8 +537,36 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get confirmAllDialogBody =>
-      'Tất cả sẽ được đánh dấu đã trả theo giá hiện tại.';
+  String get confirmAllBody => 'Mỗi kỳ được lưu là đã trả theo giá hiện tại:';
+
+  @override
+  String get confirmAllFooter => 'Bạn vẫn sửa được từng khoản sau này.';
+
+  @override
+  String get confirmAllAction => 'Xác nhận tất cả';
+
+  @override
+  String get confirmAllCancel => 'Huỷ';
+
+  @override
+  String confirmAllSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Đã lưu $count khoản',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get confirmCaughtUp => 'Bạn đã xác nhận hết 🎉';
+
+  @override
+  String get confirmCaughtUpBody =>
+      'Kỳ mới sẽ hiện ở đây vào đúng ngày đến hạn.';
+
+  @override
+  String get confirmBackHome => 'Về Tổng quan';
 
   @override
   String get coreRelToday => 'hôm nay';
@@ -475,42 +661,74 @@ class AppLocalizationsVi extends AppLocalizations {
   String get coreEditAmount => 'Sửa số tiền';
 
   @override
-  String get homeAdd => 'Thêm subscription';
+  String get homeTitle => 'Tổng quan';
 
   @override
-  String homeCounts(int active, int trial) {
-    return '$active đang trả · $trial dùng thử';
+  String get homeSearch => 'Tìm subscription';
+
+  @override
+  String get homeSearchHint => 'Tìm theo tên';
+
+  @override
+  String get homeSearchClose => 'Đóng tìm kiếm';
+
+  @override
+  String homeSearchEmpty(String query) {
+    return 'Không có subscription nào khớp “$query”.';
   }
 
   @override
-  String homeTrialSoon(String amount) {
-    return '$amount/tháng khi hết dùng thử';
+  String get homeMonthlySpend => 'Chi mỗi tháng';
+
+  @override
+  String get homeYearlySpend => 'Chi mỗi năm';
+
+  @override
+  String homeActiveCount(int count) {
+    return '$count đang trả';
   }
 
   @override
-  String get homeRatesOffline => 'Tỷ giá gần đúng (chưa cập nhật)';
+  String homeTrialCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dùng thử',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeBiggest(String name, int percent) {
+    return 'Lớn nhất: $name · $percent%';
+  }
 
   @override
   String homeRatesStale(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: 'Tỷ giá cập nhật $days ngày trước',
+      other: 'Offline · tỷ giá cập nhật $days ngày trước',
+      one: 'Offline · tỷ giá cập nhật hôm qua',
     );
     return '$_temp0';
   }
 
   @override
-  String get homeRatesFresh => 'Tỷ giá cập nhật hôm nay';
+  String get homeRatesNever => 'Offline · tỷ giá ước tính';
 
   @override
-  String get homeNotificationsOff => 'Nhắc nhở đang tắt';
+  String get homeRemindersOffTitle => 'Nhắc nhở đang tắt';
 
   @override
-  String get homeEnable => 'Bật lại';
+  String get homeRemindersOffBody =>
+      'Bạn sẽ không được báo trước khi gia hạn hay hết dùng thử.';
 
   @override
-  String homeAwaiting(int count) {
+  String get homeRemindersTurnOn => 'Bật lại';
+
+  @override
+  String homeAwaitingTitle(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -520,10 +738,10 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get homeView => 'Xem';
+  String get homeAwaitingReview => 'Xem';
 
   @override
-  String homeTrialEnding(String name, int days) {
+  String homeTrialEnds(String name, int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
@@ -535,38 +753,78 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String homeTrialThen(String price, String date) {
+    return 'Sau đó $price từ $date';
+  }
+
+  @override
   String get homeHowToCancel => 'Cách huỷ';
 
   @override
-  String get homeUpcoming => '7 ngày tới';
+  String get homeKeepIt => 'Giữ lại';
+
+  @override
+  String homeKept(String name, String date) {
+    return 'Giữ $name. Lần trừ đầu vào $date.';
+  }
+
+  @override
+  String get homeUpcoming => 'Sắp tới · 7 ngày';
+
+  @override
+  String get homeCalendar => 'Lịch';
+
+  @override
+  String get homeFirstCharge => 'Lần trừ đầu';
+
+  @override
+  String get homeSubscriptions => 'Subscription của bạn';
 
   @override
   String get homeTabActive => 'Đang trả';
 
   @override
-  String get homeTabTrial => 'Dùng thử';
+  String get homeTabTrials => 'Dùng thử';
 
   @override
   String get homeTabCancelled => 'Đã huỷ';
 
   @override
-  String get homeTabEmpty => 'Chưa có gì ở đây.';
+  String get homeSortTitle => 'Sắp xếp subscription';
 
   @override
-  String get homeSort => 'Sắp xếp';
+  String get homeSortDue => 'Ngày gia hạn';
 
   @override
-  String get homeSortDueDate => 'Ngày gia hạn';
+  String get homeSortDueHint =>
+      'Gần nhất trước · khoản chờ xác nhận luôn ở trên';
 
   @override
   String get homeSortPrice => 'Giá';
 
   @override
+  String get homeSortPriceHint => 'Chi phí quy tháng cao nhất trước';
+
+  @override
   String get homeSortName => 'Tên';
 
   @override
-  String homeSavings(String amount) {
-    return 'Bạn đang tiết kiệm $amount/năm';
+  String get homeSortNameHint => 'A → Z';
+
+  @override
+  String get homeSortDone => 'Xong';
+
+  @override
+  String homeSortLabel(String by) {
+    return 'Sắp xếp theo $by';
+  }
+
+  @override
+  String get homeSaving => 'Bạn đang tiết kiệm';
+
+  @override
+  String homePerYear(String amount) {
+    return '$amount/năm';
   }
 
   @override
@@ -575,10 +833,38 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get homeEmpty => 'Mọi subscription, một tổ.';
+  String homeTrialEndsWhen(String when) {
+    return 'hết $when';
+  }
 
   @override
-  String get homeAddFirst => 'Thêm subscription đầu tiên';
+  String get homeTrialBadge => 'Dùng thử';
+
+  @override
+  String get homeEmptyActive => 'Chưa có subscription đang trả.';
+
+  @override
+  String get homeEmptyTrials => 'Không có dùng thử nào.';
+
+  @override
+  String get homeEmptyCancelled => 'Chưa huỷ subscription nào.';
+
+  @override
+  String get homeTrialsNote =>
+      'Dùng thử chưa tính vào tổng chi cho tới khi chuyển sang trả phí.';
+
+  @override
+  String get homeEmptyTitle => 'Thêm subscription đầu tiên';
+
+  @override
+  String get homeEmptyBody =>
+      'Chọn từ 100+ dịch vụ phổ biến — thường chỉ 3 chạm.';
+
+  @override
+  String get homeBrowse => 'Xem thư viện dịch vụ';
+
+  @override
+  String get homeAdd => 'Thêm subscription';
 
   @override
   String get insightsRangeMonth => 'Tháng này';
@@ -817,50 +1103,142 @@ class AppLocalizationsVi extends AppLocalizations {
   String get onboardingSkip => 'Bỏ qua';
 
   @override
+  String onboardingStep(int step, int total) {
+    return 'Bước $step/$total';
+  }
+
+  @override
   String get onboardingWelcomeTitle => 'Mọi subscription, một tổ';
 
   @override
   String get onboardingBenefitRemind => 'Nhắc trước khi bị trừ tiền';
 
   @override
+  String get onboardingBenefitRemindSub =>
+      'Trước 3 ngày, và trước khi hết dùng thử.';
+
+  @override
   String get onboardingBenefitTotal => 'Biết chính xác mỗi tháng tốn bao nhiêu';
+
+  @override
+  String get onboardingBenefitTotalSub =>
+      'Theo tiền tệ của bạn, gói chia sẻ tính đúng phần.';
 
   @override
   String get onboardingBenefitPrivate => 'Riêng tư — dữ liệu chỉ trên máy bạn';
 
   @override
+  String get onboardingBenefitPrivateSub =>
+      'Không tài khoản, không ngân hàng, không theo dõi.';
+
+  @override
   String get onboardingStart => 'Bắt đầu';
 
   @override
-  String get onboardingCurrencyTitle => 'Tiền tệ chính';
+  String get onboardingCurrencyTitle => 'Tiền tệ chính của bạn';
 
   @override
   String get onboardingCurrencyHint =>
       'Dùng để cộng tổng chi. Mỗi subscription vẫn có tiền tệ riêng.';
 
   @override
-  String get onboardingQuickAddTitle => 'Bạn đang dùng gì?';
+  String get onboardingCurrencySuggestedVn => 'Gợi ý theo vùng: Việt Nam';
 
   @override
-  String get onboardingLater => 'Để sau';
+  String get onboardingCurrencySuggested => 'Gợi ý theo vùng của máy';
 
   @override
-  String onboardingSelected(int count) {
+  String get onboardingCurrencyChosen => 'Bạn đã chọn';
+
+  @override
+  String get onboardingCurrencyChange => 'Chọn tiền tệ khác';
+
+  @override
+  String get onboardingCurrencyRatesNote =>
+      'Tỷ giá tự cập nhật mỗi ngày khi có mạng. Bạn có thể tự đặt trong Cài đặt.';
+
+  @override
+  String get onboardingCurrencySheetTitle => 'Tiền tệ chính';
+
+  @override
+  String get onboardingCurrencySearch => 'Tìm tiền tệ hoặc quốc gia';
+
+  @override
+  String get onboardingPickTitle => 'Bạn đang dùng gì?';
+
+  @override
+  String get onboardingPickSearch => 'Tìm trong 100+ dịch vụ';
+
+  @override
+  String onboardingPickSelected(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Thêm $count · Tiếp tục',
-      zero: 'Tiếp tục',
+      other: 'Đã chọn $count',
+      zero: 'Chưa chọn dịch vụ nào',
     );
     return '$_temp0';
   }
 
   @override
-  String get onboardingRemindersTitle => 'Bật nhắc nhở';
+  String onboardingPickNoMatch(String name) {
+    return 'Không thấy “$name”. Bạn có thể thêm sau bằng nút +.';
+  }
 
   @override
-  String get onboardingRemindersExample =>
-      '“Netflix gia hạn sau 3 ngày — 260.000đ”';
+  String onboardingPickMeta(String price, String cycle) {
+    return '$price · $cycle';
+  }
+
+  @override
+  String get onboardingPickEdit => 'Sửa';
+
+  @override
+  String onboardingPickEditLabel(String name) {
+    return 'Sửa giá và chu kỳ của $name';
+  }
+
+  @override
+  String get onboardingLater => 'Để sau';
+
+  @override
+  String get onboardingQuickPlan => 'Gói';
+
+  @override
+  String get onboardingQuickPrice => 'Giá';
+
+  @override
+  String get onboardingQuickCycle => 'Chu kỳ';
+
+  @override
+  String get onboardingQuickRemove => 'Không thêm';
+
+  @override
+  String get onboardingRemindersTitle => 'Báo trước mỗi lần trừ tiền';
+
+  @override
+  String onboardingRemindersBody(String time) {
+    return 'Subnest nhắc trước 3 ngày khi sắp gia hạn hoặc hết dùng thử, lúc $time. Đổi bất cứ lúc nào.';
+  }
+
+  @override
+  String get onboardingDemoNow => 'bây giờ';
+
+  @override
+  String get onboardingDemoAgo => '2 ngày trước';
+
+  @override
+  String onboardingDemoRenews(String name, String price) {
+    return '$name gia hạn sau 3 ngày — $price';
+  }
+
+  @override
+  String onboardingDemoTrial(String name) {
+    return 'Dùng thử $name hết sau 3 ngày.';
+  }
+
+  @override
+  String get onboardingDemoLabel => 'Ví dụ thông báo nhắc';
 
   @override
   String get onboardingEnableReminders => 'Bật nhắc nhở';
@@ -1321,46 +1699,169 @@ class AppLocalizationsVi extends AppLocalizations {
       'Dữ liệu của bạn chỉ nằm trên máy này. Subnest không thu thập gì.';
 
   @override
-  String subscriptionDetailMyShare(String share, String price, int count) {
-    return 'Phần của bạn $share · gói $price ÷ $count';
+  String get subscriptionDetailEdit => 'Sửa';
+
+  @override
+  String get subscriptionDetailStatusActive => 'Đang trả';
+
+  @override
+  String subscriptionDetailStatusTrial(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Dùng thử · còn $days ngày',
+      zero: 'Dùng thử · hết hôm nay',
+    );
+    return '$_temp0';
   }
 
   @override
-  String subscriptionDetailAwaiting(int count) {
+  String get subscriptionDetailStatusCancelled => 'Đã huỷ';
+
+  @override
+  String subscriptionDetailYourShare(String price, int count) {
+    return 'Phần của bạn · gói $price ÷ $count';
+  }
+
+  @override
+  String subscriptionDetailAwaitingTitle(int count, String date) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count kỳ cần xác nhận',
+      other: '$count kỳ đang chờ xác nhận, từ $date',
+      one: 'Kỳ $date đang chờ xác nhận',
     );
     return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailAwaitingBody(String amount) {
+    return 'Bạn đã trả $amount chưa? Ngày gia hạn tiếp chỉ chạy khi bạn xác nhận.';
   }
 
   @override
   String get subscriptionDetailConfirm => 'Xác nhận';
 
   @override
-  String get subscriptionDetailNextDue => 'Ngày gia hạn tiếp';
+  String subscriptionDetailTrialEnds(String date) {
+    return 'Hết dùng thử $date';
+  }
 
   @override
-  String get subscriptionDetailTrialEnds => 'Hết dùng thử';
+  String subscriptionDetailTrialBody(String price) {
+    return 'Sau đó gia hạn $price. Huỷ trước ngày này nếu bạn không muốn dùng tiếp.';
+  }
+
+  @override
+  String get subscriptionDetailHowToCancel => 'Cách huỷ';
+
+  @override
+  String get subscriptionDetailKeepIt => 'Giữ lại';
+
+  @override
+  String subscriptionDetailKept(String name, String date) {
+    return 'Giữ $name. Lần trừ đầu vào $date.';
+  }
+
+  @override
+  String subscriptionDetailSaving(String amount) {
+    return 'Tiết kiệm $amount/năm';
+  }
+
+  @override
+  String subscriptionDetailCancelledBody(String date) {
+    return 'Đã huỷ $date. Không còn nhắc nữa.';
+  }
+
+  @override
+  String get subscriptionDetailRestore => 'Khôi phục subscription';
+
+  @override
+  String subscriptionDetailRestored(String date) {
+    return 'Đã khôi phục. Gia hạn tiếp theo: $date.';
+  }
+
+  @override
+  String get subscriptionDetailNextRenewal => 'Gia hạn tiếp theo';
+
+  @override
+  String get subscriptionDetailFirstCharge => 'Lần trừ đầu';
+
+  @override
+  String get subscriptionDetailWaits => 'Chờ bạn xác nhận';
 
   @override
   String get subscriptionDetailCycle => 'Chu kỳ';
 
   @override
-  String get subscriptionDetailReminder => 'Nhắc trước';
+  String subscriptionDetailEveryDay(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mỗi $count ngày',
+      one: 'Mỗi ngày',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailEveryWeek(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mỗi $count tuần',
+      one: 'Mỗi tuần',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailEveryMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mỗi $count tháng',
+      one: 'Mỗi tháng',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailEveryYear(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mỗi $count năm',
+      one: 'Mỗi năm',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionDetailRemindMe => 'Nhắc trước';
+
+  @override
+  String subscriptionDetailRemindValue(int days, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days ngày, lúc $time',
+      zero: 'Đúng ngày, lúc $time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionDetailRemindOff => 'Tắt';
 
   @override
   String get subscriptionDetailCategory => 'Danh mục';
 
   @override
-  String get subscriptionDetailPaymentMethod => 'Phương thức thanh toán';
+  String get subscriptionDetailPaymentMethod => 'Thanh toán bằng';
 
   @override
-  String get subscriptionDetailStarted => 'Bắt đầu từ';
-
-  @override
-  String get subscriptionDetailCancelledOn => 'Đã huỷ ngày';
+  String get subscriptionDetailSince => 'Bắt đầu từ';
 
   @override
   String get subscriptionDetailTotalPaid => 'Tổng đã trả';
@@ -1375,27 +1876,57 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionDetailPaid => 'Đã trả';
 
   @override
-  String get subscriptionDetailSkipped => 'Không trả kỳ này';
+  String get subscriptionDetailDidntPay => 'Không trả';
 
   @override
-  String get subscriptionDetailNoHistory => 'Chưa có thanh toán nào.';
+  String subscriptionDetailNoHistory(String date) {
+    return 'Chưa có thanh toán — lần trừ đầu vào $date.';
+  }
 
   @override
-  String get subscriptionDetailHowToCancel => 'Cách huỷ dịch vụ này';
+  String get subscriptionDetailNoHistoryCancelled => 'Chưa có thanh toán nào.';
+
+  @override
+  String subscriptionDetailEditPayment(String date) {
+    return 'Sửa thanh toán kỳ $date';
+  }
+
+  @override
+  String subscriptionDetailConfirmPeriod(String date) {
+    return 'Xác nhận kỳ $date';
+  }
+
+  @override
+  String get subscriptionDetailHowToCancelRow => 'Cách huỷ dịch vụ này';
+
+  @override
+  String subscriptionDetailOpens(String host) {
+    return 'Mở trang tài khoản $host';
+  }
+
+  @override
+  String subscriptionDetailLinkFailed(String host) {
+    return 'Không mở được $host.';
+  }
 
   @override
   String get subscriptionDetailMarkCancelled => 'Đánh dấu đã huỷ';
 
   @override
-  String get subscriptionDetailRestore => 'Khôi phục';
+  String get subscriptionDetailDelete => 'Xoá subscription';
 
   @override
-  String subscriptionDetailSaved(String amount) {
-    return 'Tuyệt! Bạn tiết kiệm $amount/năm';
+  String subscriptionDetailCancelTitle(String name) {
+    return 'Đánh dấu $name đã huỷ?';
   }
 
   @override
-  String get subscriptionDetailEditAmount => 'Số tiền đã trả';
+  String subscriptionDetailCancelBody(String amount) {
+    return 'Subnest ngừng nhắc và cộng $amount/năm vào khoản tiết kiệm. Bạn có thể khôi phục bất cứ lúc nào.';
+  }
+
+  @override
+  String get subscriptionDetailNotYet => 'Chưa';
 
   @override
   String subscriptionDetailDeleteTitle(String name) {
@@ -1403,8 +1934,80 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get subscriptionDetailDeleteBody =>
-      'Thao tác này xoá subscription và toàn bộ lịch sử thanh toán. Muốn giữ lịch sử, hãy đánh dấu đã huỷ.';
+  String subscriptionDetailDeleteBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Subscription này và $count khoản thanh toán sẽ bị xoá vĩnh viễn. Muốn tắt nhắc mà vẫn giữ lịch sử, hãy đánh dấu đã huỷ.',
+      zero: 'Subscription này sẽ bị xoá vĩnh viễn. Muốn tắt nhắc mà vẫn giữ lại, hãy đánh dấu đã huỷ.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionDetailDeleteAction => 'Xoá';
+
+  @override
+  String subscriptionDetailDeleted(String name) {
+    return 'Đã xoá $name';
+  }
+
+  @override
+  String subscriptionDetailCelebrateCancelled(String name) {
+    return 'Đã huỷ $name';
+  }
+
+  @override
+  String get subscriptionDetailCelebrateYear => 'tiết kiệm mỗi năm';
+
+  @override
+  String get subscriptionDetailCelebrateNow => 'Giờ bạn đang tiết kiệm';
+
+  @override
+  String subscriptionDetailPerYear(String amount) {
+    return '$amount/năm';
+  }
+
+  @override
+  String get subscriptionDetailSeeCancelled => 'Xem mục đã huỷ';
+
+  @override
+  String subscriptionDetailPaymentTitle(String date) {
+    return 'Thanh toán · $date';
+  }
+
+  @override
+  String get subscriptionDetailAmountPaid => 'Số tiền đã trả';
+
+  @override
+  String subscriptionDetailWas(String old, String total) {
+    return 'Trước là $old — lưu xong Tổng đã trả thành $total.';
+  }
+
+  @override
+  String get subscriptionDetailAmountRequired => 'Nhập số tiền bạn đã trả.';
+
+  @override
+  String get subscriptionDetailPaidOn => 'Ngày trả';
+
+  @override
+  String get subscriptionDetailPaidWith => 'Trả bằng';
+
+  @override
+  String get subscriptionDetailSave => 'Lưu';
+
+  @override
+  String get subscriptionDetailMarkNotPaid => 'Chuyển thành không trả';
+
+  @override
+  String get subscriptionDetailCancel => 'Huỷ';
+
+  @override
+  String get subscriptionDetailPaymentUpdated => 'Đã cập nhật thanh toán';
+
+  @override
+  String get subscriptionDetailMarkedNotPaid => 'Đã chuyển thành không trả';
 
   @override
   String get subscriptionFormAddTitle => 'Subscription mới';
@@ -1413,10 +2016,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormEditTitle => 'Sửa subscription';
 
   @override
-  String get subscriptionFormName => 'Tên';
+  String get subscriptionFormNameHint => 'Tên dịch vụ';
 
   @override
-  String get subscriptionFormNameRequired => 'Nhập tên';
+  String get subscriptionFormNameRequired => 'Nhập tên dịch vụ';
+
+  @override
+  String get subscriptionFormEditTile => 'Đổi biểu tượng';
+
+  @override
+  String subscriptionFormPlan(String name) {
+    return 'Gói: $name';
+  }
 
   @override
   String get subscriptionFormPrice => 'Giá';
@@ -1428,18 +2039,72 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormPriceRequired => 'Giá phải lớn hơn 0';
 
   @override
+  String subscriptionFormPriceWas(String old, String date) {
+    return 'Giá cũ $old. Giá mới áp dụng từ kỳ tới ($date). Các khoản đã trả giữ nguyên.';
+  }
+
+  @override
+  String get subscriptionFormCycle => 'Chu kỳ';
+
+  @override
   String get subscriptionFormEvery => 'Mỗi';
 
   @override
-  String get subscriptionFormNextDue => 'Ngày gia hạn tiếp theo';
+  String get subscriptionFormEveryCount => 'Số đơn vị trong một chu kỳ';
+
+  @override
+  String subscriptionFormUnitDay(int count) {
+    return 'ngày';
+  }
+
+  @override
+  String subscriptionFormUnitWeek(int count) {
+    return 'tuần';
+  }
+
+  @override
+  String subscriptionFormUnitMonth(int count) {
+    return 'tháng';
+  }
+
+  @override
+  String subscriptionFormUnitYear(int count) {
+    return 'năm';
+  }
+
+  @override
+  String subscriptionFormUnitLabel(String unit) {
+    return 'Đơn vị chu kỳ: $unit';
+  }
+
+  @override
+  String get subscriptionFormChipWeekly => 'Tuần';
+
+  @override
+  String get subscriptionFormChipMonthly => 'Tháng';
+
+  @override
+  String get subscriptionFormChipQuarterly => 'Quý';
+
+  @override
+  String get subscriptionFormChipYearly => 'Năm';
+
+  @override
+  String get subscriptionFormNextDue => 'Gia hạn tiếp theo';
+
+  @override
+  String get subscriptionFormFirstCharge => 'Lần trừ đầu';
 
   @override
   String subscriptionFormThen(String dates) {
-    return 'Sau đó: $dates';
+    return 'Sau đó: $dates…';
   }
 
   @override
   String get subscriptionFormTrial => 'Đang dùng thử';
+
+  @override
+  String get subscriptionFormTrialSub => 'Nhắc trước khi hết dùng thử';
 
   @override
   String get subscriptionFormTrialEnds => 'Hết dùng thử ngày';
@@ -1452,13 +2117,17 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormShared => 'Chia với người khác';
 
   @override
-  String subscriptionFormPeople(int count) {
-    return '$count người';
-  }
+  String get subscriptionFormSharedSub => 'Tổng chi chỉ tính phần của bạn';
 
   @override
-  String subscriptionFormMyShare(String amount) {
-    return 'Phần của bạn: $amount';
+  String get subscriptionFormPeople => 'Số người, gồm cả bạn';
+
+  @override
+  String get subscriptionFormYourShare => 'Phần của bạn';
+
+  @override
+  String subscriptionFormShareOf(String price, int count) {
+    return '$price ÷ $count';
   }
 
   @override
@@ -1468,14 +2137,43 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormReminder => 'Nhắc trước';
 
   @override
-  String get subscriptionFormAdvanced => 'Nâng cao';
+  String get subscriptionFormRemindOff => 'Tắt';
 
   @override
-  String get subscriptionFormPaymentMethod =>
-      'Phương thức thanh toán (vd Visa ••4242, MoMo)';
+  String get subscriptionFormRemindOnDay => 'Đúng ngày';
+
+  @override
+  String subscriptionFormRemindDays(int count) {
+    return '$count ngày';
+  }
+
+  @override
+  String subscriptionFormRemindAt(String time, String date) {
+    return 'Lúc $time · $date';
+  }
+
+  @override
+  String get subscriptionFormRemindNone => 'Không nhắc subscription này';
+
+  @override
+  String get subscriptionFormMore => 'Thêm chi tiết';
+
+  @override
+  String get subscriptionFormMoreSub =>
+      'Phương thức thanh toán, link huỷ, ghi chú';
+
+  @override
+  String get subscriptionFormPaymentMethod => 'Phương thức thanh toán';
+
+  @override
+  String get subscriptionFormPaymentHint => 'vd Visa ••4242';
 
   @override
   String get subscriptionFormManageUrl => 'Link huỷ / quản lý';
+
+  @override
+  String get subscriptionFormManageUrlFromLibrary =>
+      'Điền sẵn từ thư viện. Mở khi chạm “Cách huỷ”.';
 
   @override
   String get subscriptionFormNotes => 'Ghi chú';
@@ -1487,6 +2185,98 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormSaveChanges => 'Lưu thay đổi';
 
   @override
-  String get subscriptionFormPriceFromNext =>
-      'Giá mới áp dụng từ kỳ tới. Các thanh toán cũ giữ nguyên.';
+  String subscriptionFormPriceDialogTitle(String price) {
+    return 'Áp dụng giá $price từ kỳ tới?';
+  }
+
+  @override
+  String subscriptionFormPriceDialogBody(String date) {
+    return 'Kỳ $date và các kỳ sau dùng giá mới.';
+  }
+
+  @override
+  String subscriptionFormPriceDialogPast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count khoản đã trả vẫn giữ đúng số tiền bạn đã trả.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionFormPriceApply => 'Áp dụng từ kỳ tới';
+
+  @override
+  String subscriptionFormPriceKeep(String price) {
+    return 'Giữ $price';
+  }
+
+  @override
+  String get subscriptionFormTileTitle => 'Biểu tượng';
+
+  @override
+  String get subscriptionFormTilePreview => 'Xem trong danh sách';
+
+  @override
+  String get subscriptionFormTileLetters => 'Chữ cái';
+
+  @override
+  String get subscriptionFormTileEmoji => 'Emoji';
+
+  @override
+  String get subscriptionFormTileLettersHint => '1–2 ký tự';
+
+  @override
+  String get subscriptionFormTileColour => 'Màu';
+
+  @override
+  String subscriptionFormTileColourNote(String name) {
+    return 'Ô đầu là màu riêng của $name trong thư viện. Màu chữ tự chọn để đủ tương phản.';
+  }
+
+  @override
+  String get subscriptionFormTileColourNoteCustom =>
+      'Màu chữ tự chọn để đủ tương phản.';
+
+  @override
+  String get subscriptionFormTileOrEmoji => 'Hoặc emoji';
+
+  @override
+  String subscriptionFormTileSwatch(int index) {
+    return 'Màu $index';
+  }
+
+  @override
+  String get subscriptionFormTileLibraryColour => 'Màu thư viện';
+
+  @override
+  String get subscriptionFormCurrencyTitle => 'Tiền tệ của subscription này';
+
+  @override
+  String get subscriptionFormCurrencySearch => 'Tìm tiền tệ';
+
+  @override
+  String get subscriptionFormCurrencyUsed => 'Bạn đang dùng';
+
+  @override
+  String get subscriptionFormCurrencyAll => 'Tất cả tiền tệ';
+
+  @override
+  String get subscriptionFormCurrencyMain => 'Tiền tệ chính';
+
+  @override
+  String subscriptionFormCurrencyRate(String code, String amount) {
+    return '1 $code ≈ $amount';
+  }
+
+  @override
+  String subscriptionFormCurrencyNote(String code) {
+    return 'Tổng chi vẫn cộng theo $code, có dấu ≈ khi quy đổi.';
+  }
+
+  @override
+  String subscriptionFormCurrencyNoMatch(String query) {
+    return 'Không có tiền tệ khớp “$query”';
+  }
 }

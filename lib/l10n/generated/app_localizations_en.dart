@@ -303,77 +303,249 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get catalogSearchHint => 'Search services';
+  String get catalogTitle => 'Add subscription';
 
   @override
-  String get catalogCustom => '+ Create a custom service';
+  String get catalogSearchHint => 'Search 100+ services';
+
+  @override
+  String get catalogClearSearch => 'Clear search';
+
+  @override
+  String get catalogCustom => 'Create a custom service';
+
+  @override
+  String get catalogCustomSub => 'Anything not in the library';
 
   @override
   String catalogCustomNamed(String name) {
-    return 'Not listed? Create “$name”';
+    return 'Not seeing it? Create “$name”';
   }
 
   @override
-  String catalogFromPerMonth(String amount) {
-    return 'from $amount/month';
+  String catalogCreateNamed(String name) {
+    return 'Create “$name”';
   }
 
   @override
-  String catalogChoosePlan(String name) {
-    return 'Choose a $name plan';
-  }
+  String get catalogCustomService => 'Custom service';
 
   @override
-  String confirmTitle(String name, String date) {
-    return '$name · period $date';
-  }
+  String get catalogPopularVietnam => 'Popular in Vietnam';
 
   @override
-  String confirmMorePending(int count) {
+  String get catalogPopular => 'Popular';
+
+  @override
+  String get catalogMore => 'More services';
+
+  @override
+  String catalogResults(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count more periods to confirm',
-      one: '1 more period to confirm',
+      other: '$count results',
+      one: '1 result',
     );
     return '$_temp0';
+  }
+
+  @override
+  String catalogNoResultTitle(String name) {
+    return 'No service called “$name”';
+  }
+
+  @override
+  String get catalogNoResultBody =>
+      'Create it — you can pick the colour and letters.';
+
+  @override
+  String catalogFrom(String price) {
+    return 'from $price';
+  }
+
+  @override
+  String catalogPlans(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count plans',
+      one: '1 plan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String catalogAddService(String name) {
+    return 'Add $name';
+  }
+
+  @override
+  String get catalogPlanSubVietnam =>
+      'Choose a plan · suggested prices for Vietnam';
+
+  @override
+  String get catalogPlanSub => 'Choose a plan · suggested prices';
+
+  @override
+  String catalogPlanMembers(int count) {
+    return 'Up to $count people';
+  }
+
+  @override
+  String get catalogPlanNote => 'You can change the price on the next screen.';
+
+  @override
+  String catalogContinueWith(String plan) {
+    return 'Continue with $plan';
+  }
+
+  @override
+  String confirmQuestion(String name) {
+    return 'Did you pay $name?';
+  }
+
+  @override
+  String get confirmDueToday => 'Due today';
+
+  @override
+  String get confirmOverdue => 'Overdue';
+
+  @override
+  String confirmMoreAfter(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more after this',
+      one: '1 more after this',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String confirmPeriodOf(String date) {
+    return 'Period of $date';
   }
 
   @override
   String get confirmAmount => 'Amount paid';
 
   @override
+  String confirmYourShare(String price, int count) {
+    return 'Your share · plan $price ÷ $count';
+  }
+
+  @override
+  String get confirmCurrentPrice => 'Current price · edit if it changed';
+
+  @override
+  String confirmMovesNext(String date) {
+    return 'Confirming moves the next renewal to $date.';
+  }
+
+  @override
+  String confirmNextUp(String date) {
+    return 'Next up: the $date period, also waiting.';
+  }
+
+  @override
   String get confirmPaid => 'Paid';
 
   @override
-  String get confirmSkip => 'Not paying this period';
+  String get confirmSkip => 'Didn’t pay this period';
 
   @override
   String get confirmLater => 'Later';
 
   @override
-  String confirmNext(String date) {
-    return 'Next renewal: $date';
+  String get confirmAmountRequired => 'Enter the amount you paid.';
+
+  @override
+  String get confirmSaved => 'Payment saved';
+
+  @override
+  String get confirmSkippedTitle => 'Marked as not paid';
+
+  @override
+  String confirmNextPeriod(String date) {
+    return 'Next period: $date';
   }
 
   @override
-  String confirmNothing(String name) {
-    return '$name has nothing to confirm.';
+  String get confirmDone => 'Done';
+
+  @override
+  String confirmSavedStep(String date, String amount) {
+    return '$date saved · $amount';
+  }
+
+  @override
+  String confirmSkippedStep(String date) {
+    return '$date marked as not paid';
+  }
+
+  @override
+  String get confirmNothingTitle => 'Nothing to confirm';
+
+  @override
+  String confirmNothingBody(String name, String date) {
+    return '$name is up to date. Next renewal: $date.';
+  }
+
+  @override
+  String confirmNothingCancelled(String name) {
+    return '$name is cancelled, so there is nothing to confirm.';
   }
 
   @override
   String get confirmAwaitingTitle => 'To confirm';
 
   @override
-  String get confirmAllDone => 'You\'re all caught up 🎉';
+  String get confirmAwaitingIntro =>
+      'Oldest first. Each period is confirmed one at a time, so the next date only moves once the earlier one is settled.';
 
   @override
-  String confirmAll(String amount) {
+  String get confirmAwaitingFooter =>
+      'Tap a row to change the amount or mark it unpaid.';
+
+  @override
+  String confirmAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '${days}d ago',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String confirmAfter(String date) {
+    return 'After $date';
+  }
+
+  @override
+  String confirmMarkPaid(String name, String date) {
+    return 'Mark $name, $date as paid';
+  }
+
+  @override
+  String confirmQueued(String date) {
+    return 'Confirm the $date period first';
+  }
+
+  @override
+  String confirmQuickSaved(String name, String date) {
+    return '$name · $date saved as paid';
+  }
+
+  @override
+  String confirmAllButton(String amount) {
     return 'Confirm all · $amount';
   }
 
   @override
-  String confirmAllDialogTitle(int count) {
+  String confirmAllTitle(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -384,8 +556,38 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get confirmAllDialogBody =>
-      'All of them will be marked as paid at their current price.';
+  String get confirmAllBody =>
+      'Each period is saved as paid at its current price:';
+
+  @override
+  String get confirmAllFooter => 'You can edit any payment later.';
+
+  @override
+  String get confirmAllAction => 'Confirm all';
+
+  @override
+  String get confirmAllCancel => 'Cancel';
+
+  @override
+  String confirmAllSaved(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count payments saved',
+      one: '1 payment saved',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get confirmCaughtUp => 'You’re all caught up 🎉';
+
+  @override
+  String get confirmCaughtUpBody =>
+      'New periods show up here on their due date.';
+
+  @override
+  String get confirmBackHome => 'Back to Overview';
 
   @override
   String get coreRelToday => 'today';
@@ -480,43 +682,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coreEditAmount => 'Edit amount';
 
   @override
-  String get homeAdd => 'Add subscription';
+  String get homeTitle => 'Overview';
 
   @override
-  String homeCounts(int active, int trial) {
-    return '$active paying · $trial on trial';
+  String get homeSearch => 'Search subscriptions';
+
+  @override
+  String get homeSearchHint => 'Search by name';
+
+  @override
+  String get homeSearchClose => 'Close search';
+
+  @override
+  String homeSearchEmpty(String query) {
+    return 'No subscription matches “$query”.';
   }
 
   @override
-  String homeTrialSoon(String amount) {
-    return '$amount/month after trials end';
+  String get homeMonthlySpend => 'Monthly spend';
+
+  @override
+  String get homeYearlySpend => 'Yearly spend';
+
+  @override
+  String homeActiveCount(int count) {
+    return '$count active';
   }
 
   @override
-  String get homeRatesOffline => 'Approximate exchange rates (not updated yet)';
+  String homeTrialCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count trials',
+      one: '1 trial',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeBiggest(String name, int percent) {
+    return 'Biggest: $name · $percent%';
+  }
 
   @override
   String homeRatesStale(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: 'Exchange rates updated $days days ago',
-      one: 'Exchange rates updated 1 day ago',
+      other: 'Offline · rates from $days days ago',
+      one: 'Offline · rates from yesterday',
     );
     return '$_temp0';
   }
 
   @override
-  String get homeRatesFresh => 'Exchange rates updated today';
+  String get homeRatesNever => 'Offline · approximate rates';
 
   @override
-  String get homeNotificationsOff => 'Reminders are off';
+  String get homeRemindersOffTitle => 'Reminders are off';
 
   @override
-  String get homeEnable => 'Turn on';
+  String get homeRemindersOffBody =>
+      'You won’t hear about renewals or trials ending.';
 
   @override
-  String homeAwaiting(int count) {
+  String get homeRemindersTurnOn => 'Turn on';
+
+  @override
+  String homeAwaitingTitle(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -527,10 +761,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get homeView => 'View';
+  String get homeAwaitingReview => 'Review';
 
   @override
-  String homeTrialEnding(String name, int days) {
+  String homeTrialEnds(String name, int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
@@ -542,38 +776,77 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeTrialThen(String price, String date) {
+    return 'Then $price from $date';
+  }
+
+  @override
   String get homeHowToCancel => 'How to cancel';
 
   @override
-  String get homeUpcoming => 'Next 7 days';
+  String get homeKeepIt => 'Keep it';
 
   @override
-  String get homeTabActive => 'Paying';
+  String homeKept(String name, String date) {
+    return 'Keeping $name. The first charge is on $date.';
+  }
 
   @override
-  String get homeTabTrial => 'Trial';
+  String get homeUpcoming => 'Upcoming · 7 days';
+
+  @override
+  String get homeCalendar => 'Calendar';
+
+  @override
+  String get homeFirstCharge => 'First charge';
+
+  @override
+  String get homeSubscriptions => 'Subscriptions';
+
+  @override
+  String get homeTabActive => 'Active';
+
+  @override
+  String get homeTabTrials => 'Trials';
 
   @override
   String get homeTabCancelled => 'Cancelled';
 
   @override
-  String get homeTabEmpty => 'Nothing here.';
+  String get homeSortTitle => 'Sort subscriptions';
 
   @override
-  String get homeSort => 'Sort';
+  String get homeSortDue => 'Due date';
 
   @override
-  String get homeSortDueDate => 'Renewal date';
+  String get homeSortDueHint => 'Soonest first · awaiting always on top';
 
   @override
   String get homeSortPrice => 'Price';
 
   @override
+  String get homeSortPriceHint => 'Highest monthly cost first';
+
+  @override
   String get homeSortName => 'Name';
 
   @override
-  String homeSavings(String amount) {
-    return 'You\'re saving $amount/year';
+  String get homeSortNameHint => 'A → Z';
+
+  @override
+  String get homeSortDone => 'Done';
+
+  @override
+  String homeSortLabel(String by) {
+    return 'Sort by $by';
+  }
+
+  @override
+  String get homeSaving => 'You’re saving';
+
+  @override
+  String homePerYear(String amount) {
+    return '$amount/year';
   }
 
   @override
@@ -582,10 +855,38 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get homeEmpty => 'Track every subscription in one nest.';
+  String homeTrialEndsWhen(String when) {
+    return 'ends $when';
+  }
 
   @override
-  String get homeAddFirst => 'Add your first subscription';
+  String get homeTrialBadge => 'Trial';
+
+  @override
+  String get homeEmptyActive => 'No active subscriptions.';
+
+  @override
+  String get homeEmptyTrials => 'No trials right now.';
+
+  @override
+  String get homeEmptyCancelled => 'Nothing cancelled yet.';
+
+  @override
+  String get homeTrialsNote =>
+      'Trials aren’t in your monthly total until they turn into paid subscriptions.';
+
+  @override
+  String get homeEmptyTitle => 'Add your first subscription';
+
+  @override
+  String get homeEmptyBody =>
+      'Pick from 100+ popular services — most take three taps.';
+
+  @override
+  String get homeBrowse => 'Browse services';
+
+  @override
+  String get homeAdd => 'Add subscription';
 
   @override
   String get insightsRangeMonth => 'This month';
@@ -829,57 +1130,149 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingSkip => 'Skip';
 
   @override
+  String onboardingStep(int step, int total) {
+    return 'Step $step of $total';
+  }
+
+  @override
   String get onboardingWelcomeTitle => 'All your subscriptions, one nest';
 
   @override
-  String get onboardingBenefitRemind => 'Get reminded before you\'re charged';
+  String get onboardingBenefitRemind => 'Reminders before you’re charged';
 
   @override
-  String get onboardingBenefitTotal => 'Know exactly what you spend each month';
+  String get onboardingBenefitRemindSub =>
+      '3 days ahead, and before trials end.';
 
   @override
-  String get onboardingBenefitPrivate =>
-      'Private — your data stays on your phone';
+  String get onboardingBenefitTotal => 'Know exactly what each month costs';
+
+  @override
+  String get onboardingBenefitTotalSub =>
+      'In your currency, shared plans split fairly.';
+
+  @override
+  String get onboardingBenefitPrivate => 'Private — data stays on your phone';
+
+  @override
+  String get onboardingBenefitPrivateSub =>
+      'No account, no bank link, no tracking.';
 
   @override
   String get onboardingStart => 'Get started';
 
   @override
-  String get onboardingCurrencyTitle => 'Your primary currency';
+  String get onboardingCurrencyTitle => 'Your main currency';
 
   @override
   String get onboardingCurrencyHint =>
-      'Used to add up your totals. Each subscription keeps its own currency.';
+      'Used to add up your totals. Each subscription still keeps its own currency.';
 
   @override
-  String get onboardingQuickAddTitle => 'What do you pay for?';
+  String get onboardingCurrencySuggestedVn => 'Suggested for Vietnam';
 
   @override
-  String get onboardingLater => 'Later';
+  String get onboardingCurrencySuggested => 'Suggested for your region';
 
   @override
-  String onboardingSelected(int count) {
+  String get onboardingCurrencyChosen => 'Your choice';
+
+  @override
+  String get onboardingCurrencyChange => 'Choose another currency';
+
+  @override
+  String get onboardingCurrencyRatesNote =>
+      'Exchange rates update once a day when you’re online. You can set your own in Settings.';
+
+  @override
+  String get onboardingCurrencySheetTitle => 'Main currency';
+
+  @override
+  String get onboardingCurrencySearch => 'Search currency or country';
+
+  @override
+  String get onboardingPickTitle => 'What do you pay for?';
+
+  @override
+  String get onboardingPickSearch => 'Search 100+ services';
+
+  @override
+  String onboardingPickSelected(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Add $count · Continue',
-      zero: 'Continue',
+      other: '$count selected',
+      one: '1 selected',
+      zero: 'Nothing selected yet',
     );
     return '$_temp0';
   }
 
   @override
-  String get onboardingRemindersTitle => 'Turn on reminders';
+  String onboardingPickNoMatch(String name) {
+    return 'No service called “$name”. You can add it later with +.';
+  }
 
   @override
-  String get onboardingRemindersExample =>
-      '“Netflix renews in 3 days — ₫260,000”';
+  String onboardingPickMeta(String price, String cycle) {
+    return '$price · $cycle';
+  }
+
+  @override
+  String get onboardingPickEdit => 'Edit';
+
+  @override
+  String onboardingPickEditLabel(String name) {
+    return 'Edit price and cycle of $name';
+  }
+
+  @override
+  String get onboardingLater => 'Later';
+
+  @override
+  String get onboardingQuickPlan => 'Plan';
+
+  @override
+  String get onboardingQuickPrice => 'Price';
+
+  @override
+  String get onboardingQuickCycle => 'Billing cycle';
+
+  @override
+  String get onboardingQuickRemove => 'Don’t add it';
+
+  @override
+  String get onboardingRemindersTitle => 'A heads-up before every charge';
+
+  @override
+  String onboardingRemindersBody(String time) {
+    return 'We’ll remind you 3 days before a renewal or a trial ending, at $time. Change it any time.';
+  }
+
+  @override
+  String get onboardingDemoNow => 'now';
+
+  @override
+  String get onboardingDemoAgo => '2d ago';
+
+  @override
+  String onboardingDemoRenews(String name, String price) {
+    return '$name renews in 3 days — $price';
+  }
+
+  @override
+  String onboardingDemoTrial(String name) {
+    return 'Your $name trial ends in 3 days.';
+  }
+
+  @override
+  String get onboardingDemoLabel => 'Example reminders';
 
   @override
   String get onboardingEnableReminders => 'Turn on reminders';
 
   @override
-  String get onboardingNoThanks => 'No, thanks';
+  String get onboardingNoThanks => 'Not now';
 
   @override
   String get settingsSectionMoney => 'Money';
@@ -1345,35 +1738,162 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your data stays on this phone. Subnest collects nothing.';
 
   @override
-  String subscriptionDetailMyShare(String share, String price, int count) {
-    return 'Your share $share · plan $price ÷ $count';
+  String get subscriptionDetailEdit => 'Edit';
+
+  @override
+  String get subscriptionDetailStatusActive => 'Active';
+
+  @override
+  String subscriptionDetailStatusTrial(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Trial · $days days left',
+      one: 'Trial · 1 day left',
+      zero: 'Trial · ends today',
+    );
+    return '$_temp0';
   }
 
   @override
-  String subscriptionDetailAwaiting(int count) {
+  String get subscriptionDetailStatusCancelled => 'Cancelled';
+
+  @override
+  String subscriptionDetailYourShare(String price, int count) {
+    return 'Your share · plan $price ÷ $count';
+  }
+
+  @override
+  String subscriptionDetailAwaitingTitle(int count, String date) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count periods to confirm',
-      one: '1 period to confirm',
+      other: '$count renewals need confirming, from $date',
+      one: 'Renewal on $date needs confirming',
     );
     return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailAwaitingBody(String amount) {
+    return 'Did $amount go out? The next date waits until you say.';
   }
 
   @override
   String get subscriptionDetailConfirm => 'Confirm';
 
   @override
-  String get subscriptionDetailNextDue => 'Next renewal';
+  String subscriptionDetailTrialEnds(String date) {
+    return 'Trial ends $date';
+  }
 
   @override
-  String get subscriptionDetailTrialEnds => 'Trial ends';
+  String subscriptionDetailTrialBody(String price) {
+    return 'After that it renews at $price. Cancel before then if you don’t want it.';
+  }
+
+  @override
+  String get subscriptionDetailHowToCancel => 'How to cancel';
+
+  @override
+  String get subscriptionDetailKeepIt => 'Keep it';
+
+  @override
+  String subscriptionDetailKept(String name, String date) {
+    return 'Keeping $name. The first charge is on $date.';
+  }
+
+  @override
+  String subscriptionDetailSaving(String amount) {
+    return 'Saving $amount/year';
+  }
+
+  @override
+  String subscriptionDetailCancelledBody(String date) {
+    return 'Cancelled $date. No more reminders.';
+  }
+
+  @override
+  String get subscriptionDetailRestore => 'Restore subscription';
+
+  @override
+  String subscriptionDetailRestored(String date) {
+    return 'Restored. Next renewal: $date.';
+  }
+
+  @override
+  String get subscriptionDetailNextRenewal => 'Next renewal';
+
+  @override
+  String get subscriptionDetailFirstCharge => 'First charge';
+
+  @override
+  String get subscriptionDetailWaits => 'Waits for your confirmation';
 
   @override
   String get subscriptionDetailCycle => 'Billing cycle';
 
   @override
-  String get subscriptionDetailReminder => 'Reminder';
+  String subscriptionDetailEveryDay(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Every $count days',
+      one: 'Every day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailEveryWeek(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Every $count weeks',
+      one: 'Every week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailEveryMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Every $count months',
+      one: 'Every month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionDetailEveryYear(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Every $count years',
+      one: 'Every year',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionDetailRemindMe => 'Remind me';
+
+  @override
+  String subscriptionDetailRemindValue(int days, String time) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days before, $time',
+      one: '1 day before, $time',
+      zero: 'On the day, $time',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionDetailRemindOff => 'Off';
 
   @override
   String get subscriptionDetailCategory => 'Category';
@@ -1382,10 +1902,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionDetailPaymentMethod => 'Payment method';
 
   @override
-  String get subscriptionDetailStarted => 'Started';
-
-  @override
-  String get subscriptionDetailCancelledOn => 'Cancelled on';
+  String get subscriptionDetailSince => 'Since';
 
   @override
   String get subscriptionDetailTotalPaid => 'Total paid';
@@ -1400,27 +1917,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionDetailPaid => 'Paid';
 
   @override
-  String get subscriptionDetailSkipped => 'Not paid this period';
+  String get subscriptionDetailDidntPay => 'Didn’t pay';
 
   @override
-  String get subscriptionDetailNoHistory => 'No payments yet.';
+  String subscriptionDetailNoHistory(String date) {
+    return 'No payments yet — the first charge is on $date.';
+  }
 
   @override
-  String get subscriptionDetailHowToCancel => 'How to cancel this service';
+  String get subscriptionDetailNoHistoryCancelled => 'No payments recorded.';
+
+  @override
+  String subscriptionDetailEditPayment(String date) {
+    return 'Edit payment of $date';
+  }
+
+  @override
+  String subscriptionDetailConfirmPeriod(String date) {
+    return 'Confirm the period of $date';
+  }
+
+  @override
+  String get subscriptionDetailHowToCancelRow => 'How to cancel this service';
+
+  @override
+  String subscriptionDetailOpens(String host) {
+    return 'Opens $host account settings';
+  }
+
+  @override
+  String subscriptionDetailLinkFailed(String host) {
+    return 'Couldn’t open $host.';
+  }
 
   @override
   String get subscriptionDetailMarkCancelled => 'Mark as cancelled';
 
   @override
-  String get subscriptionDetailRestore => 'Restore';
+  String get subscriptionDetailDelete => 'Delete subscription';
 
   @override
-  String subscriptionDetailSaved(String amount) {
-    return 'Nice! You\'re saving $amount/year';
+  String subscriptionDetailCancelTitle(String name) {
+    return 'Mark $name as cancelled?';
   }
 
   @override
-  String get subscriptionDetailEditAmount => 'Amount paid';
+  String subscriptionDetailCancelBody(String amount) {
+    return 'Reminders stop and $amount/year moves into your savings. You can restore it any time.';
+  }
+
+  @override
+  String get subscriptionDetailNotYet => 'Not yet';
 
   @override
   String subscriptionDetailDeleteTitle(String name) {
@@ -1428,8 +1975,81 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get subscriptionDetailDeleteBody =>
-      'This removes the subscription and its whole payment history. To keep the history, mark it as cancelled instead.';
+  String subscriptionDetailDeleteBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'This removes it and its $count payment records for good. To stop reminders but keep the history, mark it as cancelled instead.',
+      one: 'This removes it and its 1 payment record for good. To stop reminders but keep the history, mark it as cancelled instead.',
+      zero: 'This removes it for good. To stop reminders but keep it, mark it as cancelled instead.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionDetailDeleteAction => 'Delete';
+
+  @override
+  String subscriptionDetailDeleted(String name) {
+    return '$name deleted';
+  }
+
+  @override
+  String subscriptionDetailCelebrateCancelled(String name) {
+    return '$name cancelled';
+  }
+
+  @override
+  String get subscriptionDetailCelebrateYear => 'a year saved';
+
+  @override
+  String get subscriptionDetailCelebrateNow => 'You’re now saving';
+
+  @override
+  String subscriptionDetailPerYear(String amount) {
+    return '$amount/year';
+  }
+
+  @override
+  String get subscriptionDetailSeeCancelled => 'See cancelled';
+
+  @override
+  String subscriptionDetailPaymentTitle(String date) {
+    return 'Payment · $date';
+  }
+
+  @override
+  String get subscriptionDetailAmountPaid => 'Amount paid';
+
+  @override
+  String subscriptionDetailWas(String old, String total) {
+    return 'Was $old — saving updates Total paid to $total.';
+  }
+
+  @override
+  String get subscriptionDetailAmountRequired => 'Enter the amount you paid.';
+
+  @override
+  String get subscriptionDetailPaidOn => 'Paid on';
+
+  @override
+  String get subscriptionDetailPaidWith => 'Paid with';
+
+  @override
+  String get subscriptionDetailSave => 'Save';
+
+  @override
+  String get subscriptionDetailMarkNotPaid => 'Mark as not paid';
+
+  @override
+  String get subscriptionDetailCancel => 'Cancel';
+
+  @override
+  String get subscriptionDetailPaymentUpdated => 'Payment updated';
+
+  @override
+  String get subscriptionDetailMarkedNotPaid => 'Marked as not paid';
 
   @override
   String get subscriptionFormAddTitle => 'New subscription';
@@ -1438,10 +2058,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormEditTitle => 'Edit subscription';
 
   @override
-  String get subscriptionFormName => 'Name';
+  String get subscriptionFormNameHint => 'Service name';
 
   @override
   String get subscriptionFormNameRequired => 'Enter a name';
+
+  @override
+  String get subscriptionFormEditTile => 'Change tile';
+
+  @override
+  String subscriptionFormPlan(String name) {
+    return 'Plan: $name';
+  }
 
   @override
   String get subscriptionFormPrice => 'Price';
@@ -1450,40 +2078,123 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormPriceAfterTrial => 'Price after trial';
 
   @override
-  String get subscriptionFormPriceRequired => 'Price must be greater than 0';
+  String get subscriptionFormPriceRequired => 'Price must be more than 0';
+
+  @override
+  String subscriptionFormPriceWas(String old, String date) {
+    return 'Was $old. The new price applies from the next period ($date). Past payments stay as they were.';
+  }
+
+  @override
+  String get subscriptionFormCycle => 'Billing cycle';
 
   @override
   String get subscriptionFormEvery => 'Every';
 
   @override
-  String get subscriptionFormNextDue => 'Next renewal date';
+  String get subscriptionFormEveryCount =>
+      'Number of units in one billing cycle';
+
+  @override
+  String subscriptionFormUnitDay(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'days',
+      one: 'day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionFormUnitWeek(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'weeks',
+      one: 'week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionFormUnitMonth(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'months',
+      one: 'month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionFormUnitYear(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'years',
+      one: 'year',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionFormUnitLabel(String unit) {
+    return 'Cycle unit: $unit';
+  }
+
+  @override
+  String get subscriptionFormChipWeekly => 'Weekly';
+
+  @override
+  String get subscriptionFormChipMonthly => 'Monthly';
+
+  @override
+  String get subscriptionFormChipQuarterly => 'Quarterly';
+
+  @override
+  String get subscriptionFormChipYearly => 'Yearly';
+
+  @override
+  String get subscriptionFormNextDue => 'Next renewal';
+
+  @override
+  String get subscriptionFormFirstCharge => 'First charge';
 
   @override
   String subscriptionFormThen(String dates) {
-    return 'Then: $dates';
+    return 'Then $dates…';
   }
 
   @override
-  String get subscriptionFormTrial => 'On a free trial';
+  String get subscriptionFormTrial => 'Free trial';
 
   @override
-  String get subscriptionFormTrialEnds => 'Trial ends on';
+  String get subscriptionFormTrialSub => 'Remind me before it ends';
+
+  @override
+  String get subscriptionFormTrialEnds => 'Trial ends';
 
   @override
   String get subscriptionFormTrialEndInvalid =>
-      'Trial end can\'t be in the past';
+      'Trial end can’t be in the past';
 
   @override
-  String get subscriptionFormShared => 'Shared with others';
+  String get subscriptionFormShared => 'Split with others';
 
   @override
-  String subscriptionFormPeople(int count) {
-    return '$count people';
-  }
+  String get subscriptionFormSharedSub => 'Totals use your share';
 
   @override
-  String subscriptionFormMyShare(String amount) {
-    return 'Your share: $amount';
+  String get subscriptionFormPeople => 'People, including you';
+
+  @override
+  String get subscriptionFormYourShare => 'Your share';
+
+  @override
+  String subscriptionFormShareOf(String price, int count) {
+    return '$price ÷ $count';
   }
 
   @override
@@ -1493,14 +2204,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormReminder => 'Remind me';
 
   @override
-  String get subscriptionFormAdvanced => 'More';
+  String get subscriptionFormRemindOff => 'Off';
 
   @override
-  String get subscriptionFormPaymentMethod =>
-      'Payment method (e.g. Visa ••4242, MoMo)';
+  String get subscriptionFormRemindOnDay => 'On day';
+
+  @override
+  String subscriptionFormRemindDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionFormRemindAt(String time, String date) {
+    return 'At $time · $date';
+  }
+
+  @override
+  String get subscriptionFormRemindNone => 'No reminder for this subscription';
+
+  @override
+  String get subscriptionFormMore => 'More details';
+
+  @override
+  String get subscriptionFormMoreSub => 'Payment method, cancel link, notes';
+
+  @override
+  String get subscriptionFormPaymentMethod => 'Payment method';
+
+  @override
+  String get subscriptionFormPaymentHint => 'e.g. Visa ••4242';
 
   @override
   String get subscriptionFormManageUrl => 'Cancel / manage link';
+
+  @override
+  String get subscriptionFormManageUrlFromLibrary =>
+      'Filled in from the library. Opens from “How to cancel”.';
 
   @override
   String get subscriptionFormNotes => 'Notes';
@@ -1512,6 +2257,99 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormSaveChanges => 'Save changes';
 
   @override
-  String get subscriptionFormPriceFromNext =>
-      'New price applies from the next period. Past payments are unchanged.';
+  String subscriptionFormPriceDialogTitle(String price) {
+    return 'Use $price from the next period?';
+  }
+
+  @override
+  String subscriptionFormPriceDialogBody(String date) {
+    return 'The $date renewal and later ones use the new price.';
+  }
+
+  @override
+  String subscriptionFormPriceDialogPast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Your $count past payments stay at what you actually paid.',
+      one: 'Your past payment stays at what you actually paid.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionFormPriceApply => 'Apply from next period';
+
+  @override
+  String subscriptionFormPriceKeep(String price) {
+    return 'Keep $price';
+  }
+
+  @override
+  String get subscriptionFormTileTitle => 'Tile';
+
+  @override
+  String get subscriptionFormTilePreview => 'Preview in a list';
+
+  @override
+  String get subscriptionFormTileLetters => 'Letters';
+
+  @override
+  String get subscriptionFormTileEmoji => 'Emoji';
+
+  @override
+  String get subscriptionFormTileLettersHint => '1–2 characters';
+
+  @override
+  String get subscriptionFormTileColour => 'Colour';
+
+  @override
+  String subscriptionFormTileColourNote(String name) {
+    return 'The first swatch is $name’s own colour from the library. Letter colour is picked for contrast automatically.';
+  }
+
+  @override
+  String get subscriptionFormTileColourNoteCustom =>
+      'Letter colour is picked for contrast automatically.';
+
+  @override
+  String get subscriptionFormTileOrEmoji => 'Or an emoji';
+
+  @override
+  String subscriptionFormTileSwatch(int index) {
+    return 'Colour $index';
+  }
+
+  @override
+  String get subscriptionFormTileLibraryColour => 'Library colour';
+
+  @override
+  String get subscriptionFormCurrencyTitle => 'Currency for this subscription';
+
+  @override
+  String get subscriptionFormCurrencySearch => 'Search currency';
+
+  @override
+  String get subscriptionFormCurrencyUsed => 'Used by your subscriptions';
+
+  @override
+  String get subscriptionFormCurrencyAll => 'All currencies';
+
+  @override
+  String get subscriptionFormCurrencyMain => 'Main currency';
+
+  @override
+  String subscriptionFormCurrencyRate(String code, String amount) {
+    return '1 $code ≈ $amount';
+  }
+
+  @override
+  String subscriptionFormCurrencyNote(String code) {
+    return 'Totals still add up in $code, shown with ≈ when converted.';
+  }
+
+  @override
+  String subscriptionFormCurrencyNoMatch(String query) {
+    return 'No currency matches “$query”';
+  }
 }

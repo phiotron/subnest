@@ -4,13 +4,22 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
-import '../../core/utils/currencies.dart';
-import '../../core/widgets/service_tile.dart';
+import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
+import '../../data/settings_repository.dart' show defaultCurrencyForLocale;
 import '../../domain/domain.dart';
+import '../catalog/catalog_helpers.dart';
+import '../subscription_form/form_format.dart';
+import 'quick_pick.dart';
+import 'widgets/pick_step.dart';
+import 'widgets/quick_edit_sheet.dart';
+import 'widgets/simple_steps.dart';
 
-/// S1 Onboarding (welcome → primary currency → quick add → reminders) — PLACEHOLDER UI.
-/// Owned by the Add & onboarding session (H).
+/// S1 Onboarding (png 02–07), shown on first launch only (`main.dart` routes here while
+/// `AppSettings.onboardingDone` is false):
+/// 1 Welcome → 2 Main currency → 3 What do you pay for? → 4 Reminders explainer → OS dialog →
+/// Overview with the picked services already there. "Skip" (steps 1–2) jumps to the reminders
+/// step; system Back goes one step back.
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -19,182 +28,176 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  int _step = 0;
+  static const _welcome = 0, _currencyStep = 1, _pickStep = 2, _remindersStep = 3;
+
+  int _step = _welcome;
   String? _currency;
-  final _picked = <String>{}; // catalog service ids
+  final _picks = <String, QuickPick>{};
+  String? _lastPicked;
+  bool _finishing = false;
+
+  String get _region => ref.read(catalogRegionProvider);
+  String get _chosenCurrency => _currency ?? ref.read(primaryCurrencyProvider);
+
+  void _go(int step) => setState(() => _step = step);
+
+  Future<void> _toggle(CatalogService s) async {
+    if (_picks.remove(s.id) != null) {
+      setState(() => _lastPicked = _picks.keys.lastOrNull);
+      return;
+    }
+    final pick = QuickPick.suggested(s, _region, _chosenCurrency);
+    setState(() {
+      _picks[s.id] = pick;
+      _lastPicked = s.id;
+    });
+    if (!pick.hasPrice) await _edit(s.id);
+  }
+
+  Future<void> _edit(String id) async {
+    final pick = _picks[id];
+    if (pick == null) return;
+    final result = await showQuickEditSheet(context, pick: pick, region: _region);
+    if (!mounted) return;
+    if (result == null) {
+      // Dismissed without a price → the pick can't be added.
+      if (!pick.hasPrice) setState(() => _picks.remove(id));
+      return;
+    }
+    setState(() {
+      if (result.remove) {
+        _picks.remove(id);
+        _lastPicked = _picks.keys.lastOrNull;
+        return;
+      }
+      pick
+        ..plan = result.plan ?? pick.plan
+        ..priceMinor = result.priceMinor
+        ..currency = result.currency
+        ..cycle = result.cycle ?? pick.cycle;
+    });
+  }
+
+  Future<void> _saveCurrency() async {
+    await ref.read(settingsRepositoryProvider).setPrimaryCurrency(_chosenCurrency);
+  }
 
   Future<void> _finish({required bool askPermission}) async {
-    final settingsRepo = ref.read(settingsRepositoryProvider);
-    final subsRepo = ref.read(subscriptionRepositoryProvider);
-    await settingsRepo.setPrimaryCurrency(_currency ?? ref.read(primaryCurrencyProvider));
-    final catalog = await ref.read(catalogRepositoryProvider).load();
-    final region = ref.read(catalogRegionProvider);
-    final today = ref.read(todayProvider);
-    for (final service in catalog.where((s) => _picked.contains(s.id))) {
-      final sub = subscriptionFromCatalog(
-        service,
-        service.plans.first,
-        region: region,
-        id: subsRepo.newId(),
-        today: today,
-        now: DateTime.now(),
-      );
-      if (sub != null) await subsRepo.save(sub);
+    if (_finishing) return;
+    setState(() => _finishing = true);
+    try {
+      final settings = ref.read(settingsRepositoryProvider);
+      final repo = ref.read(subscriptionRepositoryProvider);
+      final today = ref.read(todayProvider);
+      final now = ref.read(clockProvider)();
+      await settings.setPrimaryCurrency(_chosenCurrency);
+      for (final pick in _picks.values) {
+        if (pick.hasPrice) await repo.save(pick.toSubscription(id: repo.newId(), today: today, now: now));
+      }
+      if (askPermission) {
+        await ref.read(notificationServiceProvider).requestPermission();
+        ref.invalidate(notificationsEnabledProvider);
+      }
+      await settings.setOnboardingDone(true);
+      if (mounted) context.go(AppRoutes.home);
+    } finally {
+      if (mounted) setState(() => _finishing = false);
     }
-    if (askPermission) {
-      await ref.read(notificationServiceProvider).requestPermission();
-      ref.invalidate(notificationsEnabledProvider);
+  }
+
+  /// ≈ Monthly cost of the picks in the main currency (picks without a known rate are left out).
+  double? _monthlyTotal(LocalDate today) {
+    if (_picks.isEmpty) return null;
+    final calc = SpendingCalculator(
+      rates: ref.watch(ratesProvider).value ?? ExchangeRates.empty,
+      primaryCurrency: _chosenCurrency,
+    );
+    final now = DateTime(today.year, today.month, today.day);
+    var total = 0.0;
+    for (final p in _picks.values) {
+      total += calc.monthlyCost(p.toSubscription(id: p.service.id, today: today, now: now)) ?? 0;
     }
-    await settingsRepo.setOnboardingDone(true);
-    if (mounted) context.go(AppRoutes.home);
+    return total;
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final body = switch (_step) {
-      0 => _welcome(context),
-      1 => _currencyStep(context),
-      2 => _quickAdd(context),
-      _ => _reminders(context),
-    };
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            LinearProgressIndicator(value: (_step + 1) / 4),
-            if (_step < 2)
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(onPressed: () => setState(() => _step = 3), child: Text(l.onboardingSkip)),
-              ),
-            Expanded(child: body),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _welcome(BuildContext context) {
-    final l = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Spacer(),
-          Text(l.onboardingWelcomeTitle, style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: 24),
-          ListTile(leading: const Icon(Icons.notifications_active_outlined), title: Text(l.onboardingBenefitRemind)),
-          ListTile(leading: const Icon(Icons.pie_chart_outline), title: Text(l.onboardingBenefitTotal)),
-          ListTile(leading: const Icon(Icons.lock_outline), title: Text(l.onboardingBenefitPrivate)),
-          const Spacer(),
-          FilledButton(onPressed: () => setState(() => _step = 1), child: Text(l.onboardingStart)),
-        ],
-      ),
-    );
-  }
-
-  static String _currencyLabel(String code) {
-    final name = currencyNames[code];
-    return name == null ? code : '$code — $name';
-  }
-
-  Widget _currencyStep(BuildContext context) {
-    final l = context.l10n;
-    final String current = _currency ?? ref.watch(primaryCurrencyProvider);
-    final options = <String>{current, ...commonCurrencies}.toList();
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(l.onboardingCurrencyTitle, style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 8),
-          Text(l.onboardingCurrencyHint),
-          const SizedBox(height: 16),
-          DropdownButton<String>(
-            isExpanded: true,
-            value: current,
-            items: [
-              for (final String c in options)
-                DropdownMenuItem<String>(value: c, child: Text(_currencyLabel(c))),
-            ],
-            onChanged: (c) => setState(() => _currency = c),
-          ),
-          const Spacer(),
-          FilledButton(onPressed: () => setState(() => _step = 2), child: Text(l.commonContinue)),
-        ],
-      ),
-    );
-  }
-
-  Widget _quickAdd(BuildContext context) {
-    final l = context.l10n;
     final region = ref.watch(catalogRegionProvider);
-    final catalog = ref.watch(catalogProvider).value ?? const <CatalogService>[];
-    final popular = [...catalog]
-      ..sort((a, b) => (region == 'VN' && a.isVietnamese != b.isVietnamese) ? (a.isVietnamese ? -1 : 1) : 0);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(l.onboardingQuickAddTitle, style: Theme.of(context).textTheme.headlineSmall),
+    final String currency = _currency ?? ref.watch(primaryCurrencyProvider);
+    final today = ref.watch(todayProvider);
+
+    final Widget body = switch (_step) {
+      _welcome => WelcomeStep(onNext: () => _go(_currencyStep), onSkip: () => _go(_remindersStep)),
+      _currencyStep => CurrencyStep(
+        currency: currency,
+        suggested: defaultCurrencyForLocale(ref.watch(deviceLocaleProvider)),
+        region: region,
+        knownCodes: ref.watch(ratesProvider).value?.usdRates.keys ?? const [],
+        onChanged: (code) => setState(() => _currency = code),
+        onNext: () {
+          _saveCurrency();
+          _go(_pickStep);
+        },
+        onSkip: () => _go(_remindersStep),
+      ),
+      _pickStep => PickStep(
+        services: CatalogView.ordered(ref.watch(catalogProvider).value ?? const [], region),
+        picks: _picks,
+        lastPicked: _lastPicked,
+        monthlyTotal: _monthlyTotal(today),
+        totalCurrency: currency,
+        onToggle: _toggle,
+        onEdit: _edit,
+        onLater: () => setState(() {
+          _picks.clear();
+          _lastPicked = null;
+          _step = _remindersStep;
+        }),
+        onNext: () => _go(_remindersStep),
+      ),
+      _ => _reminders(context, l, region, currency),
+    };
+
+    return PopScope(
+      canPop: _step == _welcome,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && !_finishing) _go(_step - 1);
+      },
+      child: Scaffold(
+        body: AnimatedSwitcher(
+          duration: AppMotion.of(context, AppMotion.fast),
+          child: KeyedSubtree(key: ValueKey(_step), child: body),
         ),
-        Expanded(
-          child: ListView(
-            children: [
-              for (final s in popular.take(30))
-                CheckboxListTile(
-                  secondary: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram),
-                  title: Text(s.name),
-                  value: _picked.contains(s.id),
-                  onChanged: (v) => setState(() => v! ? _picked.add(s.id) : _picked.remove(s.id)),
-                ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              TextButton(
-                onPressed: () => setState(() {
-                  _picked.clear();
-                  _step = 3;
-                }),
-                child: Text(l.onboardingLater),
-              ),
-              const Spacer(),
-              FilledButton(
-                onPressed: () => setState(() => _step = 3),
-                child: Text(l.onboardingSelected(_picked.length)),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
-  Widget _reminders(BuildContext context) {
-    final l = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Spacer(),
-          const Icon(Icons.notifications_outlined, size: 64),
-          const SizedBox(height: 16),
-          Text(l.onboardingRemindersTitle, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
-          const SizedBox(height: 8),
-          Text(l.onboardingRemindersExample, textAlign: TextAlign.center),
-          const Spacer(),
-          FilledButton(onPressed: () => _finish(askPermission: true), child: Text(l.onboardingEnableReminders)),
-          TextButton(onPressed: () => _finish(askPermission: false), child: Text(l.onboardingNoThanks)),
-        ],
-      ),
+  Widget _reminders(BuildContext context, AppLocalizations l, String region, String currency) {
+    final settings = ref.watch(settingsProvider).value;
+    final time = FormFormat.time(settings?.reminderHour ?? 9, settings?.reminderMinute ?? 0);
+    // The sample uses the user's first pick (else Netflix's suggested price), in its own currency.
+    final first = _picks.values.where((p) => p.hasPrice).firstOrNull;
+    final catalog = ref.watch(catalogProvider).value ?? const <CatalogService>[];
+    var name = 'Netflix';
+    var price = l.amount(260000, 'VND');
+    if (first != null) {
+      name = first.service.name;
+      price = l.money(Money(first.priceMinor, first.currency));
+    } else {
+      final netflix = catalog.where((s) => s.id == 'netflix').firstOrNull;
+      final plan = netflix == null ? null : CatalogView.plans(netflix, region).lastOrNull;
+      final p = plan?.priceFor(region);
+      if (p != null) price = l.amount(p.amount, p.currency);
+    }
+    return RemindersStep(
+      time: time,
+      demoName: name,
+      demoPrice: price,
+      trialName: 'Spotify',
+      busy: _finishing,
+      onEnable: () => _finish(askPermission: true),
+      onNotNow: () => _finish(askPermission: false),
     );
   }
 }

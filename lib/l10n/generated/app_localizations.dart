@@ -470,53 +470,197 @@ abstract class AppLocalizations {
   /// **'Amounts in {currencies} aren’t in the total — no exchange rate yet.'**
   String calendarMissingRates(String currencies);
 
+  /// No description provided for @catalogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add subscription'**
+  String get catalogTitle;
+
   /// No description provided for @catalogSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search services'**
+  /// **'Search 100+ services'**
   String get catalogSearchHint;
+
+  /// No description provided for @catalogClearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get catalogClearSearch;
 
   /// No description provided for @catalogCustom.
   ///
   /// In en, this message translates to:
-  /// **'+ Create a custom service'**
+  /// **'Create a custom service'**
   String get catalogCustom;
+
+  /// No description provided for @catalogCustomSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything not in the library'**
+  String get catalogCustomSub;
 
   /// No description provided for @catalogCustomNamed.
   ///
   /// In en, this message translates to:
-  /// **'Not listed? Create “{name}”'**
+  /// **'Not seeing it? Create “{name}”'**
   String catalogCustomNamed(String name);
 
-  /// No description provided for @catalogFromPerMonth.
+  /// No description provided for @catalogCreateNamed.
   ///
   /// In en, this message translates to:
-  /// **'from {amount}/month'**
-  String catalogFromPerMonth(String amount);
+  /// **'Create “{name}”'**
+  String catalogCreateNamed(String name);
 
-  /// No description provided for @catalogChoosePlan.
+  /// No description provided for @catalogCustomService.
   ///
   /// In en, this message translates to:
-  /// **'Choose a {name} plan'**
-  String catalogChoosePlan(String name);
+  /// **'Custom service'**
+  String get catalogCustomService;
 
-  /// No description provided for @confirmTitle.
+  /// No description provided for @catalogPopularVietnam.
   ///
   /// In en, this message translates to:
-  /// **'{name} · period {date}'**
-  String confirmTitle(String name, String date);
+  /// **'Popular in Vietnam'**
+  String get catalogPopularVietnam;
 
-  /// No description provided for @confirmMorePending.
+  /// No description provided for @catalogPopular.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 more period to confirm} other{{count} more periods to confirm}}'**
-  String confirmMorePending(int count);
+  /// **'Popular'**
+  String get catalogPopular;
+
+  /// No description provided for @catalogMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More services'**
+  String get catalogMore;
+
+  /// No description provided for @catalogResults.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 result} other{{count} results}}'**
+  String catalogResults(int count);
+
+  /// No description provided for @catalogNoResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No service called “{name}”'**
+  String catalogNoResultTitle(String name);
+
+  /// No description provided for @catalogNoResultBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Create it — you can pick the colour and letters.'**
+  String get catalogNoResultBody;
+
+  /// No description provided for @catalogFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'from {price}'**
+  String catalogFrom(String price);
+
+  /// No description provided for @catalogPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 plan} other{{count} plans}}'**
+  String catalogPlans(int count);
+
+  /// No description provided for @catalogAddService.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name}'**
+  String catalogAddService(String name);
+
+  /// No description provided for @catalogPlanSubVietnam.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a plan · suggested prices for Vietnam'**
+  String get catalogPlanSubVietnam;
+
+  /// No description provided for @catalogPlanSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a plan · suggested prices'**
+  String get catalogPlanSub;
+
+  /// No description provided for @catalogPlanMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} people'**
+  String catalogPlanMembers(int count);
+
+  /// No description provided for @catalogPlanNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change the price on the next screen.'**
+  String get catalogPlanNote;
+
+  /// No description provided for @catalogContinueWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with {plan}'**
+  String catalogContinueWith(String plan);
+
+  /// No description provided for @confirmQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you pay {name}?'**
+  String confirmQuestion(String name);
+
+  /// No description provided for @confirmDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get confirmDueToday;
+
+  /// No description provided for @confirmOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get confirmOverdue;
+
+  /// No description provided for @confirmMoreAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more after this} other{{count} more after this}}'**
+  String confirmMoreAfter(int count);
+
+  /// No description provided for @confirmPeriodOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Period of {date}'**
+  String confirmPeriodOf(String date);
 
   /// No description provided for @confirmAmount.
   ///
   /// In en, this message translates to:
   /// **'Amount paid'**
   String get confirmAmount;
+
+  /// No description provided for @confirmYourShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Your share · plan {price} ÷ {count}'**
+  String confirmYourShare(String price, int count);
+
+  /// No description provided for @confirmCurrentPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price · edit if it changed'**
+  String get confirmCurrentPrice;
+
+  /// No description provided for @confirmMovesNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirming moves the next renewal to {date}.'**
+  String confirmMovesNext(String date);
+
+  /// No description provided for @confirmNextUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Next up: the {date} period, also waiting.'**
+  String confirmNextUp(String date);
 
   /// No description provided for @confirmPaid.
   ///
@@ -527,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirmSkip.
   ///
   /// In en, this message translates to:
-  /// **'Not paying this period'**
+  /// **'Didn’t pay this period'**
   String get confirmSkip;
 
   /// No description provided for @confirmLater.
@@ -536,17 +680,65 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get confirmLater;
 
-  /// No description provided for @confirmNext.
+  /// No description provided for @confirmAmountRequired.
   ///
   /// In en, this message translates to:
-  /// **'Next renewal: {date}'**
-  String confirmNext(String date);
+  /// **'Enter the amount you paid.'**
+  String get confirmAmountRequired;
 
-  /// No description provided for @confirmNothing.
+  /// No description provided for @confirmSaved.
   ///
   /// In en, this message translates to:
-  /// **'{name} has nothing to confirm.'**
-  String confirmNothing(String name);
+  /// **'Payment saved'**
+  String get confirmSaved;
+
+  /// No description provided for @confirmSkippedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as not paid'**
+  String get confirmSkippedTitle;
+
+  /// No description provided for @confirmNextPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Next period: {date}'**
+  String confirmNextPeriod(String date);
+
+  /// No description provided for @confirmDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get confirmDone;
+
+  /// No description provided for @confirmSavedStep.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} saved · {amount}'**
+  String confirmSavedStep(String date, String amount);
+
+  /// No description provided for @confirmSkippedStep.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} marked as not paid'**
+  String confirmSkippedStep(String date);
+
+  /// No description provided for @confirmNothingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to confirm'**
+  String get confirmNothingTitle;
+
+  /// No description provided for @confirmNothingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is up to date. Next renewal: {date}.'**
+  String confirmNothingBody(String name, String date);
+
+  /// No description provided for @confirmNothingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is cancelled, so there is nothing to confirm.'**
+  String confirmNothingCancelled(String name);
 
   /// No description provided for @confirmAwaitingTitle.
   ///
@@ -554,29 +746,107 @@ abstract class AppLocalizations {
   /// **'To confirm'**
   String get confirmAwaitingTitle;
 
-  /// No description provided for @confirmAllDone.
+  /// No description provided for @confirmAwaitingIntro.
   ///
   /// In en, this message translates to:
-  /// **'You\'re all caught up 🎉'**
-  String get confirmAllDone;
+  /// **'Oldest first. Each period is confirmed one at a time, so the next date only moves once the earlier one is settled.'**
+  String get confirmAwaitingIntro;
 
-  /// No description provided for @confirmAll.
+  /// No description provided for @confirmAwaitingFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a row to change the amount or mark it unpaid.'**
+  String get confirmAwaitingFooter;
+
+  /// No description provided for @confirmAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{today} other{{days}d ago}}'**
+  String confirmAgo(int days);
+
+  /// No description provided for @confirmAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After {date}'**
+  String confirmAfter(String date);
+
+  /// No description provided for @confirmMarkPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark {name}, {date} as paid'**
+  String confirmMarkPaid(String name, String date);
+
+  /// No description provided for @confirmQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm the {date} period first'**
+  String confirmQueued(String date);
+
+  /// No description provided for @confirmQuickSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {date} saved as paid'**
+  String confirmQuickSaved(String name, String date);
+
+  /// No description provided for @confirmAllButton.
   ///
   /// In en, this message translates to:
   /// **'Confirm all · {amount}'**
-  String confirmAll(String amount);
+  String confirmAllButton(String amount);
 
-  /// No description provided for @confirmAllDialogTitle.
+  /// No description provided for @confirmAllTitle.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{Confirm 1 payment?} other{Confirm {count} payments?}}'**
-  String confirmAllDialogTitle(int count);
+  String confirmAllTitle(int count);
 
-  /// No description provided for @confirmAllDialogBody.
+  /// No description provided for @confirmAllBody.
   ///
   /// In en, this message translates to:
-  /// **'All of them will be marked as paid at their current price.'**
-  String get confirmAllDialogBody;
+  /// **'Each period is saved as paid at its current price:'**
+  String get confirmAllBody;
+
+  /// No description provided for @confirmAllFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit any payment later.'**
+  String get confirmAllFooter;
+
+  /// No description provided for @confirmAllAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm all'**
+  String get confirmAllAction;
+
+  /// No description provided for @confirmAllCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get confirmAllCancel;
+
+  /// No description provided for @confirmAllSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 payment saved} other{{count} payments saved}}'**
+  String confirmAllSaved(int count);
+
+  /// No description provided for @confirmCaughtUp.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re all caught up 🎉'**
+  String get confirmCaughtUp;
+
+  /// No description provided for @confirmCaughtUpBody.
+  ///
+  /// In en, this message translates to:
+  /// **'New periods show up here on their due date.'**
+  String get confirmCaughtUpBody;
+
+  /// No description provided for @confirmBackHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Overview'**
+  String get confirmBackHome;
 
   /// No description provided for @coreRelToday.
   ///
@@ -698,71 +968,119 @@ abstract class AppLocalizations {
   /// **'Edit amount'**
   String get coreEditAmount;
 
-  /// No description provided for @homeAdd.
+  /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Add subscription'**
-  String get homeAdd;
+  /// **'Overview'**
+  String get homeTitle;
 
-  /// No description provided for @homeCounts.
+  /// No description provided for @homeSearch.
   ///
   /// In en, this message translates to:
-  /// **'{active} paying · {trial} on trial'**
-  String homeCounts(int active, int trial);
+  /// **'Search subscriptions'**
+  String get homeSearch;
 
-  /// No description provided for @homeTrialSoon.
+  /// No description provided for @homeSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'{amount}/month after trials end'**
-  String homeTrialSoon(String amount);
+  /// **'Search by name'**
+  String get homeSearchHint;
 
-  /// No description provided for @homeRatesOffline.
+  /// No description provided for @homeSearchClose.
   ///
   /// In en, this message translates to:
-  /// **'Approximate exchange rates (not updated yet)'**
-  String get homeRatesOffline;
+  /// **'Close search'**
+  String get homeSearchClose;
+
+  /// No description provided for @homeSearchEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription matches “{query}”.'**
+  String homeSearchEmpty(String query);
+
+  /// No description provided for @homeMonthlySpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly spend'**
+  String get homeMonthlySpend;
+
+  /// No description provided for @homeYearlySpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly spend'**
+  String get homeYearlySpend;
+
+  /// No description provided for @homeActiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active'**
+  String homeActiveCount(int count);
+
+  /// No description provided for @homeTrialCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 trial} other{{count} trials}}'**
+  String homeTrialCount(int count);
+
+  /// No description provided for @homeBiggest.
+  ///
+  /// In en, this message translates to:
+  /// **'Biggest: {name} · {percent}%'**
+  String homeBiggest(String name, int percent);
 
   /// No description provided for @homeRatesStale.
   ///
   /// In en, this message translates to:
-  /// **'{days, plural, =1{Exchange rates updated 1 day ago} other{Exchange rates updated {days} days ago}}'**
+  /// **'{days, plural, =1{Offline · rates from yesterday} other{Offline · rates from {days} days ago}}'**
   String homeRatesStale(int days);
 
-  /// No description provided for @homeRatesFresh.
+  /// No description provided for @homeRatesNever.
   ///
   /// In en, this message translates to:
-  /// **'Exchange rates updated today'**
-  String get homeRatesFresh;
+  /// **'Offline · approximate rates'**
+  String get homeRatesNever;
 
-  /// No description provided for @homeNotificationsOff.
+  /// No description provided for @homeRemindersOffTitle.
   ///
   /// In en, this message translates to:
   /// **'Reminders are off'**
-  String get homeNotificationsOff;
+  String get homeRemindersOffTitle;
 
-  /// No description provided for @homeEnable.
+  /// No description provided for @homeRemindersOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You won’t hear about renewals or trials ending.'**
+  String get homeRemindersOffBody;
+
+  /// No description provided for @homeRemindersTurnOn.
   ///
   /// In en, this message translates to:
   /// **'Turn on'**
-  String get homeEnable;
+  String get homeRemindersTurnOn;
 
-  /// No description provided for @homeAwaiting.
+  /// No description provided for @homeAwaitingTitle.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 payment to confirm} other{{count} payments to confirm}}'**
-  String homeAwaiting(int count);
+  String homeAwaitingTitle(int count);
 
-  /// No description provided for @homeView.
+  /// No description provided for @homeAwaitingReview.
   ///
   /// In en, this message translates to:
-  /// **'View'**
-  String get homeView;
+  /// **'Review'**
+  String get homeAwaitingReview;
 
-  /// No description provided for @homeTrialEnding.
+  /// No description provided for @homeTrialEnds.
   ///
   /// In en, this message translates to:
   /// **'{name} trial ends {days, plural, =0{today} =1{tomorrow} other{in {days} days}}'**
-  String homeTrialEnding(String name, int days);
+  String homeTrialEnds(String name, int days);
+
+  /// No description provided for @homeTrialThen.
+  ///
+  /// In en, this message translates to:
+  /// **'Then {price} from {date}'**
+  String homeTrialThen(String price, String date);
 
   /// No description provided for @homeHowToCancel.
   ///
@@ -770,23 +1088,53 @@ abstract class AppLocalizations {
   /// **'How to cancel'**
   String get homeHowToCancel;
 
+  /// No description provided for @homeKeepIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get homeKeepIt;
+
+  /// No description provided for @homeKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeping {name}. The first charge is on {date}.'**
+  String homeKept(String name, String date);
+
   /// No description provided for @homeUpcoming.
   ///
   /// In en, this message translates to:
-  /// **'Next 7 days'**
+  /// **'Upcoming · 7 days'**
   String get homeUpcoming;
+
+  /// No description provided for @homeCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get homeCalendar;
+
+  /// No description provided for @homeFirstCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'First charge'**
+  String get homeFirstCharge;
+
+  /// No description provided for @homeSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get homeSubscriptions;
 
   /// No description provided for @homeTabActive.
   ///
   /// In en, this message translates to:
-  /// **'Paying'**
+  /// **'Active'**
   String get homeTabActive;
 
-  /// No description provided for @homeTabTrial.
+  /// No description provided for @homeTabTrials.
   ///
   /// In en, this message translates to:
-  /// **'Trial'**
-  String get homeTabTrial;
+  /// **'Trials'**
+  String get homeTabTrials;
 
   /// No description provided for @homeTabCancelled.
   ///
@@ -794,23 +1142,23 @@ abstract class AppLocalizations {
   /// **'Cancelled'**
   String get homeTabCancelled;
 
-  /// No description provided for @homeTabEmpty.
+  /// No description provided for @homeSortTitle.
   ///
   /// In en, this message translates to:
-  /// **'Nothing here.'**
-  String get homeTabEmpty;
+  /// **'Sort subscriptions'**
+  String get homeSortTitle;
 
-  /// No description provided for @homeSort.
+  /// No description provided for @homeSortDue.
   ///
   /// In en, this message translates to:
-  /// **'Sort'**
-  String get homeSort;
+  /// **'Due date'**
+  String get homeSortDue;
 
-  /// No description provided for @homeSortDueDate.
+  /// No description provided for @homeSortDueHint.
   ///
   /// In en, this message translates to:
-  /// **'Renewal date'**
-  String get homeSortDueDate;
+  /// **'Soonest first · awaiting always on top'**
+  String get homeSortDueHint;
 
   /// No description provided for @homeSortPrice.
   ///
@@ -818,17 +1166,47 @@ abstract class AppLocalizations {
   /// **'Price'**
   String get homeSortPrice;
 
+  /// No description provided for @homeSortPriceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest monthly cost first'**
+  String get homeSortPriceHint;
+
   /// No description provided for @homeSortName.
   ///
   /// In en, this message translates to:
   /// **'Name'**
   String get homeSortName;
 
-  /// No description provided for @homeSavings.
+  /// No description provided for @homeSortNameHint.
   ///
   /// In en, this message translates to:
-  /// **'You\'re saving {amount}/year'**
-  String homeSavings(String amount);
+  /// **'A → Z'**
+  String get homeSortNameHint;
+
+  /// No description provided for @homeSortDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get homeSortDone;
+
+  /// No description provided for @homeSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by {by}'**
+  String homeSortLabel(String by);
+
+  /// No description provided for @homeSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re saving'**
+  String get homeSaving;
+
+  /// No description provided for @homePerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/year'**
+  String homePerYear(String amount);
 
   /// No description provided for @homeCancelledOn.
   ///
@@ -836,17 +1214,65 @@ abstract class AppLocalizations {
   /// **'Cancelled {date}'**
   String homeCancelledOn(String date);
 
-  /// No description provided for @homeEmpty.
+  /// No description provided for @homeTrialEndsWhen.
   ///
   /// In en, this message translates to:
-  /// **'Track every subscription in one nest.'**
-  String get homeEmpty;
+  /// **'ends {when}'**
+  String homeTrialEndsWhen(String when);
 
-  /// No description provided for @homeAddFirst.
+  /// No description provided for @homeTrialBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial'**
+  String get homeTrialBadge;
+
+  /// No description provided for @homeEmptyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'No active subscriptions.'**
+  String get homeEmptyActive;
+
+  /// No description provided for @homeEmptyTrials.
+  ///
+  /// In en, this message translates to:
+  /// **'No trials right now.'**
+  String get homeEmptyTrials;
+
+  /// No description provided for @homeEmptyCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing cancelled yet.'**
+  String get homeEmptyCancelled;
+
+  /// No description provided for @homeTrialsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Trials aren’t in your monthly total until they turn into paid subscriptions.'**
+  String get homeTrialsNote;
+
+  /// No description provided for @homeEmptyTitle.
   ///
   /// In en, this message translates to:
   /// **'Add your first subscription'**
-  String get homeAddFirst;
+  String get homeEmptyTitle;
+
+  /// No description provided for @homeEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from 100+ popular services — most take three taps.'**
+  String get homeEmptyBody;
+
+  /// No description provided for @homeBrowse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse services'**
+  String get homeBrowse;
+
+  /// No description provided for @homeAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add subscription'**
+  String get homeAdd;
 
   /// No description provided for @insightsRangeMonth.
   ///
@@ -1124,6 +1550,12 @@ abstract class AppLocalizations {
   /// **'Skip'**
   String get onboardingSkip;
 
+  /// No description provided for @onboardingStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
+  String onboardingStep(int step, int total);
+
   /// No description provided for @onboardingWelcomeTitle.
   ///
   /// In en, this message translates to:
@@ -1133,20 +1565,38 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingBenefitRemind.
   ///
   /// In en, this message translates to:
-  /// **'Get reminded before you\'re charged'**
+  /// **'Reminders before you’re charged'**
   String get onboardingBenefitRemind;
+
+  /// No description provided for @onboardingBenefitRemindSub.
+  ///
+  /// In en, this message translates to:
+  /// **'3 days ahead, and before trials end.'**
+  String get onboardingBenefitRemindSub;
 
   /// No description provided for @onboardingBenefitTotal.
   ///
   /// In en, this message translates to:
-  /// **'Know exactly what you spend each month'**
+  /// **'Know exactly what each month costs'**
   String get onboardingBenefitTotal;
+
+  /// No description provided for @onboardingBenefitTotalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'In your currency, shared plans split fairly.'**
+  String get onboardingBenefitTotalSub;
 
   /// No description provided for @onboardingBenefitPrivate.
   ///
   /// In en, this message translates to:
-  /// **'Private — your data stays on your phone'**
+  /// **'Private — data stays on your phone'**
   String get onboardingBenefitPrivate;
+
+  /// No description provided for @onboardingBenefitPrivateSub.
+  ///
+  /// In en, this message translates to:
+  /// **'No account, no bank link, no tracking.'**
+  String get onboardingBenefitPrivateSub;
 
   /// No description provided for @onboardingStart.
   ///
@@ -1157,20 +1607,98 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingCurrencyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your primary currency'**
+  /// **'Your main currency'**
   String get onboardingCurrencyTitle;
 
   /// No description provided for @onboardingCurrencyHint.
   ///
   /// In en, this message translates to:
-  /// **'Used to add up your totals. Each subscription keeps its own currency.'**
+  /// **'Used to add up your totals. Each subscription still keeps its own currency.'**
   String get onboardingCurrencyHint;
 
-  /// No description provided for @onboardingQuickAddTitle.
+  /// No description provided for @onboardingCurrencySuggestedVn.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested for Vietnam'**
+  String get onboardingCurrencySuggestedVn;
+
+  /// No description provided for @onboardingCurrencySuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested for your region'**
+  String get onboardingCurrencySuggested;
+
+  /// No description provided for @onboardingCurrencyChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Your choice'**
+  String get onboardingCurrencyChosen;
+
+  /// No description provided for @onboardingCurrencyChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another currency'**
+  String get onboardingCurrencyChange;
+
+  /// No description provided for @onboardingCurrencyRatesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Exchange rates update once a day when you’re online. You can set your own in Settings.'**
+  String get onboardingCurrencyRatesNote;
+
+  /// No description provided for @onboardingCurrencySheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Main currency'**
+  String get onboardingCurrencySheetTitle;
+
+  /// No description provided for @onboardingCurrencySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search currency or country'**
+  String get onboardingCurrencySearch;
+
+  /// No description provided for @onboardingPickTitle.
   ///
   /// In en, this message translates to:
   /// **'What do you pay for?'**
-  String get onboardingQuickAddTitle;
+  String get onboardingPickTitle;
+
+  /// No description provided for @onboardingPickSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search 100+ services'**
+  String get onboardingPickSearch;
+
+  /// No description provided for @onboardingPickSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing selected yet} =1{1 selected} other{{count} selected}}'**
+  String onboardingPickSelected(int count);
+
+  /// No description provided for @onboardingPickNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No service called “{name}”. You can add it later with +.'**
+  String onboardingPickNoMatch(String name);
+
+  /// No description provided for @onboardingPickMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} · {cycle}'**
+  String onboardingPickMeta(String price, String cycle);
+
+  /// No description provided for @onboardingPickEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get onboardingPickEdit;
+
+  /// No description provided for @onboardingPickEditLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit price and cycle of {name}'**
+  String onboardingPickEditLabel(String name);
 
   /// No description provided for @onboardingLater.
   ///
@@ -1178,23 +1706,71 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get onboardingLater;
 
-  /// No description provided for @onboardingSelected.
+  /// No description provided for @onboardingQuickPlan.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{Continue} other{Add {count} · Continue}}'**
-  String onboardingSelected(int count);
+  /// **'Plan'**
+  String get onboardingQuickPlan;
+
+  /// No description provided for @onboardingQuickPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get onboardingQuickPrice;
+
+  /// No description provided for @onboardingQuickCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing cycle'**
+  String get onboardingQuickCycle;
+
+  /// No description provided for @onboardingQuickRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Don’t add it'**
+  String get onboardingQuickRemove;
 
   /// No description provided for @onboardingRemindersTitle.
   ///
   /// In en, this message translates to:
-  /// **'Turn on reminders'**
+  /// **'A heads-up before every charge'**
   String get onboardingRemindersTitle;
 
-  /// No description provided for @onboardingRemindersExample.
+  /// No description provided for @onboardingRemindersBody.
   ///
   /// In en, this message translates to:
-  /// **'“Netflix renews in 3 days — ₫260,000”'**
-  String get onboardingRemindersExample;
+  /// **'We’ll remind you 3 days before a renewal or a trial ending, at {time}. Change it any time.'**
+  String onboardingRemindersBody(String time);
+
+  /// No description provided for @onboardingDemoNow.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get onboardingDemoNow;
+
+  /// No description provided for @onboardingDemoAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'2d ago'**
+  String get onboardingDemoAgo;
+
+  /// No description provided for @onboardingDemoRenews.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} renews in 3 days — {price}'**
+  String onboardingDemoRenews(String name, String price);
+
+  /// No description provided for @onboardingDemoTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {name} trial ends in 3 days.'**
+  String onboardingDemoTrial(String name);
+
+  /// No description provided for @onboardingDemoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Example reminders'**
+  String get onboardingDemoLabel;
 
   /// No description provided for @onboardingEnableReminders.
   ///
@@ -1205,7 +1781,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingNoThanks.
   ///
   /// In en, this message translates to:
-  /// **'No, thanks'**
+  /// **'Not now'**
   String get onboardingNoThanks;
 
   /// No description provided for @settingsSectionMoney.
@@ -1868,17 +2444,47 @@ abstract class AppLocalizations {
   /// **'Your data stays on this phone. Subnest collects nothing.'**
   String get settingsPrivacyNote;
 
-  /// No description provided for @subscriptionDetailMyShare.
+  /// No description provided for @subscriptionDetailEdit.
   ///
   /// In en, this message translates to:
-  /// **'Your share {share} · plan {price} ÷ {count}'**
-  String subscriptionDetailMyShare(String share, String price, int count);
+  /// **'Edit'**
+  String get subscriptionDetailEdit;
 
-  /// No description provided for @subscriptionDetailAwaiting.
+  /// No description provided for @subscriptionDetailStatusActive.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 period to confirm} other{{count} periods to confirm}}'**
-  String subscriptionDetailAwaiting(int count);
+  /// **'Active'**
+  String get subscriptionDetailStatusActive;
+
+  /// No description provided for @subscriptionDetailStatusTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{Trial · ends today} =1{Trial · 1 day left} other{Trial · {days} days left}}'**
+  String subscriptionDetailStatusTrial(int days);
+
+  /// No description provided for @subscriptionDetailStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get subscriptionDetailStatusCancelled;
+
+  /// No description provided for @subscriptionDetailYourShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Your share · plan {price} ÷ {count}'**
+  String subscriptionDetailYourShare(String price, int count);
+
+  /// No description provided for @subscriptionDetailAwaitingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Renewal on {date} needs confirming} other{{count} renewals need confirming, from {date}}}'**
+  String subscriptionDetailAwaitingTitle(int count, String date);
+
+  /// No description provided for @subscriptionDetailAwaitingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Did {amount} go out? The next date waits until you say.'**
+  String subscriptionDetailAwaitingBody(String amount);
 
   /// No description provided for @subscriptionDetailConfirm.
   ///
@@ -1886,17 +2492,77 @@ abstract class AppLocalizations {
   /// **'Confirm'**
   String get subscriptionDetailConfirm;
 
-  /// No description provided for @subscriptionDetailNextDue.
-  ///
-  /// In en, this message translates to:
-  /// **'Next renewal'**
-  String get subscriptionDetailNextDue;
-
   /// No description provided for @subscriptionDetailTrialEnds.
   ///
   /// In en, this message translates to:
-  /// **'Trial ends'**
-  String get subscriptionDetailTrialEnds;
+  /// **'Trial ends {date}'**
+  String subscriptionDetailTrialEnds(String date);
+
+  /// No description provided for @subscriptionDetailTrialBody.
+  ///
+  /// In en, this message translates to:
+  /// **'After that it renews at {price}. Cancel before then if you don’t want it.'**
+  String subscriptionDetailTrialBody(String price);
+
+  /// No description provided for @subscriptionDetailHowToCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'How to cancel'**
+  String get subscriptionDetailHowToCancel;
+
+  /// No description provided for @subscriptionDetailKeepIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get subscriptionDetailKeepIt;
+
+  /// No description provided for @subscriptionDetailKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeping {name}. The first charge is on {date}.'**
+  String subscriptionDetailKept(String name, String date);
+
+  /// No description provided for @subscriptionDetailSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving {amount}/year'**
+  String subscriptionDetailSaving(String amount);
+
+  /// No description provided for @subscriptionDetailCancelledBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled {date}. No more reminders.'**
+  String subscriptionDetailCancelledBody(String date);
+
+  /// No description provided for @subscriptionDetailRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore subscription'**
+  String get subscriptionDetailRestore;
+
+  /// No description provided for @subscriptionDetailRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored. Next renewal: {date}.'**
+  String subscriptionDetailRestored(String date);
+
+  /// No description provided for @subscriptionDetailNextRenewal.
+  ///
+  /// In en, this message translates to:
+  /// **'Next renewal'**
+  String get subscriptionDetailNextRenewal;
+
+  /// No description provided for @subscriptionDetailFirstCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'First charge'**
+  String get subscriptionDetailFirstCharge;
+
+  /// No description provided for @subscriptionDetailWaits.
+  ///
+  /// In en, this message translates to:
+  /// **'Waits for your confirmation'**
+  String get subscriptionDetailWaits;
 
   /// No description provided for @subscriptionDetailCycle.
   ///
@@ -1904,11 +2570,47 @@ abstract class AppLocalizations {
   /// **'Billing cycle'**
   String get subscriptionDetailCycle;
 
-  /// No description provided for @subscriptionDetailReminder.
+  /// No description provided for @subscriptionDetailEveryDay.
   ///
   /// In en, this message translates to:
-  /// **'Reminder'**
-  String get subscriptionDetailReminder;
+  /// **'{count, plural, =1{Every day} other{Every {count} days}}'**
+  String subscriptionDetailEveryDay(int count);
+
+  /// No description provided for @subscriptionDetailEveryWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Every week} other{Every {count} weeks}}'**
+  String subscriptionDetailEveryWeek(int count);
+
+  /// No description provided for @subscriptionDetailEveryMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Every month} other{Every {count} months}}'**
+  String subscriptionDetailEveryMonth(int count);
+
+  /// No description provided for @subscriptionDetailEveryYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Every year} other{Every {count} years}}'**
+  String subscriptionDetailEveryYear(int count);
+
+  /// No description provided for @subscriptionDetailRemindMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me'**
+  String get subscriptionDetailRemindMe;
+
+  /// No description provided for @subscriptionDetailRemindValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{On the day, {time}} =1{1 day before, {time}} other{{days} days before, {time}}}'**
+  String subscriptionDetailRemindValue(int days, String time);
+
+  /// No description provided for @subscriptionDetailRemindOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get subscriptionDetailRemindOff;
 
   /// No description provided for @subscriptionDetailCategory.
   ///
@@ -1922,17 +2624,11 @@ abstract class AppLocalizations {
   /// **'Payment method'**
   String get subscriptionDetailPaymentMethod;
 
-  /// No description provided for @subscriptionDetailStarted.
+  /// No description provided for @subscriptionDetailSince.
   ///
   /// In en, this message translates to:
-  /// **'Started'**
-  String get subscriptionDetailStarted;
-
-  /// No description provided for @subscriptionDetailCancelledOn.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancelled on'**
-  String get subscriptionDetailCancelledOn;
+  /// **'Since'**
+  String get subscriptionDetailSince;
 
   /// No description provided for @subscriptionDetailTotalPaid.
   ///
@@ -1958,23 +2654,53 @@ abstract class AppLocalizations {
   /// **'Paid'**
   String get subscriptionDetailPaid;
 
-  /// No description provided for @subscriptionDetailSkipped.
+  /// No description provided for @subscriptionDetailDidntPay.
   ///
   /// In en, this message translates to:
-  /// **'Not paid this period'**
-  String get subscriptionDetailSkipped;
+  /// **'Didn’t pay'**
+  String get subscriptionDetailDidntPay;
 
   /// No description provided for @subscriptionDetailNoHistory.
   ///
   /// In en, this message translates to:
-  /// **'No payments yet.'**
-  String get subscriptionDetailNoHistory;
+  /// **'No payments yet — the first charge is on {date}.'**
+  String subscriptionDetailNoHistory(String date);
 
-  /// No description provided for @subscriptionDetailHowToCancel.
+  /// No description provided for @subscriptionDetailNoHistoryCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments recorded.'**
+  String get subscriptionDetailNoHistoryCancelled;
+
+  /// No description provided for @subscriptionDetailEditPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit payment of {date}'**
+  String subscriptionDetailEditPayment(String date);
+
+  /// No description provided for @subscriptionDetailConfirmPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm the period of {date}'**
+  String subscriptionDetailConfirmPeriod(String date);
+
+  /// No description provided for @subscriptionDetailHowToCancelRow.
   ///
   /// In en, this message translates to:
   /// **'How to cancel this service'**
-  String get subscriptionDetailHowToCancel;
+  String get subscriptionDetailHowToCancelRow;
+
+  /// No description provided for @subscriptionDetailOpens.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens {host} account settings'**
+  String subscriptionDetailOpens(String host);
+
+  /// No description provided for @subscriptionDetailLinkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t open {host}.'**
+  String subscriptionDetailLinkFailed(String host);
 
   /// No description provided for @subscriptionDetailMarkCancelled.
   ///
@@ -1982,23 +2708,29 @@ abstract class AppLocalizations {
   /// **'Mark as cancelled'**
   String get subscriptionDetailMarkCancelled;
 
-  /// No description provided for @subscriptionDetailRestore.
+  /// No description provided for @subscriptionDetailDelete.
   ///
   /// In en, this message translates to:
-  /// **'Restore'**
-  String get subscriptionDetailRestore;
+  /// **'Delete subscription'**
+  String get subscriptionDetailDelete;
 
-  /// No description provided for @subscriptionDetailSaved.
+  /// No description provided for @subscriptionDetailCancelTitle.
   ///
   /// In en, this message translates to:
-  /// **'Nice! You\'re saving {amount}/year'**
-  String subscriptionDetailSaved(String amount);
+  /// **'Mark {name} as cancelled?'**
+  String subscriptionDetailCancelTitle(String name);
 
-  /// No description provided for @subscriptionDetailEditAmount.
+  /// No description provided for @subscriptionDetailCancelBody.
   ///
   /// In en, this message translates to:
-  /// **'Amount paid'**
-  String get subscriptionDetailEditAmount;
+  /// **'Reminders stop and {amount}/year moves into your savings. You can restore it any time.'**
+  String subscriptionDetailCancelBody(String amount);
+
+  /// No description provided for @subscriptionDetailNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get subscriptionDetailNotYet;
 
   /// No description provided for @subscriptionDetailDeleteTitle.
   ///
@@ -2009,8 +2741,116 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionDetailDeleteBody.
   ///
   /// In en, this message translates to:
-  /// **'This removes the subscription and its whole payment history. To keep the history, mark it as cancelled instead.'**
-  String get subscriptionDetailDeleteBody;
+  /// **'{count, plural, =0{This removes it for good. To stop reminders but keep it, mark it as cancelled instead.} =1{This removes it and its 1 payment record for good. To stop reminders but keep the history, mark it as cancelled instead.} other{This removes it and its {count} payment records for good. To stop reminders but keep the history, mark it as cancelled instead.}}'**
+  String subscriptionDetailDeleteBody(int count);
+
+  /// No description provided for @subscriptionDetailDeleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get subscriptionDetailDeleteAction;
+
+  /// No description provided for @subscriptionDetailDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} deleted'**
+  String subscriptionDetailDeleted(String name);
+
+  /// No description provided for @subscriptionDetailCelebrateCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} cancelled'**
+  String subscriptionDetailCelebrateCancelled(String name);
+
+  /// No description provided for @subscriptionDetailCelebrateYear.
+  ///
+  /// In en, this message translates to:
+  /// **'a year saved'**
+  String get subscriptionDetailCelebrateYear;
+
+  /// No description provided for @subscriptionDetailCelebrateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re now saving'**
+  String get subscriptionDetailCelebrateNow;
+
+  /// No description provided for @subscriptionDetailPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/year'**
+  String subscriptionDetailPerYear(String amount);
+
+  /// No description provided for @subscriptionDetailSeeCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'See cancelled'**
+  String get subscriptionDetailSeeCancelled;
+
+  /// No description provided for @subscriptionDetailPaymentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment · {date}'**
+  String subscriptionDetailPaymentTitle(String date);
+
+  /// No description provided for @subscriptionDetailAmountPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount paid'**
+  String get subscriptionDetailAmountPaid;
+
+  /// No description provided for @subscriptionDetailWas.
+  ///
+  /// In en, this message translates to:
+  /// **'Was {old} — saving updates Total paid to {total}.'**
+  String subscriptionDetailWas(String old, String total);
+
+  /// No description provided for @subscriptionDetailAmountRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the amount you paid.'**
+  String get subscriptionDetailAmountRequired;
+
+  /// No description provided for @subscriptionDetailPaidOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid on'**
+  String get subscriptionDetailPaidOn;
+
+  /// No description provided for @subscriptionDetailPaidWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid with'**
+  String get subscriptionDetailPaidWith;
+
+  /// No description provided for @subscriptionDetailSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get subscriptionDetailSave;
+
+  /// No description provided for @subscriptionDetailMarkNotPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as not paid'**
+  String get subscriptionDetailMarkNotPaid;
+
+  /// No description provided for @subscriptionDetailCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get subscriptionDetailCancel;
+
+  /// No description provided for @subscriptionDetailPaymentUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment updated'**
+  String get subscriptionDetailPaymentUpdated;
+
+  /// No description provided for @subscriptionDetailMarkedNotPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as not paid'**
+  String get subscriptionDetailMarkedNotPaid;
 
   /// No description provided for @subscriptionFormAddTitle.
   ///
@@ -2024,17 +2864,29 @@ abstract class AppLocalizations {
   /// **'Edit subscription'**
   String get subscriptionFormEditTitle;
 
-  /// No description provided for @subscriptionFormName.
+  /// No description provided for @subscriptionFormNameHint.
   ///
   /// In en, this message translates to:
-  /// **'Name'**
-  String get subscriptionFormName;
+  /// **'Service name'**
+  String get subscriptionFormNameHint;
 
   /// No description provided for @subscriptionFormNameRequired.
   ///
   /// In en, this message translates to:
   /// **'Enter a name'**
   String get subscriptionFormNameRequired;
+
+  /// No description provided for @subscriptionFormEditTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Change tile'**
+  String get subscriptionFormEditTile;
+
+  /// No description provided for @subscriptionFormPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan: {name}'**
+  String subscriptionFormPlan(String name);
 
   /// No description provided for @subscriptionFormPrice.
   ///
@@ -2051,8 +2903,20 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFormPriceRequired.
   ///
   /// In en, this message translates to:
-  /// **'Price must be greater than 0'**
+  /// **'Price must be more than 0'**
   String get subscriptionFormPriceRequired;
+
+  /// No description provided for @subscriptionFormPriceWas.
+  ///
+  /// In en, this message translates to:
+  /// **'Was {old}. The new price applies from the next period ({date}). Past payments stay as they were.'**
+  String subscriptionFormPriceWas(String old, String date);
+
+  /// No description provided for @subscriptionFormCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing cycle'**
+  String get subscriptionFormCycle;
 
   /// No description provided for @subscriptionFormEvery.
   ///
@@ -2060,53 +2924,137 @@ abstract class AppLocalizations {
   /// **'Every'**
   String get subscriptionFormEvery;
 
+  /// No description provided for @subscriptionFormEveryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of units in one billing cycle'**
+  String get subscriptionFormEveryCount;
+
+  /// No description provided for @subscriptionFormUnitDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{day} other{days}}'**
+  String subscriptionFormUnitDay(int count);
+
+  /// No description provided for @subscriptionFormUnitWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{week} other{weeks}}'**
+  String subscriptionFormUnitWeek(int count);
+
+  /// No description provided for @subscriptionFormUnitMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{month} other{months}}'**
+  String subscriptionFormUnitMonth(int count);
+
+  /// No description provided for @subscriptionFormUnitYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{year} other{years}}'**
+  String subscriptionFormUnitYear(int count);
+
+  /// No description provided for @subscriptionFormUnitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycle unit: {unit}'**
+  String subscriptionFormUnitLabel(String unit);
+
+  /// No description provided for @subscriptionFormChipWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get subscriptionFormChipWeekly;
+
+  /// No description provided for @subscriptionFormChipMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get subscriptionFormChipMonthly;
+
+  /// No description provided for @subscriptionFormChipQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get subscriptionFormChipQuarterly;
+
+  /// No description provided for @subscriptionFormChipYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get subscriptionFormChipYearly;
+
   /// No description provided for @subscriptionFormNextDue.
   ///
   /// In en, this message translates to:
-  /// **'Next renewal date'**
+  /// **'Next renewal'**
   String get subscriptionFormNextDue;
+
+  /// No description provided for @subscriptionFormFirstCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'First charge'**
+  String get subscriptionFormFirstCharge;
 
   /// No description provided for @subscriptionFormThen.
   ///
   /// In en, this message translates to:
-  /// **'Then: {dates}'**
+  /// **'Then {dates}…'**
   String subscriptionFormThen(String dates);
 
   /// No description provided for @subscriptionFormTrial.
   ///
   /// In en, this message translates to:
-  /// **'On a free trial'**
+  /// **'Free trial'**
   String get subscriptionFormTrial;
+
+  /// No description provided for @subscriptionFormTrialSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me before it ends'**
+  String get subscriptionFormTrialSub;
 
   /// No description provided for @subscriptionFormTrialEnds.
   ///
   /// In en, this message translates to:
-  /// **'Trial ends on'**
+  /// **'Trial ends'**
   String get subscriptionFormTrialEnds;
 
   /// No description provided for @subscriptionFormTrialEndInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Trial end can\'t be in the past'**
+  /// **'Trial end can’t be in the past'**
   String get subscriptionFormTrialEndInvalid;
 
   /// No description provided for @subscriptionFormShared.
   ///
   /// In en, this message translates to:
-  /// **'Shared with others'**
+  /// **'Split with others'**
   String get subscriptionFormShared;
+
+  /// No description provided for @subscriptionFormSharedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals use your share'**
+  String get subscriptionFormSharedSub;
 
   /// No description provided for @subscriptionFormPeople.
   ///
   /// In en, this message translates to:
-  /// **'{count} people'**
-  String subscriptionFormPeople(int count);
+  /// **'People, including you'**
+  String get subscriptionFormPeople;
 
-  /// No description provided for @subscriptionFormMyShare.
+  /// No description provided for @subscriptionFormYourShare.
   ///
   /// In en, this message translates to:
-  /// **'Your share: {amount}'**
-  String subscriptionFormMyShare(String amount);
+  /// **'Your share'**
+  String get subscriptionFormYourShare;
+
+  /// No description provided for @subscriptionFormShareOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} ÷ {count}'**
+  String subscriptionFormShareOf(String price, int count);
 
   /// No description provided for @subscriptionFormCategory.
   ///
@@ -2120,23 +3068,71 @@ abstract class AppLocalizations {
   /// **'Remind me'**
   String get subscriptionFormReminder;
 
-  /// No description provided for @subscriptionFormAdvanced.
+  /// No description provided for @subscriptionFormRemindOff.
   ///
   /// In en, this message translates to:
-  /// **'More'**
-  String get subscriptionFormAdvanced;
+  /// **'Off'**
+  String get subscriptionFormRemindOff;
+
+  /// No description provided for @subscriptionFormRemindOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'On day'**
+  String get subscriptionFormRemindOnDay;
+
+  /// No description provided for @subscriptionFormRemindDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String subscriptionFormRemindDays(int count);
+
+  /// No description provided for @subscriptionFormRemindAt.
+  ///
+  /// In en, this message translates to:
+  /// **'At {time} · {date}'**
+  String subscriptionFormRemindAt(String time, String date);
+
+  /// No description provided for @subscriptionFormRemindNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder for this subscription'**
+  String get subscriptionFormRemindNone;
+
+  /// No description provided for @subscriptionFormMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More details'**
+  String get subscriptionFormMore;
+
+  /// No description provided for @subscriptionFormMoreSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method, cancel link, notes'**
+  String get subscriptionFormMoreSub;
 
   /// No description provided for @subscriptionFormPaymentMethod.
   ///
   /// In en, this message translates to:
-  /// **'Payment method (e.g. Visa ••4242, MoMo)'**
+  /// **'Payment method'**
   String get subscriptionFormPaymentMethod;
+
+  /// No description provided for @subscriptionFormPaymentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Visa ••4242'**
+  String get subscriptionFormPaymentHint;
 
   /// No description provided for @subscriptionFormManageUrl.
   ///
   /// In en, this message translates to:
   /// **'Cancel / manage link'**
   String get subscriptionFormManageUrl;
+
+  /// No description provided for @subscriptionFormManageUrlFromLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled in from the library. Opens from “How to cancel”.'**
+  String get subscriptionFormManageUrlFromLibrary;
 
   /// No description provided for @subscriptionFormNotes.
   ///
@@ -2156,11 +3152,149 @@ abstract class AppLocalizations {
   /// **'Save changes'**
   String get subscriptionFormSaveChanges;
 
-  /// No description provided for @subscriptionFormPriceFromNext.
+  /// No description provided for @subscriptionFormPriceDialogTitle.
   ///
   /// In en, this message translates to:
-  /// **'New price applies from the next period. Past payments are unchanged.'**
-  String get subscriptionFormPriceFromNext;
+  /// **'Use {price} from the next period?'**
+  String subscriptionFormPriceDialogTitle(String price);
+
+  /// No description provided for @subscriptionFormPriceDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The {date} renewal and later ones use the new price.'**
+  String subscriptionFormPriceDialogBody(String date);
+
+  /// No description provided for @subscriptionFormPriceDialogPast.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Your past payment stays at what you actually paid.} other{Your {count} past payments stay at what you actually paid.}}'**
+  String subscriptionFormPriceDialogPast(int count);
+
+  /// No description provided for @subscriptionFormPriceApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply from next period'**
+  String get subscriptionFormPriceApply;
+
+  /// No description provided for @subscriptionFormPriceKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep {price}'**
+  String subscriptionFormPriceKeep(String price);
+
+  /// No description provided for @subscriptionFormTileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tile'**
+  String get subscriptionFormTileTitle;
+
+  /// No description provided for @subscriptionFormTilePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview in a list'**
+  String get subscriptionFormTilePreview;
+
+  /// No description provided for @subscriptionFormTileLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Letters'**
+  String get subscriptionFormTileLetters;
+
+  /// No description provided for @subscriptionFormTileEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Emoji'**
+  String get subscriptionFormTileEmoji;
+
+  /// No description provided for @subscriptionFormTileLettersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1–2 characters'**
+  String get subscriptionFormTileLettersHint;
+
+  /// No description provided for @subscriptionFormTileColour.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour'**
+  String get subscriptionFormTileColour;
+
+  /// No description provided for @subscriptionFormTileColourNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The first swatch is {name}’s own colour from the library. Letter colour is picked for contrast automatically.'**
+  String subscriptionFormTileColourNote(String name);
+
+  /// No description provided for @subscriptionFormTileColourNoteCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter colour is picked for contrast automatically.'**
+  String get subscriptionFormTileColourNoteCustom;
+
+  /// No description provided for @subscriptionFormTileOrEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Or an emoji'**
+  String get subscriptionFormTileOrEmoji;
+
+  /// No description provided for @subscriptionFormTileSwatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour {index}'**
+  String subscriptionFormTileSwatch(int index);
+
+  /// No description provided for @subscriptionFormTileLibraryColour.
+  ///
+  /// In en, this message translates to:
+  /// **'Library colour'**
+  String get subscriptionFormTileLibraryColour;
+
+  /// No description provided for @subscriptionFormCurrencyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency for this subscription'**
+  String get subscriptionFormCurrencyTitle;
+
+  /// No description provided for @subscriptionFormCurrencySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search currency'**
+  String get subscriptionFormCurrencySearch;
+
+  /// No description provided for @subscriptionFormCurrencyUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by your subscriptions'**
+  String get subscriptionFormCurrencyUsed;
+
+  /// No description provided for @subscriptionFormCurrencyAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All currencies'**
+  String get subscriptionFormCurrencyAll;
+
+  /// No description provided for @subscriptionFormCurrencyMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Main currency'**
+  String get subscriptionFormCurrencyMain;
+
+  /// No description provided for @subscriptionFormCurrencyRate.
+  ///
+  /// In en, this message translates to:
+  /// **'1 {code} ≈ {amount}'**
+  String subscriptionFormCurrencyRate(String code, String amount);
+
+  /// No description provided for @subscriptionFormCurrencyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals still add up in {code}, shown with ≈ when converted.'**
+  String subscriptionFormCurrencyNote(String code);
+
+  /// No description provided for @subscriptionFormCurrencyNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No currency matches “{query}”'**
+  String subscriptionFormCurrencyNoMatch(String query);
 }
 
 class _AppLocalizationsDelegate
