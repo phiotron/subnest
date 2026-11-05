@@ -11,7 +11,7 @@
 ## 1. Privacy policy
 | Câu hỏi | Trả lời | Vì sao |
 |---|---|---|
-| Privacy policy URL | `<PRIVACY_POLICY_URL>` (bản EN, vd `…/privacy-policy.en.html`) | Bắt buộc với mọi app. Trang phải công khai, không cần đăng nhập, không phải PDF. Xem `store/README.md` để chọn nơi host. |
+| Privacy policy URL | `https://phamphuongphuongnd.github.io/legal/subnest/privacy-policy.en.html` | Bắt buộc với mọi app. Trang phải công khai, không cần đăng nhập, không phải PDF. Xem `store/README.md` để chọn nơi host. |
 
 ## 2. App access
 | Câu hỏi | Trả lời | Vì sao |
@@ -89,6 +89,6 @@ Các điểm dễ hỏi khi review Data safety:
 | App category | **Finance** (phương án thay thế: Productivity — Finance cạnh tranh hơn nhưng đúng ý định tìm kiếm "subscription tracker") |
 | Tags | Budget, Bill reminder, Personal finance, Expense tracker (chọn tối đa 5 trong danh sách Google gợi ý) |
 | Contact email | `phamphuongphuongnd@gmail.com` (bắt buộc, hiển thị công khai) |
-| Website | `<WEBSITE_URL>` (tuỳ chọn — trang host privacy policy) |
+| Website | `https://phamphuongphuongnd.github.io/legal/subnest/` |
 | Price | Free (⚠ app Free không bao giờ chuyển sang Paid được; IAP sau này vẫn thêm được) |
 | Countries | All countries/regions |

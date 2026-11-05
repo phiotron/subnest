@@ -6,6 +6,7 @@ import 'package:subnest/core/widgets/widgets.dart';
 import 'package:subnest/data/settings_repository.dart';
 import 'package:subnest/data/subscription_repository.dart';
 import 'package:subnest/domain/domain.dart';
+import 'package:subnest/features/settings/app_info.dart';
 import 'package:subnest/features/settings/legal_screen.dart';
 import 'package:subnest/features/settings/settings_actions.dart';
 import 'package:subnest/features/settings/settings_format.dart';
@@ -79,15 +80,24 @@ void main() {
       expect(find.text('Tiếng Việt'), findsOneWidget, reason: 'row value');
     });
 
-    settingsTest('About: privacy opens the in-app copy (no URL yet)', (tester) async {
+    settingsTest('About: privacy opens the public page', (tester) async {
       final f = await SettingsFixture.create();
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsPrivacyPolicy));
+      await settle(tester);
+      expect(f.platform.opened.single.toString(), kPrivacyPolicyUrl);
+      expect(find.byType(LegalScreen), findsNothing);
+    });
+
+    settingsTest('About: privacy falls back to the in-app copy when no browser opens', (tester) async {
+      final f = await SettingsFixture.create();
+      f.platform.externalOk = false;
       await pumpSettings(tester, f);
       await tapVisible(tester, find.text(en.settingsPrivacyPolicy));
       await settle(tester);
       expect(find.byType(LegalScreen), findsOneWidget);
       expect(find.text('Subnest Privacy Policy'), findsOneWidget);
       expect(find.text('Summary'), findsOneWidget);
-      expect(f.platform.opened, isEmpty);
     });
 
     settingsTest('About: feedback opens mailto, falls back to showing the address', (tester) async {

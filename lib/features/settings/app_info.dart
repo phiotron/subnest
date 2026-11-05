@@ -7,13 +7,15 @@ library;
 const String kAppVersion = '1.0.0';
 const String kAppBuild = '2';
 
-/// TODO(A001-subnest): set the public privacy-policy URL once it is hosted (store/legal/
-/// privacy-policy.*.html). While `null`, "Privacy policy" opens the bundled copy in the app
-/// (`legal_content.dart`, same text as store/legal/privacy-policy.*.md).
-const String? kPrivacyPolicyUrl = null;
+/// Public privacy policy (GitHub Pages repo phamphuongphuongnd/legal, source: store/legal/).
+/// The EN page links to the VI page. Set to `null` to open the bundled copy (`legal_content.dart`).
+// Nullable on purpose: `null` switches back to the bundled copy.
+// ignore: unnecessary_nullable_for_final_variable_declarations
+const String? kPrivacyPolicyUrl = 'https://phamphuongphuongnd.github.io/legal/subnest/privacy-policy.en.html';
 
-/// TODO(A001-subnest): set the public terms URL once hosted. While `null`, opens the bundled copy.
-const String? kTermsUrl = null;
+/// Public terms of use (same site). `null` opens the bundled copy.
+// ignore: unnecessary_nullable_for_final_variable_declarations
+const String? kTermsUrl = 'https://phamphuongphuongnd.github.io/legal/subnest/terms.en.html';
 
 /// Support address (store listing + legal texts).
 const String kSupportEmail = 'phamphuongphuongnd@gmail.com';

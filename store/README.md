@@ -31,7 +31,7 @@ python store/tools/md_to_html.py
    Hiển thị công khai trên cả 2 store, trong privacy policy và nút "Gửi góp ý" (phiên UI Settings dùng đúng email này).
 2. ✅ **Tên nhà phát triển** = `Phiotron` (chốt 2026-11-05) — đã điền vào legal, forms. Lưu ý: tài khoản Apple cá nhân
    hiện **tên thật** trên App Store; nếu khác "Phiotron" thì cân nhắc ghi "Phiotron (<họ tên>)" trong privacy.
-3. **Nơi host privacy policy** → điền `<PRIVACY_POLICY_URL>`, `<SUPPORT_URL>`, `<WEBSITE_URL>` (phương án bên dưới).
+3. ✅ **Privacy policy đã host** (2026-11-05): GitHub Pages repo public `phamphuongphuongnd/legal` → `https://phamphuongphuongnd.github.io/legal/subnest/` (đã điền vào forms). Sửa nội dung: sửa `store/legal/*` rồi chép sang repo legal.
 4. **API tỷ giá:** privacy policy đang ghi **ExchangeRate-API (open.er-api.com)** theo gợi ý APP.md — phiên A chưa
    chốt (2026-11-04 chưa có code gọi API). Đổi nhà cung cấp → sửa 2 file privacy + chạy `md_to_html.py`.
 5. **Exact alarm:** nếu phiên A/E xin `SCHEDULE_EXACT_ALARM` → xem `forms/google-play.md` §8.

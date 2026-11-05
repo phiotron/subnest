@@ -7,7 +7,7 @@
 ## 1. App Privacy (nhãn "Privacy Nutrition Label")
 | Câu hỏi | Trả lời | Vì sao |
 |---|---|---|
-| Privacy Policy URL | `<PRIVACY_POLICY_URL>` | Bắt buộc. Có thể đặt URL bản VI cho localization Vietnamese. |
+| Privacy Policy URL | `https://phamphuongphuongnd.github.io/legal/subnest/privacy-policy.en.html` (VI: `https://phamphuongphuongnd.github.io/legal/subnest/privacy-policy.vi.html`) | Bắt buộc. Có thể đặt URL bản VI cho localization Vietnamese. |
 | Privacy Choices URL | (để trống) | Không có gì để người dùng chọn. |
 | Do you or your third-party partners collect data from this app? | **No, we do not collect data from this app** | Dữ liệu chỉ ở trên máy; định nghĩa "collect" của Apple = truyền khỏi thiết bị và lưu lâu hơn thời gian cần để phục vụ yêu cầu. Request tỷ giá không chứa dữ liệu người dùng. |
 | **Kết quả trên store** | **Data Not Collected** | |
@@ -53,8 +53,8 @@ Kiểm: sau khi build archive, Xcode → *Generate Privacy Report* phải không
 | Primary category | **Finance** · Secondary: **Productivity** |
 | Content rights: contains, shows or accesses third-party content? | **No** — app chỉ hiện *tên* dịch vụ (văn bản) với tile chữ cái do app tự vẽ, không logo/nội dung của bên thứ ba. (Nếu sau này dùng logo thật → đổi thành Yes và phải có quyền.) |
 | Price | Free (Tier 0), mọi quốc gia |
-| Support URL (bắt buộc) | `<SUPPORT_URL>` — có thể là trang index đã host cùng privacy policy, có ghi email `phamphuongphuongnd@gmail.com` |
-| Marketing URL | (tuỳ chọn) `<WEBSITE_URL>` |
+| Support URL (bắt buộc) | `https://phamphuongphuongnd.github.io/legal/subnest/` (trang có email `phamphuongphuongnd@gmail.com`) |
+| Marketing URL | (tuỳ chọn) `https://phamphuongphuongnd.github.io/legal/subnest/` |
 | Copyright | `2026 Phiotron` |
 | License agreement | Apple Standard EULA (terms.*.md đã nhắc) |
 | Localizations | English (U.S.) — bản chính · Vietnamese — từ `store/listing/vi.md` |
