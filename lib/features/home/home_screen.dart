@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/widgets/service_tile.dart';
+import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
+import '../subscription_detail/cancel_flow.dart';
+import 'home_list.dart';
+import 'subscription_labels.dart';
+import 'widgets/overview_cards.dart';
+import 'widgets/sort_sheet.dart';
 
-/// S2 Home — PLACEHOLDER UI (functional, unstyled). Owned by the Home & confirm session (G).
+/// S2 Overview (png 08–15): date + "Overview" + search, spend hero (Month ↔ Year, colour strip,
+/// "Biggest …", stale-rates chip), reminders-off banner, "N payments to confirm", trial ending,
+/// upcoming 7 days, the Active · Trials · Cancelled list (sort sheet, swipe Confirm / Cancel,
+/// savings card) and the add FAB. Empty: illustration + "Browse services".
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -17,271 +25,463 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-enum _Sort { dueDate, price, name }
-
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _yearly = false;
-  SubscriptionStatus _tab = SubscriptionStatus.active;
-  _Sort _sort = _Sort.dueDate;
+  HomeTab _tab = HomeTab.active;
+  HomeSort _sort = HomeSort.dueDate;
+  bool _searching = false;
+  final _query = TextEditingController();
+  final _scroll = ScrollController();
+  final _listKey = GlobalKey();
+
+  @override
+  void dispose() {
+    _query.dispose();
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  void _closeSearch() => setState(() {
+    _searching = false;
+    _query.clear();
+  });
+
+  Future<void> _openLink(Subscription s, Uri? link) async {
+    if (link == null) {
+      await context.push(AppRoutes.subscriptionDetail(s.id));
+      return;
+    }
+    var ok = false;
+    try {
+      ok = await launchUrl(link, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      ok = false;
+    }
+    if (!ok && mounted) showAppToast(context, context.l10n.subscriptionDetailLinkFailed(linkHost(link)), icon: AppIcons.alert);
+  }
+
+  Future<void> _turnOnReminders() async {
+    await ref.read(notificationServiceProvider).requestPermission();
+    ref.invalidate(notificationsEnabledProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final subs = ref.watch(subscriptionsProvider);
-    final summary = ref.watch(spendingSummaryProvider);
+    final c = context.colors;
+    final subsAsync = ref.watch(subscriptionsProvider);
     final today = ref.watch(todayProvider);
+
+    // "See cancelled" from the celebration screen.
+    final requested = ref.watch(homeTabRequestProvider);
+    if (requested != null) {
+      _tab = requested;
+      _searching = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ref.read(homeTabRequestProvider.notifier).clear();
+        final ctx = _listKey.currentContext;
+        if (ctx != null && ctx.mounted) Scrollable.ensureVisible(ctx, duration: AppMotion.of(ctx, AppMotion.sheet));
+      });
+    }
+
+    final subs = subsAsync.value;
+    Widget body;
+    if (subs == null) {
+      body = subsAsync.hasError
+          ? Center(child: Text('${subsAsync.error}'))
+          : const Center(child: CircularProgressIndicator());
+    } else if (_searching) {
+      body = _searchBody(context, subs, today);
+    } else {
+      body = _overviewBody(context, subs, today);
+    }
+
+    return PopScope(
+      canPop: !_searching,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _searching) _closeSearch();
+      },
+      child: Scaffold(
+        backgroundColor: c.bg,
+        floatingActionButton: _searching
+            ? null
+            : AppFab(tooltip: l.homeAdd, onPressed: () => context.push(AppRoutes.catalog)),
+        body: SafeArea(bottom: false, child: body),
+      ),
+    );
+  }
+
+  // ---- Overview ------------------------------------------------------------------------------
+
+  Widget _overviewBody(BuildContext context, List<Subscription> all, LocalDate today) {
+    final l = context.l10n;
+    final c = context.colors;
     final primary = ref.watch(primaryCurrencyProvider);
     final calc = ref.watch(spendingCalculatorProvider);
+    final summary = ref.watch(spendingSummaryProvider);
     final rates = ref.watch(ratesProvider).value;
-    final notificationsOn = ref.watch(notificationsEnabledProvider).value ?? true;
+    final remindersOn = ref.watch(notificationsEnabledProvider).value ?? true;
+    final catalog = ref.watch(catalogByIdProvider);
+    final kept = ref.watch(keptTrialsProvider);
+    final now = ref.watch(clockProvider)();
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l.commonAppName)),
-      floatingActionButton: FloatingActionButton(
-        tooltip: l.homeAdd,
-        onPressed: () => context.push(AppRoutes.catalog),
-        child: const Icon(Icons.add),
+    Widget pad(Widget w) => Padding(padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4), child: w);
+
+    final children = <Widget>[
+      pad(_header(context, today)),
+      if (!remindersOn)
+        pad(
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpace.s4),
+            child: AppBanner(
+              kind: BannerKind.neutral,
+              icon: AppIcons.remindersOff,
+              title: l.homeRemindersOffTitle,
+              body: l.homeRemindersOffBody,
+              actionLabel: l.homeRemindersTurnOn,
+              onAction: _turnOnReminders,
+            ),
+          ),
+        ),
+    ];
+
+    if (all.isEmpty) {
+      children
+        ..add(
+          pad(
+            SpendHero(
+              label: l.homeMonthlySpend,
+              amount: 0,
+              format: (v) => l.amount(v, primary),
+            ),
+          ),
+        )
+        ..add(
+          EmptyState(
+            art: const NestArt(kind: NestArtKind.empty, width: 180),
+            title: l.homeEmptyTitle,
+            body: l.homeEmptyBody,
+            actionLabel: l.homeBrowse,
+            actionIcon: AppIcons.library,
+            onAction: () => context.push(AppRoutes.catalog),
+          ),
+        );
+      return ListView(padding: const EdgeInsets.only(bottom: AppSpace.s10 + AppSize.fabSize), children: children);
+    }
+
+    // 1. Hero
+    final active = activeByCost(all, today, calc);
+    final total = summary?.monthly ?? 0;
+    final biggest = active.isEmpty || total <= 0 ? null : active.first;
+    final staleChip = _ratesChip(context, all, primary, rates, now);
+    children.add(
+      pad(
+        SpendHero(
+          label: _yearly ? l.homeYearlySpend : l.homeMonthlySpend,
+          amount: _yearly ? total * 12 : total,
+          format: (v) => l.amount(v, primary),
+          approx: anyConverted(active.map((e) => e.$1), primary),
+          yearly: _yearly,
+          onPeriodChanged: (y) => setState(() => _yearly = y),
+          segments: [for (final (s, cost) in active) SpendSegment(color: Color(s.colorValue), value: cost)],
+          leadingMeta: [
+            l.homeActiveCount(summary?.activeCount ?? 0),
+            l.homeTrialCount(summary?.trialCount ?? 0),
+          ].join(' · '),
+          trailingMeta: biggest == null
+              ? null
+              : l.homeBiggest(biggest.$1.name, (biggest.$2 / total * 100).round()),
+          footer: staleChip,
+        ),
       ),
-      body: subs.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
-        data: (all) {
-          if (all.isEmpty) return _Empty();
-          final list = all.where((s) => BillingRules.effectiveStatus(s, today) == _tab).toList()
-            ..sort(switch (_sort) {
-              _Sort.dueDate => (a, b) => a.dueDate.compareTo(b.dueDate),
-              _Sort.price => (a, b) => (calc.monthlyCost(b) ?? 0).compareTo(calc.monthlyCost(a) ?? 0),
-              _Sort.name => (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
-            });
-          final trialsEnding = all.where((s) {
-            if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.trial) return false;
-            return BillingRules.daysUntilDue(s, today) <= 7;
-          }).toList();
-          final upcoming = CalendarBuilder.upcoming(subscriptions: all, today: today);
+    );
 
-          return ListView(
-            padding: const EdgeInsets.only(bottom: 96),
+    // 2. Awaiting + trial cards
+    final awaiting = ref.watch(awaitingPeriodsProvider);
+    final cards = <Widget>[];
+    if (awaiting.isNotEmpty) {
+      final names = <String>[];
+      for (final (s, _) in awaiting) {
+        final n = shortName(s, catalog);
+        if (!names.contains(n)) names.add(n);
+      }
+      final waitingSubs = {for (final (s, _) in awaiting) s};
+      final sum = l.amount(summary?.awaitingTotal ?? 0, primary, approx: anyConverted(waitingSubs, primary));
+      cards.add(
+        AwaitingCard(
+          count: awaiting.length,
+          subtitle: '$sum · ${names.join(', ')}',
+          onTap: () => context.push(AppRoutes.awaiting),
+        ),
+      );
+    }
+    final trial = endingTrial(all, today, kept);
+    if (trial != null) {
+      final name = shortName(trial, catalog);
+      cards.add(
+        TrialEndingCard(
+          subscription: trial,
+          title: l.homeTrialEnds(name, BillingRules.daysUntilDue(trial, today)),
+          subtitle: l.homeTrialThen(
+            pricePerCycle(l, trial),
+            AppDates.weekdayShort(l, trial.dueDate, today: today),
+          ),
+          onTap: () => context.push(AppRoutes.subscriptionDetail(trial.id)),
+          onHowToCancel: () => _openLink(trial, cancelLink(trial, catalog)),
+          onKeep: () {
+            ref.read(keptTrialsProvider.notifier).keep(trial.id);
+            showAppToast(context, l.homeKept(name, AppDates.weekdayShort(l, trial.dueDate, today: today)));
+          },
+        ),
+      );
+    }
+    if (cards.isNotEmpty) {
+      children.add(
+        pad(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. Total header
-              if (summary != null)
-                InkWell(
-                  onTap: () => setState(() => _yearly = !_yearly),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l.amount(_yearly ? summary.yearly : summary.monthly, primary, approx: true),
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
-                        Text(_yearly ? l.commonPerYear : l.commonPerMonth),
-                        const SizedBox(height: 4),
-                        Text(l.homeCounts(summary.activeCount, summary.trialCount)),
-                        if (summary.trialMonthly > 0)
-                          Text(l.homeTrialSoon(l.amount(summary.trialMonthly, primary, approx: true))),
-                        if (rates != null) Text(_ratesLine(context, rates), style: Theme.of(context).textTheme.bodySmall),
-                      ],
-                    ),
-                  ),
-                ),
-              // Reminders disabled banner
-              if (!notificationsOn)
-                MaterialBanner(
-                  content: Text(l.homeNotificationsOff),
-                  actions: [
-                    TextButton(
-                      onPressed: () async {
-                        await ref.read(notificationServiceProvider).requestPermission();
-                        ref.invalidate(notificationsEnabledProvider);
-                      },
-                      child: Text(l.homeEnable),
-                    ),
-                  ],
-                ),
-              // 2. Awaiting confirmation card
-              if (summary != null && summary.awaitingCount > 0)
-                Card(
-                  color: AppTheme.warning.withValues(alpha: 0.15),
-                  child: ListTile(
-                    leading: const Icon(Icons.pending_actions),
-                    title: Text(l.homeAwaiting(summary.awaitingCount)),
-                    trailing: TextButton(onPressed: () => context.push(AppRoutes.awaiting), child: Text(l.homeView)),
-                  ),
-                ),
-              // 3. Trials ending soon
-              for (final t in trialsEnding)
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.hourglass_bottom),
-                    title: Text(l.homeTrialEnding(t.name, BillingRules.daysUntilDue(t, today))),
-                    trailing: TextButton(
-                      onPressed: () => context.push(AppRoutes.subscriptionDetail(t.id)),
-                      child: Text(l.homeHowToCancel),
-                    ),
-                  ),
-                ),
-              // 4. Upcoming 7 days
-              if (upcoming.isNotEmpty) ...[
-                _Header(l.homeUpcoming),
+              for (var i = 0; i < cards.length; i++) ...[if (i > 0) const SizedBox(height: AppSpace.s3), cards[i]],
+            ],
+          ),
+        ),
+      );
+    }
+
+    // 3. Upcoming · 7 days
+    final upcoming = CalendarBuilder.upcoming(subscriptions: all, today: today);
+    if (upcoming.isNotEmpty) {
+      children
+        ..add(
+          pad(
+            SectionHeader(
+              label: l.homeUpcoming,
+              actionLabel: l.homeCalendar,
+              onAction: () => context.go(AppRoutes.calendar),
+              padding: const EdgeInsets.fromLTRB(0, AppSpace.s5, 0, AppSpace.s2),
+            ),
+          ),
+        )
+        ..add(
+          pad(
+            UpcomingStrip(
+              cards: [
                 for (final e in upcoming)
-                  ListTile(
-                    dense: true,
-                    leading: ServiceTile(
-                      name: e.subscription.name,
-                      colorValue: e.subscription.colorValue,
-                      iconText: e.subscription.iconText,
-                      size: 24,
-                    ),
-                    title: Text(e.subscription.name),
-                    subtitle: Text(l.commonDaysLeft(today.daysUntil(e.date))),
-                    trailing: Text(l.money(e.subscription.myShare)),
+                  UpcomingCard(
+                    subscription: e.subscription,
+                    when: '${AppDates.weekdayShort(l, e.date, today: today)} · ${AppDates.relative(l, e.date, today: today)}',
+                    amount: l.money(e.subscription.myShare),
+                    amountMeta: _upcomingMeta(l, e, today, primary, calc),
                     onTap: () => context.push(AppRoutes.subscriptionDetail(e.subscription.id)),
                   ),
               ],
-              // 5. List with tabs + sort
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: SegmentedButton<SubscriptionStatus>(
-                        segments: [
-                          ButtonSegment(value: SubscriptionStatus.active, label: Text(l.homeTabActive)),
-                          ButtonSegment(value: SubscriptionStatus.trial, label: Text(l.homeTabTrial)),
-                          ButtonSegment(value: SubscriptionStatus.cancelled, label: Text(l.homeTabCancelled)),
-                        ],
-                        selected: {_tab},
-                        onSelectionChanged: (s) => setState(() => _tab = s.first),
-                      ),
-                    ),
-                    PopupMenuButton<_Sort>(
-                      icon: const Icon(Icons.sort),
-                      tooltip: l.homeSort,
-                      onSelected: (s) => setState(() => _sort = s),
-                      itemBuilder: (_) => [
-                        PopupMenuItem(value: _Sort.dueDate, child: Text(l.homeSortDueDate)),
-                        PopupMenuItem(value: _Sort.price, child: Text(l.homeSortPrice)),
-                        PopupMenuItem(value: _Sort.name, child: Text(l.homeSortName)),
-                      ],
-                    ),
-                  ],
+            ),
+          ),
+        );
+    }
+
+    // 4. Subscriptions list
+    final counts = {for (final t in HomeTab.values) t: all.where((s) => tabOf(s, today) == t).length};
+    final list = listFor(all, _tab, _sort, today: today, calc: calc);
+    children.addAll([
+      pad(
+        Padding(
+          key: _listKey,
+          padding: const EdgeInsets.only(top: AppSpace.s5, bottom: AppSpace.s2),
+          child: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: AppSpace.s3,
+            children: [
+              Semantics(header: true, child: Text(l.homeSubscriptions, style: AppType.title.copyWith(color: c.ink))),
+              SortButton(
+                label: sortLabel(l, _sort),
+                semanticLabel: l.homeSortLabel(sortLabel(l, _sort)),
+                onPressed: () => showSortSheet(context, current: _sort, onChanged: (s) => setState(() => _sort = s)),
+              ),
+            ],
+          ),
+        ),
+      ),
+      pad(
+        AppSegmentedControl<HomeTab>(
+          selected: _tab,
+          onChanged: (t) => setState(() => _tab = t),
+          segments: [
+            AppSegment(value: HomeTab.active, label: l.homeTabActive, count: counts[HomeTab.active]),
+            AppSegment(value: HomeTab.trials, label: l.homeTabTrials, count: counts[HomeTab.trials]),
+            AppSegment(value: HomeTab.cancelled, label: l.homeTabCancelled, count: counts[HomeTab.cancelled]),
+          ],
+        ),
+      ),
+      const SizedBox(height: AppSpace.s2),
+      if (_tab == HomeTab.cancelled && (summary?.savingsYearly ?? 0) > 0)
+        pad(
+          Padding(
+            padding: const EdgeInsets.only(bottom: AppSpace.s3),
+            child: SavingsCard(
+              label: l.homeSaving,
+              amount: l.homePerYear(
+                l.amount(
+                  summary!.savingsYearly,
+                  primary,
+                  approx: anyConverted(all.where((s) => tabOf(s, today) == HomeTab.cancelled), primary),
                 ),
               ),
-              if (_tab == SubscriptionStatus.cancelled && summary != null && summary.savingsYearly > 0)
-                Card(
-                  color: AppTheme.success.withValues(alpha: 0.12),
-                  child: ListTile(
-                    leading: const Icon(Icons.savings_outlined),
-                    title: Text(l.homeSavings(l.amount(summary.savingsYearly, primary, approx: true))),
-                  ),
+            ),
+          ),
+        ),
+      pad(
+        list.isEmpty
+            ? AppCard(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: AppSpace.s5),
+                child: Text(
+                  switch (_tab) {
+                    HomeTab.active => l.homeEmptyActive,
+                    HomeTab.trials => l.homeEmptyTrials,
+                    HomeTab.cancelled => l.homeEmptyCancelled,
+                  },
+                  textAlign: TextAlign.center,
+                  style: AppType.meta.copyWith(color: c.inkMuted),
                 ),
-              if (list.isEmpty) Padding(padding: const EdgeInsets.all(24), child: Text(l.homeTabEmpty)),
-              for (final s in list) _Row(sub: s, today: today, primary: primary, calc: calc),
-            ],
-          );
-        },
+              )
+            : AppGroup(children: [for (final s in list) _row(context, s, today, primary, calc)]),
+      ),
+      if (_tab == HomeTab.trials)
+        pad(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpace.s1, AppSpace.s2, AppSpace.s1, 0),
+            child: Text(l.homeTrialsNote, style: AppType.meta.copyWith(color: c.inkMuted)),
+          ),
+        ),
+    ]);
+
+    return ListView(
+      controller: _scroll,
+      padding: const EdgeInsets.only(bottom: AppSpace.s4 + AppSize.fabSize + AppSpace.s6),
+      children: children,
+    );
+  }
+
+  Widget _header(BuildContext context, LocalDate today) {
+    final l = context.l10n;
+    return LargeTitle(
+      eyebrow: AppDates.weekdayLong(l, today),
+      title: l.homeTitle,
+      trailing: AppIconButton(
+        icon: AppIcons.search,
+        tooltip: l.homeSearch,
+        onPressed: () => setState(() => _searching = true),
       ),
     );
   }
 
-  String _ratesLine(BuildContext context, ExchangeRates rates) {
+  Widget? _ratesChip(BuildContext context, List<Subscription> all, String primary, ExchangeRates? rates, DateTime now) {
+    if (rates == null || !all.any((s) => s.currency != primary && s.status != SubscriptionStatus.cancelled)) {
+      return null;
+    }
     final l = context.l10n;
     final at = rates.fetchedAt;
-    if (at == null) return l.homeRatesOffline;
-    final days = DateTime.now().difference(at).inDays;
-    return days >= 1 ? l.homeRatesStale(days) : l.homeRatesFresh;
+    String label;
+    if (at == null) {
+      label = l.homeRatesNever;
+    } else {
+      final days = now.difference(at).inDays;
+      if (days < 2) return null; // refreshed daily when online; one missed day is not "offline"
+      label = l.homeRatesStale(days);
+    }
+    return StatusBadge(label: label, icon: AppIcons.offline, large: true);
   }
-}
 
-class _Row extends StatelessWidget {
-  const _Row({required this.sub, required this.today, required this.primary, required this.calc});
+  String _upcomingMeta(AppLocalizations l, CalendarEntry e, LocalDate today, String primary, SpendingCalculator calc) {
+    final s = e.subscription;
+    if (BillingRules.effectiveStatus(s, today) == SubscriptionStatus.trial && e.date == s.dueDate) {
+      return l.homeFirstCharge;
+    }
+    if (s.currency != primary) {
+      final v = calc.periodCost(s);
+      if (v != null) return l.amount(v, primary, approx: true);
+    }
+    return perCycle(l, s.cycle);
+  }
 
-  final Subscription sub;
-  final LocalDate today;
-  final String primary;
-  final SpendingCalculator calc;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _row(BuildContext context, Subscription s, LocalDate today, String primary, SpendingCalculator calc) {
     final l = context.l10n;
-    final awaiting = BillingRules.isAwaitingConfirmation(sub, today);
-    final cancelled = sub.status == SubscriptionStatus.cancelled;
-    final converted = sub.currency == primary ? null : calc.periodCost(sub);
-    final subtitle = [
-      l.cycle(sub.cycle),
-      l.category(sub.category),
-      if (sub.isShared) l.commonSharedWith(sub.sharedWith),
-      if (cancelled && sub.cancelledOn != null) l.homeCancelledOn(l.date(sub.cancelledOn!)),
-    ].join(' · ');
-    final days = BillingRules.daysUntilDue(sub, today);
-    return Opacity(
-      opacity: cancelled ? 0.6 : 1,
-      child: ListTile(
-        leading: ServiceTile(name: sub.name, colorValue: sub.colorValue, iconText: sub.iconText),
-        title: Row(
-          children: [
-            Flexible(child: Text(sub.name, overflow: TextOverflow.ellipsis)),
-            if (awaiting) ...[
-              const SizedBox(width: 6),
-              Chip(
-                label: Text(l.commonStatusAwaiting),
-                avatar: const Icon(Icons.priority_high, size: 16),
-                backgroundColor: AppTheme.warning.withValues(alpha: 0.2),
-                visualDensity: VisualDensity.compact,
-              ),
-            ],
-          ],
-        ),
-        subtitle: Text(subtitle),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(l.money(sub.myShare)),
-            if (converted != null) Text(l.amount(converted, primary, approx: true), style: Theme.of(context).textTheme.bodySmall),
-            if (!cancelled)
-              Text(
-                days < 0 ? l.commonDaysOverdue(-days) : l.commonDaysLeft(days),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-          ],
-        ),
-        onTap: () => context.push(AppRoutes.subscriptionDetail(sub.id)),
-      ),
+    final state = rowState(s, today);
+    final (amount, amountMeta) = rowAmounts(l, s, primary: primary, calc: calc);
+    return SubscriptionRow(
+      key: ValueKey('row-${s.id}'),
+      name: s.name,
+      colorValue: s.colorValue,
+      iconText: s.iconText,
+      state: state,
+      meta: rowMeta(l, s, today),
+      awaitingCount: state == SubscriptionRowState.awaiting ? BillingRules.pendingDueDates(s, today).length : 1,
+      badgeLabel: state == SubscriptionRowState.trial ? l.homeTrialBadge : null,
+      sharedCount: s.isShared ? s.sharedWith : null,
+      amount: amount,
+      amountMeta: amountMeta,
+      onTap: () => context.push(AppRoutes.subscriptionDetail(s.id)),
+      onConfirm: () => context.push(AppRoutes.confirm(s.id)),
+      onCancel: state == SubscriptionRowState.cancelled ? null : () => markCancelledFlow(context, ref, s),
     );
   }
-}
 
-class _Header extends StatelessWidget {
-  const _Header(this.text);
-  final String text;
+  // ---- Search --------------------------------------------------------------------------------
 
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-    child: Text(text, style: Theme.of(context).textTheme.titleMedium),
-  );
-}
-
-class _Empty extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _searchBody(BuildContext context, List<Subscription> all, LocalDate today) {
     final l = context.l10n;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+    final c = context.colors;
+    final primary = ref.watch(primaryCurrencyProvider);
+    final calc = ref.watch(spendingCalculatorProvider);
+    final q = _query.text.trim();
+    final results = search(all, q);
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s6),
+      children: [
+        Row(
           children: [
-            const Icon(Icons.inbox_outlined, size: 64),
-            const SizedBox(height: 12),
-            Text(l.homeEmpty, textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            FilledButton(onPressed: () => context.push(AppRoutes.catalog), child: Text(l.homeAddFirst)),
+            Expanded(
+              child: TextField(
+                controller: _query,
+                autofocus: true,
+                textInputAction: TextInputAction.search,
+                onChanged: (_) => setState(() {}),
+                style: AppType.body.copyWith(color: c.ink),
+                decoration: InputDecoration(
+                  hintText: l.homeSearchHint,
+                  prefixIcon: Icon(AppIcons.search, size: 20, color: c.inkMuted),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: q.isEmpty
+                      ? null
+                      : IconButton(
+                          tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+                          icon: Icon(AppIcons.clear, size: 20, color: c.inkMuted),
+                          onPressed: () => setState(_query.clear),
+                        ),
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpace.s1),
+            AppIconButton(icon: AppIcons.close, tooltip: l.homeSearchClose, onPressed: _closeSearch),
           ],
         ),
-      ),
+        const SizedBox(height: AppSpace.s4),
+        if (q.isNotEmpty && results.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AppSpace.s6),
+            child: Text(
+              l.homeSearchEmpty(q),
+              textAlign: TextAlign.center,
+              style: AppType.body.copyWith(color: c.inkMuted),
+            ),
+          ),
+        if (results.isNotEmpty) AppGroup(children: [for (final s in results) _row(context, s, today, primary, calc)]),
+      ],
     );
   }
 }
