@@ -21,6 +21,10 @@ abstract final class AppRoutes {
   // S7
   static const awaiting = '/awaiting';
 
+  /// Debug-only component gallery (registered only when `kDebugMode`).
+  /// Query: `page` (0–5), `dark=1`, `vi=1`, `large=1` (130% text), `narrow=1` (360 frame).
+  static const devGallery = '/dev/gallery';
+
   /// S4 add. [serviceId]/[planId] pre-fill from the Catalog; none = custom service ([name] pre-filled).
   static String subscriptionNew({String? serviceId, String? planId, String? name}) {
     final q = <String, String>{'service': ?serviceId, 'plan': ?planId, 'name': ?name};

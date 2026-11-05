@@ -24,6 +24,9 @@ flutter run                                  # máy Android cắm USB (bật USB
 | Sinh code drift (sau khi sửa bảng) | `dart run build_runner build` |
 | Lưu schema DB mới + test migration | `dart run drift_dev make-migrations` |
 | Kiểm catalog (phiên B) | `python assets/catalog/tool/validate_catalog.py` |
+| Sinh token từ design (sau khi `design/system/tokens.json` đổi) | `dart run tool/gen_tokens.dart` · CI: `--check` |
+| Sinh lại app icon + splash (sau khi `design/brand/` đổi) | `python -I assets/icons/brand/make_brand_assets.py && dart run flutter_launcher_icons && dart run flutter_native_splash:create` → **hoàn tác** `ios/Runner.xcodeproj/project.pbxproj` + `ios/Runner/Info.plist` (tool ghi sai/định dạng lại) |
+| Gallery component (debug) | giữ lâu tab **Cài đặt**, hoặc `adb shell am start -n com.phiotron.subnest/.MainActivity --es route "'/dev/gallery?page=3&dark=1&vi=1&large=1'"` (Git Bash: đặt `MSYS_NO_PATHCONV=1`; debug khởi động ~10 s) |
 
 File sinh ra **được commit** (`lib/data/db/*.g.dart`, `lib/l10n/app_*.arb`, `lib/l10n/generated/`) để clone về là
 build được ngay; CI nên chạy `merge_arb --check` + `build_runner` rồi `git diff --exit-code` để bắt quên sinh lại.
@@ -45,8 +48,8 @@ lib/
   core/                     dùng chung, KHÔNG chứa luật nghiệp vụ
     router/                 routes.dart (mọi đường dẫn) · app_router.dart (bảng route) · app_shell.dart (tab bar) · sheet_page.dart
     l10n/l10n.dart          context.l10n + nhãn cho giá trị domain (chu kỳ, trạng thái, danh mục, nhắc, tiền, ngày)
-    theme/app_theme.dart    THEME TẠM — phiên F thay bằng token từ Claude Design
-    widgets/                ServiceTile (tile monogram), AsyncValueView — phiên F restyle
+    theme/                  tokens.g.dart (SINH từ design/system/tokens.json) · app_theme.dart (ThemeData M3) · motion.dart · chart_colors.dart
+    widgets/                design system — import 'core/widgets/widgets.dart' (xem §8 UI conventions)
     utils/                  format.dart (tiền/ngày/parse số), currencies.dart, streams.dart
   domain/                   Dart thuần, không Flutter/DB — MỌI luật kỳ/tiền ở đây, có unit test
     local_date.dart · billing_cycle.dart · money.dart · subscription.dart · confirmed_period.dart
@@ -100,7 +103,7 @@ test/                       domain/ (luật) · data/ (DB in-memory, backup, t�
 5. **Tiền**: lưu số nguyên đơn vị nhỏ (`priceMinor`); hiển thị bằng `l10n.money(...)` / `l10n.amount(...)`;
    số đã quy đổi luôn `approx: true` (dấu "≈"). Nhập số: `Fmt.parseAmount`.
 6. **Điều hướng**: `context.push(AppRoutes.xxx(...))`; sau khi thêm mới → `context.go(AppRoutes.home)`.
-7. **Màu/khoảng cách**: dùng `Theme.of(context)` và token của phiên F, không hard-code hex trong feature.
+7. **Màu/chữ/khoảng cách/component**: theo §8 — không hard-code hex, cỡ chữ, padding trong feature.
 
 ## 4. Chuỗi (l10n) tách theo feature
 
@@ -143,3 +146,58 @@ test/                       domain/ (luật) · data/ (DB in-memory, backup, t�
 
 Không commit keystore/`key.properties`/`.p12`/`.env` (đã có trong `.gitignore`). Ký release + CI: phiên E (`docs/ci.md`).
 Nguồn tỷ giá yêu cầu ghi công "Rates by Exchange Rate API" (đã có ở Cài đặt → Tỷ giá).
+
+## 8. UI conventions (design system — phiên F, 2026-11-05)
+
+Nguồn: `design/system/README.md` (luật), `design/png/` (58 màn × sáng/tối), `design/subnest-hifi.html` (mở bằng trình duyệt:
+Components · 360 · 130% · VI). Trong code: **một import** `import '../../core/widgets/widgets.dart';` (kèm theme, icon, formatter).
+Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debug; giữ lâu tab Cài đặt) — có nút Sáng/Tối, EN/VI,
+100/130%, khung 360. Báo cáo + ảnh so sánh: `notes/2026-11-05-design-system.md`.
+
+### 8.1 Token → code
+| Cần | Dùng | Ví dụ |
+|---|---|---|
+| Màu | `context.colors.<token>` (`AppColors`, ThemeExtension, đủ mọi token) — hoặc `Theme.of(context).colorScheme` cho widget Material | `context.colors.warningSoft`, `.inkMuted`, `.surface2`, `.chart3`, `.tileBlue` |
+| Màu biểu đồ theo danh mục | `context.colors.chartFor(category)` (slot cố định AI, Storage, Telecom, Software, Video, Music; còn lại `chartOther`) | |
+| Chữ | `AppType.display / amountLg / headline / title / titleSm / body / label / meta / caption` (chưa có màu → kế thừa `ink`) | `Text(x, style: AppType.meta.copyWith(color: c.inkMuted))` |
+| Tiền | luôn `.tabular` (font đã thêm `tnum`) | `AppType.titleSm.tabular` |
+| Khoảng cách | `AppSpace.s1…s10` (4·8·12·16·20·24·32·40) — lề màn `s4`, padding card `s4`, giữa section `s6`, giữa card `s3`, padding sheet `s5` | |
+| Bo góc | `AppRadius.sm/md/lg/xl/full`, tile `tile24/40/56/80` | card `lg`, input/nút `md`, sheet/dialog `xl` |
+| Kích thước | `AppSize.tapMin 44 · rowH 68 · buttonH 52 · fabSize 56 · tabbarH 64` | |
+| Bóng | `context.elevation.card` / `.float` (tối: card = viền 1px `line`) | |
+| Chuyển động | `AppMotion.countUp/sheet/dialog/paidPop/newRowFlash/confetti`; `AppMotion.of(context, d)` = 0 khi người dùng bật giảm chuyển động | |
+| Icon | `AppIcons.<tên>` (Lucide). Nghĩa cố định: `awaiting` clock · `trial` hourglass · `shared` users · `cancelled` ban · `paid` circle-check · `savings` piggy-bank · `offline` wifi-off · `remindersOff` bell-off · `privacy` lock · `external` external-link. Cỡ 13–16 inline/badge, 20 hàng/nút, 22 tab, 24–26 top bar/FAB | `Icon(AppIcons.awaiting, size: 16)` |
+
+### 8.2 Component nào cho việc gì
+| Việc | Component |
+|---|---|
+| Tile dịch vụ | `ServiceTile(name, colorValue, iconText, size: 24/32/40/56/80, awaiting:, trial:, off:, faded:)` · ô "thêm tuỳ chỉnh" `GhostTile` |
+| Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn) |
+| Hero tổng chi (S2, tổng tháng S8) | `SpendHero(label, amount, format, approx, yearly, onPeriodChanged, segments, leadingMeta, trailingMeta, footer)` — tự đếm số 240 ms; `SpendStrip`, `CountUpText` dùng riêng được |
+| Nút | `AppButton.primary/tonal/outline/text/danger` (+ `AppButtonKind.dangerText`), `small:` (40, pill), `expand:` (full width), `icon:`, `loading:`; FAB `AppFab`; icon 44px `AppIconButton` |
+| Chip / badge | `AppChip(selected, fit:)` (đặt trong `Wrap(spacing: 8, runSpacing: 0)`; `fit` = 4 chip chu kỳ 1 hàng) · `StatusBadge.awaiting/trial/paid` hoặc `StatusBadge(kind:, icon:, large:)` · `ShareMark(count)` |
+| Segmented | `AppSegmentedControl<T>(segments: [AppSegment(value, label, count)], selected, onChanged, mini:)` (mini = Tháng/Năm) |
+| Bật/tắt, tăng/giảm | `AppToggle(value, onChanged)` · `AppStepper(value, min, max, onChanged)` |
+| Banner | `AppBanner(kind: warning/info/success/danger/neutral, icon, title, body, actionLabel, onAction)` — nút tự rơi xuống dòng khi hẹp |
+| Trạng thái rỗng | `EmptyState(title, body, art: NestArt(kind: nest/empty/party/chart/welcome), actionLabel, onAction)` |
+| Card / nhóm / hàng cài đặt | `AppCard(color:, onTap:)` · `AppGroup(children, dividerIndent)` · `SettingRow(icon, label, subtitle, value, trailing, onTap, external:, danger:)` · `SectionHeader(label, actionLabel)` (eyebrow viết hoa) |
+| Tiêu đề | tab: `LargeTitle(title, eyebrow, trailing)` · màn đẩy: `Scaffold(appBar: AppTopBar(title, close:, trailing:))` |
+| Sheet / dialog / toast | `showAppSheet(context, builder:, required:)` + `AppSheet(title, child, actions)` · `showAppDialog(context, title, body, content, actions)` · `showAppToast(context, msg)` · route `/confirm/:id` tự lấy style sheet từ theme |
+| Chọn ngày | `showAppDatePicker(context, initial, today, doneLabel, footer:)` → `LocalDate?` (tuần bắt đầu thứ Hai) · inline `AppDatePicker` |
+| Tab bar | `AppTabBar` (đã gắn trong `AppShell`) |
+| Ngày | `AppDates.relative(l10n, date, today:)` ("in 3 days"/"còn 3 ngày"; > 30 ngày → "2 Feb 2027"/"2/2/2027") · `.short` · `.full` · `.weekdayShort` ("Fri, 6 Nov"/"T6, 6/11") · `.weekdayLong` (eyebrow S2) · `.monthTitle` · `.weekdayHeaders` |
+| Tiền | `l10n.money(m)` / `l10n.amount(v, cur, approx:)` (lõi): `₫260,000` · `260.000đ` · `$20.00`; số quy đổi phụ: `≈ ` + `inkMuted` · hậu tố chu kỳ `perCycle(l10n, cycle)` ("/month") · gói chia sẻ `l10n.corePlanPrice(price)` |
+
+### 8.3 Luật VI / 360 / 130% (rút từ design README)
+- Thiết kế bằng EN, **kiểm bằng VI** (dài hơn ~30%). Tên được ellipsize; **số tiền, badge, trạng thái không bao giờ cắt**.
+- Hàng chờ xác nhận chỉ hiện badge (không kèm ngày). Gói chia sẻ ghi "gói 260.000đ". 4 chip chu kỳ VI một từ (Tuần · Tháng · Quý · Năm).
+- Mọi thứ co giãn tới **360 × 800**; chỉ hero tổng chi tự xuống 36px (`SpendHero` lo). Lề màn 16.
+- **130% chữ**: chữ to lên, **tile/icon/tab bar giữ nguyên**; `display`/`amountLg`/`headline` lớn tối đa 44/38/32 — dùng
+  `TextScaleCap(max: AppTextScale.display, …)` hoặc `textScaler: AppTextScale.capped(context, AppTextScale.headline)`.
+  Hàng cao lên; dòng 2 của hàng và giá trị cài đặt được xuống 2 dòng. Không scale lưới layout.
+- Vùng chạm ≥ 44 cho mọi control (component đã đảm bảo; có test `iOSTapTargetGuideline`).
+- "Chờ xác nhận" luôn **hổ phách + icon clock + chữ**, không bao giờ đỏ. `danger` chỉ cho xoá và lỗi nhập.
+- Một hành động chính (`brand`) mỗi màn. Giọng văn bình tĩnh, ngôi thứ hai, không dấu chấm than; emoji chỉ ở empty state ăn mừng.
+- Không hard-code hex / cỡ chữ / padding trong feature; thiếu component → ghi notes cho phiên điều phối (đừng chép rồi sửa trong feature).
+- Test overflow cho màn của bạn: dùng lại `pumpUi` + `loadAppFonts` trong `test/core/design_system_test.dart` (nạp Be Vietnam Pro
+  thật — font test mặc định rộng gấp đôi nên báo tràn sai), chạy 360×800, `locale: 'vi'`, `textScale: 1.3`, sáng + tối.

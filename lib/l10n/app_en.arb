@@ -196,6 +196,69 @@
     }
   },
   "confirmAllDialogBody": "All of them will be marked as paid at their current price.",
+  "coreRelToday": "today",
+  "coreRelTomorrow": "tomorrow",
+  "coreRelInDays": "{count, plural, =1{in 1 day} other{in {count} days}}",
+  "@coreRelInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "coreRelDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@coreRelDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "corePer": "{unit, select, day{/day} week{/week} month{/month} quarter{/quarter} year{/year} other{}}",
+  "@corePer": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "corePerEvery": "/{count} {unit}",
+  "@corePerEvery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "corePlanPrice": "plan {price}",
+  "@corePlanPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "coreSwipeConfirm": "Confirm",
+  "coreSwipeCancel": "Cancel",
+  "coreSharedWith": "Shared by {count}",
+  "@coreSharedWith": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "coreAddSubscription": "Add subscription",
+  "coreMonth": "Month",
+  "coreYear": "Year",
+  "corePrevMonth": "Previous month",
+  "coreNextMonth": "Next month",
+  "coreFewer": "Fewer",
+  "coreMore": "More",
+  "coreTabOverview": "Overview",
   "homeAdd": "Add subscription",
   "homeCounts": "{active} paying · {trial} on trial",
   "@homeCounts": {

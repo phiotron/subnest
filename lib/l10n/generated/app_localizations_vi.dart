@@ -293,6 +293,92 @@ class AppLocalizationsVi extends AppLocalizations {
       'Tất cả sẽ được đánh dấu đã trả theo giá hiện tại.';
 
   @override
+  String get coreRelToday => 'hôm nay';
+
+  @override
+  String get coreRelTomorrow => 'ngày mai';
+
+  @override
+  String coreRelInDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'còn $count ngày',
+      one: 'còn 1 ngày',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coreRelDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày trước',
+      one: '1 ngày trước',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String corePer(String unit) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'day': '/ngày',
+      'week': '/tuần',
+      'month': '/tháng',
+      'quarter': '/quý',
+      'year': '/năm',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String corePerEvery(int count, String unit) {
+    return '/$count $unit';
+  }
+
+  @override
+  String corePlanPrice(String price) {
+    return 'gói $price';
+  }
+
+  @override
+  String get coreSwipeConfirm => 'Xác nhận';
+
+  @override
+  String get coreSwipeCancel => 'Huỷ';
+
+  @override
+  String coreSharedWith(int count) {
+    return 'Chia $count người';
+  }
+
+  @override
+  String get coreAddSubscription => 'Thêm subscription';
+
+  @override
+  String get coreMonth => 'Tháng';
+
+  @override
+  String get coreYear => 'Năm';
+
+  @override
+  String get corePrevMonth => 'Tháng trước';
+
+  @override
+  String get coreNextMonth => 'Tháng sau';
+
+  @override
+  String get coreFewer => 'Bớt';
+
+  @override
+  String get coreMore => 'Thêm';
+
+  @override
+  String get coreTabOverview => 'Tổng quan';
+
+  @override
   String get homeAdd => 'Thêm subscription';
 
   @override

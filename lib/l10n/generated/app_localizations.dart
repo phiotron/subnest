@@ -458,6 +458,114 @@ abstract class AppLocalizations {
   /// **'All of them will be marked as paid at their current price.'**
   String get confirmAllDialogBody;
 
+  /// No description provided for @coreRelToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get coreRelToday;
+
+  /// No description provided for @coreRelTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'tomorrow'**
+  String get coreRelTomorrow;
+
+  /// No description provided for @coreRelInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{in 1 day} other{in {count} days}}'**
+  String coreRelInDays(int count);
+
+  /// No description provided for @coreRelDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
+  String coreRelDaysAgo(int count);
+
+  /// No description provided for @corePer.
+  ///
+  /// In en, this message translates to:
+  /// **'{unit, select, day{/day} week{/week} month{/month} quarter{/quarter} year{/year} other{}}'**
+  String corePer(String unit);
+
+  /// No description provided for @corePerEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'/{count} {unit}'**
+  String corePerEvery(int count, String unit);
+
+  /// No description provided for @corePlanPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'plan {price}'**
+  String corePlanPrice(String price);
+
+  /// No description provided for @coreSwipeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get coreSwipeConfirm;
+
+  /// No description provided for @coreSwipeCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get coreSwipeCancel;
+
+  /// No description provided for @coreSharedWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared by {count}'**
+  String coreSharedWith(int count);
+
+  /// No description provided for @coreAddSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add subscription'**
+  String get coreAddSubscription;
+
+  /// No description provided for @coreMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get coreMonth;
+
+  /// No description provided for @coreYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get coreYear;
+
+  /// No description provided for @corePrevMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get corePrevMonth;
+
+  /// No description provided for @coreNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get coreNextMonth;
+
+  /// No description provided for @coreFewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer'**
+  String get coreFewer;
+
+  /// No description provided for @coreMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get coreMore;
+
+  /// No description provided for @coreTabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get coreTabOverview;
+
   /// No description provided for @homeAdd.
   ///
   /// In en, this message translates to:

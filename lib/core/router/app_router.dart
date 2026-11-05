@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -5,6 +6,7 @@ import '../../features/calendar/calendar_screen.dart';
 import '../../features/catalog/catalog_screen.dart';
 import '../../features/confirm/awaiting_screen.dart';
 import '../../features/confirm/confirm_sheet.dart';
+import '../../features/dev/gallery_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/insights/insights_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
@@ -30,7 +32,9 @@ GoRouter createRouter({required String initialLocation, GlobalKey<NavigatorState
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => AppShell(shell: shell),
         branches: [
-          StatefulShellBranch(routes: [GoRoute(path: AppRoutes.home, builder: (_, _) => const HomeScreen())]),
+          StatefulShellBranch(
+            routes: [GoRoute(path: AppRoutes.home, builder: (_, _) => const HomeScreen())],
+          ),
           StatefulShellBranch(
             routes: [GoRoute(path: AppRoutes.calendar, builder: (_, _) => const CalendarScreen())],
           ),
@@ -73,6 +77,8 @@ GoRouter createRouter({required String initialLocation, GlobalKey<NavigatorState
           ),
         ],
       ),
+      if (kDebugMode)
+        GoRoute(path: AppRoutes.devGallery, builder: (_, state) => GalleryScreen.fromQuery(state.uri.queryParameters)),
       GoRoute(
         path: '/confirm/:id',
         pageBuilder: (_, state) => BottomSheetPage(

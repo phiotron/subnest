@@ -297,6 +297,92 @@ class AppLocalizationsEn extends AppLocalizations {
       'All of them will be marked as paid at their current price.';
 
   @override
+  String get coreRelToday => 'today';
+
+  @override
+  String get coreRelTomorrow => 'tomorrow';
+
+  @override
+  String coreRelInDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count days',
+      one: 'in 1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coreRelDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String corePer(String unit) {
+    String _temp0 = intl.Intl.selectLogic(unit, {
+      'day': '/day',
+      'week': '/week',
+      'month': '/month',
+      'quarter': '/quarter',
+      'year': '/year',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String corePerEvery(int count, String unit) {
+    return '/$count $unit';
+  }
+
+  @override
+  String corePlanPrice(String price) {
+    return 'plan $price';
+  }
+
+  @override
+  String get coreSwipeConfirm => 'Confirm';
+
+  @override
+  String get coreSwipeCancel => 'Cancel';
+
+  @override
+  String coreSharedWith(int count) {
+    return 'Shared by $count';
+  }
+
+  @override
+  String get coreAddSubscription => 'Add subscription';
+
+  @override
+  String get coreMonth => 'Month';
+
+  @override
+  String get coreYear => 'Year';
+
+  @override
+  String get corePrevMonth => 'Previous month';
+
+  @override
+  String get coreNextMonth => 'Next month';
+
+  @override
+  String get coreFewer => 'Fewer';
+
+  @override
+  String get coreMore => 'More';
+
+  @override
+  String get coreTabOverview => 'Overview';
+
+  @override
   String get homeAdd => 'Add subscription';
 
   @override

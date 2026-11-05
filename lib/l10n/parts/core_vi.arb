@@ -1,0 +1,20 @@
+{
+  "coreRelToday": "hôm nay",
+  "coreRelTomorrow": "ngày mai",
+  "coreRelInDays": "{count, plural, =1{còn 1 ngày} other{còn {count} ngày}}",
+  "coreRelDaysAgo": "{count, plural, =1{1 ngày trước} other{{count} ngày trước}}",
+  "corePer": "{unit, select, day{/ngày} week{/tuần} month{/tháng} quarter{/quý} year{/năm} other{}}",
+  "corePerEvery": "/{count} {unit}",
+  "corePlanPrice": "gói {price}",
+  "coreSwipeConfirm": "Xác nhận",
+  "coreSwipeCancel": "Huỷ",
+  "coreSharedWith": "Chia {count} người",
+  "coreAddSubscription": "Thêm subscription",
+  "coreMonth": "Tháng",
+  "coreYear": "Năm",
+  "corePrevMonth": "Tháng trước",
+  "coreNextMonth": "Tháng sau",
+  "coreFewer": "Bớt",
+  "coreMore": "Thêm",
+  "coreTabOverview": "Tổng quan"
+}
