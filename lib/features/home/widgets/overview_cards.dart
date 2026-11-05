@@ -270,9 +270,12 @@ class SortButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     return Semantics(
+      // Own node: without it the button merges into the "Your subscriptions" heading next to it.
+      container: true,
       button: true,
       label: semanticLabel,
       excludeSemantics: true,
+      onTap: onPressed,
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(AppRadius.sm),

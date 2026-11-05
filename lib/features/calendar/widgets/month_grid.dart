@@ -137,6 +137,7 @@ class _DayCell extends StatelessWidget {
       selected: selected,
       label: MonthGrid.semanticsLabel(l, month, day),
       excludeSemantics: true,
+      onTap: onTap,
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(

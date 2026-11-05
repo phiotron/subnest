@@ -410,6 +410,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
           button: true,
           label: l.subscriptionFormEditTile,
           excludeSemantics: true,
+          onTap: _pickTile,
           child: GestureDetector(
             onTap: _pickTile,
             child: SizedBox(
@@ -917,6 +918,7 @@ class _PlanChip extends StatelessWidget {
       button: true,
       label: context.l10n.subscriptionFormPlan(name),
       excludeSemantics: true,
+      onTap: onTap,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.full),

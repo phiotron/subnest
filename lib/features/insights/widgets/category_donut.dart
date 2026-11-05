@@ -145,6 +145,7 @@ class _LegendRow extends StatelessWidget {
       button: true,
       label: l.insightsSliceLabel(l.category(slice.category), amount, percent),
       excludeSemantics: true,
+      onTap: onTap,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.sm),

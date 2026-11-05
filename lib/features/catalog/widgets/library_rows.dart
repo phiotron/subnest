@@ -21,6 +21,7 @@ class LibraryRow extends StatelessWidget {
       button: true,
       label: context.l10n.catalogAddService(s.name),
       excludeSemantics: true,
+      onTap: onTap,
       child: InkWell(
         onTap: onTap,
         child: ConstrainedBox(

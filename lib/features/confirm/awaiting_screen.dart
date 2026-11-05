@@ -232,23 +232,25 @@ class _PendingRow extends StatelessWidget {
     final queued = queuedAfter != null;
     final ago = l.confirmAgo(-today.daysUntil(due));
     final dateText = AppDates.short(l, due, today: today);
+    // A queued period can't be confirmed yet: explain instead of falling through to the row.
+    final VoidCallback onQuick = queued
+        ? () => showAppToast(
+            context,
+            l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)),
+            icon: AppIcons.privacyKey,
+          )
+        : onQuickPay;
     final quick = Semantics(
       button: true,
       enabled: !queued,
       label: queued ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)) : l.confirmMarkPaid(s.name, dateText),
       excludeSemantics: true,
+      onTap: onQuick,
       child: Tooltip(
         message: queued ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)) : l.confirmMarkPaid(s.name, dateText),
         excludeFromSemantics: true,
         child: InkResponse(
-          // A queued period can't be confirmed yet: explain instead of falling through to the row.
-          onTap: queued
-              ? () => showAppToast(
-                  context,
-                  l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)),
-                  icon: AppIcons.privacyKey,
-                )
-              : onQuickPay,
+          onTap: onQuick,
           radius: 24,
           child: SizedBox.square(
             dimension: AppTouch.min,

@@ -310,6 +310,7 @@ class _EmojiButton extends StatelessWidget {
       selected: selected,
       label: emoji,
       excludeSemantics: true,
+      onTap: onTap,
       child: Material(
         color: selected ? c.brandSoft : c.surface2,
         shape: RoundedRectangleBorder(

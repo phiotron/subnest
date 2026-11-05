@@ -147,6 +147,7 @@ class _PairRow extends StatelessWidget {
       label: '${l.settingsRatePairLabel(from, value, to)}. $subtitle',
       button: true,
       excludeSemantics: true,
+      onTap: onTap,
       child: InkWell(
         onTap: onTap,
         child: ConstrainedBox(

@@ -165,6 +165,7 @@ class _PickCell extends StatelessWidget {
       selected: selected,
       label: s.name,
       excludeSemantics: true,
+      onTap: onTap,
       child: Material(
         color: selected ? c.brandSoft : Colors.transparent,
         borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -273,6 +274,7 @@ class _QuickCard extends StatelessWidget {
               label: l.onboardingPickEditLabel(pick.name),
               button: true,
               excludeSemantics: true,
+              onTap: onEdit,
               child: AppButton.tonal(label: l.onboardingPickEdit, icon: AppIcons.edit, small: true, onPressed: onEdit),
             ),
           ],
