@@ -23,7 +23,7 @@
 
 | Thứ | Ở đâu |
 |---|---|
-| Keystore | `C:\Users\Admin\keystores\A001-subnest\upload-keystore.jks` (PKCS12, RSA 4096, alias `upload`, hạn tới 2054) — **ngoài mọi repo** |
+| Keystore | `C:\Users\Admin\keystores\A001-subnest\upload-keystore.jks` (PKCS12, RSA 4096, alias `upload`, ~27 năm) — **người dùng tự tạo 2026-11-05** (khoá cũ do Claude tạo đã bỏ, chưa từng upload), **ngoài mọi repo** |
 | Mật khẩu + alias | `C:\Users\Admin\keystores\A001-subnest\key.properties` (store password = key password) |
 | SHA-256 chứng chỉ upload | `85:BC:15:82:80:BC:54:F9:73:4D:DF:A5:AB:29:C5:76:A3:A7:C8:50:26:41:C1:B3:84:00:83:84:38:C8:08:6B` (đối chiếu với *Play Console → Test and release → App integrity → Upload key certificate*) |
 
