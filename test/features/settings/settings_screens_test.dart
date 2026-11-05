@@ -258,6 +258,17 @@ void main() {
       expect(f.platform.shared.last.map((e) => e.name), everyElement(endsWith('.csv')));
     });
 
+    settingsTest('dismissed share sheet is not a backup: nudge stays, no toast', (tester) async {
+      final f = await SettingsFixture.create();
+      f.platform.shareOk = false;
+      await pumpSettings(tester, f, location: '/settings/backup');
+      await tester.tap(find.text(en.settingsExportJson));
+      await settle(tester);
+      expect(f.platform.shared, hasLength(1));
+      expect(find.text(en.settingsExported), findsNothing);
+      expect(find.text('It’s been 42 days since your last backup'), findsOneWidget);
+    });
+
     settingsTest('restore: dialog shows what the file holds; merge by default, replace is danger', (tester) async {
       final f = await SettingsFixture.create();
       f.platform.nextPick = (name: 'subnest-backup-2026-09-24.json', text: f.backupJson);

@@ -190,6 +190,8 @@ void main() {
 
     test('JSON round-trip into an empty database (replace)', () async {
       final json = await seedAndExport();
+      expect((await settings.load()).lastBackupAt, isNull, reason: 'only a completed share counts as a backup');
+      await backupFor(db, subs, settings).markBackedUp();
       expect((await settings.load()).lastBackupAt, now);
 
       final db2 = AppDatabase(NativeDatabase.memory());

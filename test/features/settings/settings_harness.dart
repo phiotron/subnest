@@ -41,6 +41,7 @@ class FakeSettingsPlatform extends SettingsPlatform {
   final bool ios;
   bool externalOk;
   bool notificationSettingsOk;
+  bool shareOk = true;
   PickedBackup? nextPick;
   final opened = <Uri>[];
   final shared = <List<ExportFile>>[];
@@ -64,7 +65,7 @@ class FakeSettingsPlatform extends SettingsPlatform {
   @override
   Future<bool> share(List<ExportFile> files, {String? subject}) async {
     shared.add(files);
-    return true;
+    return shareOk;
   }
 
   @override

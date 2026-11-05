@@ -13,7 +13,8 @@ abstract final class BackupActions {
   /// Full JSON backup → system share sheet.
   static Future<void> exportJson(BuildContext context, WidgetRef ref) async {
     final l = context.l10n;
-    await _share(context, () async => [await ref.read(backupServiceProvider).exportJson()], l.settingsExportJson, ref);
+    final backup = ref.read(backupServiceProvider);
+    await _share(context, () async => [await backup.exportJson()], l.settingsExportJson, ref, onShared: backup.markBackedUp);
   }
 
   /// Two CSV files (subscriptions + payments) → system share sheet.
@@ -26,14 +27,17 @@ abstract final class BackupActions {
     BuildContext context,
     Future<List<ExportFile>> Function() build,
     String subject,
-    WidgetRef ref,
-  ) async {
+    WidgetRef ref, {
+    Future<void> Function()? onShared,
+  }) async {
     final l = context.l10n;
     final platform = ref.read(settingsPlatformProvider);
     try {
       final files = await build();
       final done = await platform.share(files, subject: subject);
-      if (done && context.mounted) showAppToast(context, l.settingsExported);
+      if (!done) return;
+      await onShared?.call();
+      if (context.mounted) showAppToast(context, l.settingsExported);
     } catch (_) {
       if (context.mounted) showAppToast(context, l.settingsExportFailed, icon: AppIcons.alert);
     }

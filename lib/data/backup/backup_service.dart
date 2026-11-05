@@ -59,6 +59,10 @@ class BackupService {
 
   // ---- Export --------------------------------------------------------------------------------
 
+  /// Records that a JSON backup left the phone. Call it only after the share sheet completed —
+  /// a dismissed sheet is not a backup (real phone QA 2026-11-05: cancelling still hid the nudge).
+  Future<void> markBackedUp() => _settings.setLastBackupAt(_clock());
+
   Future<ExportFile> exportJson() async {
     final raw = await _settings.raw();
     final rates = await _rates.load();
@@ -74,7 +78,6 @@ class BackupService {
       'subscriptions': [for (final s in await _subs.all()) BackupCodec.subscriptionToJson(s)],
       'periods': [for (final p in await _subs.allPeriods()) BackupCodec.periodToJson(p)],
     };
-    await _settings.setLastBackupAt(_clock());
     return ExportFile(
       'subnest-backup-${_stamp()}.json',
       const JsonEncoder.withIndent('  ').convert(data),
