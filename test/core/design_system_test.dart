@@ -219,9 +219,14 @@ void main() {
       expect(tester.getCenter(find.text('2')).dx, closeTo(tester.getCenter(find.text('9')).dx, .1));
       await tester.tap(find.text('20'));
       expect(picked, const LocalDate(2026, 11, 20));
+      // November 2026 needs 6 week rows, December 5: the grid keeps its height so the arrows stay put.
+      final novHeight = tester.getSize(find.byType(AppDatePicker)).height;
+      final arrow = tester.getCenter(find.byTooltip('Next month'));
       await tester.tap(find.byTooltip('Next month'));
       await tester.pumpAndSettle();
       expect(find.text('December 2026'), findsOneWidget);
+      expect(tester.getSize(find.byType(AppDatePicker)).height, novHeight);
+      expect(tester.getCenter(find.byTooltip('Next month')), arrow);
     });
 
     testWidgets('subscription row swipe reveals Confirm + Cancel; full swipe confirms', (tester) async {

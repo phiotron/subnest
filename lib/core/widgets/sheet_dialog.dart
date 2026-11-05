@@ -15,6 +15,7 @@ Future<T?> showAppSheet<T>(
   bool bare = false,
   bool useRootNavigator = true,
 }) {
+  _dropTextFocus();
   return showModalBottomSheet<T>(
     context: context,
     isScrollControlled: true,
@@ -83,6 +84,7 @@ Future<T?> showAppDialog<T>(
   required List<Widget> actions,
   bool dismissible = true,
 }) {
+  _dropTextFocus();
   final duration = AppMotion.of(context, AppMotion.dialog);
   // Carry local Theme overrides (e.g. the gallery's dark preview) into the dialog route.
   final themes = InheritedTheme.capture(from: context, to: Navigator.of(context, rootNavigator: true).context);
@@ -185,3 +187,8 @@ void showAppToast(BuildContext context, String message, {IconData icon = AppIcon
       ),
     );
 }
+
+/// Unfocuses the current text field before a sheet / dialog opens. Otherwise the route restores
+/// focus to the field when it closes and the keyboard pops back up over the form (found on a real
+/// phone: picking a date in S4 reopened the price keyboard and covered "Add subscription").
+void _dropTextFocus() => FocusManager.instance.primaryFocus?.unfocus();

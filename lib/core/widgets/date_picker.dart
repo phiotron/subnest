@@ -53,7 +53,9 @@ class _AppDatePickerState extends State<AppDatePicker> {
       for (var i = 0; i < offset; i++) null,
       for (var d = 1; d <= days; d++) LocalDate(_month.year, _month.month, d),
     ];
-    while (cells.length % 7 != 0) {
+    // Always six week rows: the sheet keeps its height, so the month arrows don't jump under the
+    // finger when paging between 5- and 6-row months (found on a real phone).
+    while (cells.length < 42) {
       cells.add(null);
     }
     final canPrev = widget.firstDate == null || _month.isAfter(widget.firstDate!.firstOfMonth);
