@@ -86,7 +86,8 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI (đề xuất) | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter chạy trên Galaxy A13 (analyze sạch, 94 test xanh — phiên điều phối chạy lại xác nhận); catalog 99 dịch vụ; store/legal EN+VI |
+| #2 Hoàn thiện | 2026-11-05 | F Design system (đang chạy) · B2 Tra giá catalog (đang chạy) · sau F: G, H, I, J | Mockup Claude Design về `design/` (58 màn × light/dark, tokens.json, brand teal `#0e6b63`/`#46cdb9`, font Be Vietnam Pro, icon Lucide) |
+| #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI (gần xong: iOS workflow xanh) | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter chạy trên Galaxy A13 (analyze sạch, 94 test xanh — phiên điều phối chạy lại xác nhận); catalog 99 dịch vụ; store/legal EN+VI |
 
 **Việc dở / bước tiếp:**
 - **E CI & signing** (sau A): build AAB ký + iOS `--no-codesign` trên macOS runner (iOS chưa build lần nào; AppDelegate/Info.plist sửa chưa kiểm).
