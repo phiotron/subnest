@@ -1,12 +1,15 @@
-# CI: checks + signed release AAB (Android). See docs/ci.md.
+# CI (Android). See docs/ci.md §1.
+# Tiết kiệm phút Actions (luật xưởng WORKFLOW §7):
+#   - nhánh `dev` (làm hằng ngày): KHÔNG chạy CI — test chạy trên máy trước khi push;
+#   - push `main` (chỉ khi phiên điều phối merge dev ổn định): chỉ kiểm (l10n, codegen, analyze, test), KHÔNG build;
+#   - tag `v*` hoặc chạy tay: kiểm + build AAB release đã ký.
 name: CI
 
 on:
   push:
     branches: [main]
-    paths-ignore: ['**.md', 'store/**', 'design/**', 'notes/**']
-  pull_request:
-    branches: [main]
+    tags: ['v*']
+    paths-ignore: ['**.md', 'store/**', 'design/**', 'notes/**', 'docs/**']
   workflow_dispatch:
 
 concurrency:
@@ -24,6 +27,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-java@v4
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
         with:
           distribution: temurin
           java-version: '17'
@@ -35,6 +39,7 @@ jobs:
           cache: true          # Flutter SDK + pub cache
 
       - uses: gradle/actions/setup-gradle@v4   # Gradle cache
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
 
       - name: pub get
         run: flutter pub get
@@ -55,6 +60,7 @@ jobs:
         run: flutter test
 
       - name: Signing config (from secrets)
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -83,9 +89,11 @@ jobs:
           fi
 
       - name: Build release AAB
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
         run: flutter build appbundle --release
 
       - name: Verify AAB signature
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
         run: |
           AAB=build/app/outputs/bundle/release/app-release.aab
           ls -l "$AAB"
@@ -96,6 +104,7 @@ jobs:
         run: rm -f "$RUNNER_TEMP/upload-keystore.jks" "$RUNNER_TEMP/key.properties"
 
       - uses: actions/upload-artifact@v4
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
         with:
           name: subnest-aab-${{ github.run_number }}
           path: build/app/outputs/bundle/release/app-release.aab
