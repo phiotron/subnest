@@ -108,8 +108,25 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 - Bài học song song: `git commit -- <đường dẫn>`; commit chưa push của một phiên chặn push phiên khác; 2 phiên hết hạn mức giữa chừng →
   brief nên chia nhỏ hơn / commit WIP sớm.
 
-## Retro (điền khi phát hành)
-- Tổng phiên điều phối / phiên con:
-- Chậm nhất ở đâu, vì sao:
-- Thứ tái dùng được cho app sau:
-- Cải tiến đề xuất cho Playbook:
+## Retro
+
+### Giữa kỳ — 2026-11-05 (code xong, trước khi nộp store; retro cuối bổ sung sau phiên #3)
+- **Tổng:** 2 phiên điều phối (#1 2026-11-04, #2 2026-11-05) · 13 phiên con: #1 A Core, B Catalog, D Store & legal, E CI ·
+  #2 F Design system, B2 Giá catalog, I Lịch/Thống kê, J Cài đặt, G Home/Detail/Confirm, H Onboarding/Catalog/Form, QA máy thật,
+  Giá US catalog (đang chạy). Kết quả: 7/7 tính năng MVP, 58 màn mockup → S1–S10, 642 test, AAB `1.0.0+2` ký.
+- **Chậm nhất / vấp:**
+  1. *Phiên con dừng giữa chừng* (E dừng qua đêm; G, H hết hạn mức) → phải nhắn chạy lại; G giữ commit WIP chưa push chặn H push.
+  2. *Luật thay đổi giữa chừng* (repo, khoá, nhánh, phút Actions) → sửa lại tài liệu + làm lại khoá upload + đổi CI.
+  3. *CI build mỗi lần push* → đốt quota (phiotron hết 2.000 phút; A004 ~110 phút/push vì iOS macOS ×10).
+  4. *Chỉ 1 điện thoại dùng chung* → phiên UI kiểm bằng ảnh render; QA máy thật dồn cuối và tìm 16 lỗi (7 ở 320dp × 200%).
+  5. *Giá catalog theo vùng* → tra từ VN không ra giá US; 3 lượt tra.
+  6. Một phiên khác `checkout main` trong thư mục dùng chung (17:01) — không mất gì nhưng nguy hiểm.
+- **Tốt / giữ lại:** Core chạy song song trong lúc chờ Claude Design; route khai sẵn + ARB tách feature → 4 phiên UI không đụng nhau;
+  design system + gallery trước rồi mới UI; ảnh golden ma trận (EN/VI × sáng/tối × 360/390 × 100–200%) thay máy thật cho bố cục;
+  build AAB trên máy (không tốn phút).
+- **Tái dùng được cho app sau:** `tool/merge_arb.dart`, `tool/gen_tokens.dart`, gallery + harness test UI (DB in-memory, font thật,
+  router thật, chụp PNG), khung `ci.yml`/`ios.yml` + khối ký Android + `set-android-secrets.sh`, catalog + validator, mẫu store
+  (privacy "no data", forms, tester kit, check_lengths), mẫu thông báo "planner + resync", repo legal chung `phamphuongphuongnd/legal`.
+- **Cải tiến đã áp vào Playbook:** v0.3 repo theo link · v0.4 không tự tạo khoá · v0.9 nhánh dev + CI tiết kiệm phút ·
+  v0.10 checklist `smoke-android.md`. **Đề xuất tiếp:** phiên con "nâng cấp xưởng" rút bộ template Flutter (`playbook/templates/flutter/`);
+  brief phiên con: commit WIP sớm, kiểm `get_usage` trước khi mở nhiều phiên; ma trận bố cục có 320dp × 200%; tra trùng tên app trước grill.
