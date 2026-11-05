@@ -26,7 +26,9 @@ enum SubscriptionRowState {
 
 /// Subscription list row (design Components › SubscriptionRow): ≥ 68px, 40px [ServiceTile],
 /// name (`title-sm`, ellipsizes) + optional shared mark "÷4", second line by [state], amount
-/// column (`title-sm` + meta, tabular, never truncates).
+/// column (`title-sm` + meta, tabular, never truncates). When the amounts would leave too little
+/// room for the name and badge (narrow screen, VI, large text — always at ≥ 150%), the amounts
+/// move under the second line instead of squeezing it.
 ///
 /// Swipe left reveals **Confirm** (`brand`, only while [state] is awaiting and [onConfirm] is set)
 /// and **Cancel** (`surface-2`, when [onCancel] is set). A full swipe triggers the first action
@@ -121,7 +123,10 @@ class SubscriptionRow extends StatelessWidget {
         second = Text(meta ?? '', maxLines: 2, overflow: TextOverflow.ellipsis, style: AppType.meta.copyWith(color: c.inkMuted));
     }
 
-    final row = ConstrainedBox(
+    final amountStyle = AppType.titleSm.copyWith(color: c.ink).tabular;
+    final amountMetaStyle = AppType.meta.copyWith(color: c.inkMuted).tabular;
+
+    Widget layout(bool stacked) => ConstrainedBox(
       constraints: const BoxConstraints(minHeight: AppSize.rowH),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: 12),
@@ -159,29 +164,74 @@ class SubscriptionRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   second,
+                  if (stacked) ...[
+                    const SizedBox(height: 4),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 2,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(amount, style: amountStyle),
+                        if (amountMeta != null) Text(amountMeta!, style: amountMetaStyle),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),
+            if (!stacked) ...[
             const SizedBox(width: AppSpace.s3),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(amount, maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: c.ink).tabular),
+                Text(amount, maxLines: 1, softWrap: false, style: amountStyle),
                 if (amountMeta != null) ...[
                   const SizedBox(height: 3),
-                  Text(
-                    amountMeta!,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: AppType.meta.copyWith(color: c.inkMuted).tabular,
-                  ),
+                  Text(amountMeta!, maxLines: 1, softWrap: false, style: amountMetaStyle),
                 ],
               ],
             ),
+            ],
           ],
         ),
       ),
+    );
+
+    final row = LayoutBuilder(
+      builder: (context, box) {
+        final scaler = MediaQuery.textScalerOf(context);
+        double width(String text, TextStyle style) {
+          final tp = TextPainter(
+            text: TextSpan(text: text, style: style),
+            textDirection: Directionality.of(context),
+            textScaler: scaler,
+            maxLines: 1,
+          )..layout();
+          final w = tp.width;
+          tp.dispose();
+          return w;
+        }
+
+        final amountW = [
+          width(amount, amountStyle),
+          if (amountMeta != null) width(amountMeta!, amountMetaStyle),
+        ].reduce((a, b) => a > b ? a : b);
+        // Room for the name column if the amounts stay on the right.
+        final room = box.maxWidth - AppSpace.s4 * 2 - 40 - AppSpace.s3 * 2 - amountW;
+        // What the second line needs: the badge (+ "×N") — never truncated.
+        var need = 112.0;
+        if (state == SubscriptionRowState.awaiting || state == SubscriptionRowState.trial) {
+          final label = badgeLabel ??
+              (state == SubscriptionRowState.awaiting ? l.commonStatusAwaiting : l.commonStatusTrial);
+          need = width(label, AppType.caption.copyWith(letterSpacing: 0)) + 6 + 13 + 4 + 8 + 4;
+          if (state == SubscriptionRowState.awaiting && awaitingCount > 1) {
+            need += 6 + width('×$awaitingCount', AppType.meta.copyWith(fontWeight: FontWeight.w600));
+          }
+        }
+        final stacked = scaler.scale(10) >= 15 || room < need;
+        return layout(stacked);
+      },
     );
 
     final actions = <SwipeAction>[

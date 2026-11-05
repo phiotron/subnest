@@ -762,4 +762,58 @@ void main() {
       handle.dispose();
     });
   });
+
+  group('subscription row at large text (bug from session G)', () {
+    Widget rows() => AppGroup(
+      children: [
+        SubscriptionRow(
+          name: 'Netflix Premium',
+          colorValue: 0xFFE50914,
+          state: SubscriptionRowState.awaiting,
+          awaitingCount: 2,
+          sharedCount: 4,
+          amount: '₫65,000',
+          amountMeta: 'plan ₫260,000',
+        ),
+        const SubscriptionRow(
+          name: 'Viettel 5G',
+          colorValue: 0xFFD21F3C,
+          state: SubscriptionRowState.awaiting,
+          amount: '₫150,000',
+          amountMeta: '/month',
+        ),
+        const SubscriptionRow(
+          name: 'Spotify',
+          colorValue: 0xFF1DB954,
+          state: SubscriptionRowState.trial,
+          meta: 'ends in 2 days',
+          amount: '₫59,000',
+          amountMeta: '/month',
+        ),
+      ],
+    );
+
+    // pumpUi pads 16px each side → screen width = size − 32.
+    for (final (screen, scale, locale) in [
+      (360.0, 1.3, 'en'),
+      (360.0, 1.3, 'vi'),
+      (390.0, 2.0, 'en'),
+      (390.0, 2.0, 'vi'),
+      (360.0, 2.0, 'vi'),
+    ]) {
+      testWidgets('no overflow at ${screen.toInt()}dp × ${(scale * 100).round()}% $locale', (tester) async {
+        await pumpUi(tester, rows(), size: Size(screen + 32, 1200), textScale: scale, locale: locale);
+        expect(tester.takeException(), isNull);
+      });
+    }
+
+    testWidgets('amount sits beside the name at 100%, under it when there is no room', (tester) async {
+      await pumpUi(tester, rows(), size: const Size(422, 900));
+      final name = tester.getRect(find.text('Netflix Premium'));
+      expect(tester.getRect(find.text('₫65,000')).top, lessThan(name.bottom), reason: 'same line at 100%');
+      await pumpUi(tester, rows(), size: const Size(422, 1200), textScale: 2);
+      final badge = tester.getRect(find.text('To confirm').first);
+      expect(tester.getRect(find.text('₫65,000')).top, greaterThan(badge.bottom), reason: 'stacked at 200%');
+    });
+  });
 }

@@ -128,15 +128,16 @@ class StatusBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[Icon(icon, size: large ? 14 : 13, color: fg), SizedBox(width: large ? 6 : 4)],
-          Text(
-            label,
-            maxLines: 1,
-            softWrap: false,
-            style:
-                (large
-                        ? AppType.meta.copyWith(fontWeight: FontWeight.w600)
-                        : AppType.caption.copyWith(letterSpacing: 0))
-                    .copyWith(color: fg),
+          // Never truncated: in an extremely narrow slot the label wraps instead of overflowing.
+          Flexible(
+            child: Text(
+              label,
+              style:
+                  (large
+                          ? AppType.meta.copyWith(fontWeight: FontWeight.w600)
+                          : AppType.caption.copyWith(letterSpacing: 0))
+                      .copyWith(color: fg),
+            ),
           ),
         ],
       ),
