@@ -97,9 +97,12 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 - **Ảnh store ✅**: `store/screenshots/{en,vi}/` (8 + 8), `store/graphics/icon-512.png`, `feature-1024x500(-vi).png`.
 - **Người dùng còn phải làm:** (1) kiểm TalkBack bằng tay ~5 phút (các bước trong notes QA); (2) gửi link repo privacy policy;
   (3) tạo app Play Console + upload AAB closed testing (docs/ci.md §4); (4) gom 12–15 tester; (5) Apple Developer.
-- Lỗi thấp còn lại (không chặn): #12 "≈" không được đọc · #13 câu tỷ giá offline · #14 chiều hiển thị ghi đè tỷ giá (UX) ·
-  #15 mẫu xem trước nhắc · #16 "Giữ lại" trial chỉ ẩn trong phiên (cần trường dữ liệu).
-- Trước upload bản UI thật: tăng `version` → `1.0.0+2`. Widget S11 → bản 1.1. Ký iOS/TestFlight chờ Apple Developer.
+- Lỗi thấp #12–#16 ✅ đã sửa. **`1.0.0+2` đã vào `main`** (`91e7d5a`) sau khi phiên điều phối chạy lại: analyze sạch, **641 test xanh**,
+  merge_arb OK. AAB ký bằng khoá người dùng, build **trên máy** (không tốn phút Actions):
+  `C:\Users\Admin\keystores\A001-subnest\out\subnest-1.0.0+2.aab` (SHA-256 upload key `85:BC:…:08:6B`) → dùng file này cho closed testing.
+- **Nhánh (từ 2026-11-05):** thư mục app luôn ở `dev`; CI không chạy `dev`; `main` chỉ kiểm; build chỉ khi tag/chạy tay (WORKFLOW §7).
+  Sự cố 17:01: thư mục bị một phiên khác `checkout main` → phiên điều phối đã chuyển lại `dev` (không mất gì).
+- Widget S11 → bản 1.1. Ký iOS/TestFlight chờ Apple Developer.
 - Lệch nhỏ catalog: ChatGPT monogram "GP" xanh (mockup "C" đen); ảnh store EN thiếu màn Thư viện (máy vùng VN).
 - Khoá upload do người dùng tự tạo 2026-11-05. CI chưa chạy `gen_tokens --check`. Nhắc dùng alarm inexact (trễ ~1–5 phút).
 - Bài học song song: `git commit -- <đường dẫn>`; commit chưa push của một phiên chặn push phiên khác; 2 phiên hết hạn mức giữa chừng →
