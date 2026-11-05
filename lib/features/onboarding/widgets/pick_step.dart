@@ -53,7 +53,8 @@ class _PickStepState extends State<PickStep> {
     final shown = CatalogView.search(widget.services, _query);
     final last = widget.lastPicked == null ? null : widget.picks[widget.lastPicked];
     final scale = MediaQuery.textScalerOf(context).scale(1);
-    final columns = scale > 1.6 ? 3 : 4;
+    // Fewer columns as text grows so names never break mid-word (130% → 3, 200% → 2).
+    final columns = scale > 1.6 ? 2 : (scale > 1.15 ? 3 : 4);
     final rows = <List<CatalogService>>[
       for (var i = 0; i < shown.length; i += columns) shown.sublist(i, (i + columns).clamp(0, shown.length)),
     ];
