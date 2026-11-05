@@ -6,4 +6,6 @@
           android:drawable="@drawable/ic_launcher_foreground"
           android:inset="8%" />
   </foreground>
+  <!-- Android 13+ themed icon (assets/icons/brand/make_notification_icon.py). Re-add after flutter_launcher_icons. -->
+  <monochrome android:drawable="@drawable/ic_launcher_monochrome"/>
 </adaptive-icon>

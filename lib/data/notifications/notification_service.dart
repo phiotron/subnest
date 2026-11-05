@@ -54,7 +54,7 @@ class NotificationService {
     }
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('@drawable/$smallIcon'),
         iOS: DarwinInitializationSettings(
           requestAlertPermission: false,
           requestBadgePermission: false,
@@ -153,11 +153,13 @@ class NotificationService {
           r.fireAt.hour,
           r.fireAt.minute,
         ),
-        notificationDetails: _details(l10n, body: _body(l10n, r, s)),
+        notificationDetails: details(l10n, reminderText(l10n, r, s)),
         // Inexact: no SCHEDULE_EXACT_ALARM permission (Play policy); may arrive a few minutes late.
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        title: _title(l10n, r, s),
-        body: _body(l10n, r, s),
+        // No title: the OS shows "Subnest" above the sentence, as in design png 58 (S12). The
+        // sentence as title was bold, heavy and cut to one line in the shade.
+        title: null,
+        body: reminderText(l10n, r, s),
         payload: r.route,
       );
     }
@@ -182,50 +184,57 @@ class NotificationService {
     final l10n = _l10n(settings);
     await _plugin.show(
       id: 900001,
-      title: l10n.notificationsTestTitle,
-      body: l10n.notificationsTestBody,
-      notificationDetails: _details(l10n),
+      title: null,
+      body: '${l10n.notificationsTestTitle}. ${l10n.notificationsTestBody}',
+      notificationDetails: details(l10n, '${l10n.notificationsTestTitle}. ${l10n.notificationsTestBody}'),
       payload: route,
     );
     await _plugin.zonedSchedule(
       id: 900002,
       scheduledDate: tz.TZDateTime.now(tz.local).add(delay),
-      notificationDetails: _details(l10n),
+      notificationDetails: details(l10n, '${l10n.notificationsTestScheduledTitle}. ${l10n.notificationsTestBody}'),
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      title: l10n.notificationsTestScheduledTitle,
-      body: l10n.notificationsTestBody,
+      title: null,
+      body: '${l10n.notificationsTestScheduledTitle}. ${l10n.notificationsTestBody}',
       payload: route,
     );
   }
 
-  /// A body (trial ending) uses the big-text style so the expanded notification shows all of it
-  /// (real phone: one line, cut after "Huỷ ngay nếu…").
-  NotificationDetails _details(AppLocalizations l10n, {String? body}) => NotificationDetails(
+  /// Monochrome status-bar icon (android/app/src/main/res/drawable-*/ic_stat_subnest.png, made by
+  /// assets/icons/brand/make_notification_icon.py). A full-colour launcher icon is tinted into a blob.
+  static const smallIcon = 'ic_stat_subnest';
+
+  /// Brand teal (`brand` light token) for the small icon and app name — not a coloured background.
+  static const accent = Color(0xFF0E6B63);
+
+  /// Big-text style for every reminder so a long sentence (trial ending, long names, VI) is never cut
+  /// when expanded; `color` tints the icon and "Subnest" in the brand teal.
+  @visibleForTesting
+  static NotificationDetails details(AppLocalizations l10n, String text) => NotificationDetails(
     android: AndroidNotificationDetails(
       _channelId,
       l10n.notificationsChannelName,
       channelDescription: l10n.notificationsChannelDescription,
       importance: Importance.high,
       priority: Priority.high,
-      styleInformation: body == null ? null : BigTextStyleInformation(body),
+      icon: smallIcon,
+      color: accent,
+      styleInformation: BigTextStyleInformation(text),
     ),
     iOS: const DarwinNotificationDetails(),
   );
 
-  String _title(AppLocalizations l10n, PlannedReminder r, Subscription s) {
+  /// The one sentence of a reminder (product.md S12), shown as the notification body.
+  @visibleForTesting
+  static String reminderText(AppLocalizations l10n, PlannedReminder r, Subscription s) {
     final amount = Fmt.moneyOf(s.myShare, l10n.localeName);
-    switch (r.kind) {
-      case ReminderKind.renewalSoon:
-        return l10n.notificationsRenewalSoon(s.name, r.daysBefore, amount);
-      case ReminderKind.trialEnding:
-        return l10n.notificationsTrialEndingTitle(s.name, r.daysBefore);
-      case ReminderKind.dueToday:
-        return l10n.notificationsDueToday(s.name);
-    }
+    return switch (r.kind) {
+      ReminderKind.renewalSoon => l10n.notificationsRenewalSoon(s.name, r.daysBefore, amount),
+      ReminderKind.trialEnding =>
+        '${l10n.notificationsTrialEndingTitle(s.name, r.daysBefore)} ${l10n.notificationsTrialEndingBody}',
+      ReminderKind.dueToday => l10n.notificationsDueToday(s.name),
+    };
   }
-
-  String? _body(AppLocalizations l10n, PlannedReminder r, Subscription s) =>
-      r.kind == ReminderKind.trialEnding ? l10n.notificationsTrialEndingBody : null;
 
   static AppLocalizations _l10n(AppSettings settings) {
     final code = settings.localeCode ?? PlatformDispatcher.instance.locale.languageCode;
