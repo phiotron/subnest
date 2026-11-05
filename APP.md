@@ -91,7 +91,10 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 **Việc dở / bước tiếp:**
 - **E CI & signing** (sau A): build AAB ký + iOS `--no-codesign` trên macOS runner (iOS chưa build lần nào; AppDelegate/Info.plist sửa chưa kiểm).
   Bản AAB đầu tiên người dùng tự upload lên closed testing (Play bắt lần đầu làm tay).
-- **Người dùng quyết:** email hỗ trợ · tên developer trên store · nơi host privacy policy (đề xuất: repo GitHub Pages public cấp xưởng). Xem `store/README.md`.
+- **Đã chốt 2026-11-05:** email hỗ trợ `phamphuongphuongnd@gmail.com` · developer **Phiotron** (phiên D điền vào `store/`) ·
+  privacy policy host trên GitHub Pages repo public chung do người dùng tạo (chờ link → đẩy `store/legal/*.html` + bật Pages → điền URL).
+- Phiên E dừng giữa chừng 2026-11-04 (đã có keystore ngoài repo) → đã nhắn chạy tiếp 2026-11-05.
+- Mockup Claude Design: người dùng đang làm (2026-11-05).
 - Người dùng: Claude Design, Apple Developer, gom tester.
 - Mang sang #2: tra lại giá catalog (147/255 giá là `approx` — nên dùng trình duyệt theo vùng); placeholder chưa có: biểu đồ S9,
   lưới tháng S8, vuốt hàng S2, chỉnh giá từng tile S1.3, đổi màu/emoji tile S4, mục Giới thiệu S10; giữ TimePicker `dialOnly`.
