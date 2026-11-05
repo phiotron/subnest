@@ -108,7 +108,7 @@ class AwaitingScreen extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(total, textAlign: TextAlign.center, style: AppType.titleSm.copyWith(color: c.ink).tabular),
+                          Text(total, semanticsLabel: l.spokenLabel(total), textAlign: TextAlign.center, style: AppType.titleSm.copyWith(color: c.ink).tabular),
                           const SizedBox(height: AppSpace.s2),
                           button,
                         ],

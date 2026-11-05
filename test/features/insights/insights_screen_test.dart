@@ -63,12 +63,12 @@ void main() {
         findsOneWidget,
       );
       expect(find.bySemanticsLabel(RegExp(r'^Paid per month, Dec 2025 to Nov 2026')), findsOneWidget);
-      final nov = find.bySemanticsLabel('Nov 2026 · ≈ ₫876,800 expected');
+      final nov = find.bySemanticsLabel('Nov 2026 · approximately ₫876,800 expected');
       expect(nov, findsOneWidget);
       await tester.tap(nov);
       await tester.pumpAndSettle();
       expect(find.text('Nov 2026 · ≈ ₫876,800 expected'), findsOneWidget);
-      await tester.tap(find.bySemanticsLabel('Mar 2026 · ≈ ₫2,507,800 paid'));
+      await tester.tap(find.bySemanticsLabel('Mar 2026 · approximately ₫2,507,800 paid'));
       await tester.pumpAndSettle();
       expect(find.text('Mar 2026 · ≈ ₫2,507,800 paid'), findsOneWidget);
     });

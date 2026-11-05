@@ -172,7 +172,7 @@ class SubscriptionRow extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(amount, style: amountStyle),
-                        if (amountMeta != null) Text(amountMeta!, style: amountMetaStyle),
+                        if (amountMeta != null) Text(amountMeta!, semanticsLabel: context.l10n.spokenLabel(amountMeta!), style: amountMetaStyle),
                       ],
                     ),
                   ],
@@ -188,7 +188,7 @@ class SubscriptionRow extends StatelessWidget {
                 Text(amount, maxLines: 1, softWrap: false, style: amountStyle),
                 if (amountMeta != null) ...[
                   const SizedBox(height: 3),
-                  Text(amountMeta!, maxLines: 1, softWrap: false, style: amountMetaStyle),
+                  Text(amountMeta!, semanticsLabel: context.l10n.spokenLabel(amountMeta!), maxLines: 1, softWrap: false, style: amountMetaStyle),
                 ],
               ],
             ),

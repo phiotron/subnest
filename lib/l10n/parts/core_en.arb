@@ -63,5 +63,6 @@
   "coreMore": "More",
   "coreTabOverview": "Overview",
   "coreChangeCurrency": "Change currency",
-  "coreEditAmount": "Edit amount"
+  "coreEditAmount": "Edit amount",
+  "coreApproximately": "approximately"
 }

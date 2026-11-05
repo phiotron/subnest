@@ -250,7 +250,7 @@ class _SubscriptionDetailScreenState extends ConsumerState<SubscriptionDetailScr
               spacing: 4,
               children: [
                 if (subIcon != null) Icon(subIcon, size: 14, color: c.inkMuted),
-                Text(sub, textAlign: TextAlign.center, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                Text(sub, semanticsLabel: l.spokenLabel(sub), textAlign: TextAlign.center, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
               ],
             ),
           ],

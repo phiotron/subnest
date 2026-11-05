@@ -111,7 +111,7 @@ class _MonthBarChartState extends State<MonthBarChart> {
                             child: Semantics(
                               button: true,
                               selected: sel == i,
-                              label: _tip(l, series[i]),
+                              label: l.spoken(_tip(l, series[i])),
                               excludeSemantics: true,
                               onTap: () => setState(() => _selected = sel == i ? null : i),
                               child: GestureDetector(

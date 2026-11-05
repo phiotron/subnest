@@ -102,7 +102,7 @@ class SpendHero extends StatelessWidget {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       if (approx && !zero) ...[
-                        Text('≈', style: AppType.display.copyWith(fontSize: 28, fontWeight: FontWeight.w500, color: c.inkMuted)),
+                        Text('≈', semanticsLabel: context.l10n.coreApproximately, style: AppType.display.copyWith(fontSize: 28, fontWeight: FontWeight.w500, color: c.inkMuted)),
                         const SizedBox(width: 6),
                       ],
                       Flexible(

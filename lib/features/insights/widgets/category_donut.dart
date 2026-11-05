@@ -143,7 +143,7 @@ class _LegendRow extends StatelessWidget {
     final amount = l.amount(slice.monthly, currency, approx: approx);
     return Semantics(
       button: true,
-      label: l.insightsSliceLabel(l.category(slice.category), amount, percent),
+      label: l.spoken(l.insightsSliceLabel(l.category(slice.category), amount, percent)),
       excludeSemantics: true,
       onTap: onTap,
       child: InkWell(

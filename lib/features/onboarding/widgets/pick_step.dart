@@ -318,7 +318,7 @@ class _PickBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(l.onboardingPickSelected(count), style: AppType.label.copyWith(color: c.ink)),
-                  if (total != null) Text(total!, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                  if (total != null) Text(total!, semanticsLabel: context.l10n.spokenLabel(total!), style: AppType.meta.copyWith(color: c.inkMuted).tabular),
                 ],
               ),
             ),

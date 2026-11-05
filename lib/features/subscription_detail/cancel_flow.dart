@@ -24,7 +24,7 @@ Future<bool> markCancelledFlow(BuildContext context, WidgetRef ref, Subscription
   final ok = await showAppDialog<bool>(
     context,
     title: l.subscriptionDetailCancelTitle(s.name),
-    body: l.subscriptionDetailCancelBody(yearlyText),
+    body: l.subscriptionDetailCancelBody(yearlyText.replaceFirst('≈ ', '${l.coreApproximately} ')),
     actions: [
       Builder(
         builder: (ctx) => AppButton.primary(

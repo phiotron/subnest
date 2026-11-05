@@ -258,6 +258,7 @@ class _MonthTotal extends StatelessWidget {
             Text(month.isPast ? l.calPaidIn(month.month) : l.calMonthTotal(month.month), style: muted),
             Text(
               l.amount(month.total, primary, approx: month.approx),
+              semanticsLabel: l.spokenLabel(l.amount(month.total, primary, approx: month.approx)),
               style: AppType.title.copyWith(color: c.ink).tabular,
             ),
             Text(parts.join(' · '), style: muted),

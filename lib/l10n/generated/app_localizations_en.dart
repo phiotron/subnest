@@ -682,6 +682,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coreEditAmount => 'Edit amount';
 
   @override
+  String get coreApproximately => 'approximately';
+
+  @override
   String get homeTitle => 'Overview';
 
   @override
@@ -1318,7 +1321,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String settingsRateAutoOffline(String ago) {
-    return 'Auto · from $ago (offline)';
+    return 'Offline · rates from $ago';
   }
 
   @override
@@ -1506,6 +1509,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPreview => 'Preview';
+
+  @override
+  String get settingsPreviewSampleName => 'Your subscription';
 
   @override
   String get settingsPreviewOff =>

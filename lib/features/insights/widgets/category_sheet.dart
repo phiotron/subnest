@@ -107,6 +107,9 @@ class CategorySheet extends StatelessWidget {
                               ),
                             ],
                           ),
+                          semanticsLabel: l.spokenLabel(
+                            '${l.amount(slice.monthly, currency, approx: approx)}${l.insightsPerMonthShort}',
+                          ),
                         );
                         final amountWidth = (TextPainter(
                           text: amount.textSpan,

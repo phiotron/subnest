@@ -80,6 +80,7 @@ class InsightsSummaryCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   money(totals.paid),
+                  semanticsLabel: l.spokenLabel(money(totals.paid)),
                   style: AppType.headline.copyWith(color: c.ink).tabular,
                   textScaler: AppTextScale.capped(context, AppTextScale.headline),
                 ),
@@ -127,7 +128,7 @@ class InsightsSummaryCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(label, style: lg),
-                                Text(money(v), key: ValueKey('legend-value-$hatch'), style: value),
+                                Text(money(v), key: ValueKey('legend-value-$hatch'), semanticsLabel: l.spokenLabel(money(v)), style: value),
                               ],
                             ),
                           ),
@@ -139,7 +140,7 @@ class InsightsSummaryCard extends StatelessWidget {
                           const SizedBox(width: AppSpace.s2),
                           Expanded(child: Text(label, style: lg)),
                           const SizedBox(width: AppSpace.s3),
-                          Text(money(v), style: value),
+                          Text(money(v), semanticsLabel: l.spokenLabel(money(v)), style: value),
                         ],
                       ),
               ),
@@ -217,13 +218,19 @@ class TopExpensiveCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        l.amount(
-                          cost,
-                          calc.primaryCurrency,
-                          approx: s.currency.toUpperCase() != calc.primaryCurrency.toUpperCase(),
-                        ),
-                        style: AppType.label.copyWith(color: c.ink).tabular,
+                      Builder(
+                        builder: (context) {
+                          final text = l.amount(
+                            cost,
+                            calc.primaryCurrency,
+                            approx: s.currency.toUpperCase() != calc.primaryCurrency.toUpperCase(),
+                          );
+                          return Text(
+                            text,
+                            semanticsLabel: l.spokenLabel(text),
+                            style: AppType.label.copyWith(color: c.ink).tabular,
+                          );
+                        },
                       ),
                     ],
                   ),

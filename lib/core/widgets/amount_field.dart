@@ -228,7 +228,7 @@ class _AmountFieldState extends State<AmountField> {
     );
 
     final lines = <Widget>[
-      if (widget.conversion != null) Text(widget.conversion!, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+      if (widget.conversion != null) Text(widget.conversion!, semanticsLabel: context.l10n.spokenLabel(widget.conversion!), style: AppType.meta.copyWith(color: c.inkMuted).tabular),
       if (widget.helper != null)
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,

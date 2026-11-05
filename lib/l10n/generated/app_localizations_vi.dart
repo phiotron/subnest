@@ -661,6 +661,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get coreEditAmount => 'Sửa số tiền';
 
   @override
+  String get coreApproximately => 'khoảng';
+
+  @override
   String get homeTitle => 'Tổng quan';
 
   @override
@@ -708,14 +711,14 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: 'Offline · tỷ giá cập nhật $days ngày trước',
-      one: 'Offline · tỷ giá cập nhật hôm qua',
+      other: 'Ngoại tuyến · tỷ giá từ $days ngày trước',
+      one: 'Ngoại tuyến · tỷ giá từ hôm qua',
     );
     return '$_temp0';
   }
 
   @override
-  String get homeRatesNever => 'Offline · tỷ giá ước tính';
+  String get homeRatesNever => 'Ngoại tuyến · tỷ giá ước tính';
 
   @override
   String get homeRemindersOffTitle => 'Nhắc nhở đang tắt';
@@ -1290,7 +1293,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String settingsRateAutoOffline(String ago) {
-    return 'Tự động · từ $ago (offline)';
+    return 'Ngoại tuyến · tỷ giá từ $ago';
   }
 
   @override
@@ -1311,7 +1314,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsRatesUpdated => 'Đã cập nhật tỷ giá';
 
   @override
-  String get settingsRatesOfflineTitle => 'Bạn đang offline';
+  String get settingsRatesOfflineTitle => 'Bạn đang ngoại tuyến';
 
   @override
   String get settingsRatesOfflineBody =>
@@ -1472,6 +1475,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsPreview => 'Xem trước';
+
+  @override
+  String get settingsPreviewSampleName => 'Subscription của bạn';
 
   @override
   String get settingsPreviewOff =>

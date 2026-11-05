@@ -968,6 +968,12 @@ abstract class AppLocalizations {
   /// **'Edit amount'**
   String get coreEditAmount;
 
+  /// No description provided for @coreApproximately.
+  ///
+  /// In en, this message translates to:
+  /// **'approximately'**
+  String get coreApproximately;
+
   /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
@@ -1853,7 +1859,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRateAutoOffline.
   ///
   /// In en, this message translates to:
-  /// **'Auto · from {ago} (offline)'**
+  /// **'Offline · rates from {ago}'**
   String settingsRateAutoOffline(String ago);
 
   /// No description provided for @settingsRateBuiltIn.
@@ -2101,6 +2107,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preview'**
   String get settingsPreview;
+
+  /// No description provided for @settingsPreviewSampleName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription'**
+  String get settingsPreviewSampleName;
 
   /// No description provided for @settingsPreviewOff.
   ///

@@ -187,7 +187,7 @@ class UpcomingCard extends StatelessWidget {
               FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: AlignmentDirectional.centerStart,
-                child: Text(amountMeta, maxLines: 1, softWrap: false, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                child: Text(amountMeta, semanticsLabel: context.l10n.spokenLabel(amountMeta), maxLines: 1, softWrap: false, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
               ),
             ],
           ),

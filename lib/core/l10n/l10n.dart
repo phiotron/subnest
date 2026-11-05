@@ -41,4 +41,12 @@ extension DomainLabels on AppLocalizations {
       Fmt.money(major, currency, localeName, approx: approx);
 
   String date(LocalDate d) => Fmt.date(d, localeName);
+
+  /// What a screen reader should say for [text]: "≈" (converted amounts) read as "approximately" /
+  /// "khoảng" — TalkBack skipped or mis-read the symbol (real phone QA 2026-11-05).
+  String spoken(String text) =>
+      text.contains('≈') ? text.replaceAll('≈ ', '$coreApproximately ').replaceAll('≈', '$coreApproximately ') : text;
+
+  /// [spoken] for `Text.semanticsLabel`: null when nothing changes (keeps the default).
+  String? spokenLabel(String text) => text.contains('≈') ? spoken(text) : null;
 }
