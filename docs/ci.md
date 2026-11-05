@@ -25,7 +25,7 @@
 |---|---|
 | Keystore | `C:\Users\Admin\keystores\A001-subnest\upload-keystore.jks` (PKCS12, RSA 4096, alias `upload`, hạn tới 2054) — **ngoài mọi repo** |
 | Mật khẩu + alias | `C:\Users\Admin\keystores\A001-subnest\key.properties` (store password = key password) |
-| SHA-256 chứng chỉ upload | `4F:1C:B1:F7:DB:3A:F2:73:45:D5:A1:BA:83:06:C5:C7:A0:C4:CF:FB:32:29:C3:ED:FC:07:FE:65:26:F3:54:31` (đối chiếu với *Play Console → Test and release → App integrity → Upload key certificate*) |
+| SHA-256 chứng chỉ upload | `85:BC:15:82:80:BC:54:F9:73:4D:DF:A5:AB:29:C5:76:A3:A7:C8:50:26:41:C1:B3:84:00:83:84:38:C8:08:6B` (đối chiếu với *Play Console → Test and release → App integrity → Upload key certificate*) |
 
 `android/app/build.gradle.kts` tìm `key.properties` theo thứ tự: biến môi trường `ANDROID_KEY_PROPERTIES` (đường dẫn
 file) → `android/key.properties` (đã git-ignore). Không thấy ⇒ bản release ký bằng **debug key** (chạy thử được, **không
