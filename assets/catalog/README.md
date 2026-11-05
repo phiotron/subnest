@@ -3,9 +3,10 @@
 `services.json` là danh sách **Service** dựng sẵn kèm **giá gợi ý** để người dùng thêm Subscription bằng một chạm
 (xem `CONTEXT.md`: Service, Catalog, Billing cycle; `product.md` §5 S3, §7.4).
 
-- **Ngày khảo sát giá:** 2026-11-05 (`priceSurveyDate`; đợt tra đầu 2026-11-04, đợt đối chiếu trang chính thức 2026-11-05).
-  **Phiên bản dữ liệu:** `version` = 2.
-- **Số lượng:** 99 dịch vụ · 242 gói · 281 mức giá (114 mức gắn `approx: true`).
+- **Ngày khảo sát giá:** 2026-11-05 (`priceSurveyDate`; đợt tra đầu 2026-11-04, đối chiếu trang chính thức bằng trình duyệt
+  2026-11-05, đợt tra giá US bằng WebSearch 2026-11-05).
+  **Phiên bản dữ liệu:** `version` = 3.
+- **Số lượng:** 99 dịch vụ · 245 gói · 284 mức giá (37 mức gắn `approx: true`).
 - **Không có logo:** app vẽ tile monogram từ `color` + `monogram`. Tên dịch vụ chỉ dùng để nhận diện;
   `color` là màu gần đúng với màu đặc trưng, không phải tài sản thương hiệu.
 - **Kiểm tra:** `python assets/catalog/tool/validate_catalog.py` (chỉ dùng thư viện chuẩn, exit 0 = hợp lệ).
@@ -78,12 +79,25 @@ thì xem được cả VN và US; trang chọn vùng theo IP chỉ xem được 
 | Xbox Game Pass, PlayStation Plus, Cursor, Claude, GitHub Copilot, Notion, Proton, Figma, Bitwarden | US |
 | YouTube Premium/Music, ChatGPT, Google One, Canva, Crunchyroll, HBO Max (gói năm) | VN |
 
+### Đợt 2026-11-05 (b): giá US & VN tra bằng WebSearch (vùng Mỹ)
+
+Công cụ WebSearch trả kết quả theo vùng Mỹ nên đọc được giá US của các hãng chọn vùng theo IP. Chỉ nhận số khi có trang
+chính thức/trang trợ giúp của hãng hoặc ≥ 2 nguồn uy tín 2026 khớp nhau; URL nguồn nằm trong `note` của từng dịch vụ.
+Đã bỏ `approx` (và sửa số nếu lệch) cho: YouTube Premium/Music/TV, HBO Max, Hulu, Peacock, Paramount+, Crunchyroll, Tidal,
+Deezer, Amazon Music, ChatGPT Go, Grok, ElevenLabs, Backblaze, Adobe (CC Pro, Photography), NordVPN, ExpressVPN, Grammarly,
+CapCut US, Todoist, Evernote (đã đổi sang Starter/Advanced), EA Play, Ubisoft+, GeForce NOW, Twitch Turbo, Audible, Everand,
+Headspace/Calm (gói năm), MyFitnessPal, Fitbit Premium, Peloton App+, LinkedIn Premium, Quizlet, Snapchat+ (tháng);
+VN: FPT Play, Galaxy Play, TV360, Monkey, ELSA (6 tháng/1 năm), Viettel MXH100, VinaPhone BIG90/120, MobiFone KC90/TK135,
+Internet Viettel/FPT/VNPT (giá sàn), Zing MP3 Premium 12 tháng (gói mới).
+
 ### Chưa đối chiếu được (giữ `approx`, lý do ở `note`)
 
-- **Chặn IP ngoài Mỹ:** Hulu, Disney+, Peacock, Paramount+ (và giá US của YouTube, ChatGPT, Canva, HBO Max…).
-- **Giá chỉ hiện sau đăng nhập/trong app:** Duolingo, FPT Play, VieON, TV360, Galaxy Play, Monkey, ELSA.
-- **Chỉ có giá khuyến mãi/“từ X”:** NordVPN, Surfshark, Zing MP3, Todoist & Grammarly (gói tháng).
-- Nhà mạng/Internet VN: không mở được trang gói cước chính thức, chưa tra lại.
+- **Giá khuyến mãi/mâu thuẫn giữa các trang:** Surfshark (hai trang chính thức khác nhau), SoundCloud Go+, Zoom, Blinkist,
+  Prime Video Ultra (giá tổng suy ra), Bkav Pro (giá hãng cũ), Elsa Premium.
+- **Giá chỉ hiện sau đăng nhập/trong app:** Duolingo (VN+US), VieON, Voiz, zCloud, Telegram Premium, Snapchat+ (năm),
+  Headspace/Calm (gói tháng), Peloton App One.
+- **Cơ cấu gói đang đổi:** Copilot Pro (ngừng bán mới), X Premium (chuyển sang "The X Subscription").
+- **Trang không truy cập được qua công cụ tra:** NYTimes, Adobe Photoshop/Acrobat lẻ (giá nạp động), CapCut VN, ELSA US.
 - Giá VN của YouTube/Crunchyroll… trên trang ghi **chưa gồm VAT/thuế**; số trong catalog là giá niêm yết.
 
 ### Nguồn đợt khảo sát đầu (2026-11-04, nguồn thứ ba)
