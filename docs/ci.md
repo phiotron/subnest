@@ -6,7 +6,11 @@
 
 | File | Chạy khi | Làm gì | Runner |
 |---|---|---|---|
-| `.github/workflows/ci.yml` | push `main` (bỏ qua thay đổi chỉ ở `*.md`, `store/`, `design/`, `notes/`), PR vào `main`, chạy tay | `flutter pub get` → `dart run tool/merge_arb.dart --check` → `build_runner build` + `gen-l10n` + `git diff --exit-code` (bắt quên sinh code) → `flutter analyze` → `flutter test` → `flutter build appbundle --release` (ký bằng upload key từ secrets) → in chứng chỉ ký → upload artifact `subnest-aab-<số lần chạy>` (giữ 30 ngày) | ubuntu (phút ×1) |
+| `.github/workflows/ci.yml` | **Không chạy trên `dev`.** Push `main` (bỏ qua `*.md`, `docs/`, `store/`, `design/`, `notes/`) → chỉ **kiểm**. Tag `v*` hoặc chạy tay → kiểm **+ build** | Kiểm: `flutter pub get` → `merge_arb --check` → `build_runner` + `gen-l10n` + `git diff --exit-code` → `flutter analyze` → `flutter test`. Build (chỉ tag/chạy tay): `flutter build appbundle --release` (ký bằng upload key từ secrets) → in chứng chỉ ký → artifact `subnest-aab-<số lần chạy>` (giữ 30 ngày) | ubuntu (phút ×1) |
+
+**Nhánh (WORKFLOW §7, từ 2026-11-05):** làm + push trên `dev` (tự chạy analyze/test trên máy trước khi push); phiên điều phối
+kiểm xong mới `git push origin dev:main`. Cần file AAB để upload → chạy tay *Actions → CI → Run workflow* trên `main`, hoặc gắn tag
+`vX.Y.Z` trên `main` (tag còn kích hoạt build iOS). Build local (§2) không tốn phút Actions.
 | `.github/workflows/ios.yml` | **chỉ** chạy tay (*Actions → iOS → Run workflow*) hoặc push tag `v*` | kiểm `Info.plist` (`ITSAppUsesNonExemptEncryption=false`) + `PrivacyInfo.xcprivacy` (hợp lệ, có trong Copy Bundle Resources) → `flutter build ios --release --no-codesign` → kiểm bundle id/version trong `Runner.app` | macos (repo private: **phút ×10**) |
 
 - Flutter cố định ở `FLUTTER_VERSION` (đầu mỗi workflow) = bản trên máy dev (`flutter --version`). Nâng Flutter ở máy dev
