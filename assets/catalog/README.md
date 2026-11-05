@@ -3,8 +3,9 @@
 `services.json` là danh sách **Service** dựng sẵn kèm **giá gợi ý** để người dùng thêm Subscription bằng một chạm
 (xem `CONTEXT.md`: Service, Catalog, Billing cycle; `product.md` §5 S3, §7.4).
 
-- **Ngày khảo sát giá:** 2026-11-04 (`priceSurveyDate`). **Phiên bản dữ liệu:** `version` = 1.
-- **Số lượng:** 99 dịch vụ · 229 gói · 255 mức giá (147 mức gắn `approx: true`).
+- **Ngày khảo sát giá:** 2026-11-05 (`priceSurveyDate`; đợt tra đầu 2026-11-04, đợt đối chiếu trang chính thức 2026-11-05).
+  **Phiên bản dữ liệu:** `version` = 2.
+- **Số lượng:** 99 dịch vụ · 242 gói · 281 mức giá (114 mức gắn `approx: true`).
 - **Không có logo:** app vẽ tile monogram từ `color` + `monogram`. Tên dịch vụ chỉ dùng để nhận diện;
   `color` là màu gần đúng với màu đặc trưng, không phải tài sản thương hiệu.
 - **Kiểm tra:** `python assets/catalog/tool/validate_catalog.py` (chỉ dùng thư viện chuẩn, exit 0 = hợp lệ).
@@ -63,12 +64,33 @@
 - Không hiển thị cờ `approx` cho người dùng ở bản 1; nó dành cho việc cập nhật dữ liệu.
 - "từ X/tháng" ở S3 = gói rẻ nhất quy tháng (theo `cycle`) trong vùng đang chọn.
 
-## Nguồn & độ tin cậy (khảo sát 2026-11-04)
+## Nguồn & độ tin cậy
 
-**Chưa có giá nào được đối chiếu trực tiếp trên trang thanh toán chính thức trong phiên này** (nhiều trang cần đăng
-nhập theo vùng). Giá lấy từ: thông báo/tin tức về đợt đổi giá 2025–2026, trang tổng hợp của nhà bán lẻ VN, mục
-mua trong ứng dụng trên App Store VN, và hiểu biết sẵn có cho các giá ổn định lâu năm. Những mức không chắc đều
-gắn `approx: true`, lý do ghi trong `note`.
+### Đã đối chiếu trên trang chính thức (2026-11-05)
+
+Dùng trình duyệt không đăng nhập, từ IP Việt Nam. Trang nào có đường dẫn theo vùng (`/us/`, `/vn/`, `/en-US/`…)
+thì xem được cả VN và US; trang chọn vùng theo IP chỉ xem được giá VN. Nguồn cụ thể của từng dịch vụ nằm trong
+`note` của dịch vụ đó. Giá mức này **không** còn `approx`.
+
+| Dịch vụ | Vùng đã xác minh |
+|---|---|
+| Netflix, Spotify, Apple Music/TV/One, iCloud+, Gemini/Google AI, Microsoft 365 | VN + US |
+| Xbox Game Pass, PlayStation Plus, Cursor, Claude, GitHub Copilot, Notion, Proton, Figma, Bitwarden | US |
+| YouTube Premium/Music, ChatGPT, Google One, Canva, Crunchyroll, HBO Max (gói năm) | VN |
+
+### Chưa đối chiếu được (giữ `approx`, lý do ở `note`)
+
+- **Chặn IP ngoài Mỹ:** Hulu, Disney+, Peacock, Paramount+ (và giá US của YouTube, ChatGPT, Canva, HBO Max…).
+- **Giá chỉ hiện sau đăng nhập/trong app:** Duolingo, FPT Play, VieON, TV360, Galaxy Play, Monkey, ELSA.
+- **Chỉ có giá khuyến mãi/“từ X”:** NordVPN, Surfshark, Zing MP3, Todoist & Grammarly (gói tháng).
+- Nhà mạng/Internet VN: không mở được trang gói cước chính thức, chưa tra lại.
+- Giá VN của YouTube/Crunchyroll… trên trang ghi **chưa gồm VAT/thuế**; số trong catalog là giá niêm yết.
+
+### Nguồn đợt khảo sát đầu (2026-11-04, nguồn thứ ba)
+
+Giá lấy từ: thông báo/tin tức về đợt đổi giá 2025–2026, trang tổng hợp của nhà bán lẻ VN, mục mua trong ứng dụng
+trên App Store VN, và hiểu biết sẵn có cho các giá ổn định lâu năm. Những mức không chắc đều gắn `approx: true`,
+lý do ghi trong `note`. Các dòng dưới đây có thể đã được thay bằng giá chính thức ở bảng trên.
 
 | Nhóm | Nguồn chính |
 |---|---|

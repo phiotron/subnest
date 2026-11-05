@@ -1,7 +1,7 @@
 {
-  "version": 1,
-  "updatedAt": "2026-11-04",
-  "priceSurveyDate": "2026-11-04",
+  "version": 2,
+  "updatedAt": "2026-11-05",
+  "priceSurveyDate": "2026-11-05",
   "regions": {
     "VN": "VND",
     "US": "USD"
@@ -101,7 +101,7 @@
           }
         }
       ],
-      "note": "VN gồm VAT 10% (tăng từ 07/2025); US sau đợt tăng 03/2026."
+      "note": "VN gồm VAT 10% (tăng từ 07/2025); US sau đợt tăng 03/2026. Đã đối chiếu 2026-11-05 trên help.netflix.com/vi/node/24926 (VN) và /en/node/24926/us (US): mọi giá khớp."
     },
     {
       "id": "youtube-premium",
@@ -146,8 +146,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 149000,
-              "approx": true
+              "amount": 149000
             },
             "US": {
               "currency": "USD",
@@ -168,6 +167,10 @@
               "currency": "USD",
               "amount": 8.99,
               "approx": true
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 49000
             }
           }
         },
@@ -181,8 +184,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 49000,
-              "approx": true
+              "amount": 49000
             },
             "US": {
               "currency": "USD",
@@ -192,7 +194,7 @@
           }
         }
       ],
-      "note": "US tăng 04/2026. VN Lite 49.000đ là giá web (qua app ~65.000đ). Mua qua iOS đắt hơn."
+      "note": "VN đối chiếu 2026-11-05 trên youtube.com/premium: Individual 79.000, Family 149.000, Student 49.000, Lite 49.000đ (trang ghi \"chưa gồm VAT\"). US không xem được từ IP Việt Nam nên giữ giá cũ (student/lite US vẫn approx). Mua qua iOS đắt hơn."
     },
     {
       "id": "disney-plus",
@@ -238,7 +240,7 @@
           }
         }
       ],
-      "note": "Không bán chính thức tại VN. US tăng 21/10/2026."
+      "note": "Không bán chính thức tại VN. US tăng 21/10/2026. 2026-11-05: trang chính thức chặn IP ngoài Mỹ nên chưa đối chiếu được."
     },
     {
       "id": "prime-video",
@@ -312,13 +314,16 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 12.99,
-              "approx": true
+              "amount": 14.99
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 179000
             }
           }
         }
       ],
-      "note": "Apple công bố tăng giá cuối 08/2026, chưa xác minh giá mới — cần cập nhật. Giá VN chưa xác minh."
+      "note": "Đã đối chiếu 2026-11-05 trên apple.com/apple-tv-plus (US 14.99) và apple.com/vn/apple-tv-plus (VN 179.000đ/tháng, dùng thử 7 ngày)."
     },
     {
       "id": "hbo-max",
@@ -379,9 +384,37 @@
               "approx": true
             }
           }
+        },
+        {
+          "id": "standard-annual",
+          "name": "Standard (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 699000
+            }
+          }
+        },
+        {
+          "id": "premium-annual",
+          "name": "Premium (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 949000
+            }
+          }
         }
       ],
-      "note": "Giá sau đợt tăng 10/2025; chưa xác minh 2026."
+      "note": "VN đối chiếu 2026-11-05 trên hbomax.com/auth/product: Standard 699.000, Premium 949.000đ/năm (giá theo tháng chưa xem được vì cửa sổ cookie chặn nút chuyển). Giá US chưa xác minh (trang theo IP)."
     },
     {
       "id": "hulu",
@@ -426,7 +459,8 @@
             }
           }
         }
-      ]
+      ],
+      "note": "2026-11-05: trang chính thức chặn IP ngoài Mỹ nên chưa đối chiếu được."
     },
     {
       "id": "peacock",
@@ -473,7 +507,7 @@
           }
         }
       ],
-      "note": "Peacock tăng giá lần nữa trong 2026 — giá mới chưa xác minh."
+      "note": "Peacock tăng giá lần nữa trong 2026 — giá mới chưa xác minh. 2026-11-05: trang chính thức chặn IP ngoài Mỹ nên chưa đối chiếu được."
     },
     {
       "id": "paramount-plus",
@@ -519,7 +553,8 @@
             }
           }
         }
-      ]
+      ],
+      "note": "2026-11-05: trang chính thức chặn IP ngoài Mỹ nên chưa đối chiếu được."
     },
     {
       "id": "crunchyroll",
@@ -547,6 +582,10 @@
               "currency": "USD",
               "amount": 7.99,
               "approx": true
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 45000
             }
           }
         },
@@ -562,6 +601,10 @@
               "currency": "USD",
               "amount": 11.99,
               "approx": true
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 59000
             }
           }
         },
@@ -580,7 +623,8 @@
             }
           }
         }
-      ]
+      ],
+      "note": "VN đối chiếu 2026-11-05 trên crunchyroll.com/premium: Fan 45.000, Mega Fan 59.000đ/tháng (chưa gồm thuế). Giá US chưa xác minh (trang theo IP)."
     },
     {
       "id": "fpt-play",
@@ -644,7 +688,7 @@
           }
         }
       ],
-      "note": "Giá lấy từ mục mua trong app (App Store VN), không ghi ngày. Bản quyền Ngoại hạng Anh từ 2026."
+      "note": "Giá lấy từ mục mua trong app (App Store VN), không ghi ngày. Bản quyền Ngoại hạng Anh từ 2026. 2026-11-05: fptplay.vn chuyển về trang chủ, danh sách gói yêu cầu đăng nhập/app -> giữ approx."
     },
     {
       "id": "vieon",
@@ -677,7 +721,7 @@
           }
         }
       ],
-      "note": "Theo niêm yết đại lý (FPT Shop); các gói khác 69.000–229.000đ."
+      "note": "Theo niêm yết đại lý (FPT Shop); các gói khác 69.000–229.000đ. 2026-11-05: vieon.vn/goi-dich-vu chuyển về trang chủ, giá gói yêu cầu đăng nhập/app -> giữ approx."
     },
     {
       "id": "galaxy-play",
@@ -758,7 +802,7 @@
           }
         }
       ],
-      "note": "Nguồn đại lý không ghi ngày; nhiều gói data Viettel đã kèm TV360."
+      "note": "Nguồn đại lý không ghi ngày; nhiều gói data Viettel đã kèm TV360. 2026-11-05: tv360.vn không công khai giá gói khi chưa đăng nhập -> giữ approx."
     },
     {
       "id": "spotify",
@@ -802,8 +846,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 33000,
-              "approx": true
+              "amount": 33000
             },
             "US": {
               "currency": "USD",
@@ -842,7 +885,7 @@
           "members": 6
         }
       ],
-      "note": "VN tăng ~10% (2025); giá Duo/Family VN chưa xác minh. US tăng 02/2026."
+      "note": "Đã đối chiếu 2026-11-05 trên spotify.com/vn-vi/premium và spotify.com/us/premium. VN chỉ có Individual 65.000đ và Student 33.000đ (không bán Duo/Family tại VN). US: 12.99 / Student 6.99 / Duo 18.99 / Family 21.99."
     },
     {
       "id": "apple-music",
@@ -872,7 +915,7 @@
             },
             "US": {
               "currency": "USD",
-              "amount": 10.99
+              "amount": 11.99
             }
           }
         },
@@ -890,7 +933,7 @@
             },
             "US": {
               "currency": "USD",
-              "amount": 5.99
+              "amount": 6.99
             }
           }
         },
@@ -908,12 +951,13 @@
             },
             "US": {
               "currency": "USD",
-              "amount": 16.99
+              "amount": 19.99
             }
           },
           "members": 6
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên apple.com/apple-music (US 11.99 / 19.99 / Student 6.99, cao hơn dữ liệu cũ) và apple.com/vn/apple-music (VN 65.000 / 99.000 / Student 35.000đ, khớp)."
     },
     {
       "id": "youtube-music",
@@ -939,8 +983,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 65000,
-              "approx": true
+              "amount": 65000
             },
             "US": {
               "currency": "USD",
@@ -948,9 +991,38 @@
               "approx": true
             }
           }
+        },
+        {
+          "id": "family",
+          "name": "Family",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 99000
+            }
+          },
+          "members": 6
+        },
+        {
+          "id": "student",
+          "name": "Student",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 35000
+            }
+          }
         }
       ],
-      "note": "US có thể đã tăng cùng YouTube Premium (04/2026)."
+      "note": "VN đối chiếu 2026-11-05 trên music.youtube.com/music_premium: Individual 65.000, Family 99.000, Student 35.000đ (chưa gồm VAT; thứ tự gói suy từ vị trí trên trang). US chưa xác minh (trang theo IP)."
     },
     {
       "id": "zing-mp3",
@@ -985,7 +1057,7 @@
           }
         }
       ],
-      "note": "Giá niêm yết đại lý (Di Động Việt), không ghi ngày."
+      "note": "Giá niêm yết đại lý (Di Động Việt), không ghi ngày. 2026-11-05: zingmp3.vn/vip/upgrade chỉ ghi \"Plus từ 13.000đ/tháng\", \"Premium từ 41.000đ/tháng\" (đã gồm thuế), không ghi giá từng chu kỳ -> giữ approx; 250.000đ/12 tháng có thể lệch."
     },
     {
       "id": "tidal",
@@ -1183,8 +1255,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 132000,
-              "approx": true
+              "amount": 132000
             },
             "US": {
               "currency": "USD",
@@ -1202,9 +1273,8 @@
           },
           "prices": {
             "VN": {
-              "currency": "USD",
-              "amount": 20,
-              "approx": true
+              "currency": "VND",
+              "amount": 522500
             },
             "US": {
               "currency": "USD",
@@ -1214,7 +1284,7 @@
         },
         {
           "id": "pro",
-          "name": "Pro",
+          "name": "Pro 200",
           "cycle": {
             "unit": "month",
             "count": 1
@@ -1223,11 +1293,29 @@
             "US": {
               "currency": "USD",
               "amount": 200
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 5225000
+            }
+          }
+        },
+        {
+          "id": "pro-100",
+          "name": "Pro 100",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 2849000
             }
           }
         }
       ],
-      "note": "VN: Go bán bằng VND (từ 10/2025); Plus trên web tính USD, qua App Store ~499.000đ."
+      "note": "VN đối chiếu 2026-11-05 trên chatgpt.com/pricing (hiển thị VND): Go 132.000, Plus 522.500, Pro 100 = 2.849.000, Pro 200 = 5.225.000đ/tháng (nay có thêm Pro 100/200/500). US không xem được từ IP Việt Nam: Go $8 vẫn approx; Plus $20 và Pro $200 giữ theo dữ liệu cũ."
     },
     {
       "id": "claude",
@@ -1274,7 +1362,7 @@
         },
         {
           "id": "max-5x",
-          "name": "Max 5x",
+          "name": "Max",
           "cycle": {
             "unit": "month",
             "count": 1
@@ -1288,7 +1376,7 @@
         },
         {
           "id": "max-20x",
-          "name": "Max 20x",
+          "name": "Ultra",
           "cycle": {
             "unit": "month",
             "count": 1
@@ -1300,7 +1388,8 @@
             }
           }
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên claude.com/pricing: Pro $20/tháng ($200/năm), Max $100, Ultra $200. Giữ id cũ max-5x / max-20x để ổn định; tên hiển thị theo trang (Max, Ultra). Giá chưa gồm thuế."
     },
     {
       "id": "gemini",
@@ -1329,8 +1418,11 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 122000,
-              "approx": true
+              "amount": 132000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 4.99
             }
           }
         },
@@ -1344,8 +1436,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 489000,
-              "approx": true
+              "amount": 489000
             },
             "US": {
               "currency": "USD",
@@ -1355,7 +1446,7 @@
         },
         {
           "id": "ai-ultra",
-          "name": "Google AI Ultra",
+          "name": "Google AI Ultra (20x)",
           "cycle": {
             "unit": "month",
             "count": 1
@@ -1363,18 +1454,34 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 6000000,
-              "approx": true
+              "amount": 5500000
             },
             "US": {
               "currency": "USD",
-              "amount": 249.99,
-              "approx": true
+              "amount": 199.99
+            }
+          }
+        },
+        {
+          "id": "ai-ultra-5x",
+          "name": "Google AI Ultra (5x)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 2250000
+            },
+            "US": {
+              "currency": "USD",
+              "amount": 99.99
             }
           }
         }
       ],
-      "note": "Giá VN theo báo chí 09/2025. Gói AI có kèm dung lượng Google One."
+      "note": "Đã đối chiếu 2026-11-05 trên gemini.google/vn/subscriptions và gemini.google/us/subscriptions: VN Plus 132.000, Pro 489.000, Ultra 5x 2.250.000, Ultra 20x 5.500.000đ; US Plus 4.99, Pro 19.99, Ultra 5x 99.99, Ultra 20x 199.99. Gói Google AI Pro tại VN kèm 5 TB (xem Google One)."
     },
     {
       "id": "copilot",
@@ -1615,8 +1722,8 @@
       "manageUrl": "https://cursor.com/settings",
       "plans": [
         {
-          "id": "pro",
-          "name": "Pro",
+          "id": "plus",
+          "name": "Plus",
           "cycle": {
             "unit": "month",
             "count": 1
@@ -1624,13 +1731,13 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 20
+              "amount": 8
             }
           }
         },
         {
-          "id": "pro-plus",
-          "name": "Pro+",
+          "id": "premium",
+          "name": "Premium",
           "cycle": {
             "unit": "month",
             "count": 1
@@ -1638,8 +1745,21 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 60,
-              "approx": true
+              "amount": 30
+            }
+          }
+        },
+        {
+          "id": "super",
+          "name": "Super",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 100
             }
           }
         },
@@ -1653,12 +1773,12 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 200,
-              "approx": true
+              "amount": 200
             }
           }
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên cursor.com/pricing: Plus $8, Premium $30, Super $100, Ultra $200/tháng (các gói Pro $20 và Pro+ $60 cũ không còn trên trang)."
     },
     {
       "id": "github-copilot",
@@ -1715,8 +1835,23 @@
               "amount": 39
             }
           }
+        },
+        {
+          "id": "max",
+          "name": "Max",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 100
+            }
+          }
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên github.com/features/copilot/plans: Pro $10, Pro+ $39, Max $100/tháng (giá gói năm chưa kiểm)."
     },
     {
       "id": "elevenlabs",
@@ -1828,8 +1963,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 299000,
-              "approx": true
+              "amount": 299000
             },
             "US": {
               "currency": "USD",
@@ -1877,7 +2011,7 @@
           "members": 6
         }
       ],
-      "note": "VN tăng giá ~06/2026; giá 2 TB mới chỉ có một nguồn."
+      "note": "Đã đối chiếu 2026-11-05 trên support.apple.com/vi-vn/108047 (VN 25.000 / 89.000 / 299.000 / 899.000 / 1.799.000đ) và /en-us/108047 (US 0.99 / 2.99 / 9.99 / 29.99 / 59.99). Giá VN đã gồm thuế."
     },
     {
       "id": "google-one",
@@ -1905,8 +2039,7 @@
           "prices": {
             "VN": {
               "currency": "VND",
-              "amount": 45000,
-              "approx": true
+              "amount": 45000
             },
             "US": {
               "currency": "USD",
@@ -1959,9 +2092,23 @@
             }
           },
           "members": 6
+        },
+        {
+          "id": "lite-30gb",
+          "name": "Lite (30 GB)",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "VN": {
+              "currency": "VND",
+              "amount": 19000
+            }
+          }
         }
       ],
-      "note": "Chưa xác minh giá VND hiện hành (cần đăng nhập tài khoản VN để xem)."
+      "note": "VN đối chiếu 2026-11-05 trên one.google.com/about/plans: Lite 30 GB 19.000, Basic 100 GB 45.000, Google AI Pro 5 TB 489.000đ/tháng (không thấy gói 2 TB tại VN; xem dịch vụ Gemini cho gói AI Pro). Trang không cho chọn vùng nên giá US chưa kiểm lại."
     },
     {
       "id": "dropbox",
@@ -2091,6 +2238,10 @@
             "US": {
               "currency": "USD",
               "amount": 12.99
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 260000
             }
           },
           "members": 6
@@ -2106,6 +2257,10 @@
             "US": {
               "currency": "USD",
               "amount": 129.99
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 2599000
             }
           },
           "members": 6
@@ -2120,13 +2275,26 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 19.99,
-              "approx": true
+              "amount": 19.99
+            }
+          }
+        },
+        {
+          "id": "premium-annual",
+          "name": "Premium (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 199.99
             }
           }
         }
       ],
-      "note": "Giá VND chưa xác minh (đại lý báo Family ~2.599.000đ/năm)."
+      "note": "Đã đối chiếu 2026-11-05: US trên microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products (Personal 9.99/99.99, Family 12.99/129.99, Premium 19.99/199.99); VN trên trang Microsoft 365 Family vi-vn (260.000đ/tháng, 2.599.000đ/năm)."
     },
     {
       "id": "zcloud",
@@ -2263,6 +2431,10 @@
             "US": {
               "currency": "USD",
               "amount": 15
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 150000
             }
           }
         },
@@ -2277,11 +2449,15 @@
             "US": {
               "currency": "USD",
               "amount": 120
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 1300000
             }
           }
         }
       ],
-      "note": "Chưa xác minh giá VND chính thức (một nguồn: ~289.000đ/tháng)."
+      "note": "VN đối chiếu 2026-11-05 trên canva.com/pricing (hiển thị VND): Pro 150.000đ/tháng hoặc 1.300.000đ/năm (Business 210.000đ/tháng). US không xem được từ IP Việt Nam, giữ giá cũ."
     },
     {
       "id": "adobe-cc",
@@ -2417,12 +2593,26 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 24,
-              "approx": true
+              "amount": 24
+            }
+          }
+        },
+        {
+          "id": "business-annual",
+          "name": "Business (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 240
             }
           }
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên notion.com/pricing: Plus $12/tháng ($10/tháng nếu trả năm), Business $24/tháng ($20/tháng nếu trả năm = $240/năm), giá trên mỗi chỗ ngồi."
     },
     {
       "id": "1password",
@@ -2486,7 +2676,7 @@
       "plans": [
         {
           "id": "premium",
-          "name": "Premium",
+          "name": "Premium (annual)",
           "cycle": {
             "unit": "year",
             "count": 1
@@ -2494,14 +2684,13 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 10,
-              "approx": true
+              "amount": 19.8
             }
           }
         },
         {
           "id": "families",
-          "name": "Families",
+          "name": "Families (annual)",
           "cycle": {
             "unit": "year",
             "count": 1
@@ -2509,13 +2698,13 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 40,
-              "approx": true
+              "amount": 47.88
             }
           },
           "members": 6
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên bitwarden.com/pricing: Premium $19.80/năm ($1.65/tháng), Families $47.88/năm ($3.99/tháng, 6 tài khoản); không có gói trả theo tháng (dữ liệu cũ $10 và $40 là sai)."
     },
     {
       "id": "nordvpn",
@@ -2548,7 +2737,7 @@
           }
         }
       ],
-      "note": "Gói năm/2 năm thường có giá khuyến mãi lần đầu, gia hạn giá cao hơn."
+      "note": "Gói năm/2 năm thường có giá khuyến mãi lần đầu, gia hạn giá cao hơn. 2026-11-05: nordvpn.com/pricing chỉ hiện giá khuyến mãi 27 tháng, không có giá gói tháng -> giữ approx."
     },
     {
       "id": "expressvpn",
@@ -2611,7 +2800,8 @@
             }
           }
         }
-      ]
+      ],
+      "note": "2026-11-05: surfshark.com/pricing chỉ hiện giá khuyến mãi 27 tháng, không có giá gói tháng -> giữ approx."
     },
     {
       "id": "grammarly",
@@ -2652,12 +2842,12 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 144,
-              "approx": true
+              "amount": 144
             }
           }
         }
-      ]
+      ],
+      "note": "2026-11-05: grammarly.com/plans ghi Pro $12 (gói năm = $144/năm). Giá trả theo tháng ($30) không hiện trên trang -> giữ approx."
     },
     {
       "id": "figma",
@@ -2682,8 +2872,7 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 20,
-              "approx": true
+              "amount": 20
             }
           }
         },
@@ -2697,12 +2886,12 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 192,
-              "approx": true
+              "amount": 192
             }
           }
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên figma.com/pricing (ghế Full của gói Professional): $20/tháng hoặc $16/tháng trả năm = $192/năm."
     },
     {
       "id": "capcut",
@@ -2874,12 +3063,12 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 48,
-              "approx": true
+              "amount": 60
             }
           }
         }
-      ]
+      ],
+      "note": "2026-11-05: todoist.com/pricing ghi Pro US$5/tháng trả năm = $60/năm (Business $8 = $96/năm). Giá trả theo tháng không hiện trên trang -> $5/tháng giữ approx (rất có thể thực tế cao hơn)."
     },
     {
       "id": "proton",
@@ -2907,8 +3096,7 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 4.99,
-              "approx": true
+              "amount": 4.99
             }
           }
         },
@@ -2922,8 +3110,7 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 12.99,
-              "approx": true
+              "amount": 12.99
             }
           }
         },
@@ -2937,12 +3124,26 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 119.88,
-              "approx": true
+              "amount": 119.88
+            }
+          }
+        },
+        {
+          "id": "mail-plus-annual",
+          "name": "Mail Plus (annual)",
+          "cycle": {
+            "unit": "year",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 47.88
             }
           }
         }
-      ]
+      ],
+      "note": "Đã đối chiếu 2026-11-05 trên proton.me/mail/pricing: Mail Plus $4.99/tháng hoặc $47.88/năm ($3.99/tháng), Unlimited $12.99/tháng hoặc $119.88/năm."
     },
     {
       "id": "bkav-pro",
@@ -3032,8 +3233,7 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 22.99,
-              "approx": true
+              "amount": 22.99
             }
           }
         },
@@ -3047,13 +3247,12 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 13.99,
-              "approx": true
+              "amount": 13.99
             }
           }
         }
       ],
-      "note": "Ultimate tăng lên 29.99 (10/2025) rồi giảm (04/2026) theo nguồn thứ ba — cần xác minh."
+      "note": "Đã đối chiếu 2026-11-05 trên xbox.com/en-US/xbox-game-pass: Essential 9.99, Premium 14.99, Ultimate 22.99, PC 13.99. Chưa có trang VN (404)."
     },
     {
       "id": "playstation-plus",
@@ -3081,8 +3280,7 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 10.99,
-              "approx": true
+              "amount": 10.99
             }
           }
         },
@@ -3124,8 +3322,7 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 17.99,
-              "approx": true
+              "amount": 19.99
             }
           }
         },
@@ -3142,9 +3339,23 @@
               "amount": 159.99
             }
           }
+        },
+        {
+          "id": "extra",
+          "name": "Extra",
+          "cycle": {
+            "unit": "month",
+            "count": 1
+          },
+          "prices": {
+            "US": {
+              "currency": "USD",
+              "amount": 16.99
+            }
+          }
         }
       ],
-      "note": "Không có PlayStation Store chính thức cho VN."
+      "note": "Đã đối chiếu 2026-11-05 trên playstation.com/en-us/ps-plus: Essential 10.99 (12 tháng 79.99), Extra 16.99 (134.99), Premium 19.99 (159.99). Không có PlayStation Store chính thức cho VN."
     },
     {
       "id": "nintendo-switch-online",
@@ -4173,7 +4384,7 @@
           "members": 6
         }
       ],
-      "note": "VN suy từ giá quy tháng của gói năm (49.917đ × 12); giá thực tế thay đổi theo khuyến mãi."
+      "note": "VN suy từ giá quy tháng của gói năm (49.917đ × 12); giá thực tế thay đổi theo khuyến mãi. 2026-11-05: duolingo.com/super không hiển thị giá khi chưa đăng nhập -> giữ approx."
     },
     {
       "id": "coursera",
@@ -4743,8 +4954,11 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 19.95,
-              "approx": true
+              "amount": 21.95
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 239000
             }
           }
         },
@@ -4758,8 +4972,11 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 25.95,
-              "approx": true
+              "amount": 27.95
+            },
+            "VN": {
+              "currency": "VND",
+              "amount": 279000
             }
           },
           "members": 6
@@ -4774,14 +4991,13 @@
           "prices": {
             "US": {
               "currency": "USD",
-              "amount": 37.95,
-              "approx": true
+              "amount": 39.95
             }
           },
           "members": 6
         }
       ],
-      "note": "Có thể đã tăng cùng Apple TV (08/2026). Không có tại VN."
+      "note": "Đã đối chiếu 2026-11-05 trên apple.com/apple-one (US 21.95 / 27.95 / 39.95) và apple.com/vn/apple-one (VN chỉ có Individual 239.000đ và Family 279.000đ; không có Premier)."
     },
     {
       "id": "x-premium",
