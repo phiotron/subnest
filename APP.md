@@ -135,7 +135,16 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan · U2a Thư viện + Form (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 commit `775901b` |
+| #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan ✅ · U2a Thư viện + Form ✅ (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 `775901b`; U1 `4075597`…`058cf34`, U2a `522df46` `ed06826` `09faefd`, U1 `3cb500c`; điều phối chạy lại ở `09faefd`: analyze sạch, merge_arb OK, **823 test xanh** (97 golden bỏ qua khi không bật cờ) |
+
+**Việc dở đợt 2 (từ U1/U2a, 2026-11-06):**
+- **Lỗi domain:** bấm Tạm dừng đặt `status = paused` ngay dù `pausedFrom` ở tương lai → gói rời tổng chi/ngân sách từ hôm nay; mockup 20
+  ghi "vẫn tính tới ngày dừng" → giao một phiên lõi sửa tính tiền (theo mockup).
+- `SubscriptionRow` có thêm `SubscriptionRowState.paused`, `nameBadge`, `metaExtras` (điều phối duyệt) — U2b dùng lại.
+- Phiên **S** phải gọi `homeAutoUndoProvider.notifier.show(report)` để Tổng quan hiện Hoàn tác. Màn 21: chỗ gắn + API cần từ P2 ở `notes/2026-11-06-u1-home.md`.
+- Router nên nhận `?region=` cho `/subscription/new` (U2a đang dùng tạm `libraryPickRegionProvider`). Gom lên `core/widgets`:
+  chip nhãn, huy hiệu Auto, ReferencePriceChip, DotChip, WorthItPicker, sheet phương thức (thêm icon từng dòng).
+- Chưa sinh lại golden + chưa thử máy thật cho U1/U2a → QA. File l10n sinh ra bị commit kèm phần của phiên khác → cân nhắc luật: chỉ phiên cuối gen + commit.
 | #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở · **chiều:** grill lấy giá/quản lý → mở rộng 1.0; đợt 1 **C1 ✅ M1 ✅ P3 ✅** (767 test xanh, `dev` `63a5ded`); repo `phamphuongphuongnd/catalog` public + Pages ✅ (data v12) · **dừng chờ hạn mức tuần (reset 2026-11-10)** → đợt 2 | ADR 0002 (sửa vùng giá), ADR 0003, product.md §10, CONTEXT +13 thuật ngữ — log `memory/sessions/2026-11-06-A001-subnest-phien2.md` |
 | #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
