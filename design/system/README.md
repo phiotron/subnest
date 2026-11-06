@@ -9,7 +9,7 @@ Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dar
 - **Tiếng Việt (VI)** — every screen state again in Vietnamese, light and dark, to catch overflow.
 - **360 × 800 check** — 16 key views on the smallest Android frame, in Vietnamese (the worst case), light and dark.
 - **Large text 130%** — 8 key views at system text size 130% (iOS Dynamic Type / Android font scale), in Vietnamese, light and dark.
-- **Prototype** — the six flows of product spec §6 plus flow 7 (screenshot scan, §10.6), clickable. Tap the dashed control on the phone or jump with the step list; switch light/dark and English/Tiếng Việt beside it.
+- **Prototype** — the six flows of product spec §6 plus flow 7 (screenshot scan, §10.6) and flow 8 (price change notice), clickable. Tap the dashed control on the phone or jump with the step list; switch light/dark and English/Tiếng Việt beside it.
 - **Version 1.0 extended (spec §10)**:
   - S2: rows carry a period progress bar, days left, label chips and an Auto badge; filter by category, label, status (incl. Paused) and payment method; “Due this week” 7-day strip with the week total; budget bar; Undo snackbar after automatic adds; tab bar hidden on scroll.
   - S3: General / Vietnam library tabs (Vietnam shows only on VN phones), US prices with ≈ VND, “Reference price” chip on unverified prices.
@@ -18,6 +18,7 @@ Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dar
   - S10: Organize (Categories with colour + icon and delete-and-move, Labels, Payment methods, Budget) and Automation (Pro): screenshot scan 1.0, bank/wallet notifications 1.1 Android, Gmail 1.2. Pro price is not shown — it is decided later.
   - S13 Screenshot scan: how it works → on-device reading → “Added 4, confirmed 1” with Undo per row.
   - S11 widgets v2: iOS large, Android small + medium, light and dark.
+  - From CONTEXT.md and ADR 0003: price change notice (Overview card, detail banner, compare sheet), Service library link row, discontinued plan note, auto-detected detail with Remove (remembered), About (library freshness, price lists, legal, Logo.dev credit), label edit, Pro early-access sheet (no price), scan edge states (photo access, receipt camera, needs your check / amount differs / not added, nothing found), Android large widget and small-widget states.
   - Service logos come from Logo.dev at runtime; the mocks show the monogram fallback, which is what the app shows when a logo is missing or offline. Vietnam-tab prices are illustrative.
 - **Brand** — app icon (1024 PNG + SVG in the Brand assets) and the splash.
 - Every mock is rendered by `components/bundle.js` from one copy of the §8 sample data, so numbers agree across screens: active total ≈ ₫1,074,467/month, savings ₫1,479,000/year, two periods awaiting (Viettel 5G 1 Nov, Netflix 4 Nov).
