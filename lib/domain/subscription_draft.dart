@@ -18,15 +18,19 @@ class SubscriptionDraft {
     this.trial = false,
     this.trialEnd,
     this.sharedWith = 1,
-    this.category = SubscriptionCategory.other,
-    this.reminderDays,
+    String? categoryId,
+    SubscriptionCategory? category,
+    this.reminderOffsets,
+    this.paymentMethodId,
     this.paymentMethod,
+    this.labelIds = const {},
+    this.worthIt,
     this.manageUrl,
     this.notes,
     this.serviceId,
     this.colorValue = 0xFF607D8B,
     this.iconText,
-  });
+  }) : categoryId = categoryId ?? (category ?? SubscriptionCategory.other).key;
 
   factory SubscriptionDraft.blank({required String currency, required LocalDate today, String name = ''}) =>
       SubscriptionDraft(
@@ -47,9 +51,12 @@ class SubscriptionDraft {
     trial: BillingRules.effectiveStatus(s, today) == SubscriptionStatus.trial,
     trialEnd: s.trialEndDate,
     sharedWith: s.sharedWith,
-    category: s.category,
-    reminderDays: s.reminderDays,
+    categoryId: s.categoryId,
+    reminderOffsets: s.reminderOffsets,
+    paymentMethodId: s.paymentMethodId,
     paymentMethod: s.paymentMethod,
+    labelIds: s.labelIds,
+    worthIt: s.worthIt,
     manageUrl: s.manageUrl,
     notes: s.notes,
     serviceId: s.serviceId,
@@ -67,9 +74,25 @@ class SubscriptionDraft {
   bool trial;
   LocalDate? trialEnd;
   int sharedWith;
-  SubscriptionCategory category;
-  int? reminderDays;
+  String categoryId;
+
+  /// Legacy built-in view of [categoryId].
+  SubscriptionCategory get category => SubscriptionCategory.fromKey(categoryId);
+  set category(SubscriptionCategory c) => categoryId = c.key;
+
+  /// `null` = Settings default; empty = off.
+  Set<int>? reminderOffsets;
+
+  /// Legacy single value of [reminderOffsets].
+  int? get reminderDays => ReminderOffsets.toLegacyDays(reminderOffsets);
+  set reminderDays(int? days) => reminderOffsets = ReminderOffsets.fromLegacyDays(days);
+
+  /// Picked Payment method. When the user types a name instead ([paymentMethod]) and it differs from the
+  /// original, the id is dropped and the repository finds/creates the method by name on save.
+  String? paymentMethodId;
   String? paymentMethod;
+  Set<String> labelIds;
+  WorthIt? worthIt;
   String? manageUrl;
   String? notes;
   String? serviceId;
@@ -93,14 +116,23 @@ class SubscriptionDraft {
 
   static String? _clean(String? v) => (v == null || v.trim().isEmpty) ? null : v.trim();
 
-  Subscription _fields(Subscription base, DateTime now) => base.copyWith(
+  Subscription _fields(Subscription base, DateTime now) {
+    final pmName = _clean(paymentMethod);
+    // Newly picked id → keep; unchanged id + unchanged name → keep; cleared / typed name → resolve by name.
+    final changedPick = paymentMethodId != null && paymentMethodId != base.paymentMethodId;
+    final unchanged = paymentMethodId != null && pmName == base.paymentMethod;
+    final pmId = changedPick || unchanged ? paymentMethodId : null;
+    return base.copyWith(
     name: name.trim(),
     priceMinor: priceMinor,
     currency: currency.toUpperCase(),
     sharedWith: sharedWith < 1 ? 1 : sharedWith,
-    category: category,
-    reminderDays: reminderDays,
-    paymentMethod: _clean(paymentMethod),
+    categoryId: categoryId,
+    reminderOffsets: reminderOffsets,
+    paymentMethodId: pmId,
+    paymentMethod: pmName,
+    labelIds: labelIds,
+    worthIt: worthIt,
     manageUrl: _clean(manageUrl),
     notes: _clean(notes),
     serviceId: serviceId,
@@ -108,6 +140,7 @@ class SubscriptionDraft {
     iconText: _clean(iconText),
     updatedAt: now,
   );
+  }
 
   /// A new Subscription (call [validate] first).
   Subscription toNew({required String id, required LocalDate today, required DateTime now}) {

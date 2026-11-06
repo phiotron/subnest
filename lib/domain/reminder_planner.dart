@@ -50,7 +50,8 @@ abstract final class ReminderPlanner {
   static List<PlannedReminder> plan(
     Iterable<Subscription> subs, {
     required DateTime now,
-    required int defaultDays,
+    Set<int>? defaultOffsets,
+    int? defaultDays, // legacy single value, used when defaultOffsets is null
     required int hour,
     required int minute,
   }) {
@@ -58,9 +59,13 @@ abstract final class ReminderPlanner {
     final out = <PlannedReminder>[];
     for (final s in subs) {
       final status = BillingRules.effectiveStatus(s, today);
-      if (status == SubscriptionStatus.cancelled) continue;
-      final days = s.reminderDays ?? defaultDays;
-      if (days == ReminderDays.off) continue;
+      // Paused and Cancelled have no Due date → no Reminder.
+      if (!BillingRules.hasSchedule(status)) continue;
+      final offsets = s.reminderOffsets ??
+          defaultOffsets ??
+          ReminderOffsets.fromLegacyDays(defaultDays) ??
+          ReminderOffsets.defaults;
+      if (offsets.isEmpty) continue;
       final due = s.dueDate;
 
       void add(ReminderKind kind, int daysBefore) {
@@ -76,10 +81,13 @@ abstract final class ReminderPlanner {
         }
       }
 
-      if (days > 0) {
-        add(status == SubscriptionStatus.trial ? ReminderKind.trialEnding : ReminderKind.renewalSoon, days);
+      for (final days in offsets.toList()..sort((a, b) => b.compareTo(a))) {
+        if (days > 0) {
+          add(status == SubscriptionStatus.trial ? ReminderKind.trialEnding : ReminderKind.renewalSoon, days);
+        } else {
+          add(ReminderKind.dueToday, 0);
+        }
       }
-      add(ReminderKind.dueToday, 0);
     }
     out.sort((a, b) => a.fireAt.compareTo(b.fireAt));
     return out.length > maxPending ? out.sublist(0, maxPending) : out;

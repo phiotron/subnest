@@ -17,6 +17,7 @@ class SpendingSummary {
     required this.activeCount,
     required this.trialCount,
     required this.cancelledCount,
+    this.pausedCount = 0,
     required this.awaitingCount,
     required this.awaitingTotal,
     required this.missingRates,
@@ -35,6 +36,9 @@ class SpendingSummary {
   final int activeCount;
   final int trialCount;
   final int cancelledCount;
+
+  /// Paused subscriptions (not in any total).
+  final int pausedCount;
 
   /// Number of pending Billing periods (all subscriptions) and their total at current My share.
   final int awaitingCount;
@@ -79,7 +83,7 @@ class SpendingCalculator {
 
   SpendingSummary summary(Iterable<Subscription> subs, LocalDate today) {
     var monthly = 0.0, trialMonthly = 0.0, savings = 0.0, awaitingTotal = 0.0;
-    var active = 0, trial = 0, cancelled = 0, awaiting = 0;
+    var active = 0, trial = 0, cancelled = 0, paused = 0, awaiting = 0;
     final missing = <String>{};
     for (final s in subs) {
       final status = BillingRules.effectiveStatus(s, today);
@@ -95,6 +99,8 @@ class SpendingCalculator {
         case SubscriptionStatus.cancelled:
           cancelled++;
           savings += (cost ?? 0) * 12;
+        case SubscriptionStatus.paused:
+          paused++;
       }
       final pending = BillingRules.pendingDueDates(s, today).length;
       if (pending > 0) {
@@ -109,6 +115,7 @@ class SpendingCalculator {
       activeCount: active,
       trialCount: trial,
       cancelledCount: cancelled,
+      pausedCount: paused,
       awaitingCount: awaiting,
       awaitingTotal: awaitingTotal,
       missingRates: missing,
@@ -121,6 +128,16 @@ class SpendingCalculator {
     for (final s in subs) {
       if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
       totals.update(s.category, (v) => v + (monthlyCost(s) ?? 0), ifAbsent: () => monthlyCost(s) ?? 0);
+    }
+    return totals.entries.sorted((a, b) => b.value.compareTo(a.value));
+  }
+
+  /// Monthly cost of Active subscriptions grouped by Category id (custom categories included), largest first.
+  List<MapEntry<String, double>> byCategoryId(Iterable<Subscription> subs, LocalDate today) {
+    final totals = <String, double>{};
+    for (final s in subs) {
+      if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
+      totals.update(s.categoryId, (v) => v + (monthlyCost(s) ?? 0), ifAbsent: () => monthlyCost(s) ?? 0);
     }
     return totals.entries.sorted((a, b) => b.value.compareTo(a.value));
   }

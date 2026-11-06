@@ -1,3 +1,4 @@
+import 'detection/detection_source.dart';
 import 'local_date.dart';
 import 'money.dart';
 
@@ -21,6 +22,7 @@ class ConfirmedPeriod {
     required this.amountMinor,
     required this.currency,
     required this.confirmedAt,
+    this.source,
   });
 
   final String id;
@@ -35,6 +37,12 @@ class ConfirmedPeriod {
   final String currency;
   final DateTime confirmedAt;
 
+  /// Set when the app confirmed this period itself from a Detected charge (ADR 0003, can be undone);
+  /// `null` = confirmed by the user.
+  final DetectionSource? source;
+
+  bool get isAutoConfirmed => source != null;
+
   bool get isPayment => outcome == PeriodOutcome.payment;
   bool get isSkipped => outcome == PeriodOutcome.skipped;
 
@@ -48,6 +56,7 @@ class ConfirmedPeriod {
     amountMinor: amountMinor ?? this.amountMinor,
     currency: currency,
     confirmedAt: confirmedAt,
+    source: source,
   );
 
   @override

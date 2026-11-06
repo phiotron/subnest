@@ -1,4 +1,5 @@
 import 'confirmed_period.dart';
+import 'detection/detection_source.dart';
 import 'local_date.dart';
 import 'subscription.dart';
 
@@ -30,6 +31,10 @@ abstract final class BillingRules {
     return s.status;
   }
 
+  /// Whether a status has Due dates at all (Paused and Cancelled have none).
+  static bool hasSchedule(SubscriptionStatus status) =>
+      status != SubscriptionStatus.cancelled && status != SubscriptionStatus.paused;
+
   /// Persists the Trial → Active transition. Returns [s] unchanged when nothing to do.
   static Subscription normalize(Subscription s, LocalDate today, DateTime now) {
     final effective = effectiveStatus(s, today);
@@ -39,7 +44,7 @@ abstract final class BillingRules {
 
   /// Whether the current Billing period has reached its Due date and waits for the user.
   static bool isAwaitingConfirmation(Subscription s, LocalDate today) {
-    if (effectiveStatus(s, today) == SubscriptionStatus.cancelled) return false;
+    if (!hasSchedule(effectiveStatus(s, today))) return false;
     return s.dueDate.isOnOrBefore(today);
   }
 
@@ -109,7 +114,7 @@ abstract final class BillingRules {
   /// Includes pending periods; empty for cancelled subscriptions. Used by Calendar,
   /// Upcoming and projections.
   static List<LocalDate> dueDatesBetween(Subscription s, LocalDate from, LocalDate to) {
-    if (s.status == SubscriptionStatus.cancelled) return const [];
+    if (!hasSchedule(s.status)) return const [];
     final result = <LocalDate>[];
     for (var i = s.periodIndex; i < s.periodIndex + 100000; i++) {
       final d = s.cycle.occurrence(s.anchorDate, i);
@@ -150,5 +155,70 @@ abstract final class BillingRules {
       index++;
     }
     return s.copyWith(status: status, cancelledOn: null, periodIndex: index, updatedAt: now);
+  }
+
+  // ---- Paused (glossary: Paused) ---------------------------------------------------------------
+
+  /// Pauses from the next Due date: the period already paid is used up, then nothing is due.
+  /// [pausedFrom] = the current Due date (shown as "Paused from 15/11"). No-op unless Trial/Active.
+  static Subscription pause(Subscription s, LocalDate today, DateTime now) {
+    if (!hasSchedule(s.status)) return s;
+    return normalize(s, today, now).copyWith(
+      status: SubscriptionStatus.paused,
+      pausedFrom: s.dueDate,
+      updatedAt: now,
+    );
+  }
+
+  /// Resumes a Paused subscription: the user picks the next Due date (UI default: today) → re-anchor.
+  static Subscription resume(Subscription s, LocalDate nextDueDate, DateTime now) {
+    if (s.status != SubscriptionStatus.paused) return s;
+    return s.copyWith(
+      status: SubscriptionStatus.active,
+      pausedFrom: null,
+      anchorDate: nextDueDate,
+      periodIndex: 0,
+      updatedAt: now,
+    );
+  }
+
+  // ---- Auto-confirm from a Detected charge (ADR 0003) ------------------------------------------
+
+  /// Confirms the current period as paid by a Detected charge with the amount actually charged.
+  /// The price of the subscription is never changed. Unlike [confirm] the period may still be up to
+  /// a few days ahead (charged early); the matcher decides whether the match is sure.
+  static ConfirmResult confirmDetected(
+    Subscription s, {
+    required int amountMinor,
+    required DetectionSource source,
+    required LocalDate today,
+    required DateTime now,
+    required String Function() newId,
+  }) {
+    if (!hasSchedule(effectiveStatus(s, today))) {
+      throw StateError('${s.name}: no Billing period to confirm (${s.status.name})');
+    }
+    final period = ConfirmedPeriod(
+      id: newId(),
+      subscriptionId: s.id,
+      dueDate: s.dueDate,
+      outcome: PeriodOutcome.payment,
+      amountMinor: amountMinor,
+      currency: s.currency,
+      confirmedAt: now,
+      source: source,
+    );
+    final next = normalize(s, today, now).copyWith(periodIndex: s.periodIndex + 1, updatedAt: now);
+    return ConfirmResult(next, period);
+  }
+
+  /// Undo of a confirmation: when [period] is the one just before the current Due date the
+  /// subscription steps back to it (pending again). Otherwise (re-anchored since) it is unchanged and
+  /// only the record is removed by the caller.
+  static Subscription undoConfirm(Subscription s, ConfirmedPeriod period, DateTime now) {
+    if (s.periodIndex == 0) return s;
+    final previous = s.cycle.occurrence(s.anchorDate, s.periodIndex - 1);
+    if (previous != period.dueDate) return s;
+    return s.copyWith(periodIndex: s.periodIndex - 1, updatedAt: now);
   }
 }

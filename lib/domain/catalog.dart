@@ -6,8 +6,12 @@ import 'subscription.dart';
 
 /// Suggested price of a catalog plan in one region.
 class CatalogPrice {
-  const CatalogPrice(this.currency, this.amount);
+  const CatalogPrice(this.currency, this.amount, {this.isReference = false});
   final String currency;
+
+  /// Reference price (glossary): not verified from the provider's page — v4: no `verifiedAt` or older
+  /// than `staleAfterDays`; v3: `approx: true`. Still pre-filled, shown with a "check it" chip.
+  final bool isReference;
 
   /// Major units (74000 = 74.000đ, 12.99 = $12.99).
   final double amount;
@@ -15,8 +19,40 @@ class CatalogPrice {
   int get minor => toMinorUnits(amount, currency);
 }
 
+/// Plan status in the Catalog (v4). Unknown values read as [active].
+enum CatalogPlanStatus {
+  active,
+
+  /// Existing customers keep it; not sold to new ones (hidden from pickers, id still resolves).
+  closedToNew,
+
+  /// Gone (glossary: Discontinued plan).
+  discontinued;
+
+  static CatalogPlanStatus parse(String? v) => switch (v) {
+    'closed_to_new' => closedToNew,
+    'discontinued' => discontinued,
+    _ => active,
+  };
+}
+
 class CatalogPlan {
-  const CatalogPlan({required this.id, required this.name, required this.cycle, required this.prices, this.members});
+  const CatalogPlan({
+    required this.id,
+    required this.name,
+    required this.cycle,
+    required this.prices,
+    this.members,
+    this.status = CatalogPlanStatus.active,
+    this.renamedFrom,
+  });
+
+  final CatalogPlanStatus status;
+
+  /// Old plan name when the provider renamed it (id kept).
+  final String? renamedFrom;
+
+  bool get isOnSale => status == CatalogPlanStatus.active;
 
   final String id;
   final String name;
@@ -32,6 +68,16 @@ class CatalogPlan {
   CatalogPrice? priceFor(String region) => prices[region] ?? prices['US'];
 }
 
+/// Catalog section (glossary): global services for everyone, Vietnamese ones only on devices in VN.
+enum CatalogSection { global, vn }
+
+/// Catalog price region from a device locale: only `VN` and `US` have prices; VN devices use VN
+/// (falling back to US per plan), everyone else US (converted "≈" to the Primary currency).
+String catalogRegionForLocale(String localeName) {
+  final parts = localeName.split(RegExp('[_-]'));
+  return parts.length > 1 && parts[1].toUpperCase() == 'VN' ? 'VN' : 'US';
+}
+
 /// A Service from the bundled Catalog (assets/catalog/services.json, schema in its README).
 class CatalogService {
   const CatalogService({
@@ -41,8 +87,10 @@ class CatalogService {
     required this.colorValue,
     required this.monogram,
     required this.plans,
-    this.isVietnamese = false,
+    this.section = CatalogSection.global,
     this.aliases = const [],
+    this.storeNames = const [],
+    this.logoDomain,
     this.cancelUrl,
     this.manageUrl,
   });
@@ -52,8 +100,15 @@ class CatalogService {
   final SubscriptionCategory category;
   final int colorValue;
   final String monogram;
-  final bool isVietnamese;
+  final CatalogSection section;
+  bool get isVietnamese => section == CatalogSection.vn;
   final List<String> aliases;
+
+  /// Names shown on Google Play / App Store subscription pages ("YouTube Premium") — used by detection.
+  final List<String> storeNames;
+
+  /// Host for the logo service (`netflix.com`); `null` = monogram tile.
+  final String? logoDomain;
   final String? cancelUrl;
   final String? manageUrl;
   final List<CatalogPlan> plans;
