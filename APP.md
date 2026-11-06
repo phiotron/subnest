@@ -108,6 +108,12 @@ Người dùng cho vượt luật ≤ 3 phiên điều phối (ghi ngoại lệ 
 | **M1** Lõi | Domain + migration: Paused, Worth-it, Label, Category tuỳ biến, PaymentMethod, Budget, nhắc nhiều mốc, nguồn phát hiện + Hoàn tác, DetectedCharge + luật khớp; backup/CSV; route + ARB placeholder màn mới; cổng Pro (mở hết); package ML Kit text recognition + home_widget | `lib/domain/`, `lib/data/`, `lib/core/router/`, `pubspec.yaml`, `drift_schemas/` |
 | **P3** Logo (tiếp WIP `ab3ea85`) | Hoàn tất logo.dev + thanh tiến độ kỳ trong tile/row | `lib/core/widgets/service_tile*`, `subscription_row.dart`, `lib/data/logos/` |
 
+> Đợt 1 xong 2026-11-06: C1 500 dịch vụ (354/765 giá xác minh), M1 DB v2 + domain (API đợt 2: `notes/2026-11-06-m1-core.md`), P3 logo + thanh tiến độ.
+> Lưu ý đợt 2: gỡ shim API cũ (`category`, `reminderDays`) sau khi UI đổi xong; S hoặc W sửa `ios/Podfile` `platform :ios, '15.5'` (ML Kit);
+> W sửa `app.dart` để gắn WidgetSync; hàng gói cần tone `paused` (P3 tạm dùng `off`).
+> **Mockup v12 đã có** (`design/`, export 2026-11-06: màn 16–20 S2 lọc/hoàn tác/tạm dừng, 33–36 thư viện + tổ chức, 50–53 tạm dừng,
+> 61–63 dự báo/ngân sách, 73–79 cài đặt tổ chức + Tự động, 82 widget v2, 83–85 S13 quét ảnh) — brief đợt 2 trỏ đúng số màn.
+
 **Đợt 2 (sau M1, song song):** **U1** Tổng quan (`features/home/`, `app_shell.dart`) · **U2** Form/Chi tiết/Thư viện
 (`subscription_form/`, `subscription_detail/`, `catalog/`, `confirm/`) · **U3** Thống kê (`insights/`, `calendar/`) ·
 **U4** Cài đặt (`settings/`) · **S** Quét ảnh (`features/scan/`, `domain/detection/`) · **W** Widget (`android/`, `ios/` extension,
@@ -120,7 +126,7 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở · **chiều:** grill lấy giá/quản lý → mở rộng 1.0 (C1, M1, P3 đợt 1) | ADR 0002 (sửa vùng giá), ADR 0003, product.md §10, CONTEXT +13 thuật ngữ |
+| #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở · **chiều:** grill lấy giá/quản lý → mở rộng 1.0; đợt 1 **C1 ✅ M1 ✅ P3 ✅** (767 test xanh, `dev` `63a5ded`); repo `phamphuongphuongnd/catalog` public + Pages ✅ (data v12) · **dừng chờ hạn mức tuần (reset 2026-11-10)** → đợt 2 | ADR 0002 (sửa vùng giá), ADR 0003, product.md §10, CONTEXT +13 thuật ngữ — log `memory/sessions/2026-11-06-A001-subnest-phien2.md` |
 | #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 

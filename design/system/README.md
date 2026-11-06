@@ -5,11 +5,20 @@ Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dar
 ## What's on this page
 
 - **Components** — ServiceTile, SubscriptionRow, SummaryCard, Button, ChipBadge, SegmentedControl, ToggleStepper, Banner, EmptyState, BottomSheet, Dialog, DatePicker, TabBar. Each card shows light and dark.
-- **Screens S0–S12** at 390 × 844, light and dark side by side, one card per state: data, empty, many awaiting, offline, reminders off, trial, cancelled, validation, dialogs and sheets. S2, S4 and S6 also have a Vietnamese card for overflow. Lists scroll inside the phone.
+- **Screens S0–S13** at 390 × 844, light and dark side by side, one card per state: data, empty, many awaiting, offline, reminders off, trial, cancelled, validation, dialogs and sheets. S2, S4 and S6 also have a Vietnamese card for overflow. Lists scroll inside the phone.
 - **Tiếng Việt (VI)** — every screen state again in Vietnamese, light and dark, to catch overflow.
 - **360 × 800 check** — 16 key views on the smallest Android frame, in Vietnamese (the worst case), light and dark.
 - **Large text 130%** — 8 key views at system text size 130% (iOS Dynamic Type / Android font scale), in Vietnamese, light and dark.
-- **Prototype** — the six flows of product spec §6, clickable. Tap the dashed control on the phone or jump with the step list; switch light/dark and English/Tiếng Việt beside it.
+- **Prototype** — the six flows of product spec §6 plus flow 7 (screenshot scan, §10.6), clickable. Tap the dashed control on the phone or jump with the step list; switch light/dark and English/Tiếng Việt beside it.
+- **Version 1.0 extended (spec §10)**:
+  - S2: rows carry a period progress bar, days left, label chips and an Auto badge; filter by category, label, status (incl. Paused) and payment method; “Due this week” 7-day strip with the week total; budget bar; Undo snackbar after automatic adds; tab bar hidden on scroll.
+  - S3: General / Vietnam library tabs (Vietnam shows only on VN phones), US prices with ≈ VND, “Reference price” chip on unverified prices.
+  - S4/S5: labels (multi), payment method picked from a list with quick add, several reminder offsets, Worth it? (3 levels + not rated), Pause from next due date / Resume with a chosen date, history rows tagged with their source (scan, notification) with Undo.
+  - S9: History / Forecast (30 days, 12 months) / Budgets per category; cost per day, week, month, year; “drop Not worth it” saving.
+  - S10: Organize (Categories with colour + icon and delete-and-move, Labels, Payment methods, Budget) and Automation (Pro): screenshot scan 1.0, bank/wallet notifications 1.1 Android, Gmail 1.2. Pro price is not shown — it is decided later.
+  - S13 Screenshot scan: how it works → on-device reading → “Added 4, confirmed 1” with Undo per row.
+  - S11 widgets v2: iOS large, Android small + medium, light and dark.
+  - Service logos come from Logo.dev at runtime; the mocks show the monogram fallback, which is what the app shows when a logo is missing or offline. Vietnam-tab prices are illustrative.
 - **Brand** — app icon (1024 PNG + SVG in the Brand assets) and the splash.
 - Every mock is rendered by `components/bundle.js` from one copy of the §8 sample data, so numbers agree across screens: active total ≈ ₫1,074,467/month, savings ₫1,479,000/year, two periods awaiting (Viettel 5G 1 Nov, Netflix 4 Nov).
 
