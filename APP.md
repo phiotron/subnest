@@ -77,15 +77,22 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
 4. **K** *(stretch)* Widget (S11): `android/` widget + `ios/` WidgetKit extension + package home_widget — chỉ khi G–J xong sớm.
 5. Kết thúc #2: chạy `playbook/checklists/release-android.md` + `release-ios.md`.
 
-### Phiên điều phối #3 — Phát hành & retro (sau ≥ 14 ngày closed testing)
-1. **L** QA trên máy Android thật + TestFlight (mượn iPhone nếu có) → bug vào `notes/`; sửa lỗi theo phiên của feature.
-2. **M** Ảnh chụp store (EN + VI, light/dark) vào `store/screenshots/`.
-3. Nộp Google Play production + App Store review; tag `v1.0.0`.
-4. Retro bắt buộc → METRICS, PLAYBOOK v1.
+### Phiên điều phối #3 — Catalog từ xa + logo, rồi nộp store (mở 2026-11-06; ADR 0002)
+Người dùng chốt (grill 2026-11-06): làm đủ tính năng rồi mới upload/nộp. Thuật ngữ mới trong `CONTEXT.md`
+(Catalog source, Region, Catalog link, Price change notice, Discontinued plan, Service logo).
+| Phiên con | Việc | Phạm vi | Phụ thuộc |
+|---|---|---|---|
+| **P1** Catalog repo | Repo public `phamphuongphuongnd/catalog` + Pages; schema v4 (6 vùng VN/US/UK/AU/CA/IN, `logoDomain`, nguồn + ngày xác minh, trạng thái gói); chuyển dữ liệu v3; validator; Actions hằng tuần (Aristocles + bộ đọc trang VN → validate → tự đăng). Kiểm điều khoản Aristocles; dừng ở bước key → hướng dẫn người dùng | repo catalog (ngoài app) | — |
+| **P4** Pháp lý & khai báo | Privacy/terms EN+VI (tải catalog từ GitHub Pages, logo từ logo.dev), forms Data safety/App Privacy, listing ghi "Logos provided by Logo.dev" + câu nhãn hiệu; đẩy sang repo legal | `store/`, `D:\Mobile App\legal` | — |
+| **P2** Catalog từ xa trong app | Tải + cache + fallback bản đóng gói; chọn Region; Catalog link trên Subscription (migration); Price change notice; Discontinued plan; gắn `logoDomain` vào tile | `lib/data/catalog/**`, domain, DB, features liên quan | sau phiên sửa Thống kê |
+| **P3** Logo | logo.dev (key `pk_` người dùng tạo, qua `--dart-define`/file ngoài repo), cache trên máy, fallback monogram, ghi nguồn ở Giới thiệu | `lib/core/widgets/service_tile*`, `lib/data/logos/**`, settings About | song song P2 (giao diện qua `logoDomain`) |
+| **QA** | `smoke-android.md` + ảnh store mới (có logo) → version `1.0.0+3` → AAB | toàn app | sau P2, P3 |
+Sau đó: người dùng upload closed testing → ≥ 14 ngày → production + App Store (khi có Apple Developer) → tag `v1.0.0` → retro cuối.
 
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
+| #3 Catalog từ xa + nộp store | 2026-11-06 | Sửa Thống kê (đang chạy) · P1 · P4 · P2 · P3 · QA | ADR 0002 |
 | #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 
