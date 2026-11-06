@@ -6,7 +6,10 @@ import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
 import 'chip_badge.dart';
+import 'cycle_progress.dart';
 import 'service_tile.dart';
+
+export 'cycle_progress.dart';
 
 /// Visual state of a [SubscriptionRow].
 enum SubscriptionRowState {
@@ -34,6 +37,12 @@ enum SubscriptionRowState {
 /// and **Cancel** (`surface-2`, when [onCancel] is set). A full swipe triggers the first action
 /// with a haptic tick at the threshold. Both are also exposed as accessibility actions.
 ///
+/// Optional extras (off by default — rows without them look exactly as before):
+/// * [logoDomain] (Catalog services only) → real logo on the tile, see [ServiceTile.logoDomain].
+/// * [progress] → a [CycleProgressBar] under the second line (how much of the billing period
+///   has passed). Its colour follows [state] (trial / awaiting / cancelled = off) unless
+///   [progressTone] is given (e.g. `off` for a paused subscription).
+///
 /// Put rows in an `AppGroup(dividerIndent: 68)`. Strings for meta lines come from the caller —
 /// build them with `AppDates.relative`, `l10n.category`, `perCycle`, `l10n.corePlanPrice`.
 class SubscriptionRow extends StatelessWidget {
@@ -54,6 +63,9 @@ class SubscriptionRow extends StatelessWidget {
     this.onCancel,
     this.highlight = false,
     this.queued = false,
+    this.logoDomain,
+    this.progress,
+    this.progressTone,
   });
 
   final String name;
@@ -89,6 +101,16 @@ class SubscriptionRow extends StatelessWidget {
 
   /// Queued period (S7): dims the tile.
   final bool queued;
+
+  /// Catalog `service.logoDomain` → real logo on the tile; `null` (custom services) → monogram.
+  final String? logoDomain;
+
+  /// Current billing period → [CycleProgressBar] under the second line; `null` = no bar.
+  /// Build it with `CycleProgress.forSubscription(sub, today: today)`.
+  final CycleProgress? progress;
+
+  /// Bar colour; defaults from [state] (normal → brand, trial, awaiting, cancelled → off).
+  final CycleProgressTone? progressTone;
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +161,7 @@ class SubscriptionRow extends StatelessWidget {
               awaiting: state == SubscriptionRowState.awaiting,
               off: off,
               faded: queued,
+              logoDomain: logoDomain,
             ),
             const SizedBox(width: AppSpace.s3),
             Expanded(
@@ -164,6 +187,19 @@ class SubscriptionRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   second,
+                  if (progress != null) ...[
+                    const SizedBox(height: 6),
+                    CycleProgressBar(
+                      progress: progress!,
+                      tone: progressTone ??
+                          switch (state) {
+                            SubscriptionRowState.normal => CycleProgressTone.normal,
+                            SubscriptionRowState.trial => CycleProgressTone.trial,
+                            SubscriptionRowState.awaiting => CycleProgressTone.awaiting,
+                            SubscriptionRowState.cancelled => CycleProgressTone.off,
+                          },
+                    ),
+                  ],
                   if (stacked) ...[
                     const SizedBox(height: 4),
                     Wrap(

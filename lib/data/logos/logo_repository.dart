@@ -6,22 +6,11 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+import '../../core/widgets/service_logo_source.dart';
 import 'logo_dev.dart';
 import 'logo_disk_cache.dart';
 
-/// Where [ServiceTile] gets logo bytes from. Tests and the gallery inject their own through
-/// `ServiceLogoScope` (core/widgets/service_tile_logo.dart); the app uses [LogoRepository.instance].
-abstract interface class ServiceLogoSource {
-  /// `false` → tiles never ask (no key in this build): monogram only, no network.
-  bool get enabled;
-
-  /// Bytes already in memory — lets a tile that scrolls back into view draw its logo in the
-  /// first frame (no monogram → logo flash).
-  Uint8List? peek(String logoDomain);
-
-  /// Memory → disk → Logo.dev. `null` = no logo (missing, offline, error, invalid domain). Never throws.
-  Future<Uint8List?> load(String logoDomain);
-}
+export '../../core/widgets/service_logo_source.dart';
 
 /// Service logos from Logo.dev, cached on the device (ADR 0002 §5).
 ///

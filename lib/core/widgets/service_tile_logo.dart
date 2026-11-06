@@ -2,20 +2,21 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 
-import '../../data/logos/logo_repository.dart';
 import '../theme/app_theme.dart';
+import 'service_logo_source.dart';
 
-export '../../data/logos/logo_repository.dart' show ServiceLogoSource;
+export 'service_logo_source.dart';
 
-/// Overrides where [ServiceTile]s below get logos (tests, gallery). Without one the app's
-/// [LogoRepository.instance] is used — which is off (monogram only) in builds without a key.
+/// Tells the [ServiceTile]s below where to get logos. The app puts one with
+/// `LogoRepository.instance` (data/logos) at the root (`app.dart`) — off in builds without a key;
+/// tests and the gallery inject their own. Without one: [ServiceLogoSource.none] (monogram only).
 class ServiceLogoScope extends InheritedWidget {
   const ServiceLogoScope({super.key, required this.source, required super.child});
 
   final ServiceLogoSource source;
 
   static ServiceLogoSource of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<ServiceLogoScope>()?.source ?? LogoRepository.instance;
+      context.dependOnInheritedWidgetOfExactType<ServiceLogoScope>()?.source ?? ServiceLogoSource.none;
 
   @override
   bool updateShouldNotify(ServiceLogoScope oldWidget) => source != oldWidget.source;

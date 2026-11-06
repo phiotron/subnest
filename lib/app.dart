@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/widgets/service_tile_logo.dart';
+import 'data/logos/logo_repository.dart';
 import 'data/providers.dart';
 import 'data/settings_repository.dart';
 import 'l10n/generated/app_localizations.dart';
@@ -66,25 +68,29 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
     ref.watch(reminderSyncProvider);
     final settings = ref.watch(settingsProvider).value;
     final code = settings?.localeCode;
-    return MaterialApp.router(
-      onGenerateTitle: (context) => AppLocalizations.of(context).commonAppName,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      themeMode: switch (settings?.themeMode ?? AppThemeMode.system) {
-        AppThemeMode.system => ThemeMode.system,
-        AppThemeMode.light => ThemeMode.light,
-        AppThemeMode.dark => ThemeMode.dark,
-      },
-      locale: code == null ? null : Locale(code),
-      supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      routerConfig: widget.router,
+    // Service logos (Logo.dev) for every ServiceTile; off — monogram only — in builds without a key.
+    return ServiceLogoScope(
+      source: LogoRepository.instance,
+      child: MaterialApp.router(
+        onGenerateTitle: (context) => AppLocalizations.of(context).commonAppName,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: switch (settings?.themeMode ?? AppThemeMode.system) {
+          AppThemeMode.system => ThemeMode.system,
+          AppThemeMode.light => ThemeMode.light,
+          AppThemeMode.dark => ThemeMode.dark,
+        },
+        locale: code == null ? null : Locale(code),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        routerConfig: widget.router,
+      ),
     );
   }
 }
