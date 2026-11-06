@@ -623,6 +623,80 @@ class _GalleryScreenState extends State<GalleryScreen> {
           ),
         ],
       ),
+      // Billing-period bar (product.md §10.2) + real logo — opt-in: `progress:` / `logoDomain:`.
+      SectionHeader(label: t('Cycle progress + logo', 'Tiến độ kỳ + logo')),
+      AppGroup(
+        dividerIndent: 68,
+        children: [
+          SubscriptionRow(
+            name: 'Netflix Premium',
+            colorValue: 0xFFE50914,
+            logoDomain: 'netflix.com',
+            meta:
+                '${AppDates.relative(l, const LocalDate(2026, 11, 27), today: _today)} · '
+                '${l.category(SubscriptionCategory.video)}',
+            progress: CycleProgress.of(
+              cycle: const BillingCycle.monthly(),
+              anchorDate: const LocalDate(2026, 8, 27),
+              periodIndex: 3,
+              startDate: const LocalDate(2026, 8, 27),
+              today: _today,
+            ),
+            amount: _money(context, 260000),
+            amountMeta: month,
+            onTap: () => say('open Netflix'),
+          ),
+          SubscriptionRow(
+            name: 'Spotify',
+            colorValue: 0xFF1DB954,
+            logoDomain: 'spotify.com',
+            state: SubscriptionRowState.trial,
+            badgeLabel: t('Trial', 'Dùng thử'),
+            meta: '${t('ends', 'hết')} ${AppDates.relative(l, const LocalDate(2026, 11, 6), today: _today)}',
+            progress: const CycleProgress(from: LocalDate(2026, 10, 7), due: LocalDate(2026, 11, 6), today: _today),
+            amount: _money(context, 59000),
+            amountMeta: month,
+          ),
+          SubscriptionRow(
+            name: 'ChatGPT Plus',
+            colorValue: 0xFF202123,
+            logoDomain: 'openai.com',
+            state: SubscriptionRowState.awaiting,
+            progress: const CycleProgress(from: LocalDate(2026, 10, 2), due: LocalDate(2026, 11, 2), today: _today),
+            amount: _money(context, 20, 'USD'),
+            amountMeta: '≈ ${_money(context, 508000)}',
+            onConfirm: () => say('confirm ChatGPT'),
+          ),
+          SubscriptionRow(
+            name: 'Canva Pro',
+            colorValue: 0xFF7D2AE8,
+            logoDomain: 'canva.com',
+            meta: t('Paused', 'Tạm dừng'),
+            progress: const CycleProgress(from: LocalDate(2026, 2, 2), due: LocalDate(2027, 2, 2), today: _today),
+            progressTone: CycleProgressTone.off,
+            amount: _money(context, 1390000),
+            amountMeta: year,
+          ),
+          SubscriptionRow(
+            name: 'Duolingo Super',
+            colorValue: 0xFF58CC02,
+            state: SubscriptionRowState.cancelled,
+            meta: '${t('Cancelled', 'Đã huỷ')} ${AppDates.full(l, _today)}',
+            progress: const CycleProgress(from: LocalDate(2026, 10, 20), due: LocalDate(2026, 11, 20), today: _today),
+            amount: _money(context, 89000),
+            amountMeta: month,
+          ),
+          SubscriptionRow(
+            name: 'My gym',
+            colorValue: 0xFF0F8B8D,
+            meta:
+                '${AppDates.relative(l, _today.addDays(1), today: _today)} · ${t('custom, no logo', 'tuỳ chỉnh, không logo')}',
+            progress: CycleProgress(from: _today.addDays(-6), due: _today.addDays(1), today: _today),
+            amount: _money(context, 500000),
+            amountMeta: month,
+          ),
+        ],
+      ),
       _h(context, 'Date labels'),
       Text(
         [

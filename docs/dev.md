@@ -156,7 +156,11 @@ PowerShell: `flutter run --dart-define=LOGO_DEV_KEY=$((Get-Content C:/Users/Admi
 Tạo khoá + GitHub secret: `docs/ci.md` mục *Khoá Logo.dev*. Code: `lib/data/logos/` (`LogoDev` = URL + khoá,
 `LogoRepository` = tải lười + cache `<app cache>/service_logos/`, 30 ngày, ≤ 20 MB, 404 nhớ 7 ngày, lỗi mạng chờ 15 phút).
 Tile: `ServiceTile(…, logoDomain: service.logoDomain)` — **chỉ** tên miền từ Catalog, dịch vụ tuỳ chỉnh không truyền
-(chính sách quyền riêng tư đã cam kết). Test/gallery bơm nguồn giả bằng `ServiceLogoScope(source: …)`.
+(chính sách quyền riêng tư đã cam kết). Nguồn logo gắn **một lần ở gốc** (`app.dart`: `ServiceLogoScope(source:
+LogoRepository.instance)`); `core/widgets` không import `data/` (interface `ServiceLogoSource` ở
+`core/widgets/service_logo_source.dart`, không có scope ⇒ `ServiceLogoSource.none` = monogram). Test/gallery bơm nguồn giả
+bằng `ServiceLogoScope(source: FakeLogoSource(…))` (`test/core/widgets/service_tile_logo_test.dart`). CI: `ci.yml` (AAB)
+và `ios.yml` truyền `--dart-define=LOGO_DEV_KEY` từ secret; thiếu secret ⇒ cảnh báo vàng, vẫn build (không logo).
 
 ## 8. UI conventions (design system — phiên F, 2026-11-05)
 
@@ -183,7 +187,7 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 | Việc | Component |
 |---|---|
 | Tile dịch vụ | `ServiceTile(name, colorValue, iconText, size: 24/32/40/56/80, awaiting:, trial:, off:, faded:, logoDomain:)` (`logoDomain` chỉ từ Catalog → logo thật, xem §7) · ô "thêm tuỳ chỉnh" `GhostTile` |
-| Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn) |
+| Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:, logoDomain:, progress:, progressTone:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn). Tuỳ chọn (không truyền ⇒ y như cũ): `logoDomain:` (chỉ từ Catalog) → logo trên tile; `progress: CycleProgress.forSubscription(sub, today: today)` → thanh tiến độ kỳ 4px dưới dòng 2 (màu theo `state`: brand / trial `ink-muted` / awaiting `warning` / cancelled `line-strong`; gói **Tạm dừng** truyền `progressTone: CycleProgressTone.off`); trình đọc màn hình đọc "còn N ngày" + %; giảm chuyển động ⇒ không animate. Dùng riêng: `CycleProgressBar(progress:, tone:)` |
 | Hero tổng chi (S2, tổng tháng S8) | `SpendHero(label, amount, format, approx, yearly, onPeriodChanged, segments, leadingMeta, trailingMeta, footer)` — tự đếm số 240 ms; `SpendStrip`, `CountUpText` dùng riêng được |
 | Nút | `AppButton.primary/tonal/outline/text/danger` (+ `AppButtonKind.dangerText`), `small:` (40, pill), `expand:` (full width), `icon:`, `loading:`; FAB `AppFab`; icon 44px `AppIconButton` |
 | Chip / badge | `AppChip(selected, fit:)` (đặt trong `Wrap(spacing: 8, runSpacing: -4)`; `fit` = 4 chip chu kỳ 1 hàng) · `StatusBadge.awaiting/trial/paid` hoặc `StatusBadge(kind:, icon:, large:)` · `ShareMark(count)` |
