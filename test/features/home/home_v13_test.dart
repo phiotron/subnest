@@ -125,6 +125,19 @@ void main() {
       await closeApp(tester);
     });
 
+    testWidgets('TalkBack reads the Auto badge, label chip, "+1" and Paused on the rows', (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpRich(tester);
+      await scrollToFinder(tester, row('youtube'));
+      expect(find.bySemanticsLabel(RegExp('ChatGPT Plus.*Auto-detected', dotAll: true)), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp('YouTube.*Work.*1 more label', dotAll: true)), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp('iCloud.*Pauses 15 Nov', dotAll: true)), findsOneWidget);
+      await scrollToFinder(tester, row('canva'));
+      expect(find.bySemanticsLabel(RegExp('Canva.*Paused.*since 1 Nov', dotAll: true)), findsOneWidget);
+      handle.dispose();
+      await closeApp(tester);
+    });
+
     testWidgets('filter sheet → filtered list with chips, remembered, Clear (png 16–17)', (tester) async {
       final app = await pumpRich(tester);
       await scrollToFinder(tester, find.text('Filter'));
