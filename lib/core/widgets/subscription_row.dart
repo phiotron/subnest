@@ -25,6 +25,10 @@ enum SubscriptionRowState {
 
   /// Cancelled: greyed tile, muted name, "Cancelled 04/11/2026".
   cancelled,
+
+  /// Paused: greyed tile, muted name, neutral pause "Paused" badge + "since 1 Nov" ([meta]).
+  /// Still swipeable to Cancel. Progress bar (if any) defaults to the `off` tone.
+  paused,
 }
 
 /// Subscription list row (design Components › SubscriptionRow): ≥ 68px, 40px [ServiceTile],
@@ -42,6 +46,7 @@ enum SubscriptionRowState {
 /// * [progress] → a [CycleProgressBar] under the second line (how much of the billing period
 ///   has passed). Its colour follows [state] (trial / awaiting / cancelled = off) unless
 ///   [progressTone] is given (e.g. `off` for a paused subscription).
+/// * [nameBadge] (e.g. "Auto") after the name, [metaExtras] (label chip, "+2") after the second line.
 ///
 /// Put rows in an `AppGroup(dividerIndent: 68)`. Strings for meta lines come from the caller —
 /// build them with `AppDates.relative`, `l10n.category`, `perCycle`, `l10n.corePlanPrice`.
@@ -66,6 +71,8 @@ class SubscriptionRow extends StatelessWidget {
     this.logoDomain,
     this.progress,
     this.progressTone,
+    this.nameBadge,
+    this.metaExtras = const [],
   });
 
   final String name;
@@ -109,14 +116,22 @@ class SubscriptionRow extends StatelessWidget {
   /// Build it with `CycleProgress.forSubscription(sub, today: today)`.
   final CycleProgress? progress;
 
-  /// Bar colour; defaults from [state] (normal → brand, trial, awaiting, cancelled → off).
+  /// Bar colour; defaults from [state] (normal → brand, trial, awaiting, cancelled/paused → off).
   final CycleProgressTone? progressTone;
+
+  /// Small badge after the name (and share mark), e.g. the "Auto" badge of an auto-detected
+  /// subscription. `null` = nothing.
+  final Widget? nameBadge;
+
+  /// Extra pieces at the end of the second line (label chip, "+2"…); they wrap with it.
+  final List<Widget> metaExtras;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = context.l10n;
-    final off = state == SubscriptionRowState.cancelled;
+    final cancelled = state == SubscriptionRowState.cancelled;
+    final off = cancelled || state == SubscriptionRowState.paused;
 
     Widget second;
     switch (state) {
@@ -128,7 +143,11 @@ class SubscriptionRow extends StatelessWidget {
           children: [
             StatusBadge.awaiting(label: badgeLabel ?? l.commonStatusAwaiting),
             if (awaitingCount > 1)
-              Text('×$awaitingCount', style: AppType.meta.copyWith(fontWeight: FontWeight.w600, color: c.warningInk)),
+              Text(
+                '×$awaitingCount',
+                style: AppType.meta.copyWith(fontWeight: FontWeight.w600, color: c.warningInk),
+              ),
+            ...metaExtras,
           ],
         );
       case SubscriptionRowState.trial:
@@ -139,10 +158,35 @@ class SubscriptionRow extends StatelessWidget {
           children: [
             StatusBadge.trial(label: badgeLabel ?? l.commonStatusTrial),
             if (meta != null) Text(meta!, style: AppType.meta.copyWith(color: c.inkMuted)),
+            ...metaExtras,
+          ],
+        );
+      case SubscriptionRowState.paused:
+        second = Wrap(
+          spacing: 6,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            StatusBadge(label: badgeLabel ?? l.commonStatusPaused, icon: LucideIcons.pause),
+            if (meta != null) Text(meta!, style: AppType.meta.copyWith(color: c.inkMuted)),
+            ...metaExtras,
           ],
         );
       case SubscriptionRowState.normal || SubscriptionRowState.cancelled:
-        second = Text(meta ?? '', maxLines: 2, overflow: TextOverflow.ellipsis, style: AppType.meta.copyWith(color: c.inkMuted));
+        final text = Text(
+          meta ?? '',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: AppType.meta.copyWith(color: c.inkMuted),
+        );
+        second = metaExtras.isEmpty
+            ? text
+            : Wrap(
+                spacing: 6,
+                runSpacing: 4,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [if (meta != null && meta!.isNotEmpty) text, ...metaExtras],
+              );
     }
 
     final amountStyle = AppType.titleSm.copyWith(color: c.ink).tabular;
@@ -183,6 +227,7 @@ class SubscriptionRow extends StatelessWidget {
                         const SizedBox(width: 6),
                         ShareMark(count: sharedCount!, semanticLabel: l.coreSharedWith(sharedCount!)),
                       ],
+                      if (nameBadge != null) ...[const SizedBox(width: 6), nameBadge!],
                     ],
                   ),
                   const SizedBox(height: 3),
@@ -191,12 +236,13 @@ class SubscriptionRow extends StatelessWidget {
                     const SizedBox(height: 6),
                     CycleProgressBar(
                       progress: progress!,
-                      tone: progressTone ??
+                      tone:
+                          progressTone ??
                           switch (state) {
                             SubscriptionRowState.normal => CycleProgressTone.normal,
                             SubscriptionRowState.trial => CycleProgressTone.trial,
                             SubscriptionRowState.awaiting => CycleProgressTone.awaiting,
-                            SubscriptionRowState.cancelled => CycleProgressTone.off,
+                            SubscriptionRowState.cancelled || SubscriptionRowState.paused => CycleProgressTone.off,
                           },
                     ),
                   ],
@@ -208,7 +254,12 @@ class SubscriptionRow extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(amount, style: amountStyle),
-                        if (amountMeta != null) Text(amountMeta!, semanticsLabel: context.l10n.spokenLabel(amountMeta!), style: amountMetaStyle),
+                        if (amountMeta != null)
+                          Text(
+                            amountMeta!,
+                            semanticsLabel: context.l10n.spokenLabel(amountMeta!),
+                            style: amountMetaStyle,
+                          ),
                       ],
                     ),
                   ],
@@ -216,18 +267,24 @@ class SubscriptionRow extends StatelessWidget {
               ),
             ),
             if (!stacked) ...[
-            const SizedBox(width: AppSpace.s3),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(amount, maxLines: 1, softWrap: false, style: amountStyle),
-                if (amountMeta != null) ...[
-                  const SizedBox(height: 3),
-                  Text(amountMeta!, semanticsLabel: context.l10n.spokenLabel(amountMeta!), maxLines: 1, softWrap: false, style: amountMetaStyle),
+              const SizedBox(width: AppSpace.s3),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(amount, maxLines: 1, softWrap: false, style: amountStyle),
+                  if (amountMeta != null) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      amountMeta!,
+                      semanticsLabel: context.l10n.spokenLabel(amountMeta!),
+                      maxLines: 1,
+                      softWrap: false,
+                      style: amountMetaStyle,
+                    ),
+                  ],
                 ],
-              ],
-            ),
+              ),
             ],
           ],
         ),
@@ -257,9 +314,16 @@ class SubscriptionRow extends StatelessWidget {
         final room = box.maxWidth - AppSpace.s4 * 2 - 40 - AppSpace.s3 * 2 - amountW;
         // What the second line needs: the badge (+ "×N") — never truncated.
         var need = 112.0;
-        if (state == SubscriptionRowState.awaiting || state == SubscriptionRowState.trial) {
-          final label = badgeLabel ??
-              (state == SubscriptionRowState.awaiting ? l.commonStatusAwaiting : l.commonStatusTrial);
+        if (state == SubscriptionRowState.awaiting ||
+            state == SubscriptionRowState.trial ||
+            state == SubscriptionRowState.paused) {
+          final label =
+              badgeLabel ??
+              switch (state) {
+                SubscriptionRowState.awaiting => l.commonStatusAwaiting,
+                SubscriptionRowState.paused => l.commonStatusPaused,
+                _ => l.commonStatusTrial,
+              };
           need = width(label, AppType.caption.copyWith(letterSpacing: 0)) + 6 + 13 + 4 + 8 + 4;
           if (state == SubscriptionRowState.awaiting && awaitingCount > 1) {
             need += 6 + width('×$awaitingCount', AppType.meta.copyWith(fontWeight: FontWeight.w600));
@@ -279,7 +343,7 @@ class SubscriptionRow extends StatelessWidget {
           foreground: c.onBrand,
           onPressed: onConfirm!,
         ),
-      if (!off && onCancel != null)
+      if (!cancelled && onCancel != null)
         SwipeAction(
           label: l.coreSwipeCancel,
           icon: AppIcons.cancelled,
@@ -289,12 +353,7 @@ class SubscriptionRow extends StatelessWidget {
         ),
     ];
 
-    return SwipeActions(
-      actions: actions,
-      onTap: onTap,
-      highlight: highlight,
-      child: row,
-    );
+    return SwipeActions(actions: actions, onTap: onTap, highlight: highlight, child: row);
   }
 }
 
@@ -440,10 +499,7 @@ class _SwipeActionsState extends State<SwipeActions> with TickerProviderStateMix
                         offset: Offset(-x, 0),
                         child: Material(
                           color: flashColor,
-                          child: InkWell(
-                            onTap: x > 0 ? close : widget.onTap,
-                            child: child,
-                          ),
+                          child: InkWell(onTap: x > 0 ? close : widget.onTap, child: child),
                         ),
                       ),
                     ],

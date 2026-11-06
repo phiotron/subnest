@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,17 +9,23 @@ import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
+import '../../data/subscription_repository.dart' show DetectionReport;
 import '../../domain/domain.dart';
 import '../subscription_detail/cancel_flow.dart';
 import 'home_list.dart';
 import 'subscription_labels.dart';
+import 'widgets/filter_sheet.dart';
 import 'widgets/overview_cards.dart';
+import 'widgets/overview_v13.dart';
 import 'widgets/sort_sheet.dart';
 
-/// S2 Overview (png 08–15): date + "Overview" + search, spend hero (Month ↔ Year, colour strip,
-/// "Biggest …", stale-rates chip), reminders-off banner, "N payments to confirm", trial ending,
-/// upcoming 7 days, the Active · Trials · Cancelled list (sort sheet, swipe Confirm / Cancel,
-/// savings card) and the add FAB. Empty: illustration + "Browse services".
+/// S2 Overview (mockup v13, png 08–20): date + "Overview" + search, spend hero (Month ↔ Year,
+/// budget bar — or the colour strip without a budget —, "Biggest …", stale-rates chip),
+/// reminders-off banner, "N payments to confirm", trial ending, "Due this week", then the
+/// Active · Trials · Cancelled list with Filter (sheet + removable chips) and Sort (both
+/// remembered in Settings), rows with logo, period progress, label chip, Auto badge, Paused /
+/// "Pauses 15 Nov"; swipe Confirm / Cancel; savings card; Undo snackbar after automatic adds
+/// ([homeAutoUndoProvider]) and the add FAB. Empty: illustration + "Browse services".
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -29,6 +37,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _yearly = false;
   HomeTab _tab = HomeTab.active;
   HomeSort _sort = HomeSort.dueDate;
+  HomeFilter _filter = HomeFilter.none;
+  bool _restored = false;
+  Set<String> _flashIds = const {};
+  Timer? _flashTimer;
   bool _searching = false;
   final _query = TextEditingController();
   final _scroll = ScrollController();
@@ -36,6 +48,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void dispose() {
+    _flashTimer?.cancel();
     _query.dispose();
     _scroll.dispose();
     super.dispose();
@@ -57,7 +70,93 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     } catch (_) {
       ok = false;
     }
-    if (!ok && mounted) showAppToast(context, context.l10n.subscriptionDetailLinkFailed(linkHost(link)), icon: AppIcons.alert);
+    if (!ok && mounted) {
+      showAppToast(context, context.l10n.subscriptionDetailLinkFailed(linkHost(link)), icon: AppIcons.alert);
+    }
+  }
+
+  void _setSort(HomeSort sort) {
+    setState(() => _sort = sort);
+    ref.read(settingsRepositoryProvider).setHomeSort(sort == HomeSort.dueDate ? null : sort.name);
+  }
+
+  void _setFilter(HomeFilter filter, {List<Subscription> all = const [], LocalDate? today}) {
+    setState(() {
+      _filter = filter;
+      // Nothing left in this tab but some in another (e.g. "Cancelled" picked on Active) → go there.
+      if (today != null &&
+          filter.statuses.isNotEmpty &&
+          !all.any((s) => tabOf(s, today) == _tab && filter.matches(s, today))) {
+        for (final t in HomeTab.values) {
+          if (all.any((s) => tabOf(s, today) == t && filter.matches(s, today))) {
+            _tab = t;
+            break;
+          }
+        }
+      }
+    });
+    ref.read(settingsRepositoryProvider).setHomeFilter(filter.encode());
+  }
+
+  Future<void> _openFilter(List<Subscription> all, LocalDate today) async {
+    final cats = ref.read(categoriesProvider).value ?? const <Category>[];
+    final used = {for (final s in all) s.categoryId, ..._filter.categoryIds};
+    final picked = await showFilterSheet(
+      context,
+      current: _filter,
+      categories: [
+        for (final c in cats)
+          if (used.contains(c.id)) c,
+      ],
+      labels: ref.read(labelsProvider).value ?? const [],
+      paymentMethods: ref.read(paymentMethodsProvider).value ?? const [],
+      countFor: (f) => all.where((s) => f.matches(s, today)).length,
+    );
+    if (picked != null && mounted) _setFilter(picked, all: all, today: today);
+  }
+
+  void _showAutoUndo(DetectionReport report) {
+    final l = context.l10n;
+    final parts = <String>[
+      if (report.added.isNotEmpty)
+        report.added.every((s) => s.detectionSource == DetectionSource.scan)
+            ? l.homeAutoAddedScan(report.added.length)
+            : l.homeAutoAdded(report.added.length),
+      if (report.confirmed.isNotEmpty) l.homeAutoConfirmed(report.confirmed.length),
+    ];
+    _flashTimer?.cancel();
+    setState(() => _flashIds = {for (final s in report.added) s.id});
+    _flashTimer = Timer(AppMotion.newRowFlash + const Duration(milliseconds: 400), () {
+      if (mounted) setState(() => _flashIds = const {});
+    });
+    final repo = ref.read(subscriptionRepositoryProvider);
+    final c = context.colors;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 6),
+          action: SnackBarAction(
+            label: l.homeUndo,
+            onPressed: () async {
+              for (final s in report.added) {
+                await repo.undoAutoAdd(s.id);
+              }
+              for (final p in report.confirmed) {
+                await repo.undoAutoConfirm(p.id);
+              }
+              if (mounted) showAppToast(context, l.homeUndone);
+            },
+          ),
+          content: Row(
+            children: [
+              Icon(LucideIcons.sparkles, size: 18, color: c.bg),
+              const SizedBox(width: 10),
+              Expanded(child: Text(parts.join(' · '))),
+            ],
+          ),
+        ),
+      );
   }
 
   Future<void> _turnOnReminders() async {
@@ -71,6 +170,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final c = context.colors;
     final subsAsync = ref.watch(subscriptionsProvider);
     final today = ref.watch(todayProvider);
+
+    // Filter + sort remembered between launches (restored once, when Settings first load).
+    final settings = ref.watch(settingsProvider).value;
+    if (!_restored && settings != null) {
+      _restored = true;
+      _sort = HomeSort.parse(settings.homeSort);
+      _filter = HomeFilter.decode(settings.homeFilter);
+    }
+
+    ref.listen(homeAutoUndoProvider, (_, report) {
+      if (report == null) return;
+      ref.read(homeAutoUndoProvider.notifier).clear();
+      _showAutoUndo(report);
+    });
 
     // "See cancelled" from the celebration screen.
     final requested = ref.watch(homeTabRequestProvider);
@@ -126,7 +239,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final kept = ref.watch(keptTrialsProvider);
     final now = ref.watch(clockProvider)();
 
-    Widget pad(Widget w) => Padding(padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4), child: w);
+    Widget pad(Widget w) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4),
+      child: w,
+    );
 
     final children = <Widget>[
       pad(_header(context, today)),
@@ -148,15 +264,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     if (all.isEmpty) {
       children
-        ..add(
-          pad(
-            SpendHero(
-              label: l.homeMonthlySpend,
-              amount: 0,
-              format: (v) => l.amount(v, primary),
-            ),
-          ),
-        )
+        ..add(pad(SpendHero(label: l.homeMonthlySpend, amount: 0, format: (v) => l.amount(v, primary))))
         ..add(
           EmptyState(
             art: const NestArt(kind: NestArtKind.empty, width: 180),
@@ -167,7 +275,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onAction: () => context.push(AppRoutes.catalog),
           ),
         );
-      return ListView(padding: const EdgeInsets.only(bottom: AppSpace.s10 + AppSize.fabSize), children: children);
+      return ListView(
+        padding: const EdgeInsets.only(bottom: AppSpace.s10 + AppSize.fabSize),
+        children: children,
+      );
     }
 
     // 1. Hero
@@ -175,25 +286,69 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final total = summary?.monthly ?? 0;
     final biggest = active.isEmpty || total <= 0 ? null : active.first;
     final staleChip = _ratesChip(context, all, primary, rates, now);
+    final segments = [for (final (s, cost) in active) SpendSegment(color: Color(s.colorValue), value: cost)];
+    final leadingMeta = [
+      l.homeActiveCount(summary?.activeCount ?? 0),
+      l.homeTrialCount(summary?.trialCount ?? 0),
+    ].join(' · ');
+    final trailingMeta = biggest == null ? null : l.homeBiggest(biggest.$1.name, (biggest.$2 / total * 100).round());
+    final budget = ref.watch(budgetUsageProvider).where((u) => u.budget.isTotal && u.ratio != null).firstOrNull;
+    final heroLabel = _yearly ? l.homeYearlySpend : l.homeMonthlySpend;
+    final heroApprox = anyConverted(active.map((e) => e.$1), primary);
     children.add(
       pad(
-        SpendHero(
-          label: _yearly ? l.homeYearlySpend : l.homeMonthlySpend,
-          amount: _yearly ? total * 12 : total,
-          format: (v) => l.amount(v, primary),
-          approx: anyConverted(active.map((e) => e.$1), primary),
-          yearly: _yearly,
-          onPeriodChanged: (y) => setState(() => _yearly = y),
-          segments: [for (final (s, cost) in active) SpendSegment(color: Color(s.colorValue), value: cost)],
-          leadingMeta: [
-            l.homeActiveCount(summary?.activeCount ?? 0),
-            l.homeTrialCount(summary?.trialCount ?? 0),
-          ].join(' · '),
-          trailingMeta: biggest == null
-              ? null
-              : l.homeBiggest(biggest.$1.name, (biggest.$2 / total * 100).round()),
-          footer: staleChip,
-        ),
+        budget == null
+            ? SpendHero(
+                label: heroLabel,
+                amount: _yearly ? total * 12 : total,
+                format: (v) => l.amount(v, primary),
+                approx: heroApprox,
+                yearly: _yearly,
+                onPeriodChanged: (y) => setState(() => _yearly = y),
+                segments: segments,
+                leadingMeta: leadingMeta,
+                trailingMeta: trailingMeta,
+                footer: staleChip,
+              )
+            // With a total budget the colour strip becomes the budget bar, between the total and the
+            // meta line (png 08). SpendHero has no slot there, so the bar + meta go in its footer.
+            : SpendHero(
+                label: heroLabel,
+                amount: _yearly ? total * 12 : total,
+                format: (v) => l.amount(v, primary),
+                approx: heroApprox,
+                yearly: _yearly,
+                onPeriodChanged: (y) => setState(() => _yearly = y),
+                footer: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      BudgetBar(
+                        ratio: budget.ratio!,
+                        budget: l.amount(budget.limit!, primary),
+                        segments: segments,
+                        onTap: () => context.push(AppRoutes.settingsBudgets),
+                      ),
+                      const SizedBox(height: AppSpace.s1),
+                      Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        spacing: AppSpace.s2,
+                        runSpacing: 2,
+                        children: [
+                          Text(leadingMeta, style: AppType.meta.copyWith(color: c.inkMuted)),
+                          if (trailingMeta != null) Text(trailingMeta, style: AppType.meta.copyWith(color: c.inkMuted)),
+                        ],
+                      ),
+                      if (staleChip != null) ...[
+                        const SizedBox(height: AppSpace.s3),
+                        Align(alignment: AlignmentDirectional.centerStart, child: staleChip),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
 
@@ -223,10 +378,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         TrialEndingCard(
           subscription: trial,
           title: l.homeTrialEnds(name, BillingRules.daysUntilDue(trial, today)),
-          subtitle: l.homeTrialThen(
-            pricePerCycle(l, trial),
-            AppDates.weekdayShort(l, trial.dueDate, today: today),
-          ),
+          subtitle: l.homeTrialThen(pricePerCycle(l, trial), AppDates.weekdayShort(l, trial.dueDate, today: today)),
           onTap: () => context.push(AppRoutes.subscriptionDetail(trial.id)),
           onHowToCancel: () => _openLink(trial, cancelLink(trial, catalog)),
           onKeep: () {
@@ -249,41 +401,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
     }
 
-    // 3. Upcoming · 7 days
-    final upcoming = CalendarBuilder.upcoming(subscriptions: all, today: today);
-    if (upcoming.isNotEmpty) {
-      children
-        ..add(
-          pad(
-            SectionHeader(
-              label: l.homeUpcoming,
-              actionLabel: l.homeCalendar,
-              onAction: () => context.go(AppRoutes.calendar),
-              padding: const EdgeInsets.fromLTRB(0, AppSpace.s5, 0, AppSpace.s2),
+    // 3. Due this week (awaiting amounts shown apart, in amber)
+    final week = ref.watch(weekStripProvider);
+    if (week != null) {
+      var waiting = 0.0;
+      final days = <WeekDay>[];
+      for (var i = 0; i < week.days.length; i++) {
+        final date = week.start.addDays(i);
+        final subs = <Subscription>[];
+        final awaitingIds = <String>{};
+        for (final it in week.days[i]) {
+          if (!subs.contains(it.subscription)) subs.add(it.subscription);
+          if (date == today && BillingRules.isAwaitingConfirmation(it.subscription, today)) {
+            awaitingIds.add(it.subscription.id);
+            waiting += it.amount;
+          }
+        }
+        days.add(WeekDay(date: date, subscriptions: subs, awaitingIds: awaitingIds));
+      }
+      final weekApprox = anyConverted({
+        for (final d in days)
+          for (final x in d.subscriptions)
+            if (!d.awaitingIds.contains(x.id)) x,
+      }, primary);
+      final waitApprox = anyConverted({
+        for (final d in days)
+          for (final x in d.subscriptions)
+            if (d.awaitingIds.contains(x.id)) x,
+      }, primary);
+      children.add(
+        pad(
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpace.s5),
+            child: WeekCard(
+              total: l.amount(week.total - waiting, primary, approx: weekApprox),
+              toConfirm: waiting > 0 ? l.amount(waiting, primary, approx: waitApprox) : null,
+              days: days,
+              today: today,
+              onTap: () => context.go(AppRoutes.calendar),
             ),
           ),
-        )
-        ..add(
-          pad(
-            UpcomingStrip(
-              cards: [
-                for (final e in upcoming)
-                  UpcomingCard(
-                    subscription: e.subscription,
-                    when: '${AppDates.weekdayShort(l, e.date, today: today)} · ${AppDates.relative(l, e.date, today: today)}',
-                    amount: l.money(e.subscription.myShare),
-                    amountMeta: _upcomingMeta(l, e, today, primary, calc),
-                    onTap: () => context.push(AppRoutes.subscriptionDetail(e.subscription.id)),
-                  ),
-              ],
-            ),
-          ),
-        );
+        ),
+      );
     }
 
     // 4. Subscriptions list
     final counts = {for (final t in HomeTab.values) t: all.where((s) => tabOf(s, today) == t).length};
-    final list = listFor(all, _tab, _sort, today: today, calc: calc);
+    final filter = _filter.prune(
+      categoryIds: ref.watch(categoriesProvider).value?.map((e) => e.id).toSet(),
+      labelIds: ref.watch(labelsProvider).value?.map((e) => e.id).toSet(),
+      paymentMethodIds: ref.watch(paymentMethodsProvider).value?.map((e) => e.id).toSet(),
+    );
+    final list = listFor(all, _tab, _sort, today: today, calc: calc, filter: filter);
+    final categories = ref.watch(categoryByIdProvider);
+    final labels = {for (final x in ref.watch(labelsProvider).value ?? const <Label>[]) x.id: x};
+    final methods = {for (final x in ref.watch(paymentMethodsProvider).value ?? const <PaymentMethod>[]) x.id: x};
+    final activeFilters = <ActiveFilter>[
+      for (final st in HomeStatus.values)
+        if (filter.statuses.contains(st))
+          ActiveFilter(
+            statusLabel(l, st),
+            () => _setFilter(filter.copyWith(statuses: {...filter.statuses}..remove(st))),
+          ),
+      for (final id in filter.categoryIds)
+        if (categories[id] case final cat?)
+          ActiveFilter(
+            l.categoryName(cat),
+            () => _setFilter(filter.copyWith(categoryIds: {...filter.categoryIds}..remove(id))),
+          ),
+      for (final id in filter.labelIds)
+        if (labels[id] case final lb?)
+          ActiveFilter(
+            l.homeFilterChipLabel(lb.name),
+            () => _setFilter(filter.copyWith(labelIds: {...filter.labelIds}..remove(id))),
+          ),
+      for (final id in filter.paymentMethodIds)
+        if (methods[id] case final m?)
+          ActiveFilter(
+            m.name,
+            () => _setFilter(filter.copyWith(paymentMethodIds: {...filter.paymentMethodIds}..remove(id))),
+          ),
+    ];
     children.addAll([
       pad(
         Padding(
@@ -294,11 +492,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: AppSpace.s3,
             children: [
-              Semantics(header: true, child: Text(l.homeSubscriptions, style: AppType.title.copyWith(color: c.ink))),
-              SortButton(
-                label: sortLabel(l, _sort),
-                semanticLabel: l.homeSortLabel(sortLabel(l, _sort)),
-                onPressed: () => showSortSheet(context, current: _sort, onChanged: (s) => setState(() => _sort = s)),
+              Semantics(
+                header: true,
+                child: Text(l.homeSubscriptions, style: AppType.title.copyWith(color: c.ink)),
+              ),
+              Wrap(
+                spacing: AppSpace.s2,
+                children: [
+                  SortButton(
+                    icon: LucideIcons.slidersHorizontal,
+                    label: l.homeFilter,
+                    semanticLabel: l.homeFilterButtonLabel(filter.count),
+                    active: !filter.isEmpty,
+                    count: filter.count,
+                    onPressed: () => _openFilter(all, today),
+                  ),
+                  SortButton(
+                    label: sortLabel(l, _sort),
+                    semanticLabel: l.homeSortLabel(sortLabel(l, _sort)),
+                    onPressed: () => showSortSheet(context, current: _sort, onChanged: _setSort),
+                  ),
+                ],
               ),
             ],
           ),
@@ -316,6 +530,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       const SizedBox(height: AppSpace.s2),
+      if (activeFilters.isNotEmpty)
+        pad(
+          Padding(
+            padding: const EdgeInsets.only(bottom: AppSpace.s2),
+            child: ActiveFilterChips(filters: activeFilters, onClear: () => _setFilter(HomeFilter.none)),
+          ),
+        ),
       if (_tab == HomeTab.cancelled && (summary?.savingsYearly ?? 0) > 0)
         pad(
           Padding(
@@ -337,11 +558,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ? AppCard(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: AppSpace.s5),
                 child: Text(
-                  switch (_tab) {
-                    HomeTab.active => l.homeEmptyActive,
-                    HomeTab.trials => l.homeEmptyTrials,
-                    HomeTab.cancelled => l.homeEmptyCancelled,
-                  },
+                  !filter.isEmpty
+                      ? l.homeEmptyFiltered
+                      : switch (_tab) {
+                          HomeTab.active => l.homeEmptyActive,
+                          HomeTab.trials => l.homeEmptyTrials,
+                          HomeTab.cancelled => l.homeEmptyCancelled,
+                        },
                   textAlign: TextAlign.center,
                   style: AppType.meta.copyWith(color: c.inkMuted),
                 ),
@@ -394,29 +617,56 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return StatusBadge(label: label, icon: AppIcons.offline, large: true);
   }
 
-  String _upcomingMeta(AppLocalizations l, CalendarEntry e, LocalDate today, String primary, SpendingCalculator calc) {
-    final s = e.subscription;
-    if (BillingRules.effectiveStatus(s, today) == SubscriptionStatus.trial && e.date == s.dueDate) {
-      return l.homeFirstCharge;
-    }
-    if (s.currency != primary) {
-      final v = calc.periodCost(s);
-      if (v != null) return l.amount(v, primary, approx: true);
-    }
-    return perCycle(l, s.cycle);
-  }
-
   Widget _row(BuildContext context, Subscription s, LocalDate today, String primary, SpendingCalculator calc) {
     final l = context.l10n;
     final state = rowState(s, today);
     final (amount, amountMeta) = rowAmounts(l, s, primary: primary, calc: calc);
+    final catalog = ref.watch(catalogByIdProvider);
+    final labels = ref.watch(labelsProvider).value ?? const <Label>[];
+    final mine = [
+      for (final x in labels)
+        if (s.labelIds.contains(x.id)) x,
+    ]..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    final pauses = pausesOn(s, today);
+    final trialEnd = s.trialEndDate;
+    final CycleProgress? progress = switch (state) {
+      SubscriptionRowState.trial when trialEnd != null && trialEnd.isAfter(s.startDate) => CycleProgress(
+        from: s.startDate,
+        due: trialEnd,
+        today: today,
+      ),
+      SubscriptionRowState.normal ||
+      SubscriptionRowState.trial ||
+      SubscriptionRowState.awaiting => CycleProgress.forSubscription(s, today: today),
+      SubscriptionRowState.cancelled || SubscriptionRowState.paused => null,
+    };
     return SubscriptionRow(
       key: ValueKey('row-${s.id}'),
       name: s.name,
       colorValue: s.colorValue,
       iconText: s.iconText,
       state: state,
-      meta: rowMeta(l, s, today),
+      meta: rowMeta(l, s, today, categories: ref.watch(categoryByIdProvider)),
+      logoDomain: s.serviceId == null ? null : catalog[s.serviceId]?.logoDomain,
+      progress: progress,
+      highlight: _flashIds.contains(s.id),
+      nameBadge: s.isAutoDetected ? const AutoBadge() : null,
+      metaExtras: [
+        if (pauses != null)
+          StatusBadge(
+            label: l.homePausesOn(AppDates.short(l, pauses, today: today)),
+            icon: LucideIcons.pause,
+          ),
+        if (mine.isNotEmpty && state != SubscriptionRowState.cancelled) ...[
+          LabelChip(name: mine.first.name, colorValue: mine.first.colorValue),
+          if (mine.length > 1)
+            Text(
+              '+${mine.length - 1}',
+              semanticsLabel: l.homeMoreLabels(mine.length - 1),
+              style: AppType.meta.copyWith(color: context.colors.inkMuted),
+            ),
+        ],
+      ],
       awaitingCount: state == SubscriptionRowState.awaiting ? BillingRules.pendingDueDates(s, today).length : 1,
       badgeLabel: state == SubscriptionRowState.trial ? l.homeTrialBadge : null,
       sharedCount: s.isShared ? s.sharedWith : null,

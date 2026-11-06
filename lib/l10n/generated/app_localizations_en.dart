@@ -336,7 +336,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogTitle => 'Add subscription';
 
   @override
-  String get catalogSearchHint => 'Search 100+ services';
+  String get catalogSearchHint => 'Search 500+ services';
 
   @override
   String get catalogClearSearch => 'Clear search';
@@ -429,6 +429,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String catalogContinueWith(String plan) {
     return 'Continue with $plan';
   }
+
+  @override
+  String get catalogTabGeneral => 'General';
+
+  @override
+  String get catalogTabVietnam => 'Vietnam';
 
   @override
   String confirmQuestion(String name) {
@@ -920,6 +926,152 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeAdd => 'Add subscription';
+
+  @override
+  String homePausedSince(String date) {
+    return 'since $date';
+  }
+
+  @override
+  String homePausesOn(String date) {
+    return 'Pauses $date';
+  }
+
+  @override
+  String get homeAutoBadge => 'Auto';
+
+  @override
+  String homeMoreLabels(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more labels',
+      one: '1 more label',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeFilter => 'Filter';
+
+  @override
+  String homeFilterButtonLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Filter, $count selected',
+      one: 'Filter, 1 selected',
+      zero: 'Filter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeFilterReset => 'Reset';
+
+  @override
+  String get homeFilterStatus => 'Status';
+
+  @override
+  String get homeFilterCategory => 'Category';
+
+  @override
+  String get homeFilterLabels => 'Labels';
+
+  @override
+  String get homeFilterPayment => 'Payment method';
+
+  @override
+  String get homeFilterRemember =>
+      'Subnest remembers your filter and sort order next time.';
+
+  @override
+  String homeFilterShow(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Show $count subscriptions',
+      one: 'Show 1 subscription',
+      zero: 'No subscriptions match',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeFilterChipLabel(String name) {
+    return 'Label: $name';
+  }
+
+  @override
+  String get homeFilterClear => 'Clear';
+
+  @override
+  String homeFilterRemove(String name) {
+    return 'Remove filter $name';
+  }
+
+  @override
+  String get homeEmptyFiltered => 'No subscriptions match this filter.';
+
+  @override
+  String get homeWeekTitle => 'Due this week';
+
+  @override
+  String homeWeekToConfirm(String amount) {
+    return '+$amount to confirm';
+  }
+
+  @override
+  String get homeWeekNothing => 'nothing due';
+
+  @override
+  String homeBudget(String amount) {
+    return 'Budget $amount';
+  }
+
+  @override
+  String homeBudgetUsed(int percent) {
+    return '$percent% used';
+  }
+
+  @override
+  String homeAutoAddedScan(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Added $count from your screenshot',
+      one: 'Added 1 from your screenshot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAutoAdded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Added $count automatically',
+      one: 'Added 1 automatically',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAutoConfirmed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Confirmed $count payments automatically',
+      one: 'Confirmed 1 payment automatically',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeUndo => 'Undo';
+
+  @override
+  String get homeUndone => 'Undone';
 
   @override
   String get insightsRangeMonth => 'This month';
@@ -2297,9 +2449,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormReminder => 'Remind me';
 
   @override
-  String get subscriptionFormRemindOff => 'Off';
-
-  @override
   String get subscriptionFormRemindOnDay => 'On day';
 
   @override
@@ -2314,24 +2463,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String subscriptionFormRemindAt(String time, String date) {
-    return 'At $time · $date';
-  }
-
-  @override
   String get subscriptionFormRemindNone => 'No reminder for this subscription';
 
   @override
   String get subscriptionFormMore => 'More details';
 
   @override
-  String get subscriptionFormMoreSub => 'Payment method, cancel link, notes';
+  String get subscriptionFormMoreSub => 'Cancel link, notes';
 
   @override
   String get subscriptionFormPaymentMethod => 'Payment method';
-
-  @override
-  String get subscriptionFormPaymentHint => 'e.g. Visa ••4242';
 
   @override
   String get subscriptionFormManageUrl => 'Cancel / manage link';
@@ -2445,4 +2586,71 @@ class AppLocalizationsEn extends AppLocalizations {
   String subscriptionFormCurrencyNoMatch(String query) {
     return 'No currency matches “$query”';
   }
+
+  @override
+  String get subscriptionFormReferenceHint => 'Check it against your bill';
+
+  @override
+  String get subscriptionFormReferenceNote =>
+      'Reference price from the library, not verified. Check it against your bill.';
+
+  @override
+  String get subscriptionFormLabels => 'Labels';
+
+  @override
+  String get subscriptionFormNewLabel => 'New label';
+
+  @override
+  String get subscriptionFormNewLabelHint => 'e.g. Family, Work';
+
+  @override
+  String get subscriptionFormMethodNone => 'None';
+
+  @override
+  String subscriptionFormMethodUsage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subscriptions',
+      one: '1 subscription',
+      zero: 'Not used yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionFormMethodAddHint => 'Add a card or wallet';
+
+  @override
+  String get subscriptionFormMethodNote =>
+      'Free text — Subnest never connects to your bank.';
+
+  @override
+  String get subscriptionFormAdd => 'Add';
+
+  @override
+  String subscriptionFormRemindMany(String time) {
+    return 'Pick any — each one sends its own reminder at $time.';
+  }
+
+  @override
+  String get subscriptionFormWorthIt => 'Worth it?';
+
+  @override
+  String get subscriptionFormWorthNotRated => 'Not rated';
+
+  @override
+  String get subscriptionFormDelete => 'Delete subscription';
+
+  @override
+  String subscriptionFormDeleteTitle(String name) {
+    return 'Delete $name?';
+  }
+
+  @override
+  String get subscriptionFormDeleteBody =>
+      'Its payment history goes too. This can\'t be undone.';
+
+  @override
+  String get subscriptionFormDeleteAction => 'Delete';
 }

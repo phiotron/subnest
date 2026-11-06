@@ -254,7 +254,7 @@
     }
   },
   "catalogTitle": "Add subscription",
-  "catalogSearchHint": "Search 100+ services",
+  "catalogSearchHint": "Search 500+ services",
   "catalogClearSearch": "Clear search",
   "catalogCustom": "Create a custom service",
   "catalogCustomSub": "Anything not in the library",
@@ -338,6 +338,8 @@
       }
     }
   },
+  "catalogTabGeneral": "General",
+  "catalogTabVietnam": "Vietnam",
   "confirmQuestion": "Did you pay {name}?",
   "@confirmQuestion": {
     "placeholders": {
@@ -747,6 +749,124 @@
   "homeEmptyBody": "Pick from 100+ popular services — most take three taps.",
   "homeBrowse": "Browse services",
   "homeAdd": "Add subscription",
+  "homePausedSince": "since {date}",
+  "@homePausedSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePausesOn": "Pauses {date}",
+  "@homePausesOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeAutoBadge": "Auto",
+  "homeMoreLabels": "{count, plural, =1{1 more label} other{{count} more labels}}",
+  "@homeMoreLabels": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFilter": "Filter",
+  "homeFilterButtonLabel": "{count, plural, =0{Filter} =1{Filter, 1 selected} other{Filter, {count} selected}}",
+  "@homeFilterButtonLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFilterReset": "Reset",
+  "homeFilterStatus": "Status",
+  "homeFilterCategory": "Category",
+  "homeFilterLabels": "Labels",
+  "homeFilterPayment": "Payment method",
+  "homeFilterRemember": "Subnest remembers your filter and sort order next time.",
+  "homeFilterShow": "{count, plural, =0{No subscriptions match} =1{Show 1 subscription} other{Show {count} subscriptions}}",
+  "@homeFilterShow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFilterChipLabel": "Label: {name}",
+  "@homeFilterChipLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeFilterClear": "Clear",
+  "homeFilterRemove": "Remove filter {name}",
+  "@homeFilterRemove": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeEmptyFiltered": "No subscriptions match this filter.",
+  "homeWeekTitle": "Due this week",
+  "homeWeekToConfirm": "+{amount} to confirm",
+  "@homeWeekToConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeWeekNothing": "nothing due",
+  "homeBudget": "Budget {amount}",
+  "@homeBudget": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeBudgetUsed": "{percent}% used",
+  "@homeBudgetUsed": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeAutoAddedScan": "{count, plural, =1{Added 1 from your screenshot} other{Added {count} from your screenshot}}",
+  "@homeAutoAddedScan": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeAutoAdded": "{count, plural, =1{Added 1 automatically} other{Added {count} automatically}}",
+  "@homeAutoAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeAutoConfirmed": "{count, plural, =1{Confirmed 1 payment automatically} other{Confirmed {count} payments automatically}}",
+  "@homeAutoConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeUndo": "Undo",
+  "homeUndone": "Undone",
   "insightsRangeMonth": "This month",
   "insightsRange12": "12 months",
   "insightsRangeYear": "This year",
@@ -1857,7 +1977,6 @@
   },
   "subscriptionFormCategory": "Category",
   "subscriptionFormReminder": "Remind me",
-  "subscriptionFormRemindOff": "Off",
   "subscriptionFormRemindOnDay": "On day",
   "subscriptionFormRemindDays": "{count, plural, =1{1 day} other{{count} days}}",
   "@subscriptionFormRemindDays": {
@@ -1867,22 +1986,10 @@
       }
     }
   },
-  "subscriptionFormRemindAt": "At {time} · {date}",
-  "@subscriptionFormRemindAt": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      },
-      "date": {
-        "type": "String"
-      }
-    }
-  },
   "subscriptionFormRemindNone": "No reminder for this subscription",
   "subscriptionFormMore": "More details",
-  "subscriptionFormMoreSub": "Payment method, cancel link, notes",
+  "subscriptionFormMoreSub": "Cancel link, notes",
   "subscriptionFormPaymentMethod": "Payment method",
-  "subscriptionFormPaymentHint": "e.g. Visa ••4242",
   "subscriptionFormManageUrl": "Cancel / manage link",
   "subscriptionFormManageUrlFromLibrary": "Filled in from the library. Opens from “How to cancel”.",
   "subscriptionFormNotes": "Notes",
@@ -1977,5 +2084,43 @@
         "type": "String"
       }
     }
-  }
+  },
+  "subscriptionFormReferenceHint": "Check it against your bill",
+  "subscriptionFormReferenceNote": "Reference price from the library, not verified. Check it against your bill.",
+  "subscriptionFormLabels": "Labels",
+  "subscriptionFormNewLabel": "New label",
+  "subscriptionFormNewLabelHint": "e.g. Family, Work",
+  "subscriptionFormMethodNone": "None",
+  "subscriptionFormMethodUsage": "{count, plural, =0{Not used yet} =1{1 subscription} other{{count} subscriptions}}",
+  "@subscriptionFormMethodUsage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionFormMethodAddHint": "Add a card or wallet",
+  "subscriptionFormMethodNote": "Free text — Subnest never connects to your bank.",
+  "subscriptionFormAdd": "Add",
+  "subscriptionFormRemindMany": "Pick any — each one sends its own reminder at {time}.",
+  "@subscriptionFormRemindMany": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFormWorthIt": "Worth it?",
+  "subscriptionFormWorthNotRated": "Not rated",
+  "subscriptionFormDelete": "Delete subscription",
+  "subscriptionFormDeleteTitle": "Delete {name}?",
+  "@subscriptionFormDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFormDeleteBody": "Its payment history goes too. This can't be undone.",
+  "subscriptionFormDeleteAction": "Delete"
 }

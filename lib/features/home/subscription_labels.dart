@@ -86,19 +86,35 @@ String linkHost(Uri uri) => uri.host.startsWith('www.') ? uri.host.substring(4) 
 /// Price with its cycle suffix: "₫59,000/month".
 String pricePerCycle(AppLocalizations l, Subscription s) => '${l.money(s.myShare)}${perCycle(l, s.cycle)}';
 
+/// A pause scheduled from a later Due date (png 20): the row still looks Active and says
+/// "Pauses 15 Nov" until then. `null` when not pausing.
+LocalDate? pausesOn(Subscription s, LocalDate today) {
+  final from = s.pausedFrom;
+  if (s.status != SubscriptionStatus.paused || from == null || !from.isAfter(today)) return null;
+  return from;
+}
+
 /// Row state for [SubscriptionRow].
 SubscriptionRowState rowState(Subscription s, LocalDate today) {
   if (BillingRules.isAwaitingConfirmation(s, today)) return SubscriptionRowState.awaiting;
   return switch (BillingRules.effectiveStatus(s, today)) {
     SubscriptionStatus.trial => SubscriptionRowState.trial,
     SubscriptionStatus.cancelled => SubscriptionRowState.cancelled,
-    SubscriptionStatus.active || SubscriptionStatus.paused => SubscriptionRowState.normal,
+    SubscriptionStatus.paused => pausesOn(s, today) != null ? SubscriptionRowState.normal : SubscriptionRowState.paused,
+    SubscriptionStatus.active => SubscriptionRowState.normal,
   };
 }
 
+/// Category name of [s] (user's Category by `categoryId`; built-in name while categories load).
+String categoryLabel(AppLocalizations l, Subscription s, Map<String, Category> categories) {
+  final c = categories[s.categoryId];
+  return c != null ? l.categoryName(c) : l.commonCategory(SubscriptionCategory.fromKey(s.categoryId).key);
+}
+
 /// Second line of a row: "in 3 days · AI" / "2 Feb 2027 · Software" / "ends in 2 days" /
-/// "Cancelled 12 Oct 2026". Awaiting rows show only the badge.
-String? rowMeta(AppLocalizations l, Subscription s, LocalDate today) {
+/// "Cancelled 12 Oct 2026" / "since 1 Nov" (Paused). Awaiting rows show only the badge; a pausing
+/// row only its "Pauses 15 Nov" badge (added by the Overview).
+String? rowMeta(AppLocalizations l, Subscription s, LocalDate today, {Map<String, Category> categories = const {}}) {
   switch (rowState(s, today)) {
     case SubscriptionRowState.awaiting:
       return null;
@@ -107,10 +123,16 @@ String? rowMeta(AppLocalizations l, Subscription s, LocalDate today) {
     case SubscriptionRowState.cancelled:
       final on = s.cancelledOn;
       return on == null ? l.homeTabCancelled : l.homeCancelledOn(AppDates.full(l, on));
+    case SubscriptionRowState.paused:
+      final from = s.pausedFrom;
+      return from == null ? null : l.homePausedSince(AppDates.short(l, from, today: today));
     case SubscriptionRowState.normal:
+      if (pausesOn(s, today) != null) return null;
       final days = today.daysUntil(s.dueDate);
-      final when = days <= 30 ? AppDates.relative(l, s.dueDate, today: today) : AppDates.short(l, s.dueDate, today: today);
-      return '$when · ${l.category(s.category)}';
+      final when = days <= 30
+          ? AppDates.relative(l, s.dueDate, today: today)
+          : AppDates.short(l, s.dueDate, today: today);
+      return '$when · ${categoryLabel(l, s, categories)}';
   }
 }
 

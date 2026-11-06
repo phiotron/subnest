@@ -42,7 +42,7 @@ void main() {
   });
 
   group('S2 Overview', () {
-    testWidgets('hero, awaiting card, trial card, upcoming (png 08)', (tester) async {
+    testWidgets('hero, awaiting card, trial card, due this week (png 08)', (tester) async {
       await pumpApp(tester);
       expect(find.text('Wednesday, 4 November'), findsOneWidget);
       expect(find.text('Monthly spend'), findsOneWidget);
@@ -54,11 +54,16 @@ void main() {
       expect(find.text('₫215,000 · Viettel 5G, Netflix'), findsOneWidget);
       expect(find.text('Spotify trial ends in 2 days'), findsOneWidget);
       expect(find.text('Then ₫59,000/month from Fri, 6 Nov'), findsOneWidget);
-      expect(find.text('UPCOMING · 7 DAYS'), findsOneWidget);
-      expect(find.text('Fri, 6 Nov · in 2 days'), findsOneWidget);
-      expect(find.text('First charge'), findsOneWidget);
-      expect(find.text('Sat, 7 Nov · in 3 days'), findsOneWidget);
-      expect(find.text('≈ ₫508,000'), findsWidgets);
+      // v13: the 7-day strip replaces "Upcoming · 7 days"; Netflix (due today, awaiting) is counted apart.
+      expect(find.text('UPCOMING · 7 DAYS'), findsNothing);
+      expect(find.text('DUE THIS WEEK'), findsOneWidget);
+      expect(find.text('+₫65,000 to confirm'), findsOneWidget);
+      final semantics = tester.ensureSemantics();
+      await tester.pump();
+      expect(find.bySemanticsLabel(RegExp(r'Fri.* 6: Spotify')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'Sat.* 7: ChatGPT Plus')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'Sun.* 8: nothing due')), findsOneWidget);
+      semantics.dispose();
       await closeApp(tester);
     });
 
@@ -100,8 +105,8 @@ void main() {
       await closeApp(tester);
     });
 
-    testWidgets('sort sheet: Price and Name (png 15)', (tester) async {
-      await pumpApp(tester);
+    testWidgets('sort sheet: Price and Name (png 15), remembered', (tester) async {
+      final app = await pumpApp(tester);
       await scrollToFinder(tester, find.text('Due date'));
       await tester.tap(find.text('Due date'));
       await tester.pumpAndSettle();
@@ -112,15 +117,18 @@ void main() {
       await tester.tap(find.text('Done'));
       await tester.pumpAndSettle();
       await scrollToFinder(tester, row('youtube'));
+      // Awaiting rows stay on top whatever the order (v13 png 15 note).
       expect(order(tester, ['viettel', 'netflix', 'chatgpt', 'icloud', 'youtube', 'canva', 'google1']), [
-        'chatgpt',
         'viettel',
+        'netflix',
+        'chatgpt',
         'google1',
         'canva',
-        'netflix',
         'icloud',
         'youtube',
       ]);
+      await tester.drag(find.byType(Scrollable).first, const Offset(0, 300));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Price'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Name'));
@@ -130,14 +138,15 @@ void main() {
       expect(find.text('Sort subscriptions'), findsNothing);
       await scrollToFinder(tester, row('youtube'));
       expect(order(tester, ['viettel', 'netflix', 'chatgpt', 'icloud', 'youtube', 'canva', 'google1']), [
+        'viettel',
+        'netflix',
         'canva',
         'chatgpt',
         'google1',
         'icloud',
-        'netflix',
-        'viettel',
         'youtube',
       ]);
+      expect(await app.container.read(settingsRepositoryProvider).load().then((s) => s.homeSort), 'name');
       await closeApp(tester);
     });
 
@@ -354,19 +363,14 @@ void main() {
       await closeApp(tester);
     });
 
-    testWidgets('cards and upcoming open the right screens', (tester) async {
+    testWidgets('cards and the week strip open the right screens', (tester) async {
       await pumpApp(tester);
       await tester.tap(find.text('Spotify trial ends in 2 days'));
       await settle(tester);
       expect(location(tester), '/subscription/spotify');
       await tester.pageBack();
       await settle(tester);
-      await tester.tap(find.text('Sat, 7 Nov · in 3 days'));
-      await settle(tester);
-      expect(location(tester), '/subscription/chatgpt');
-      await tester.pageBack();
-      await settle(tester);
-      await tester.tap(find.text('Calendar').first);
+      await tester.tap(find.text('DUE THIS WEEK'));
       await settle(tester);
       expect(location(tester), '/calendar');
       await closeApp(tester);
@@ -381,7 +385,8 @@ void main() {
       expect(find.text('7 đang trả · 1 dùng thử'), findsOneWidget);
       expect(find.text('2 khoản cần xác nhận'), findsOneWidget);
       expect(find.text('Dùng thử Spotify hết sau 2 ngày'), findsOneWidget);
-      expect(find.text('SẮP TỚI · 7 NGÀY'), findsOneWidget);
+      expect(find.text('SẮP TRỪ TUẦN NÀY'), findsOneWidget);
+      expect(find.text('+65.000đ chờ xác nhận'), findsOneWidget);
       await closeApp(tester);
     });
 

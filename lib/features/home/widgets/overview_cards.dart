@@ -131,103 +131,18 @@ class TrialEndingCard extends StatelessWidget {
               spacing: AppSpace.s2,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                AppButton.tonal(label: l.homeHowToCancel, icon: AppIcons.external, small: true, onPressed: onHowToCancel),
+                AppButton.tonal(
+                  label: l.homeHowToCancel,
+                  icon: AppIcons.external,
+                  small: true,
+                  onPressed: onHowToCancel,
+                ),
                 AppButton.text(label: l.homeKeepIt, small: true, onPressed: onKeep),
               ],
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-/// One "Upcoming · 7 days" card: tile, name, "Fri, 6 Nov · in 2 days", amount + sub-line.
-class UpcomingCard extends StatelessWidget {
-  const UpcomingCard({
-    super.key,
-    required this.subscription,
-    required this.when,
-    required this.amount,
-    required this.amountMeta,
-    required this.onTap,
-  });
-
-  final Subscription subscription;
-  final String when;
-  final String amount;
-  final String amountMeta;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final s = subscription;
-    return MergeSemantics(
-      child: Semantics(
-        button: true,
-        child: AppCard(
-          onTap: onTap,
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText),
-              const SizedBox(height: 10),
-              Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppType.titleSm.copyWith(color: c.ink)),
-              Text(when, style: AppType.meta.copyWith(color: c.inkMuted)),
-              const SizedBox(height: 10),
-              // Amounts never wrap between digits: they shrink to fit instead.
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(amount, maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: c.ink).tabular),
-              ),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(amountMeta, semanticsLabel: context.l10n.spokenLabel(amountMeta), maxLines: 1, softWrap: false, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Horizontal strip of [UpcomingCard]s, two per screen width, equal heights.
-class UpcomingStrip extends StatelessWidget {
-  const UpcomingStrip({super.key, required this.cards});
-
-  final List<Widget> cards;
-
-  @override
-  Widget build(BuildContext context) {
-    // ≥ 150% text: wider cards (one and a bit per screen, scrolls) so names and amounts fit.
-    final large = MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5;
-    return LayoutBuilder(
-      builder: (context, box) {
-        final w = large ? box.maxWidth * .78 : (box.maxWidth - AppSpace.s3) / 2;
-        final row = IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (var i = 0; i < cards.length; i++) ...[
-                if (i > 0) const SizedBox(width: AppSpace.s3),
-                SizedBox(width: w, child: cards[i]),
-              ],
-            ],
-          ),
-        );
-        if (cards.length <= (large ? 1 : 2)) return Align(alignment: AlignmentDirectional.centerStart, child: row);
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          clipBehavior: Clip.none,
-          child: row,
-        );
-      },
     );
   }
 }
@@ -274,17 +189,30 @@ class SavingsCard extends StatelessWidget {
   }
 }
 
-/// "↑↓ Due date" sort button (label `ink-muted`, ≥ 48dp).
+/// "↑↓ Due date" sort button / "⚙ Filter" button (label `ink-muted`, ≥ 48dp). With [active] the
+/// label turns `brand` and [count] (> 0) shows as a small `brand` pill (png 17).
 class SortButton extends StatelessWidget {
-  const SortButton({super.key, required this.label, required this.semanticLabel, required this.onPressed});
+  const SortButton({
+    super.key,
+    required this.label,
+    required this.semanticLabel,
+    required this.onPressed,
+    this.icon = AppIcons.sort,
+    this.active = false,
+    this.count = 0,
+  });
 
   final String label;
   final String semanticLabel;
   final VoidCallback onPressed;
+  final IconData icon;
+  final bool active;
+  final int count;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final fg = active ? c.brand : c.inkMuted;
     return Semantics(
       // Own node: without it the button merges into the "Your subscriptions" heading next to it.
       container: true,
@@ -302,9 +230,22 @@ class SortButton extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(AppIcons.sort, size: 16, color: c.inkMuted),
+                Icon(icon, size: 16, color: fg),
                 const SizedBox(width: 6),
-                Text(label, maxLines: 1, softWrap: false, style: AppType.label.copyWith(color: c.inkMuted)),
+                Text(label, maxLines: 1, softWrap: false, style: AppType.label.copyWith(color: fg)),
+                if (count > 0) ...[
+                  const SizedBox(width: 6),
+                  Container(
+                    constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(color: c.brand, borderRadius: BorderRadius.circular(9)),
+                    child: Text(
+                      '$count',
+                      style: AppType.caption.copyWith(letterSpacing: 0, fontSize: 11, color: c.onBrand),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

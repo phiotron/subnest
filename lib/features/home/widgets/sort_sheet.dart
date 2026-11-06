@@ -12,7 +12,11 @@ String sortLabel(AppLocalizations l, HomeSort s) => switch (s) {
 
 /// S2 sort sheet (png 15): flat radio rows in a group + "Done". Each tap applies at once
 /// ([onChanged]); "Done", a scrim tap or a drag closes it.
-Future<void> showSortSheet(BuildContext context, {required HomeSort current, required ValueChanged<HomeSort> onChanged}) {
+Future<void> showSortSheet(
+  BuildContext context, {
+  required HomeSort current,
+  required ValueChanged<HomeSort> onChanged,
+}) {
   final l = context.l10n;
   var value = current;
   return showAppSheet<void>(

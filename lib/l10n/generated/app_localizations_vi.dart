@@ -333,7 +333,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get catalogTitle => 'Thêm subscription';
 
   @override
-  String get catalogSearchHint => 'Tìm trong 100+ dịch vụ';
+  String get catalogSearchHint => 'Tìm trong 500+ dịch vụ';
 
   @override
   String get catalogClearSearch => 'Xoá tìm kiếm';
@@ -412,6 +412,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String catalogContinueWith(String plan) {
     return 'Tiếp tục với $plan';
   }
+
+  @override
+  String get catalogTabGeneral => 'Chung';
+
+  @override
+  String get catalogTabVietnam => 'Việt Nam';
 
   @override
   String confirmQuestion(String name) {
@@ -898,6 +904,126 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get homeAdd => 'Thêm subscription';
+
+  @override
+  String homePausedSince(String date) {
+    return 'từ $date';
+  }
+
+  @override
+  String homePausesOn(String date) {
+    return 'Dừng từ $date';
+  }
+
+  @override
+  String get homeAutoBadge => 'Tự động';
+
+  @override
+  String homeMoreLabels(int count) {
+    return 'thêm $count nhãn';
+  }
+
+  @override
+  String get homeFilter => 'Lọc';
+
+  @override
+  String homeFilterButtonLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Lọc, đã chọn $count',
+      zero: 'Lọc',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeFilterReset => 'Đặt lại';
+
+  @override
+  String get homeFilterStatus => 'Trạng thái';
+
+  @override
+  String get homeFilterCategory => 'Danh mục';
+
+  @override
+  String get homeFilterLabels => 'Nhãn';
+
+  @override
+  String get homeFilterPayment => 'Phương thức thanh toán';
+
+  @override
+  String get homeFilterRemember =>
+      'Subnest nhớ bộ lọc và cách sắp xếp cho lần sau.';
+
+  @override
+  String homeFilterShow(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hiện $count subscription',
+      zero: 'Không có subscription nào khớp',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeFilterChipLabel(String name) {
+    return 'Nhãn: $name';
+  }
+
+  @override
+  String get homeFilterClear => 'Xoá lọc';
+
+  @override
+  String homeFilterRemove(String name) {
+    return 'Bỏ lọc $name';
+  }
+
+  @override
+  String get homeEmptyFiltered => 'Không có subscription nào khớp bộ lọc.';
+
+  @override
+  String get homeWeekTitle => 'Sắp trừ tuần này';
+
+  @override
+  String homeWeekToConfirm(String amount) {
+    return '+$amount chờ xác nhận';
+  }
+
+  @override
+  String get homeWeekNothing => 'không có khoản nào';
+
+  @override
+  String homeBudget(String amount) {
+    return 'Ngân sách $amount';
+  }
+
+  @override
+  String homeBudgetUsed(int percent) {
+    return '$percent% đã dùng';
+  }
+
+  @override
+  String homeAutoAddedScan(int count) {
+    return 'Đã thêm $count gói từ ảnh chụp';
+  }
+
+  @override
+  String homeAutoAdded(int count) {
+    return 'Đã tự động thêm $count gói';
+  }
+
+  @override
+  String homeAutoConfirmed(int count) {
+    return 'Đã tự động xác nhận $count khoản';
+  }
+
+  @override
+  String get homeUndo => 'Hoàn tác';
+
+  @override
+  String get homeUndone => 'Đã hoàn tác';
 
   @override
   String get insightsRangeMonth => 'Tháng này';
@@ -2230,19 +2356,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormReminder => 'Nhắc trước';
 
   @override
-  String get subscriptionFormRemindOff => 'Tắt';
-
-  @override
   String get subscriptionFormRemindOnDay => 'Đúng ngày';
 
   @override
   String subscriptionFormRemindDays(int count) {
     return '$count ngày';
-  }
-
-  @override
-  String subscriptionFormRemindAt(String time, String date) {
-    return 'Lúc $time · $date';
   }
 
   @override
@@ -2252,14 +2370,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormMore => 'Thêm chi tiết';
 
   @override
-  String get subscriptionFormMoreSub =>
-      'Phương thức thanh toán, link huỷ, ghi chú';
+  String get subscriptionFormMoreSub => 'Link huỷ, ghi chú';
 
   @override
   String get subscriptionFormPaymentMethod => 'Phương thức thanh toán';
-
-  @override
-  String get subscriptionFormPaymentHint => 'vd Visa ••4242';
 
   @override
   String get subscriptionFormManageUrl => 'Link huỷ / quản lý';
@@ -2372,4 +2486,70 @@ class AppLocalizationsVi extends AppLocalizations {
   String subscriptionFormCurrencyNoMatch(String query) {
     return 'Không có tiền tệ khớp “$query”';
   }
+
+  @override
+  String get subscriptionFormReferenceHint => 'Hãy đối chiếu với hoá đơn';
+
+  @override
+  String get subscriptionFormReferenceNote =>
+      'Giá tham khảo từ thư viện, chưa xác minh. Hãy đối chiếu với hoá đơn.';
+
+  @override
+  String get subscriptionFormLabels => 'Nhãn';
+
+  @override
+  String get subscriptionFormNewLabel => 'Nhãn mới';
+
+  @override
+  String get subscriptionFormNewLabelHint => 'vd: Gia đình, Công việc';
+
+  @override
+  String get subscriptionFormMethodNone => 'Không chọn';
+
+  @override
+  String subscriptionFormMethodUsage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subscription',
+      zero: 'Chưa dùng',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get subscriptionFormMethodAddHint => 'Thêm thẻ hoặc ví';
+
+  @override
+  String get subscriptionFormMethodNote =>
+      'Chữ tự do — Subnest không bao giờ kết nối ngân hàng.';
+
+  @override
+  String get subscriptionFormAdd => 'Thêm';
+
+  @override
+  String subscriptionFormRemindMany(String time) {
+    return 'Chọn bao nhiêu cũng được — mỗi mốc gửi một nhắc lúc $time.';
+  }
+
+  @override
+  String get subscriptionFormWorthIt => 'Đáng tiền không?';
+
+  @override
+  String get subscriptionFormWorthNotRated => 'Chưa';
+
+  @override
+  String get subscriptionFormDelete => 'Xoá subscription';
+
+  @override
+  String subscriptionFormDeleteTitle(String name) {
+    return 'Xoá $name?';
+  }
+
+  @override
+  String get subscriptionFormDeleteBody =>
+      'Lịch sử thanh toán cũng bị xoá. Không thể hoàn tác.';
+
+  @override
+  String get subscriptionFormDeleteAction => 'Xoá';
 }
