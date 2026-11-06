@@ -7,6 +7,7 @@ import 'backup/backup_service.dart';
 import 'catalog_repository.dart';
 import 'db/app_database.dart';
 import 'notifications/notification_service.dart';
+import 'organize_repository.dart';
 import 'rates/exchange_rate_repository.dart';
 import 'settings_repository.dart';
 import 'subscription_repository.dart';
@@ -28,11 +29,12 @@ final notificationServiceProvider = Provider<NotificationService>(
 /// Device locale name, e.g. `vi_VN` (default Primary currency).
 final deviceLocaleProvider = Provider<String>((ref) => 'en_US');
 
-/// Region for Catalog prices (`VN`, `US`…) from the device locale; plans fall back to `US`.
-final catalogRegionProvider = Provider<String>((ref) {
-  final parts = ref.watch(deviceLocaleProvider).split(RegExp('[_-]'));
-  return parts.length > 1 ? parts[1].toUpperCase() : 'US';
-});
+/// Region for Catalog prices: only `US` and `VN` exist (ADR 0002 / product.md §10.1). Devices in VN
+/// use `VN` (plans without a VN price fall back to `US`), every other device `US`.
+final catalogRegionProvider = Provider<String>((ref) => catalogRegionForLocale(ref.watch(deviceLocaleProvider)));
+
+/// Whether the device is in Vietnam → show the "Vietnam" Catalog section.
+final showVietnamSectionProvider = Provider<bool>((ref) => ref.watch(catalogRegionProvider) == 'VN');
 
 /// Injectable clock for tests.
 final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
@@ -54,6 +56,15 @@ final exchangeRateRepositoryProvider = Provider<ExchangeRateRepository>(
     clock: ref.watch(clockProvider),
   ),
 );
+
+final organizeRepositoryProvider = Provider<OrganizeRepository>(
+  (ref) => OrganizeRepository(ref.watch(databaseProvider), clock: ref.watch(clockProvider)),
+);
+
+/// What the user has unlocked. 1.0: everything (Pro open); IAP overrides this later.
+final entitlementProvider = Provider<Entitlement>((ref) => Entitlement.launch);
+
+final isProProvider = Provider<bool>((ref) => ref.watch(entitlementProvider).isPro);
 
 final catalogRepositoryProvider = Provider<CatalogRepository>((ref) => CatalogRepository());
 
@@ -86,6 +97,22 @@ final periodsProvider = StreamProvider<List<ConfirmedPeriod>>(
 final subscriptionPeriodsProvider = StreamProvider.family<List<ConfirmedPeriod>, String>(
   (ref, id) => ref.watch(subscriptionRepositoryProvider).watchPeriods(subscriptionId: id),
 );
+
+/// The user's Categories in display order (11 built-ins seeded + custom ones).
+final categoriesProvider = StreamProvider<List<Category>>((ref) => ref.watch(organizeRepositoryProvider).watchCategories());
+
+/// Category by id (falls back to "other" for unknown ids); `null` while loading.
+final categoryByIdProvider = Provider<Map<String, Category>>(
+  (ref) => {for (final c in ref.watch(categoriesProvider).value ?? const <Category>[]) c.id: c},
+);
+
+final labelsProvider = StreamProvider<List<Label>>((ref) => ref.watch(organizeRepositoryProvider).watchLabels());
+
+final paymentMethodsProvider = StreamProvider<List<PaymentMethod>>(
+  (ref) => ref.watch(organizeRepositoryProvider).watchPaymentMethods(),
+);
+
+final budgetsProvider = StreamProvider<List<Budget>>((ref) => ref.watch(organizeRepositoryProvider).watchBudgets());
 
 final settingsProvider = StreamProvider<AppSettings>((ref) => ref.watch(settingsRepositoryProvider).watch());
 
@@ -140,6 +167,26 @@ final spendingSummaryProvider = Provider<SpendingSummary?>((ref) {
   final subs = ref.watch(subscriptionsProvider).value;
   if (subs == null) return null;
   return ref.watch(spendingCalculatorProvider).summary(subs, ref.watch(todayProvider));
+});
+
+/// Forecast / cost rates / week strip / budgets / "drop Not worth" savings (product.md §10.2, §10.4).
+final forecastCalculatorProvider = Provider<ForecastCalculator>(
+  (ref) => ForecastCalculator(ref.watch(spendingCalculatorProvider)),
+);
+
+/// "Due this week" strip from today; `null` while loading.
+final weekStripProvider = Provider<WeekStrip?>((ref) {
+  final subs = ref.watch(subscriptionsProvider).value;
+  if (subs == null) return null;
+  return ref.watch(forecastCalculatorProvider).week(subs, ref.watch(todayProvider));
+});
+
+/// Usage of every budget (overall + per category); empty while loading.
+final budgetUsageProvider = Provider<List<BudgetUsage>>((ref) {
+  final subs = ref.watch(subscriptionsProvider).value;
+  final budgets = ref.watch(budgetsProvider).value;
+  if (subs == null || budgets == null) return const [];
+  return ref.watch(forecastCalculatorProvider).budgets(budgets, subs, ref.watch(todayProvider));
 });
 
 /// Pending Billing periods across all subscriptions (S7), oldest first: (subscription, due date).

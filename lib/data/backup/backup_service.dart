@@ -77,6 +77,13 @@ class BackupService {
       'rateOverrides': rates.overrides,
       'subscriptions': [for (final s in await _subs.all()) BackupCodec.subscriptionToJson(s)],
       'periods': [for (final p in await _subs.allPeriods()) BackupCodec.periodToJson(p)],
+      'categories': [for (final c in await _db.select(_db.categories).get()) BackupCodec.categoryToJson(c.toDomain())],
+      'labels': [for (final l in await _db.select(_db.labels).get()) BackupCodec.labelToJson(l.toDomain())],
+      'paymentMethods': [
+        for (final p in await _db.select(_db.paymentMethods).get()) BackupCodec.paymentMethodToJson(p.toDomain()),
+      ],
+      'budgets': [for (final b in await _db.select(_db.budgets).get()) BackupCodec.budgetToJson(b.toDomain())],
+      'dismissedDetections': (await _subs.dismissedKeys()).toList()..sort(),
     };
     return ExportFile(
       'subnest-backup-${_stamp()}.json',
@@ -92,6 +99,8 @@ class BackupService {
     final calc = SpendingCalculator(rates: await _rates.load(), primaryCurrency: settings.primaryCurrency);
     final subs = await _subs.all();
     final byId = {for (final s in subs) s.id: s};
+    final catNames = {for (final c in await _db.select(_db.categories).get()) c.id: c.name ?? c.builtInKey ?? c.id};
+    final labelNames = {for (final l in await _db.select(_db.labels).get()) l.id: l.name};
     String money(int minor, String cur) => toMajorUnits(minor, cur).toStringAsFixed(currencyDecimals(cur));
 
     final subRows = <List<Object?>>[
@@ -99,23 +108,26 @@ class BackupService {
         'name', 'status', 'category', 'price', 'currency', 'cycle_every', 'cycle_unit', 'next_due_date',
         'trial_end_date', 'shared_with', 'my_share', 'monthly_cost_${settings.primaryCurrency}',
         'payment_method', 'manage_url', 'notes', 'started_on', 'cancelled_on',
+        'labels', 'worth_it', 'paused_from', 'detection_source',
       ],
       for (final s in subs)
         [
-          s.name, s.status.name, s.category.key, money(s.priceMinor, s.currency), s.currency, s.cycle.every,
-          s.cycle.unit.name, s.status == SubscriptionStatus.cancelled ? '' : s.dueDate, s.trialEndDate,
+          s.name, s.status.name, catNames[s.categoryId] ?? s.categoryId, money(s.priceMinor, s.currency), s.currency, s.cycle.every,
+          s.cycle.unit.name, BillingRules.hasSchedule(s.status) ? s.dueDate : '', s.trialEndDate,
           s.sharedWith, money(s.myShareMinor, s.currency),
           calc.monthlyCost(s)?.toStringAsFixed(currencyDecimals(settings.primaryCurrency)),
           s.paymentMethod, s.manageUrl, s.notes, s.startDate, s.cancelledOn,
+          ([for (final id in s.labelIds) labelNames[id] ?? id]..sort()).join('; '),
+          s.worthIt?.name, s.pausedFrom, s.detectionSource?.name,
         ],
     ];
     final periods = (await _subs.allPeriods())..sort((a, b) => a.dueDate.compareTo(b.dueDate));
     final payRows = <List<Object?>>[
-      ['subscription', 'due_date', 'outcome', 'amount', 'currency', 'confirmed_at'],
+      ['subscription', 'due_date', 'outcome', 'amount', 'currency', 'confirmed_at', 'source'],
       for (final p in periods)
         [
           byId[p.subscriptionId]?.name ?? p.subscriptionId, p.dueDate, p.outcome.name,
-          money(p.amountMinor, p.currency), p.currency, p.confirmedAt.toIso8601String(),
+          money(p.amountMinor, p.currency), p.currency, p.confirmedAt.toIso8601String(), p.source?.name ?? 'manual',
         ],
     ];
     return [
@@ -183,7 +195,10 @@ class BackupService {
           }
         }
       }
-      for (final s in parsed.subscriptions) {
+      await _importLists(json, mode);
+      final knownLabels = {for (final l in await _db.select(_db.labels).get()) l.id};
+      for (final s0 in parsed.subscriptions) {
+        final s = s0.copyWith(labelIds: s0.labelIds.where(knownLabels.contains).toSet());
         final existing = mode == ImportMode.merge ? await _subs.get(s.id) : null;
         if (existing == null || s.updatedAt.isAfter(existing.updatedAt)) await _subs.save(s);
       }
@@ -201,8 +216,39 @@ class BackupService {
         }
       }
       if (mode == ImportMode.merge) await _reconcile();
+      await _fixCategories();
     });
     return ImportResult(parsed.subscriptions.length, parsed.periods.length);
+  }
+
+  /// v2 lists (absent in v1 files). Replace overwrites, merge keeps local rows on id clashes.
+  Future<void> _importLists(Map<String, Object?> json, ImportMode mode) async {
+    final m = mode == ImportMode.replace ? InsertMode.insertOrReplace : InsertMode.insertOrIgnore;
+    List<Map<String, Object?>> list(String k) => [for (final j in (json[k] as List? ?? const [])) j as Map<String, Object?>];
+    for (final j in list('categories')) {
+      await _db.into(_db.categories).insert(BackupCodec.categoryFromJson(j).toCompanion(), mode: m);
+    }
+    for (final j in list('labels')) {
+      await _db.into(_db.labels).insert(BackupCodec.labelFromJson(j).toCompanion(), mode: m);
+    }
+    for (final j in list('paymentMethods')) {
+      await _db.into(_db.paymentMethods).insert(BackupCodec.paymentMethodFromJson(j).toCompanion(), mode: m);
+    }
+    for (final j in list('budgets')) {
+      await _db.into(_db.budgets).insert(BackupCodec.budgetFromJson(j).toCompanion(), mode: m);
+    }
+    for (final k in (json['dismissedDetections'] as List? ?? const [])) {
+      if (k is String) await _subs.dismiss(k);
+    }
+  }
+
+  /// Subscriptions pointing at a category that does not exist (custom one missing) → "other".
+  Future<void> _fixCategories() async {
+    final known = {for (final c in await _db.select(_db.categories).get()) c.id};
+    for (final s in await _subs.all()) {
+      final id = CategoryRules.resolve(s.categoryId, known);
+      if (id != s.categoryId) await _subs.save(s.copyWith(categoryId: id));
+    }
   }
 
   /// After a merge a subscription may point at a period that is already confirmed

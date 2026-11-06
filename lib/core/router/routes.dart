@@ -15,6 +15,15 @@ abstract final class AppRoutes {
   static const settingsRates = '/settings/rates';
   static const settingsBackup = '/settings/backup';
 
+  // S10 › manage lists (1.0 expansion, product.md §10.5)
+  static const settingsCategories = '/settings/categories';
+  static const settingsLabels = '/settings/labels';
+  static const settingsPaymentMethods = '/settings/payment-methods';
+  static const settingsBudgets = '/settings/budgets';
+
+  // S13 — scan screenshots / receipts (Pro, product.md §10.6)
+  static const scan = '/scan';
+
   // S3 — "+" step 1
   static const catalog = '/catalog';
 

@@ -22,7 +22,8 @@ class HomeTabRequest extends Notifier<HomeTab?> {
 }
 
 HomeTab tabOf(Subscription s, LocalDate today) => switch (BillingRules.effectiveStatus(s, today)) {
-  SubscriptionStatus.active => HomeTab.active,
+  // Paused is listed with Active until the Home filter (U1) shows it on its own.
+  SubscriptionStatus.active || SubscriptionStatus.paused => HomeTab.active,
   SubscriptionStatus.trial => HomeTab.trials,
   SubscriptionStatus.cancelled => HomeTab.cancelled,
 };

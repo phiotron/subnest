@@ -120,6 +120,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonStatusCancelled => 'Cancelled';
 
   @override
+  String get commonStatusPaused => 'Paused';
+
+  @override
+  String get commonWorthItUnrated => 'Not rated';
+
+  @override
+  String get commonWorthItWorth => 'Worth it';
+
+  @override
+  String get commonWorthItUnsure => 'Not sure';
+
+  @override
+  String get commonWorthItNotWorth => 'Not worth it';
+
+  @override
+  String get commonAutoDetected => 'Auto-detected';
+
+  @override
+  String get commonDetectionScan => 'Screenshot';
+
+  @override
+  String get commonDetectionNotification => 'Notification';
+
+  @override
+  String get commonDetectionGmail => 'Gmail';
+
+  @override
+  String get commonReferencePrice => 'Reference price';
+
+  @override
   String get commonStatusAwaiting => 'To confirm';
 
   @override
@@ -1111,6 +1141,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get insightsEmptyAction => 'Add a subscription';
 
   @override
+  String get manageCategoriesTitle => 'Categories';
+
+  @override
+  String get manageLabelsTitle => 'Labels';
+
+  @override
+  String get managePaymentMethodsTitle => 'Payment methods';
+
+  @override
+  String get manageBudgetsTitle => 'Budgets';
+
+  @override
+  String get managePlaceholder => 'Coming soon';
+
+  @override
   String get notificationsChannelName => 'Reminders';
 
   @override
@@ -1305,6 +1350,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingNoThanks => 'Not now';
+
+  @override
+  String get scanTitle => 'Scan screenshots';
+
+  @override
+  String get scanPlaceholder => 'Coming soon';
 
   @override
   String get settingsSectionMoney => 'Money';

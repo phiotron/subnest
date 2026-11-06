@@ -23,10 +23,30 @@ extension DomainLabels on AppLocalizations {
   String status(SubscriptionStatus s) => switch (s) {
     SubscriptionStatus.trial => commonStatusTrial,
     SubscriptionStatus.active => commonStatusActive,
+    SubscriptionStatus.paused => commonStatusPaused,
     SubscriptionStatus.cancelled => commonStatusCancelled,
   };
 
   String category(SubscriptionCategory c) => commonCategory(c.key);
+
+  /// Name of a user's Category: its own name, else the translated built-in name.
+  String categoryName(Category c) => c.name ?? commonCategory(c.builtInKey ?? 'other');
+
+  String worthIt(WorthIt? w) => switch (w) {
+    null => commonWorthItUnrated,
+    WorthIt.worth => commonWorthItWorth,
+    WorthIt.unsure => commonWorthItUnsure,
+    WorthIt.notWorth => commonWorthItNotWorth,
+  };
+
+  String detectionSource(DetectionSource s) => switch (s) {
+    DetectionSource.scan => commonDetectionScan,
+    DetectionSource.notification => commonDetectionNotification,
+    DetectionSource.gmail => commonDetectionGmail,
+  };
+
+  /// "On the day" / "1 day before"… for one reminder offset.
+  String reminderOffset(int days) => days == 0 ? commonReminderOnTheDay : commonReminderDaysBefore(days);
 
   String reminder(int? days) => switch (days) {
     null => commonReminderDefault,

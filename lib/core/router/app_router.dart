@@ -10,8 +10,10 @@ import '../../features/dev/gallery_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/insights/insights_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
+import '../../features/scan/scan_screen.dart';
 import '../../features/settings/backup_screen.dart';
 import '../../features/settings/currency_screen.dart';
+import '../../features/settings/manage/manage_screens.dart';
 import '../../features/settings/rates_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/subscription_detail/subscription_detail_screen.dart';
@@ -50,6 +52,10 @@ GoRouter createRouter({required String initialLocation, GlobalKey<NavigatorState
                   GoRoute(path: 'currency', builder: (_, _) => const CurrencyScreen()),
                   GoRoute(path: 'rates', builder: (_, _) => const RatesScreen()),
                   GoRoute(path: 'backup', builder: (_, _) => const BackupScreen()),
+                  GoRoute(path: 'categories', builder: (_, _) => const ManageCategoriesScreen()),
+                  GoRoute(path: 'labels', builder: (_, _) => const ManageLabelsScreen()),
+                  GoRoute(path: 'payment-methods', builder: (_, _) => const ManagePaymentMethodsScreen()),
+                  GoRoute(path: 'budgets', builder: (_, _) => const ManageBudgetsScreen()),
                 ],
               ),
             ],
@@ -58,6 +64,7 @@ GoRouter createRouter({required String initialLocation, GlobalKey<NavigatorState
       ),
       GoRoute(path: AppRoutes.catalog, builder: (_, _) => const CatalogScreen()),
       GoRoute(path: AppRoutes.awaiting, builder: (_, _) => const AwaitingScreen()),
+      GoRoute(path: AppRoutes.scan, builder: (_, _) => const ScanScreen()),
       // `new` must come before `:id`.
       GoRoute(
         path: '/subscription/new',

@@ -7,9 +7,10 @@ enum AppThemeMode { system, light, dark }
 
 /// User preferences (S10). Immutable snapshot; write through [SettingsRepository].
 class AppSettings {
-  const AppSettings({
+  AppSettings({
     required this.primaryCurrency,
-    this.defaultReminderDays = 3,
+    Set<int>? defaultReminderOffsets,
+    int? defaultReminderDays,
     this.reminderHour = 9,
     this.reminderMinute = 0,
     this.themeMode = AppThemeMode.system,
@@ -18,12 +19,19 @@ class AppSettings {
     this.lastBackupAt,
     this.ratesFetchedAt,
     this.keptTrials = const {},
-  });
+    this.homeFilter,
+    this.homeSort,
+    this.hideTabBarOnScroll = false,
+  }) : defaultReminderOffsets =
+           defaultReminderOffsets ?? ReminderOffsets.fromLegacyDays(defaultReminderDays) ?? ReminderOffsets.defaults;
 
   final String primaryCurrency;
 
-  /// Default "remind N days before" ([ReminderDays.off] = off).
-  final int defaultReminderDays;
+  /// Default reminder offsets (days before the Due date; empty = off). See [ReminderOffsets].
+  final Set<int> defaultReminderOffsets;
+
+  /// Legacy single value of [defaultReminderOffsets] ([ReminderDays.off] = off).
+  int get defaultReminderDays => ReminderOffsets.toLegacyDays(defaultReminderOffsets)!;
   final int reminderHour;
   final int reminderMinute;
   final AppThemeMode themeMode;
@@ -37,6 +45,13 @@ class AppSettings {
   /// Trials the user chose to keep ("Keep it" on the trial-ending card/banner): the card stays hidden
   /// for them. Pruned once a trial becomes Active or is cancelled/deleted (`keptTrialsProvider`).
   final Set<String> keptTrials;
+
+  /// Home list filter / sort remembered between launches (opaque strings owned by the Home UI).
+  final String? homeFilter;
+  final String? homeSort;
+
+  /// Bottom tab bar hides while scrolling (product.md §10.2, optional).
+  final bool hideTabBarOnScroll;
 }
 
 /// Picks the Primary currency for a device locale like `vi_VN` → VND, `en_US` → USD.
@@ -64,17 +79,31 @@ class SettingsRepository {
   final String deviceLocale;
 
   static const kPrimaryCurrency = 'primaryCurrency';
-  static const kDefaultReminderDays = 'defaultReminderDays';
+  static const kDefaultReminderDays = 'defaultReminderDays'; // legacy (v1), read when offsets are missing
+  static const kDefaultReminderOffsets = 'defaultReminderOffsets'; // "0,3"; '' = off
   static const kReminderTime = 'reminderTime'; // "HH:mm"
   static const kThemeMode = 'themeMode';
   static const kLocale = 'locale';
   static const kOnboardingDone = 'onboardingDone';
   static const kLastBackupAt = 'lastBackupAt';
   static const kRatesFetchedAt = 'ratesFetchedAt';
+  static const kHomeFilter = 'homeFilter';
+  static const kHomeSort = 'homeSort';
+  static const kHideTabBarOnScroll = 'hideTabBarOnScroll';
   static const kKeptTrials = 'keptTrials'; // subscription ids, comma-separated (key-value store, no schema change)
 
   /// Keys copied into / restored from a JSON backup.
-  static const backupKeys = [kPrimaryCurrency, kDefaultReminderDays, kReminderTime, kThemeMode, kLocale];
+  static const backupKeys = [
+    kPrimaryCurrency,
+    kDefaultReminderDays,
+    kDefaultReminderOffsets,
+    kReminderTime,
+    kThemeMode,
+    kLocale,
+    kHomeFilter,
+    kHomeSort,
+    kHideTabBarOnScroll,
+  ];
 
   Stream<AppSettings> watch() => _db.select(_db.settings).watch().map(_fromRows);
 
@@ -89,7 +118,8 @@ class SettingsRepository {
     final time = (m[kReminderTime] ?? '09:00').split(':');
     return AppSettings(
       primaryCurrency: m[kPrimaryCurrency] ?? defaultCurrencyForLocale(deviceLocale),
-      defaultReminderDays: int.tryParse(m[kDefaultReminderDays] ?? '') ?? 3,
+      defaultReminderOffsets: ReminderOffsets.decode(m[kDefaultReminderOffsets]) ??
+          ReminderOffsets.fromLegacyDays(int.tryParse(m[kDefaultReminderDays] ?? '')),
       reminderHour: int.tryParse(time.first) ?? 9,
       reminderMinute: time.length > 1 ? int.tryParse(time[1]) ?? 0 : 0,
       themeMode: AppThemeMode.values.firstWhere((e) => e.name == m[kThemeMode], orElse: () => AppThemeMode.system),
@@ -98,6 +128,9 @@ class SettingsRepository {
       lastBackupAt: DateTime.tryParse(m[kLastBackupAt] ?? ''),
       ratesFetchedAt: DateTime.tryParse(m[kRatesFetchedAt] ?? ''),
       keptTrials: {...?m[kKeptTrials]?.split(',').where((e) => e.isNotEmpty)},
+      homeFilter: m[kHomeFilter],
+      homeSort: m[kHomeSort],
+      hideTabBarOnScroll: m[kHideTabBarOnScroll] == 'true',
     );
   }
 
@@ -111,10 +144,20 @@ class SettingsRepository {
 
   Future<void> setPrimaryCurrency(String code) => set(kPrimaryCurrency, code.toUpperCase());
 
+  /// Legacy single-choice setter (old Settings screen) — stored as offsets.
   Future<void> setDefaultReminderDays(int days) {
     assert(ReminderDays.choices.contains(days));
-    return set(kDefaultReminderDays, '$days');
+    return setDefaultReminderOffsets(ReminderOffsets.fromLegacyDays(days)!);
   }
+
+  Future<void> setDefaultReminderOffsets(Set<int> offsets) =>
+      set(kDefaultReminderOffsets, ReminderOffsets.encode(offsets));
+
+  Future<void> setHomeFilter(String? value) => set(kHomeFilter, value);
+
+  Future<void> setHomeSort(String? value) => set(kHomeSort, value);
+
+  Future<void> setHideTabBarOnScroll(bool on) => set(kHideTabBarOnScroll, '$on');
 
   Future<void> setReminderTime(int hour, int minute) =>
       set(kReminderTime, '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}');

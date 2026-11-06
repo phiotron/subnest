@@ -92,7 +92,7 @@ SubscriptionRowState rowState(Subscription s, LocalDate today) {
   return switch (BillingRules.effectiveStatus(s, today)) {
     SubscriptionStatus.trial => SubscriptionRowState.trial,
     SubscriptionStatus.cancelled => SubscriptionRowState.cancelled,
-    SubscriptionStatus.active => SubscriptionRowState.normal,
+    SubscriptionStatus.active || SubscriptionStatus.paused => SubscriptionRowState.normal,
   };
 }
 

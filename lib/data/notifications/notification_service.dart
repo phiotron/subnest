@@ -134,7 +134,7 @@ class NotificationService {
     final plan = ReminderPlanner.plan(
       subs,
       now: now ?? DateTime.now(),
-      defaultDays: settings.defaultReminderDays,
+      defaultOffsets: settings.defaultReminderOffsets,
       hour: settings.reminderHour,
       minute: settings.reminderMinute,
     );
@@ -144,7 +144,7 @@ class NotificationService {
     for (final r in plan) {
       final s = byId[r.subscriptionId]!;
       await _plugin.zonedSchedule(
-        id: notificationId(r.subscriptionId, r.kind),
+        id: notificationId(r.subscriptionId, r.kind, daysBefore: r.daysBefore),
         scheduledDate: tz.TZDateTime(
           tz.local,
           r.fireAt.year,
@@ -166,15 +166,15 @@ class NotificationService {
     lastScheduledCount = plan.length;
   }
 
-  /// Stable id per (subscription, kind): a later reminder of the same kind replaces the old one,
+  /// Stable id per (subscription, kind, days before — multi-point reminders): a later reminder of the same kind replaces the old one,
   /// but never a delivered notification of another subscription. Range 1..2^28 (test ids are 900001+
   /// — a collision is possible but harmless).
-  static int notificationId(String subscriptionId, ReminderKind kind) {
+  static int notificationId(String subscriptionId, ReminderKind kind, {int daysBefore = 0}) {
     var h = 0x811c9dc5; // FNV-1a 32-bit
     for (final c in subscriptionId.codeUnits) {
       h = ((h ^ c) * 0x01000193) & 0xFFFFFFFF;
     }
-    return (h & 0x3FFFFFF) * 4 + kind.index + 1;
+    return (h & 0x1FFFFF) * 128 + kind.index * 32 + daysBefore.clamp(0, 31) + 1;
   }
 
   /// Developer/QA helper: shows one notification now and schedules one in [delay].

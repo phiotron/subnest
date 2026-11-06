@@ -120,6 +120,36 @@ class AppLocalizationsVi extends AppLocalizations {
   String get commonStatusCancelled => 'Đã huỷ';
 
   @override
+  String get commonStatusPaused => 'Tạm dừng';
+
+  @override
+  String get commonWorthItUnrated => 'Chưa đánh giá';
+
+  @override
+  String get commonWorthItWorth => 'Đáng';
+
+  @override
+  String get commonWorthItUnsure => 'Phân vân';
+
+  @override
+  String get commonWorthItNotWorth => 'Không đáng';
+
+  @override
+  String get commonAutoDetected => 'Tự phát hiện';
+
+  @override
+  String get commonDetectionScan => 'Ảnh chụp';
+
+  @override
+  String get commonDetectionNotification => 'Thông báo';
+
+  @override
+  String get commonDetectionGmail => 'Gmail';
+
+  @override
+  String get commonReferencePrice => 'Giá tham khảo';
+
+  @override
   String get commonStatusAwaiting => 'Chờ xác nhận';
 
   @override
@@ -1088,6 +1118,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get insightsEmptyAction => 'Thêm subscription';
 
   @override
+  String get manageCategoriesTitle => 'Danh mục';
+
+  @override
+  String get manageLabelsTitle => 'Nhãn';
+
+  @override
+  String get managePaymentMethodsTitle => 'Phương thức thanh toán';
+
+  @override
+  String get manageBudgetsTitle => 'Ngân sách';
+
+  @override
+  String get managePlaceholder => 'Sắp có';
+
+  @override
   String get notificationsChannelName => 'Nhắc nhở';
 
   @override
@@ -1277,6 +1322,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get onboardingNoThanks => 'Không, cảm ơn';
+
+  @override
+  String get scanTitle => 'Quét ảnh chụp';
+
+  @override
+  String get scanPlaceholder => 'Sắp có';
 
   @override
   String get settingsSectionMoney => 'Tiền';

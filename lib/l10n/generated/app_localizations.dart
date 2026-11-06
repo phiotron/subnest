@@ -254,6 +254,66 @@ abstract class AppLocalizations {
   /// **'Cancelled'**
   String get commonStatusCancelled;
 
+  /// No description provided for @commonStatusPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get commonStatusPaused;
+
+  /// No description provided for @commonWorthItUnrated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not rated'**
+  String get commonWorthItUnrated;
+
+  /// No description provided for @commonWorthItWorth.
+  ///
+  /// In en, this message translates to:
+  /// **'Worth it'**
+  String get commonWorthItWorth;
+
+  /// No description provided for @commonWorthItUnsure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get commonWorthItUnsure;
+
+  /// No description provided for @commonWorthItNotWorth.
+  ///
+  /// In en, this message translates to:
+  /// **'Not worth it'**
+  String get commonWorthItNotWorth;
+
+  /// No description provided for @commonAutoDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-detected'**
+  String get commonAutoDetected;
+
+  /// No description provided for @commonDetectionScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot'**
+  String get commonDetectionScan;
+
+  /// No description provided for @commonDetectionNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get commonDetectionNotification;
+
+  /// No description provided for @commonDetectionGmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Gmail'**
+  String get commonDetectionGmail;
+
+  /// No description provided for @commonReferencePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference price'**
+  String get commonReferencePrice;
+
   /// No description provided for @commonStatusAwaiting.
   ///
   /// In en, this message translates to:
@@ -1526,6 +1586,36 @@ abstract class AppLocalizations {
   /// **'Add a subscription'**
   String get insightsEmptyAction;
 
+  /// No description provided for @manageCategoriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get manageCategoriesTitle;
+
+  /// No description provided for @manageLabelsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels'**
+  String get manageLabelsTitle;
+
+  /// No description provided for @managePaymentMethodsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment methods'**
+  String get managePaymentMethodsTitle;
+
+  /// No description provided for @manageBudgetsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Budgets'**
+  String get manageBudgetsTitle;
+
+  /// No description provided for @managePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get managePlaceholder;
+
   /// No description provided for @notificationsChannelName.
   ///
   /// In en, this message translates to:
@@ -1819,6 +1909,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not now'**
   String get onboardingNoThanks;
+
+  /// No description provided for @scanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan screenshots'**
+  String get scanTitle;
+
+  /// No description provided for @scanPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get scanPlaceholder;
 
   /// No description provided for @settingsSectionMoney.
   ///

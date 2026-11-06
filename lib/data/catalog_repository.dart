@@ -32,12 +32,20 @@ class CatalogRepository {
     return null;
   }
 
-  static List<CatalogService> parse(String text) {
+  /// Parses the bundled v3 file and the v4 schema (`D:\Mobile App\catalog\README.md`).
+  /// Reference prices: v4 → no `verifiedAt` or older than `staleAfterDays` (relative to [today], default
+  /// the clock); v3 → `approx: true`. Unknown regions are kept but only `US`/`VN` are ever looked up.
+  static List<CatalogService> parse(String text, {LocalDate? today}) {
     final json = jsonDecode(text) as Map<String, Object?>;
+    final ctx = _Ctx(
+      v4: (json['schemaVersion'] as int? ?? 3) >= 4,
+      staleAfterDays: json['staleAfterDays'] as int? ?? 90,
+      today: today ?? LocalDate.fromDateTime(DateTime.now()),
+    );
     final out = <CatalogService>[];
     for (final raw in (json['services'] as List? ?? const [])) {
       try {
-        out.add(_service(raw as Map<String, Object?>));
+        out.add(_service(raw as Map<String, Object?>, ctx));
       } catch (_) {
         // Skip malformed entries; the validator in assets/catalog/tool catches them at authoring time.
       }
@@ -45,20 +53,24 @@ class CatalogRepository {
     return out;
   }
 
-  static CatalogService _service(Map<String, Object?> j) => CatalogService(
+  static List<String> _strings(Object? v) => [for (final a in (v as List? ?? const [])) a as String];
+
+  static CatalogService _service(Map<String, Object?> j, _Ctx ctx) => CatalogService(
     id: j['id'] as String,
     name: j['name'] as String,
     category: SubscriptionCategory.fromKey(j['category'] as String?),
     colorValue: _color(j['color'] as String),
     monogram: j['monogram'] as String,
-    isVietnamese: j['market'] == 'vn',
-    aliases: [for (final a in (j['aliases'] as List? ?? const [])) a as String],
+    section: j['market'] == 'vn' ? CatalogSection.vn : CatalogSection.global,
+    aliases: _strings(j['aliases']),
+    storeNames: _strings(j['storeNames']),
+    logoDomain: j['logoDomain'] as String?,
     cancelUrl: j['cancelUrl'] as String?,
     manageUrl: j['manageUrl'] as String?,
-    plans: [for (final p in j['plans'] as List) _plan(p as Map<String, Object?>)],
+    plans: [for (final p in j['plans'] as List) _plan(p as Map<String, Object?>, ctx)],
   );
 
-  static CatalogPlan _plan(Map<String, Object?> j) {
+  static CatalogPlan _plan(Map<String, Object?> j, _Ctx ctx) {
     final cycle = j['cycle'] as Map<String, Object?>;
     final prices = j['prices'] as Map<String, Object?>;
     return CatalogPlan(
@@ -69,15 +81,37 @@ class CatalogRepository {
         CycleUnit.values.firstWhere((u) => u.name == cycle['unit']),
       ),
       prices: {
-        for (final e in prices.entries)
-          e.key: CatalogPrice(
-            ((e.value as Map)['currency'] as String).toUpperCase(),
-            ((e.value as Map)['amount'] as num).toDouble(),
-          ),
+        for (final e in prices.entries) e.key: _price(e.value as Map<String, Object?>, ctx),
       },
       members: j['members'] as int?,
+      status: CatalogPlanStatus.parse(j['status'] as String?),
+      renamedFrom: j['renamedFrom'] as String?,
+    );
+  }
+
+  static CatalogPrice _price(Map<String, Object?> j, _Ctx ctx) {
+    final bool reference;
+    if (j['approx'] == true) {
+      reference = true;
+    } else if (ctx.v4) {
+      final verified = LocalDate.tryParse(j['verifiedAt'] as String?);
+      reference = verified == null || verified.daysUntil(ctx.today) > ctx.staleAfterDays;
+    } else {
+      reference = false;
+    }
+    return CatalogPrice(
+      (j['currency'] as String).toUpperCase(),
+      (j['amount'] as num).toDouble(),
+      isReference: reference,
     );
   }
 
   static int _color(String hex) => 0xFF000000 | int.parse(hex.replaceFirst('#', ''), radix: 16);
+}
+
+class _Ctx {
+  const _Ctx({required this.v4, required this.staleAfterDays, required this.today});
+  final bool v4;
+  final int staleAfterDays;
+  final LocalDate today;
 }
