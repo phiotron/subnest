@@ -1298,11 +1298,11 @@ abstract class AppLocalizations {
   /// **'This year'**
   String get insightsRangeYear;
 
-  /// No description provided for @insightsPaidLabel.
+  /// Big number of the summary card: Payments + periods still expected in the range (= the bars).
   ///
   /// In en, this message translates to:
-  /// **'{range, select, month{Paid · this month} year{Paid · this year} other{Paid · last 12 months}}'**
-  String insightsPaidLabel(String range);
+  /// **'{range, select, month{Total · this month} year{Total · this year} other{Total · last 12 months}}'**
+  String insightsTotalLabel(String range);
 
   /// No description provided for @insightsTrendMore.
   ///
@@ -1321,6 +1321,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{range, select, month{Same as last month} year{Same as last year} other{Same as the 12 months before}}'**
   String insightsTrendSame(String range);
+
+  /// Shown instead of a % when the history does not reach back to the start of the span before.
+  ///
+  /// In en, this message translates to:
+  /// **'{range, select, month{Not enough data from last month to compare} year{Not enough data from last year to compare} other{Not enough data from the 12 months before to compare}}'**
+  String insightsTrendNoData(String range);
 
   /// No description provided for @insightsLegendPaid.
   ///
@@ -1361,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @insightsChartLabel.
   ///
   /// In en, this message translates to:
-  /// **'Paid per month, {from} to {to}'**
+  /// **'Spending per month, paid and expected, {from} to {to}'**
   String insightsChartLabel(String from, String to);
 
   /// Short axis/centre number: 1.07M, 500K.
@@ -1397,8 +1403,26 @@ abstract class AppLocalizations {
   /// No description provided for @insightsPeakPlain.
   ///
   /// In en, this message translates to:
-  /// **'{months} are higher than usual.'**
+  /// **'Spending was higher than usual in {months}.'**
   String insightsPeakPlain(String months);
+
+  /// Peak months still ahead (expected, hatched bars).
+  ///
+  /// In en, this message translates to:
+  /// **'{months} will jump with the yearly {names} renewals.'**
+  String insightsPeakYearlyAhead(String months, String names);
+
+  /// No description provided for @insightsPeakAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} will jump with the {names} renewals.'**
+  String insightsPeakAhead(String months, String names);
+
+  /// No description provided for @insightsPeakPlainAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending will be higher than usual in {months}.'**
+  String insightsPeakPlainAhead(String months);
 
   /// No description provided for @insightsByCategory.
   ///
@@ -1409,8 +1433,14 @@ abstract class AppLocalizations {
   /// No description provided for @insightsMonthlyActive.
   ///
   /// In en, this message translates to:
-  /// **'monthly, active'**
+  /// **'monthly equivalent, active plans'**
   String get insightsMonthlyActive;
+
+  /// Under the donut when a plan is not billed monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly and other non-monthly plans are spread evenly per month here, so this is not what you pay this month.'**
+  String get insightsCategoryNote;
 
   /// No description provided for @insightsSliceLabel.
   ///

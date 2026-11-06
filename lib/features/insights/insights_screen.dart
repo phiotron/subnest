@@ -14,8 +14,8 @@ import 'widgets/insights_cards.dart';
 import 'widgets/insights_format.dart';
 import 'widgets/month_bar_chart.dart';
 
-/// S9 Insights (design png 44–47): range picker, Paid vs Expected summary with the change
-/// against the span before, 12-month bars, donut by category (tap → [CategorySheet]),
+/// S9 Insights (design png 44–47): range picker, total (Paid + Expected) summary with the change
+/// against the span before (only when the history covers it), 12-month bars, donut by category (tap → [CategorySheet]),
 /// Most expensive, Savings and a light Music/Video overlap hint. Empty state when there are no
 /// subscriptions. Maths: [SpendingCalculator] + [InsightsStats] (lib/domain/stats).
 class InsightsScreen extends ConsumerStatefulWidget {
@@ -107,22 +107,27 @@ class _InsightsScreenState extends ConsumerState<InsightsScreen> {
 
     final totals = stats.totals(subs, periods, _range, today);
     final series = stats.chart(subs, periods, _range, today);
-    final peak = stats.peaks(subs, periods, series);
+    final peaks = stats.peaks(subs, periods, series, today);
     final slices = stats.categories(subs, today, hasOwnSlot: AppChartColors.hasSlot);
     final top = calc.top(subs, today);
     final cancelled = stats.cancelled(subs, today);
     final overlaps = stats.overlaps(subs, today);
 
-    String? peakText;
-    if (peak != null) {
-      final months = l.monthList(peak.months);
-      final names = l.joinNames([for (final s in peak.causes) s.name]);
-      peakText = peak.causes.isEmpty
-          ? l.insightsPeakPlain(months)
-          : peak.allYearly
-          ? l.insightsPeakYearly(months, names)
-          : l.insightsPeak(months, names);
+    // One sentence for peak months already gone, one for those still ahead (hatched bars).
+    String sentence(PeakNote p) {
+      final months = l.monthList(p.months);
+      final names = l.joinNames([for (final s in p.causes) s.name]);
+      return switch ((p.causes.isEmpty, p.allYearly, p.expected)) {
+        (true, _, false) => l.insightsPeakPlain(months),
+        (true, _, true) => l.insightsPeakPlainAhead(months),
+        (false, true, false) => l.insightsPeakYearly(months, names),
+        (false, true, true) => l.insightsPeakYearlyAhead(months, names),
+        (false, false, false) => l.insightsPeak(months, names),
+        (false, false, true) => l.insightsPeakAhead(months, names),
+      };
     }
+
+    final peakText = peaks.isEmpty ? null : peaks.map(sentence).join(' ');
 
     void openSub(Subscription s) => context.push(AppRoutes.subscriptionDetail(s.id));
 
@@ -155,6 +160,10 @@ class _InsightsScreenState extends ConsumerState<InsightsScreen> {
                 approx: approx,
                 onOpen: (s) => showCategorySheet(context, slice: s, today: today, currency: primary, approx: approx),
               ),
+              if (InsightsStats.hasLongCycles(slices)) ...[
+                const SizedBox(height: AppSpace.s2),
+                Text(l.insightsCategoryNote, style: AppType.meta.copyWith(color: c.inkMuted)),
+              ],
             ],
           ),
         ),

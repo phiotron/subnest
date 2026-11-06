@@ -40,7 +40,7 @@ void main() {
       const monthly = 150000 + 65000 + 508000 + 59000 + 35800;
       expect(t.paid, closeTo(10 * monthly + (monthly - 35800) + 1390000 + 1690000, 1e-6));
       expect(t.expected, closeTo(876800, 1e-6));
-      expect(t.previousTotal, 0);
+      expect(t.previousTotal, isNull, reason: 'history starts Dec 2025, the 12 months before are not tracked');
       expect(t.changePercent, isNull, reason: 'nothing to compare with');
     });
 
@@ -56,6 +56,7 @@ void main() {
       const t = RangeTotals(paid: 50, expected: 0, previousTotal: 200);
       expect(t.changePercent, -75);
       expect(const RangeTotals(paid: 0, expected: 0, previousTotal: 0).changePercent, isNull);
+      expect(const RangeTotals(paid: 10, expected: 0).changePercent, isNull, reason: 'not comparable');
     });
   });
 
@@ -75,10 +76,11 @@ void main() {
 
     test('peaks: February and March from the yearly Canva and Google One renewals', () {
       final s = stats.chart(subs, periods, InsightsRange.last12Months, today);
-      final p = stats.peaks(subs, periods, s)!;
+      final p = stats.peaks(subs, periods, s, today).single;
       expect(p.months, [const LocalDate(2026, 2, 1), const LocalDate(2026, 3, 1)]);
-      expect(p.causes.map((c) => c.id), ['google1', 'canva']);
+      expect(p.causes.map((c) => c.id), ['canva', 'google1'], reason: 'same order as the months');
       expect(p.allYearly, isTrue);
+      expect(p.expected, isFalse);
     });
 
     test('no peak when months are even', () {
@@ -89,8 +91,8 @@ void main() {
         InsightsRange.last12Months,
         today,
       );
-      expect(stats.peaks(flat, periods, s), isNull);
-      expect(stats.peaks(const [], const [], const []), isNull);
+      expect(stats.peaks(flat, periods, s, today), isEmpty);
+      expect(stats.peaks(const [], const [], const [], today), isEmpty);
     });
   });
 

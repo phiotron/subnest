@@ -740,8 +740,9 @@
   "insightsRangeMonth": "This month",
   "insightsRange12": "12 months",
   "insightsRangeYear": "This year",
-  "insightsPaidLabel": "{range, select, month{Paid · this month} year{Paid · this year} other{Paid · last 12 months}}",
-  "@insightsPaidLabel": {
+  "insightsTotalLabel": "{range, select, month{Total · this month} year{Total · this year} other{Total · last 12 months}}",
+  "@insightsTotalLabel": {
+    "description": "Big number of the summary card: Payments + periods still expected in the range (= the bars).",
     "placeholders": {
       "range": {
         "type": "String"
@@ -778,6 +779,15 @@
       }
     }
   },
+  "insightsTrendNoData": "{range, select, month{Not enough data from last month to compare} year{Not enough data from last year to compare} other{Not enough data from the 12 months before to compare}}",
+  "@insightsTrendNoData": {
+    "description": "Shown instead of a % when the history does not reach back to the start of the span before.",
+    "placeholders": {
+      "range": {
+        "type": "String"
+      }
+    }
+  },
   "insightsLegendPaid": "Paid",
   "insightsLegendExpected": "Expected, not yet confirmed",
   "insightsByMonth": "By month",
@@ -798,7 +808,7 @@
       }
     }
   },
-  "insightsChartLabel": "Paid per month, {from} to {to}",
+  "insightsChartLabel": "Spending per month, paid and expected, {from} to {to}",
   "@insightsChartLabel": {
     "placeholders": {
       "from": {
@@ -856,7 +866,7 @@
       }
     }
   },
-  "insightsPeakPlain": "{months} are higher than usual.",
+  "insightsPeakPlain": "Spending was higher than usual in {months}.",
   "@insightsPeakPlain": {
     "placeholders": {
       "months": {
@@ -864,8 +874,43 @@
       }
     }
   },
+  "insightsPeakYearlyAhead": "{months} will jump with the yearly {names} renewals.",
+  "@insightsPeakYearlyAhead": {
+    "description": "Peak months still ahead (expected, hatched bars).",
+    "placeholders": {
+      "months": {
+        "type": "String"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsPeakAhead": "{months} will jump with the {names} renewals.",
+  "@insightsPeakAhead": {
+    "placeholders": {
+      "months": {
+        "type": "String"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsPeakPlainAhead": "Spending will be higher than usual in {months}.",
+  "@insightsPeakPlainAhead": {
+    "placeholders": {
+      "months": {
+        "type": "String"
+      }
+    }
+  },
   "insightsByCategory": "By category",
-  "insightsMonthlyActive": "monthly, active",
+  "insightsMonthlyActive": "monthly equivalent, active plans",
+  "insightsCategoryNote": "Yearly and other non-monthly plans are spread evenly per month here, so this is not what you pay this month.",
+  "@insightsCategoryNote": {
+    "description": "Under the donut when a plan is not billed monthly."
+  },
   "insightsSliceLabel": "{category}: {amount} per month, {percent}%",
   "@insightsSliceLabel": {
     "placeholders": {

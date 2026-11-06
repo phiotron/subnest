@@ -32,9 +32,10 @@ class RangeMonths {
   bool contains(LocalDate d) => !d.firstOfMonth.isBefore(first) && !d.firstOfMonth.isAfter(last);
 }
 
-/// Summary card numbers: Payments made (actual) vs periods still expected in the range.
+/// Summary card numbers for a range: the total (Payments made + periods still expected), its
+/// split, and the same total for the equal span before — only when the history covers it.
 class RangeTotals {
-  const RangeTotals({required this.paid, required this.expected, required this.previousTotal});
+  const RangeTotals({required this.paid, required this.expected, this.previousTotal});
 
   /// Sum of Payments with a due date in the range.
   final double paid;
@@ -42,16 +43,23 @@ class RangeTotals {
   /// Periods in the range not confirmed yet (awaiting + future) at the current My share.
   final double expected;
 
+  /// What the card shows in big: [paid] + [expected] (= the bars of the range).
   double get total => paid + expected;
 
-  /// [total] of the span right before (same length), for "+14%".
-  final double previousTotal;
+  /// [total] of the span right before (same length), or `null` when the history (confirmed
+  /// periods) does not reach back to its first month — comparing with a span the user did not
+  /// track gives "+3240%" (2026-11-06, phone).
+  final double? previousTotal;
 
-  /// Whole-percent change of [total] against [previousTotal]; `null` when there is nothing to
-  /// compare with (no spending before).
+  /// The span before is fully tracked, so a change can be stated.
+  bool get comparable => previousTotal != null;
+
+  /// Whole-percent change of [total] against [previousTotal]; `null` when not [comparable] or
+  /// nothing was spent before.
   int? get changePercent {
-    if (previousTotal <= 0) return null;
-    return ((total - previousTotal) / previousTotal * 100).round();
+    final before = previousTotal;
+    if (before == null || before <= 0) return null;
+    return ((total - before) / before * 100).round();
   }
 }
 
@@ -85,16 +93,23 @@ class OverlapHint {
 }
 
 /// Months that stand out in the 12-month chart, and the longer-cycle plans behind them.
+/// Months that already happened and months still ahead get separate notes ("jumped" vs
+/// "will jump").
 class PeakNote {
-  const PeakNote({required this.months, required this.causes, required this.allYearly});
+  const PeakNote({required this.months, required this.causes, required this.allYearly, required this.expected});
 
+  /// Oldest first.
   final List<LocalDate> months;
 
-  /// Subscriptions billed less than monthly with a period in a peak month.
+  /// Subscriptions billed less than monthly with a period in a peak month, in the order of
+  /// [months] (so "February and March … Canva and Google One" pairs up).
   final List<Subscription> causes;
 
   /// Every cause is billed yearly ("the yearly Canva and Google One renewals").
   final bool allYearly;
+
+  /// The months are still ahead (mostly expected periods, drawn hatched): "will jump".
+  final bool expected;
 }
 
 /// Insights maths on top of [SpendingCalculator]. Pure; amounts in the Primary currency.
@@ -128,12 +143,24 @@ class InsightsStats {
   ) {
     final span = monthsOf(range, today);
     final prev = span.previous;
+    final start = historyStart(periods);
+    final covered = start != null && !start.isAfter(prev.first);
     return RangeTotals(
       paid: _paid(periods, span),
       expected: _expected(subs, span),
-      previousTotal: _paid(periods, prev) + _expected(subs, prev),
+      previousTotal: covered ? _paid(periods, prev) + _expected(subs, prev) : null,
     );
   }
+
+  /// First month of the user's history: the month of the oldest confirmed period (Payment or
+  /// Skipped). `null` when nothing was confirmed yet.
+  static LocalDate? historyStart(Iterable<ConfirmedPeriod> periods) =>
+      periods.map((p) => p.dueDate.firstOfMonth).minOrNull;
+
+  /// Some slice holds a plan not billed every month (yearly, weekly…), so its Monthly cost is
+  /// a spread share, not what is paid in any given month.
+  static bool hasLongCycles(Iterable<CategorySlice> slices) =>
+      slices.expand((s) => s.subscriptions).any((e) => e.$1.cycle != const BillingCycle.monthly());
 
   /// Bars for the chart: the 12 months of the range (This month shows the 12 months ending
   /// with it, for context).
@@ -195,42 +222,71 @@ class InsightsStats {
   }
 
   /// Up to two months whose total (paid + expected) is ≥ 1.5× the median of the non-empty
-  /// months, with the less-than-monthly plans that fall in them. `null` when nothing stands out.
-  PeakNote? peaks(Iterable<Subscription> subs, Iterable<ConfirmedPeriod> periods, List<MonthSpending> series) {
+  /// months, with the less-than-monthly plans billed in them. One note for months already gone
+  /// and one for months still ahead (from [today]'s month on, mostly expected); empty when
+  /// nothing stands out.
+  List<PeakNote> peaks(
+    Iterable<Subscription> subs,
+    Iterable<ConfirmedPeriod> periods,
+    List<MonthSpending> series,
+    LocalDate today,
+  ) {
     final totals = series.map((m) => m.actual + m.projected).where((v) => v > 0).sorted((a, b) => a.compareTo(b));
-    if (totals.length < 3) return null;
+    if (totals.length < 3) return const [];
     final mid = totals.length ~/ 2;
     final median = totals.length.isOdd ? totals[mid] : (totals[mid - 1] + totals[mid]) / 2;
-    final peakMonths = series
+    final picked = series
         .where((m) => m.actual + m.projected >= median * 1.5)
         .sorted((a, b) => (b.actual + b.projected).compareTo(a.actual + a.projected))
         .take(2)
-        .map((m) => m.month)
-        .sorted((a, b) => a.compareTo(b));
-    if (peakMonths.isEmpty) return null;
+        .sorted((a, b) => a.month.compareTo(b.month));
+    if (picked.isEmpty) return const [];
 
-    bool inPeak(LocalDate d) => peakMonths.any((m) => m.year == d.year && m.month == d.month);
+    final current = today.firstOfMonth;
+    bool ahead(MonthSpending m) => !m.month.isBefore(current) && m.projected > m.actual;
     final byId = {for (final s in subs) s.id: s};
-    final causes = <Subscription>[];
-    void add(Subscription? s) {
-      if (s != null && s.cycle.periodsPerMonth < 1 && !causes.any((c) => c.id == s.id)) causes.add(s);
+
+    // Less-than-monthly plans billed in [month] (Payments or periods still expected), dearest first.
+    List<Subscription> causesIn(LocalDate month) {
+      final found = <Subscription>[];
+      void add(Subscription? s) {
+        if (s != null && s.cycle.periodsPerMonth < 1 && !found.any((c) => c.id == s.id)) found.add(s);
+      }
+
+      for (final p in periods) {
+        if (p.isPayment && p.dueDate.firstOfMonth == month) add(byId[p.subscriptionId]);
+      }
+      for (final s in subs) {
+        if (BillingRules.dueDatesBetween(s, month, month.addMonths(1).addDays(-1)).isNotEmpty) add(s);
+      }
+      return found.sorted((a, b) => (calc.periodCost(b) ?? 0).compareTo(calc.periodCost(a) ?? 0));
     }
 
-    for (final p in periods) {
-      if (p.isPayment && inPeak(p.dueDate)) add(byId[p.subscriptionId]);
-    }
-    for (final m in peakMonths) {
-      for (final s in subs) {
-        if (BillingRules.dueDatesBetween(s, m, m.addMonths(1).addDays(-1)).isNotEmpty) add(s);
+    PeakNote note(List<MonthSpending> months, {required bool expected}) {
+      final perMonth = [for (final m in months) causesIn(m.month)];
+      // The dearest cause of each month first, then the rest; at most two, in month order.
+      final chosen = <Subscription>[];
+      for (final list in [for (final l in perMonth) l.take(1), ...perMonth]) {
+        for (final s in list) {
+          if (chosen.length < 2 && !chosen.any((c) => c.id == s.id)) chosen.add(s);
+        }
       }
+      int firstMonth(Subscription s) => perMonth.indexWhere((l) => l.any((c) => c.id == s.id));
+      final causes = [...chosen]..sort((a, b) => firstMonth(a).compareTo(firstMonth(b)));
+      return PeakNote(
+        months: [for (final m in months) m.month],
+        causes: causes,
+        allYearly: causes.isNotEmpty && causes.every((s) => s.cycle == const BillingCycle.yearly()),
+        expected: expected,
+      );
     }
-    causes.sort((a, b) => (calc.periodCost(b) ?? 0).compareTo(calc.periodCost(a) ?? 0));
-    final shown = causes.take(2).toList();
-    return PeakNote(
-      months: peakMonths,
-      causes: shown,
-      allYearly: shown.isNotEmpty && shown.every((s) => s.cycle == const BillingCycle.yearly()),
-    );
+
+    final gone = picked.where((m) => !ahead(m)).toList();
+    final coming = picked.where(ahead).toList();
+    return [
+      if (gone.isNotEmpty) note(gone, expected: false),
+      if (coming.isNotEmpty) note(coming, expected: true),
+    ];
   }
 
   /// Cancelled subscriptions (Savings card), most expensive first.

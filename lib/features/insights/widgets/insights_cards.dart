@@ -35,8 +35,9 @@ class InsightsCardHeader extends StatelessWidget {
   }
 }
 
-/// Summary card: paid in the range (big), trend against the span before, then the legend of the
-/// bar chart with Paid vs Expected-not-yet-confirmed amounts.
+/// Summary card: the range total (big) = Paid + Expected-not-yet-confirmed (= the bars of the
+/// range), the change of that same total against the span before (or "not enough data" when the
+/// history does not cover it), then the legend of the bar chart with the two parts.
 class InsightsSummaryCard extends StatelessWidget {
   const InsightsSummaryCard({
     super.key,
@@ -57,7 +58,9 @@ class InsightsSummaryCard extends StatelessWidget {
     final c = context.colors;
     final key = InsightsFormat.rangeKey(range);
     final change = totals.changePercent;
-    final trend = change == null
+    final trend = !totals.comparable
+        ? l.insightsTrendNoData(key)
+        : change == null
         ? null
         : change > 0
         ? l.insightsTrendMore(key, change)
@@ -65,6 +68,8 @@ class InsightsSummaryCard extends StatelessWidget {
         ? l.insightsTrendLess(key, -change)
         : l.insightsTrendSame(key);
     String money(double v) => l.amount(v, currency, approx: approx);
+    // Expected periods are an estimate too (same "≈" as the Calendar header).
+    final total = l.amount(totals.total, currency, approx: approx || totals.expected > 0);
     final lg = AppType.meta.copyWith(color: c.inkMuted);
     final value = AppType.label.copyWith(color: c.ink).tabular;
 
@@ -76,11 +81,11 @@ class InsightsSummaryCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l.insightsPaidLabel(key), style: lg),
+                Text(l.insightsTotalLabel(key), style: lg),
                 const SizedBox(height: 2),
                 Text(
-                  money(totals.paid),
-                  semanticsLabel: l.spokenLabel(money(totals.paid)),
+                  total,
+                  semanticsLabel: l.spokenLabel(total),
                   style: AppType.headline.copyWith(color: c.ink).tabular,
                   textScaler: AppTextScale.capped(context, AppTextScale.headline),
                 ),
@@ -92,7 +97,11 @@ class InsightsSummaryCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 1),
                         child: Icon(
-                          change! < 0 ? LucideIcons.trendingDown : AppIcons.trend,
+                          change == null
+                              ? AppIcons.info
+                              : change < 0
+                              ? LucideIcons.trendingDown
+                              : AppIcons.trend,
                           size: 16,
                           color: c.inkMuted,
                         ),

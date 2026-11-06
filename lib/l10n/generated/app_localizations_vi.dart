@@ -879,11 +879,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get insightsRangeYear => 'Năm nay';
 
   @override
-  String insightsPaidLabel(String range) {
+  String insightsTotalLabel(String range) {
     String _temp0 = intl.Intl.selectLogic(range, {
-      'month': 'Đã trả · tháng này',
-      'year': 'Đã trả · năm nay',
-      'other': 'Đã trả · 12 tháng qua',
+      'month': 'Tổng · tháng này',
+      'year': 'Tổng · năm nay',
+      'other': 'Tổng · 12 tháng qua',
     });
     return '$_temp0';
   }
@@ -919,6 +919,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String insightsTrendNoData(String range) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Chưa đủ dữ liệu tháng trước để so sánh',
+      'year': 'Chưa đủ dữ liệu năm ngoái để so sánh',
+      'other': 'Chưa đủ dữ liệu 12 tháng trước đó để so sánh',
+    });
+    return '$_temp0';
+  }
+
+  @override
   String get insightsLegendPaid => 'Đã trả';
 
   @override
@@ -942,7 +952,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String insightsChartLabel(String from, String to) {
-    return 'Số đã trả mỗi tháng, từ $from đến $to';
+    return 'Chi tiêu mỗi tháng, gồm đã trả và dự kiến, từ $from đến $to';
   }
 
   @override
@@ -980,10 +990,29 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String insightsPeakYearlyAhead(String months, String names) {
+    return '$months dự kiến tăng vọt vì gia hạn gói năm $names.';
+  }
+
+  @override
+  String insightsPeakAhead(String months, String names) {
+    return '$months dự kiến tăng vọt vì gia hạn $names.';
+  }
+
+  @override
+  String insightsPeakPlainAhead(String months) {
+    return '$months dự kiến cao hơn bình thường.';
+  }
+
+  @override
   String get insightsByCategory => 'Theo danh mục';
 
   @override
-  String get insightsMonthlyActive => 'mỗi tháng, đang trả';
+  String get insightsMonthlyActive => 'quy ra mỗi tháng, gói đang dùng';
+
+  @override
+  String get insightsCategoryNote =>
+      'Gói trả theo năm (hoặc không theo tháng) được chia đều ra mỗi tháng, nên đây không phải số phải trả trong tháng này.';
 
   @override
   String insightsSliceLabel(String category, String amount, int percent) {

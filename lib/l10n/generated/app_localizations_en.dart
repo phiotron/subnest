@@ -901,11 +901,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get insightsRangeYear => 'This year';
 
   @override
-  String insightsPaidLabel(String range) {
+  String insightsTotalLabel(String range) {
     String _temp0 = intl.Intl.selectLogic(range, {
-      'month': 'Paid · this month',
-      'year': 'Paid · this year',
-      'other': 'Paid · last 12 months',
+      'month': 'Total · this month',
+      'year': 'Total · this year',
+      'other': 'Total · last 12 months',
     });
     return '$_temp0';
   }
@@ -941,6 +941,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String insightsTrendNoData(String range) {
+    String _temp0 = intl.Intl.selectLogic(range, {
+      'month': 'Not enough data from last month to compare',
+      'year': 'Not enough data from last year to compare',
+      'other': 'Not enough data from the 12 months before to compare',
+    });
+    return '$_temp0';
+  }
+
+  @override
   String get insightsLegendPaid => 'Paid';
 
   @override
@@ -964,7 +974,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String insightsChartLabel(String from, String to) {
-    return 'Paid per month, $from to $to';
+    return 'Spending per month, paid and expected, $from to $to';
   }
 
   @override
@@ -998,14 +1008,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String insightsPeakPlain(String months) {
-    return '$months are higher than usual.';
+    return 'Spending was higher than usual in $months.';
+  }
+
+  @override
+  String insightsPeakYearlyAhead(String months, String names) {
+    return '$months will jump with the yearly $names renewals.';
+  }
+
+  @override
+  String insightsPeakAhead(String months, String names) {
+    return '$months will jump with the $names renewals.';
+  }
+
+  @override
+  String insightsPeakPlainAhead(String months) {
+    return 'Spending will be higher than usual in $months.';
   }
 
   @override
   String get insightsByCategory => 'By category';
 
   @override
-  String get insightsMonthlyActive => 'monthly, active';
+  String get insightsMonthlyActive => 'monthly equivalent, active plans';
+
+  @override
+  String get insightsCategoryNote =>
+      'Yearly and other non-monthly plans are spread evenly per month here, so this is not what you pay this month.';
 
   @override
   String insightsSliceLabel(String category, String amount, int percent) {
