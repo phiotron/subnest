@@ -50,8 +50,10 @@ class _AppShellState extends ConsumerState<AppShell> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final shell = widget.shell;
+    // Only this one setting: rebuilding the shell on every Settings write restarts route work below it.
     final enabled =
-        (ref.watch(settingsProvider).value?.hideTabBarOnScroll ?? false) && !MediaQuery.accessibleNavigationOf(context);
+        ref.watch(settingsProvider.select((a) => a.value?.hideTabBarOnScroll ?? false)) &&
+        !MediaQuery.accessibleNavigationOf(context);
     final hidden = enabled && _hidden;
     final bar = AppTabBar(
       currentIndex: shell.currentIndex,
