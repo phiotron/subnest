@@ -185,6 +185,13 @@ class SettingsScreen extends ConsumerWidget {
                   label: l.settingsLicenses,
                   onTap: () => SettingsActions.openLicenses(context),
                 ),
+                SettingRow(
+                  icon: LucideIcons.image,
+                  label: l.settingsLogosAttribution,
+                  subtitle: l.settingsLogosOwnership,
+                  external: true,
+                  onTap: () => SettingsActions.openLogoAttribution(context, ref),
+                ),
                 if (SettingsActions.canRate(platform))
                   SettingRow(
                     icon: AppIcons.rate,

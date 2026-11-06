@@ -103,6 +103,8 @@
   "settingsPrivacyPolicy": "Chính sách quyền riêng tư",
   "settingsTerms": "Điều khoản sử dụng",
   "settingsLicenses": "Giấy phép mã nguồn mở",
+  "settingsLogosAttribution": "Logos provided by Logo.dev",
+  "settingsLogosOwnership": "Tên và logo thuộc chủ sở hữu, chỉ dùng để nhận diện dịch vụ.",
   "settingsRateApp": "Đánh giá Subnest",
   "settingsFeedback": "Gửi góp ý",
   "settingsFeedbackSubject": "Góp ý Subnest ({version})",

@@ -1426,6 +1426,8 @@
   "settingsPrivacyPolicy": "Privacy policy",
   "settingsTerms": "Terms of use",
   "settingsLicenses": "Open-source licenses",
+  "settingsLogosAttribution": "Logos provided by Logo.dev",
+  "settingsLogosOwnership": "Service names and logos belong to their owners and are shown only to identify the service.",
   "settingsRateApp": "Rate Subnest",
   "settingsFeedback": "Send feedback",
   "settingsFeedbackSubject": "Subnest feedback ({version})",

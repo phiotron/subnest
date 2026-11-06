@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/widgets/widgets.dart';
+import '../../data/logos/logo_dev.dart';
 import '../../data/providers.dart';
 import '../../data/settings_repository.dart';
 import 'app_info.dart';
@@ -56,6 +57,12 @@ abstract final class SettingsActions {
       applicationIcon: const Padding(padding: EdgeInsets.all(AppSpace.s2), child: AppMark(size: 56, radius: 13)),
       applicationLegalese: l.settingsLegalese,
     );
+  }
+
+  /// "Logos provided by Logo.dev" → https://logo.dev (free-plan attribution, ADR 0002 §5).
+  static Future<void> openLogoAttribution(BuildContext context, WidgetRef ref) async {
+    final ok = await ref.read(settingsPlatformProvider).openExternal(Uri.parse(LogoDev.attributionUrl));
+    if (!ok && context.mounted) showAppToast(context, context.l10n.settingsLinkFailed, icon: AppIcons.alert);
   }
 
   /// Whether "Rate Subnest" has somewhere to go on this platform.

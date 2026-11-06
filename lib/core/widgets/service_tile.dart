@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
+import 'service_tile_logo.dart';
+
+export 'service_tile_logo.dart' show ServiceLogoScope, ServiceLogoSource;
 
 /// Monogram tile of a Service (product.md §7.4, design Components › ServiceTile).
 ///
@@ -14,6 +17,9 @@ import 'app_icons.dart';
 /// * [awaiting] adds the 12px `warning` dot (top-right); [trial] the hourglass badge
 ///   (bottom-right); [off] greys the tile out (cancelled); [faded] dims it (queued period).
 /// * Never grows with system text size (layout grid stays fixed).
+/// * [logoDomain] (from the Catalog only — never derived from a typed name): the real logo from
+///   Logo.dev is drawn over the monogram once loaded ([ServiceTileLogo]); missing, offline,
+///   not yet loaded or no key in the build → the monogram stays. Badges/ring/size unchanged.
 class ServiceTile extends StatelessWidget {
   const ServiceTile({
     super.key,
@@ -26,6 +32,7 @@ class ServiceTile extends StatelessWidget {
     this.off = false,
     this.faded = false,
     this.badgeRingColor,
+    this.logoDomain,
   });
 
   final String name;
@@ -52,6 +59,9 @@ class ServiceTile extends StatelessWidget {
 
   /// Ring around the dot/badge so it separates from what is behind the tile; defaults to `surface`.
   final Color? badgeRingColor;
+
+  /// Catalog `service.logoDomain` (e.g. `netflix.com`); `null` for custom services → monogram.
+  final String? logoDomain;
 
   static String initials(String name) {
     final words = name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
@@ -100,33 +110,43 @@ class ServiceTile extends StatelessWidget {
     final radius = radiusFor(size);
     final ring = badgeRingColor ?? c.surface;
 
+    final domain = logoDomain?.trim();
+    final withLogo = domain != null && domain.isNotEmpty;
+    final monogram = Text(
+      text,
+      maxLines: 1,
+      overflow: TextOverflow.clip,
+      textScaler: TextScaler.noScaling,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontFamily: AppType.fontFamily,
+        color: fg,
+        fontWeight: FontWeight.w700,
+        fontSize: fontSizeFor(size, chars),
+        height: 1,
+        letterSpacing: -0.03 * fontSizeFor(size, chars),
+      ),
+    );
+
     Widget tile = Container(
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(radius),
-      ),
+      clipBehavior: withLogo ? Clip.antiAlias : Clip.none,
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(radius)),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: c.tileRing, width: 1),
       ),
-      child: Text(
-        text,
-        maxLines: 1,
-        overflow: TextOverflow.clip,
-        textScaler: TextScaler.noScaling,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: AppType.fontFamily,
-          color: fg,
-          fontWeight: FontWeight.w700,
-          fontSize: fontSizeFor(size, chars),
-          height: 1,
-          letterSpacing: -0.03 * fontSizeFor(size, chars),
-        ),
-      ),
+      child: withLogo
+          ? Stack(
+              fit: StackFit.expand,
+              children: [
+                Center(child: monogram),
+                ServiceTileLogo(logoDomain: domain),
+              ],
+            )
+          : monogram,
     );
 
     if (off) {

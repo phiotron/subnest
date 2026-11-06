@@ -1707,6 +1707,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsLicenses => 'Giấy phép mã nguồn mở';
 
   @override
+  String get settingsLogosAttribution => 'Logos provided by Logo.dev';
+
+  @override
+  String get settingsLogosOwnership =>
+      'Tên và logo thuộc chủ sở hữu, chỉ dùng để nhận diện dịch vụ.';
+
+  @override
   String get settingsRateApp => 'Đánh giá Subnest';
 
   @override

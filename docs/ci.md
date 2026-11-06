@@ -39,11 +39,13 @@ upload được**); có `REQUIRE_RELEASE_SIGNING=true` thì báo lỗi thay vì 
 ```bash
 export PATH="/c/src/flutter/bin:$PATH"
 export ANDROID_KEY_PROPERTIES="C:/Users/Admin/keystores/A001-subnest/key.properties" REQUIRE_RELEASE_SIGNING=true
-flutter build appbundle --release
+LOGO_DEV_KEY="$(tr -d ' \r\n' < C:/Users/Admin/keystores/A001-subnest/logo-dev.key)"   # logo dịch vụ (mục "Khoá Logo.dev")
+flutter build appbundle --release --dart-define=LOGO_DEV_KEY="$LOGO_DEV_KEY"
 # → build/app/outputs/bundle/release/app-release.aab ; kiểm chữ ký:
 keytool -printcert -jarfile build/app/outputs/bundle/release/app-release.aab | grep SHA256:
 ```
-PowerShell: `$env:ANDROID_KEY_PROPERTIES="C:/Users/Admin/keystores/A001-subnest/key.properties"; $env:REQUIRE_RELEASE_SIGNING="true"; flutter build appbundle --release`.
+PowerShell: `$env:ANDROID_KEY_PROPERTIES="C:/Users/Admin/keystores/A001-subnest/key.properties"; $env:REQUIRE_RELEASE_SIGNING="true"; flutter build appbundle --release --dart-define=LOGO_DEV_KEY=$((Get-Content C:/Users/Admin/keystores/A001-subnest/logo-dev.key -Raw).Trim())`.
+Thiếu `--dart-define=LOGO_DEV_KEY` ⇒ app vẫn chạy nhưng **không có logo** (chỉ tile chữ, không gọi Logo.dev).
 
 ### GitHub secrets (repo `phamphuongphuongnd/A001-subnest`)
 
@@ -59,6 +61,30 @@ PowerShell: `$env:ANDROID_KEY_PROPERTIES="C:/Users/Admin/keystores/A001-subnest/
 bash .github/scripts/set-android-secrets.sh C:/Users/Admin/keystores/A001-subnest
 ```
 CI giải mã keystore vào `$RUNNER_TEMP`, ghi `key.properties` tạm, xoá ở bước cuối (`if: always()`).
+
+### Khoá Logo.dev (`LOGO_DEV_KEY`) — logo thật của dịch vụ (ADR 0002 §5)
+
+App đọc khoá lúc build: `--dart-define=LOGO_DEV_KEY=pk_…` (`LogoDev.keyFromEnvironment`, `lib/data/logos/`). Không có khoá,
+hoặc khoá không bắt đầu bằng `pk_` (khoá bí mật `sk_` bị từ chối) ⇒ không gọi mạng, mọi tile hiện chữ cái. Khoá `pk_` là khoá
+*công khai* (nằm trong app, ai giải nén cũng thấy) — vẫn **không commit, không in ra log/notes**.
+
+| Ở đâu | Giá trị |
+|---|---|
+| Máy local | `C:\Users\Admin\keystores\A001-subnest\logo-dev.key` — một dòng `pk_…`, ngoài mọi repo |
+| GitHub secret `LOGO_DEV_KEY` | cùng giá trị; bước *Build release AAB* của `ci.yml` truyền vào `--dart-define` (thiếu ⇒ cảnh báo vàng, AAB không có logo) |
+
+**Người dùng tự tạo khoá (Claude không tạo):**
+1. Đăng ký https://www.logo.dev (gói Community miễn phí) → *Dashboard → API keys* → chép **Publishable key** (`pk_…`).
+2. Lưu vào file trên (Notepad, một dòng, không dấu cách).
+3. Đặt secret (giá trị đi qua stdin, không lộ ra dòng lệnh) — Git Bash ở thư mục repo app:
+   ```bash
+   gh secret set LOGO_DEV_KEY --repo phamphuongphuongnd/A001-subnest < C:/Users/Admin/keystores/A001-subnest/logo-dev.key
+   ```
+4. Gói miễn phí dùng thương mại phải ghi nguồn: app có dòng *Cài đặt › Giới thiệu › "Logos provided by Logo.dev"* (link
+   https://logo.dev) và chính sách quyền riêng tư công khai có câu đó — gửi URL trang chính sách
+   (`https://phamphuongphuongnd.github.io/legal/subnest/privacy-policy.en.html`) ở *Dashboard → Billing → Attribution*.
+5. Giới hạn gói miễn phí: 500K lượt/tháng; app cache logo 30 ngày nên mỗi máy chỉ tải mỗi logo ~1 lần/tháng.
+6. iOS: `ios.yml` **chưa** truyền khoá (ngoài phạm vi phiên P3) — thêm `--dart-define` tương tự trước khi build iOS nộp store.
 
 ### Phiên bản
 `versionName`/`versionCode` lấy từ `pubspec.yaml` (`version: 1.0.0+1` ⇒ name `1.0.0`, code `1`). **Mỗi lần upload lên

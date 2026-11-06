@@ -1746,6 +1746,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLicenses => 'Open-source licenses';
 
   @override
+  String get settingsLogosAttribution => 'Logos provided by Logo.dev';
+
+  @override
+  String get settingsLogosOwnership =>
+      'Service names and logos belong to their owners and are shown only to identify the service.';
+
+  @override
   String get settingsRateApp => 'Rate Subnest';
 
   @override

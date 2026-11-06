@@ -2444,6 +2444,18 @@ abstract class AppLocalizations {
   /// **'Open-source licenses'**
   String get settingsLicenses;
 
+  /// No description provided for @settingsLogosAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Logos provided by Logo.dev'**
+  String get settingsLogosAttribution;
+
+  /// No description provided for @settingsLogosOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Service names and logos belong to their owners and are shown only to identify the service.'**
+  String get settingsLogosOwnership;
+
   /// No description provided for @settingsRateApp.
   ///
   /// In en, this message translates to:

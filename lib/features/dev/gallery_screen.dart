@@ -296,6 +296,24 @@ class _GalleryScreenState extends State<GalleryScreen> {
           GhostTile(),
         ],
       ),
+      // Real logos need a build with --dart-define=LOGO_DEV_KEY (docs/dev.md §7); without it these
+      // stay monograms. Same states as above, with `logoDomain` as the remote Catalog will pass it.
+      _h(context, 'With logo (Logo.dev; monogram without key / offline)'),
+      const Wrap(
+        spacing: AppSpace.s5,
+        runSpacing: AppSpace.s4,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [
+          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 24),
+          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com'),
+          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 56),
+          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 80),
+          ServiceTile(name: 'Spotify', colorValue: spotify, logoDomain: 'spotify.com', trial: true),
+          ServiceTile(name: 'ChatGPT', colorValue: chatgpt, logoDomain: 'openai.com', awaiting: true),
+          ServiceTile(name: 'Canva', colorValue: 0xFF7D2AE8, logoDomain: 'canva.com', off: true),
+          ServiceTile(name: 'No logo', colorValue: 0xFF0F8B8D, logoDomain: 'example.invalid'),
+        ],
+      ),
       _h(context, 'Custom tile palette (letter picks the higher-contrast ink)'),
       Wrap(
         spacing: AppSpace.s2,

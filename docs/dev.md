@@ -147,6 +147,17 @@ test/                       domain/ (luật) · data/ (DB in-memory, backup, t�
 Không commit keystore/`key.properties`/`.p12`/`.env` (đã có trong `.gitignore`). Ký release + CI: phiên E (`docs/ci.md`).
 Nguồn tỷ giá yêu cầu ghi công "Rates by Exchange Rate API" (đã có ở Cài đặt → Tỷ giá).
 
+**Logo dịch vụ (Logo.dev, phiên P3 2026-11-06):** cần khoá `pk_` lúc build — không có ⇒ chỉ tile chữ, không gọi mạng
+(test luôn chạy không khoá). Chạy app có logo (Git Bash):
+```bash
+flutter run --dart-define=LOGO_DEV_KEY="$(tr -d ' \r\n' < C:/Users/Admin/keystores/A001-subnest/logo-dev.key)"
+```
+PowerShell: `flutter run --dart-define=LOGO_DEV_KEY=$((Get-Content C:/Users/Admin/keystores/A001-subnest/logo-dev.key -Raw).Trim())`.
+Tạo khoá + GitHub secret: `docs/ci.md` mục *Khoá Logo.dev*. Code: `lib/data/logos/` (`LogoDev` = URL + khoá,
+`LogoRepository` = tải lười + cache `<app cache>/service_logos/`, 30 ngày, ≤ 20 MB, 404 nhớ 7 ngày, lỗi mạng chờ 15 phút).
+Tile: `ServiceTile(…, logoDomain: service.logoDomain)` — **chỉ** tên miền từ Catalog, dịch vụ tuỳ chỉnh không truyền
+(chính sách quyền riêng tư đã cam kết). Test/gallery bơm nguồn giả bằng `ServiceLogoScope(source: …)`.
+
 ## 8. UI conventions (design system — phiên F, 2026-11-05)
 
 Nguồn: `design/system/README.md` (luật), `design/png/` (58 màn × sáng/tối), `design/subnest-hifi.html` (mở bằng trình duyệt:
@@ -171,7 +182,7 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 ### 8.2 Component nào cho việc gì
 | Việc | Component |
 |---|---|
-| Tile dịch vụ | `ServiceTile(name, colorValue, iconText, size: 24/32/40/56/80, awaiting:, trial:, off:, faded:)` · ô "thêm tuỳ chỉnh" `GhostTile` |
+| Tile dịch vụ | `ServiceTile(name, colorValue, iconText, size: 24/32/40/56/80, awaiting:, trial:, off:, faded:, logoDomain:)` (`logoDomain` chỉ từ Catalog → logo thật, xem §7) · ô "thêm tuỳ chỉnh" `GhostTile` |
 | Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn) |
 | Hero tổng chi (S2, tổng tháng S8) | `SpendHero(label, amount, format, approx, yearly, onPeriodChanged, segments, leadingMeta, trailingMeta, footer)` — tự đếm số 240 ms; `SpendStrip`, `CountUpText` dùng riêng được |
 | Nút | `AppButton.primary/tonal/outline/text/danger` (+ `AppButtonKind.dangerText`), `small:` (40, pill), `expand:` (full width), `icon:`, `loading:`; FAB `AppFab`; icon 44px `AppIconButton` |

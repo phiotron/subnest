@@ -116,6 +116,22 @@ void main() {
       expect(find.text('No email app found. Write to phamphuongphuongnd@gmail.com'), findsOneWidget);
     });
 
+    settingsTest('About: "Logos provided by Logo.dev" links to logo.dev, with the ownership note', (tester) async {
+      final f = await SettingsFixture.create();
+      await pumpSettings(tester, f);
+      expect(en.settingsLogosAttribution, 'Logos provided by Logo.dev');
+      expect(l10nFor('vi').settingsLogosAttribution, 'Logos provided by Logo.dev', reason: 'wording required by Logo.dev');
+      await tapVisible(tester, find.text(en.settingsLogosAttribution));
+      await settle(tester);
+      expect(f.platform.opened.single.toString(), 'https://logo.dev');
+      expect(find.text(en.settingsLogosOwnership), findsOneWidget);
+
+      f.platform.externalOk = false;
+      await tester.tap(find.text(en.settingsLogosAttribution));
+      await settle(tester);
+      expect(find.text(en.settingsLinkFailed), findsOneWidget);
+    });
+
     settingsTest('About: rate opens the Play listing; hidden on iOS without an App Store id', (tester) async {
       final f = await SettingsFixture.create();
       await pumpSettings(tester, f);
