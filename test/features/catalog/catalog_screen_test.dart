@@ -84,15 +84,15 @@ void main() {
   addTest('S3 no results → Create “abc” opens S4 with the name (png 18)', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/catalog');
-    await tester.enterText(find.byType(TextField), 'abc');
+    await tester.enterText(find.byType(TextField), 'qzxw');
     await settle(tester);
-    expect(find.text('No service called “abc”'), findsOneWidget);
+    expect(find.text('No service called “qzxw”'), findsOneWidget);
     expect(find.text('Create it — you can pick the colour and letters.'), findsOneWidget);
     await shot(tester, 's3-no-results-390-en-light-100');
-    await tester.tap(find.text('Create “abc”'));
+    await tester.tap(find.text('Create “qzxw”'));
     await settle(tester);
     expect(find.text('New subscription'), findsOneWidget);
-    expect(find.widgetWithText(TextField, 'abc'), findsOneWidget);
+    expect(find.widgetWithText(TextField, 'qzxw'), findsOneWidget);
   });
 
   addTest('S3 plan sheet: 4 plans with VN prices, Continue with Premium (png 19)', (tester) async {
@@ -153,7 +153,7 @@ void main() {
         }
         await tester.tapAt(const Offset(20, 60));
         await settle(tester);
-        await tester.enterText(find.byType(TextField), 'abc');
+        await tester.enterText(find.byType(TextField), 'qzxw');
         await settle(tester);
         expectNoLayoutErrors(tester, 'no results');
       });
