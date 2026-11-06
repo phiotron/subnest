@@ -1,6 +1,6 @@
 {
  "schemaVersion": 4,
- "version": 8,
+ "version": 11,
  "updatedAt": "2026-11-06",
  "staleAfterDays": 90,
  "regions": {
@@ -1046,7 +1046,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 10.99,
+       "amount": 11.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.starz.com/us/en/buy",
        "method": "manual"
       }
      }
@@ -1063,6 +1065,8 @@
       "US": {
        "currency": "USD",
        "amount": 69.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.starz.com/en_us/annual-billing-BJPtMEWys",
        "method": "manual"
       }
      }
@@ -1129,7 +1133,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 6.99,
+       "amount": 7.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.amcplus.com/",
        "method": "manual"
       }
      }
@@ -1145,7 +1151,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 9.99,
+       "amount": 10.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.amcplus.com/",
        "method": "manual"
       }
      }
@@ -1170,7 +1178,7 @@
    "plans": [
     {
      "id": "monthly",
-     "name": "Shudder",
+     "name": "Shudder Premium",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -1179,7 +1187,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 8.99,
+       "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.shudder.com/kb/guide/en/how-much-does-shudder-cost-Umm93c54c2/Steps/3735111",
        "method": "manual"
       }
      }
@@ -1318,7 +1328,7 @@
    "plans": [
     {
      "id": "monthly",
-     "name": "Philo",
+     "name": "Essential",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -1327,7 +1337,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 33,
+       "amount": 25,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.philo.com/account-billing/essential/",
        "method": "manual"
       }
      }
@@ -1363,6 +1375,8 @@
       "US": {
        "currency": "USD",
        "amount": 45.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.sling.com/service/compare-plans",
        "method": "manual"
       }
      }
@@ -1378,7 +1392,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 50.99,
+       "amount": 45.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.sling.com/service/compare-plans",
        "method": "manual"
       }
      }
@@ -1395,6 +1411,8 @@
       "US": {
        "currency": "USD",
        "amount": 60.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.sling.com/service/compare-plans",
        "method": "manual"
       }
      }
@@ -1429,7 +1447,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 84.99,
+       "amount": 88.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.fubo.tv/hc/en-us/articles/46604802430605-I-m-a-Fubo-Subscriber-Is-My-Price-Changing",
        "method": "manual"
       }
      }
@@ -1503,7 +1523,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 12.99,
+       "amount": 13.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
        "method": "manual"
       }
      }
@@ -1519,7 +1541,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 29.99,
+       "amount": 31.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
        "method": "manual"
       }
      }
@@ -1544,7 +1568,7 @@
    "plans": [
     {
      "id": "monthly",
-     "name": "DAZN Standard",
+     "name": "DAZN Standard Monthly",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -1553,7 +1577,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 24.99,
+       "amount": 34.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.dazn.com/hc/en-us/articles/16184063399709-DAZN-plans-and-pricing",
        "method": "manual"
       }
      }
@@ -1577,7 +1603,7 @@
    "plans": [
     {
      "id": "monthly",
-     "name": "MUBI",
+     "name": "MUBI Classic",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -1587,13 +1613,15 @@
       "US": {
        "currency": "USD",
        "amount": 14.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://mubi.com/en/us/memberships",
        "method": "manual"
       }
      }
     },
     {
      "id": "annual",
-     "name": "MUBI Annual",
+     "name": "MUBI Classic Annual",
      "status": "active",
      "cycle": {
       "unit": "year",
@@ -1603,6 +1631,8 @@
       "US": {
        "currency": "USD",
        "amount": 119.88,
+       "verifiedAt": "2026-11-06",
+       "source": "https://mubi.com/en/us/memberships",
        "method": "manual"
       }
      }
@@ -1637,6 +1667,8 @@
       "US": {
        "currency": "USD",
        "amount": 10.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.criterionchannel.com/subscribe",
        "method": "manual"
       }
      }
@@ -1652,7 +1684,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 109.99,
+       "amount": 99.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.criterionchannel.com/subscribe",
        "method": "manual"
       }
      }
@@ -2373,6 +2407,8 @@
       "US": {
        "currency": "USD",
        "amount": 6,
+       "verifiedAt": "2026-11-06",
+       "source": "https://blog.nebula.tv/pricing-updates/",
        "method": "manual"
       }
      }
@@ -2389,6 +2425,8 @@
       "US": {
        "currency": "USD",
        "amount": 60,
+       "verifiedAt": "2026-11-06",
+       "source": "https://blog.nebula.tv/pricing-updates/",
        "method": "manual"
       }
      }
@@ -3595,7 +3633,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 4.99,
+       "amount": 5.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.pandora.com/s/article/2026-Pandora-Subscription-Rate-Change?language=en_US",
        "method": "manual"
       }
      }
@@ -3611,7 +3651,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 10.99,
+       "amount": 11.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.pandora.com/s/article/2026-Pandora-Subscription-Rate-Change?language=en_US",
        "method": "manual"
       }
      }
@@ -3654,7 +3696,7 @@
    "plans": [
     {
      "id": "streaming",
-     "name": "Music Showcase",
+     "name": "All Access (App Only)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -3663,7 +3705,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 9.99,
+       "amount": 11.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.siriusxm.com/plans/streaming",
        "method": "manual"
       }
      }
@@ -3755,7 +3799,7 @@
    "plans": [
     {
      "id": "studio",
-     "name": "Studio",
+     "name": "Studio Solo",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -3765,13 +3809,15 @@
       "US": {
        "currency": "USD",
        "amount": 12.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.qobuz.com/us-en/music/streaming/offers/studio",
        "method": "manual"
       }
      }
     },
     {
      "id": "studio-annual",
-     "name": "Studio Annual",
+     "name": "Studio Solo Annual",
      "status": "active",
      "cycle": {
       "unit": "year",
@@ -3780,7 +3826,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 129.99,
+       "amount": 129.96,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.qobuz.com/us-en/music/streaming/offers/studio",
        "method": "manual"
       }
      }
@@ -5360,6 +5408,8 @@
       "US": {
        "currency": "USD",
        "amount": 14.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://mistral.ai/pricing/",
        "method": "manual"
       }
      }
@@ -5480,6 +5530,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.character.ai/hc/en-us/articles/55845963766555-C-ai-FAQ",
        "method": "manual"
       }
      }
@@ -5712,6 +5764,8 @@
       "US": {
        "currency": "USD",
        "amount": 15,
+       "verifiedAt": "2026-11-06",
+       "source": "https://runwayml.com/pricing",
        "method": "manual"
       }
      }
@@ -5728,6 +5782,8 @@
       "US": {
        "currency": "USD",
        "amount": 35,
+       "verifiedAt": "2026-11-06",
+       "source": "https://runwayml.com/pricing",
        "method": "manual"
       }
      }
@@ -6261,7 +6317,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 15,
+       "amount": 20,
+       "verifiedAt": "2026-11-06",
+       "source": "https://windsurf.com/pricing",
        "method": "manual"
       }
      }
@@ -6294,7 +6352,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 25,
+       "amount": 20,
+       "verifiedAt": "2026-11-06",
+       "source": "https://replit.com/pricing",
        "method": "manual"
       }
      }
@@ -6328,6 +6388,8 @@
       "US": {
        "currency": "USD",
        "amount": 25,
+       "verifiedAt": "2026-11-06",
+       "source": "https://lovable.dev/guides/best-ai-app-builders",
        "method": "manual"
       }
      }
@@ -6980,6 +7042,8 @@
       "US": {
        "currency": "USD",
        "amount": 9,
+       "verifiedAt": "2026-11-06",
+       "source": "https://huggingface.co/pricing",
        "method": "manual"
       }
      }
@@ -7649,6 +7713,8 @@
       "US": {
        "currency": "USD",
        "amount": 49.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.pcloud.com/cloud-storage-pricing-plans.html",
        "method": "manual"
       }
      }
@@ -7665,6 +7731,8 @@
       "US": {
        "currency": "USD",
        "amount": 99.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.pcloud.com/cloud-storage-pricing-plans.html",
        "method": "manual"
       }
      }
@@ -7915,6 +7983,8 @@
       "US": {
        "currency": "USD",
        "amount": 4.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://proton.me/drive",
        "method": "manual"
       }
      }
@@ -8786,7 +8856,7 @@
    "plans": [
     {
      "id": "pro",
-     "name": "Pro",
+     "name": "Workplace Pro",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -8796,6 +8866,8 @@
       "US": {
        "currency": "USD",
        "amount": 15.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.zoom.com/en/products/collaboration-tools/zoom-workplace-pro/",
        "method": "manual"
       }
      }
@@ -9167,6 +9239,8 @@
       "US": {
        "currency": "USD",
        "amount": 36,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.lastpass.com/pricing",
        "method": "manual"
       }
      }
@@ -9254,6 +9328,8 @@
       "US": {
        "currency": "USD",
        "amount": 39.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.keepersecurity.com/blog/2025/07/09/keeper-vs-dashlane-comparing-password-managers/",
        "method": "manual"
       }
      }
@@ -9322,6 +9398,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://protonvpn.com/pricing",
        "method": "manual"
       }
      }
@@ -9773,6 +9851,8 @@
       "US": {
        "currency": "USD",
        "amount": 44.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.malwarebytes.com/premium",
        "method": "manual"
       }
      }
@@ -9977,6 +10057,8 @@
       "US": {
        "currency": "USD",
        "amount": 8.4,
+       "verifiedAt": "2026-11-06",
+       "source": "https://knowledge.workspace.google.com/admin/billing/flexible-plan",
        "method": "manual"
       }
      }
@@ -9993,6 +10075,8 @@
       "US": {
        "currency": "USD",
        "amount": 16.8,
+       "verifiedAt": "2026-11-06",
+       "source": "https://knowledge.workspace.google.com/admin/billing/flexible-plan",
        "method": "manual"
       }
      }
@@ -10026,6 +10110,8 @@
       "US": {
        "currency": "USD",
        "amount": 8.75,
+       "verifiedAt": "2026-11-06",
+       "source": "https://slack.com/pricing",
        "method": "manual"
       }
      }
@@ -10842,7 +10928,7 @@
    "plans": [
     {
      "id": "personal",
-     "name": "Personal Annual",
+     "name": "Core (billed annually)",
      "status": "active",
      "cycle": {
       "unit": "year",
@@ -10851,7 +10937,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 192,
+       "amount": 348,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.squarespace.com/pricing",
        "method": "manual"
       }
      }
@@ -10876,7 +10964,7 @@
    "plans": [
     {
      "id": "light",
-     "name": "Light",
+     "name": "Light (billed monthly)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -10885,7 +10973,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 17,
+       "amount": 24,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.wix.com/blog/wix-premium-plans",
        "method": "manual"
       }
      }
@@ -11112,7 +11202,7 @@
    "plans": [
     {
      "id": "standard",
-     "name": "Standard",
+     "name": "Standard (per seat, billed annually)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -11121,7 +11211,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 12,
+       "amount": 10,
+       "verifiedAt": "2026-11-06",
+       "source": "https://calendly.com/pricing",
        "method": "manual"
       }
      }
@@ -11189,6 +11281,8 @@
       "US": {
        "currency": "USD",
        "amount": 10,
+       "verifiedAt": "2026-11-06",
+       "source": "https://miro.com/pricing/",
        "method": "manual"
       }
      }
@@ -11245,7 +11339,7 @@
    "plans": [
     {
      "id": "starter",
-     "name": "Starter",
+     "name": "Starter (per user, billed monthly)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -11255,6 +11349,8 @@
       "US": {
        "currency": "USD",
        "amount": 13.49,
+       "verifiedAt": "2026-11-06",
+       "source": "https://asana.com/pricing",
        "method": "manual"
       }
      }
@@ -11278,7 +11374,7 @@
    "plans": [
     {
      "id": "basic",
-     "name": "Basic (per seat)",
+     "name": "Basic (per seat, billed monthly)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -11288,6 +11384,8 @@
       "US": {
        "currency": "USD",
        "amount": 12,
+       "verifiedAt": "2026-11-06",
+       "source": "https://monday.com/pricing",
        "method": "manual"
       }
      }
@@ -11344,7 +11442,7 @@
    "plans": [
     {
      "id": "team",
-     "name": "Team",
+     "name": "Team (per seat, billed monthly)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -11354,6 +11452,8 @@
       "US": {
        "currency": "USD",
        "amount": 24,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.airtable.com/articles/2277136852-airtable-plans-overview",
        "method": "manual"
       }
      }
@@ -11490,6 +11590,8 @@
       "US": {
        "currency": "USD",
        "amount": 5,
+       "verifiedAt": "2026-11-06",
+       "source": "https://obsidian.md/pricing",
        "method": "manual"
       }
      }
@@ -11506,6 +11608,8 @@
       "US": {
        "currency": "USD",
        "amount": 10,
+       "verifiedAt": "2026-11-06",
+       "source": "https://obsidian.md/pricing",
        "method": "manual"
       }
      }
@@ -11697,7 +11801,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 35.99,
+       "amount": 49.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://ticktick.com/upgrade",
        "method": "manual"
       }
      }
@@ -11850,7 +11956,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 5,
+       "amount": 6,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.fastmail.com/pricing/us/",
        "method": "manual"
       }
      }
@@ -13317,6 +13425,8 @@
       "US": {
        "currency": "USD",
        "amount": 11.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.fortnite.com/fortnite-crew-subscription",
        "method": "manual"
       }
      }
@@ -13354,6 +13464,8 @@
       "US": {
        "currency": "USD",
        "amount": 3.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.minecraft.net/en-us/realms",
        "method": "manual"
       }
      }
@@ -13370,6 +13482,8 @@
       "US": {
        "currency": "USD",
        "amount": 7.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.minecraft.net/en-us/realms",
        "method": "manual"
       }
      }
@@ -13948,6 +14062,8 @@
       "US": {
        "currency": "USD",
        "amount": 12.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://na.finalfantasyxiv.com/product/",
        "method": "manual"
       }
      }
@@ -13964,6 +14080,8 @@
       "US": {
        "currency": "USD",
        "amount": 14.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://na.finalfantasyxiv.com/product/",
        "method": "manual"
       }
      }
@@ -14663,6 +14781,8 @@
       "US": {
        "currency": "USD",
        "amount": 7.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.kobo.com/us/en/plus",
        "method": "manual"
       }
      }
@@ -14679,6 +14799,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.kobo.com/us/en/plus",
        "method": "manual"
       }
      }
@@ -14748,6 +14870,8 @@
       "US": {
        "currency": "USD",
        "amount": 14.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://libro.fm/membership",
        "method": "manual"
       }
      }
@@ -15245,7 +15369,7 @@
    "plans": [
     {
      "id": "full",
-     "name": "Full (Reader)",
+     "name": "Full Readwise (billed monthly)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -15254,7 +15378,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 9.99,
+       "amount": 12.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://readwise.io/pricing/reader",
        "method": "manual"
       }
      }
@@ -15425,6 +15551,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.marvel.com/unlimited",
        "method": "manual"
       }
      }
@@ -15441,6 +15569,8 @@
       "US": {
        "currency": "USD",
        "amount": 69,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.marvel.com/unlimited",
        "method": "manual"
       }
      }
@@ -16275,6 +16405,8 @@
       "US": {
        "currency": "USD",
        "amount": 70,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.noom.com/support/faqs/subscription-and-billing/2025/10/noom-plan-pricing-and-what-to-expect/",
        "method": "manual"
       }
      }
@@ -16343,6 +16475,8 @@
       "US": {
        "currency": "USD",
        "amount": 199,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.whoop.com/us/en/membership/",
        "method": "manual"
       }
      }
@@ -16377,6 +16511,8 @@
       "US": {
        "currency": "USD",
        "amount": 5.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://ouraring.com/membership",
        "method": "manual"
       }
      }
@@ -16411,6 +16547,8 @@
       "US": {
        "currency": "USD",
        "amount": 6.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.garmin.com/en-US/newsroom/press-release/wearables-health/elevate-your-health-and-fitness-goals-with-garmin-connect/",
        "method": "manual"
       }
      }
@@ -16427,6 +16565,8 @@
       "US": {
        "currency": "USD",
        "amount": 69.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.garmin.com/en-US/newsroom/press-release/wearables-health/elevate-your-health-and-fitness-goals-with-garmin-connect/",
        "method": "manual"
       }
      }
@@ -16462,6 +16602,8 @@
       "US": {
        "currency": "USD",
        "amount": 19.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.zwift.com/news/33635-how-much-does-zwift-cost-and-whats-included-everything-you-need-to-know",
        "method": "manual"
       }
      }
@@ -16496,6 +16638,8 @@
       "US": {
        "currency": "USD",
        "amount": 35.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.alltrails.com/plus/info",
        "method": "manual"
       }
      }
@@ -16512,6 +16656,8 @@
       "US": {
        "currency": "USD",
        "amount": 79.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.alltrails.com/press/alltrails-and-rei-introduce-partnership",
        "method": "manual"
       }
      }
@@ -16581,6 +16727,8 @@
       "US": {
        "currency": "USD",
        "amount": 15.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.fitbod.me/hc/en-us/articles/360004904714-How-to-Subscribe-to-Fitbod",
        "method": "manual"
       }
      }
@@ -16597,6 +16745,8 @@
       "US": {
        "currency": "USD",
        "amount": 95.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.fitbod.me/hc/en-us/articles/360004904714-How-to-Subscribe-to-Fitbod",
        "method": "manual"
       }
      }
@@ -17163,6 +17313,8 @@
       "US": {
        "currency": "USD",
        "amount": 99.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.tenpercent.com/apple-challenge-faq",
        "method": "manual"
       }
      }
@@ -17370,6 +17522,8 @@
       "US": {
        "currency": "USD",
        "amount": 15,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.planetfitness.com/",
        "method": "manual"
       }
      }
@@ -17385,7 +17539,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 29.99,
+       "amount": 24.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.planetfitness.com/",
        "method": "manual"
       }
      }
@@ -17979,6 +18135,8 @@
       "US": {
        "currency": "USD",
        "amount": 107.4,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.babbel.com/babbel-review",
        "method": "manual"
       }
      }
@@ -18175,7 +18333,7 @@
    "plans": [
     {
      "id": "individual",
-     "name": "Individual Annual",
+     "name": "Standard (billed annually)",
      "status": "active",
      "cycle": {
       "unit": "year",
@@ -18185,13 +18343,15 @@
       "US": {
        "currency": "USD",
        "amount": 120,
+       "verifiedAt": "2026-11-06",
+       "source": "https://masterclass.com/plans",
        "method": "manual"
       }
      }
     },
     {
      "id": "duo",
-     "name": "Duo Annual",
+     "name": "Plus (billed annually)",
      "status": "active",
      "cycle": {
       "unit": "year",
@@ -18201,6 +18361,8 @@
       "US": {
        "currency": "USD",
        "amount": 180,
+       "verifiedAt": "2026-11-06",
+       "source": "https://masterclass.com/plans",
        "method": "manual"
       }
      },
@@ -18234,7 +18396,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 168,
+       "amount": 167.88,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.skillshare.com/en/pricing",
        "method": "manual"
       }
      }
@@ -18336,6 +18500,8 @@
       "US": {
        "currency": "USD",
        "amount": 161.88,
+       "verifiedAt": "2026-11-06",
+       "source": "https://brilliant.org/premium/",
        "method": "manual"
       }
      }
@@ -18500,7 +18666,7 @@
    "plans": [
     {
      "id": "premium",
-     "name": "Premium Annual",
+     "name": "Premium (billed annually)",
      "status": "active",
      "cycle": {
       "unit": "year",
@@ -18509,7 +18675,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 159,
+       "amount": 336,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.datacamp.com/pricing",
        "method": "manual"
       }
      }
@@ -18545,6 +18713,8 @@
       "US": {
        "currency": "USD",
        "amount": 179.88,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.codecademy.com/pricing",
        "method": "manual"
       }
      }
@@ -19343,7 +19513,7 @@
    "plans": [
     {
      "id": "simply-unlimited",
-     "name": "Simply Unlimited",
+     "name": "Unlimited Standard (1 line)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -19353,6 +19523,8 @@
       "US": {
        "currency": "USD",
        "amount": 50,
+       "verifiedAt": "2026-11-06",
+       "source": "https://fi.google.com/about/plans/unlimited-standard",
        "method": "manual"
       }
      }
@@ -19386,7 +19558,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 300,
+       "amount": 360,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.mintmobile.com/phone-plans/12-month-plans/",
        "method": "manual"
       }
      }
@@ -19421,6 +19595,8 @@
       "US": {
        "currency": "USD",
        "amount": 25,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.visible.com/plans/base",
        "method": "manual"
       }
      }
@@ -20578,6 +20754,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.doordash.com/en-us/consumers/article/chase-partnership",
        "method": "manual"
       }
      }
@@ -20594,6 +20772,8 @@
       "US": {
        "currency": "USD",
        "amount": 96,
+       "verifiedAt": "2026-11-06",
+       "source": "https://help.doordash.com/en-us/consumers/article/chase-partnership",
        "method": "manual"
       }
      }
@@ -20628,6 +20808,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://lp.grubhub.com/grubhub-amazon-prime/",
        "method": "manual"
       }
      }
@@ -20662,6 +20844,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.instacart.com/instacart-plus",
        "method": "manual"
       }
      }
@@ -20678,6 +20862,8 @@
       "US": {
        "currency": "USD",
        "amount": 99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.instacart.com/instacart-plus",
        "method": "manual"
       }
      }
@@ -20711,6 +20897,8 @@
       "US": {
        "currency": "USD",
        "amount": 12.95,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.walmart.com/help/article/walmart-membership/534c4edc29204a6bb15145a61146bf51",
        "method": "manual"
       }
      }
@@ -20727,6 +20915,8 @@
       "US": {
        "currency": "USD",
        "amount": 98,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.walmart.com/help/article/walmart-membership/534c4edc29204a6bb15145a61146bf51",
        "method": "manual"
       }
      }
@@ -20760,6 +20950,8 @@
       "US": {
        "currency": "USD",
        "amount": 99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.target.com/help/articles/target-circle/about-target-circle-360",
        "method": "manual"
       }
      }
@@ -20792,6 +20984,8 @@
       "US": {
        "currency": "USD",
        "amount": 65,
+       "verifiedAt": "2026-11-06",
+       "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1013504/~/membership-fee-increase",
        "method": "manual"
       }
      }
@@ -20808,6 +21002,8 @@
       "US": {
        "currency": "USD",
        "amount": 130,
+       "verifiedAt": "2026-11-06",
+       "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1013504/~/membership-fee-increase",
        "method": "manual"
       }
      }
@@ -20839,7 +21035,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 50,
+       "amount": 60,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.samsclub.com/join",
        "method": "manual"
       }
      }
@@ -20855,7 +21053,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 110,
+       "amount": 120,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.samsclub.com/join",
        "method": "manual"
       }
      }
@@ -20889,6 +21089,8 @@
       "US": {
        "currency": "USD",
        "amount": 9.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.lyft.com/memberships/lyft-pink-monthly/faq",
        "method": "manual"
       }
      }
@@ -21266,6 +21468,8 @@
       "US": {
        "currency": "USD",
        "amount": 10,
+       "verifiedAt": "2026-11-06",
+       "source": "https://store.google.com/product/google_home_premium?hl=en-US",
        "method": "manual"
       }
      }
@@ -21282,6 +21486,8 @@
       "US": {
        "currency": "USD",
        "amount": 20,
+       "verifiedAt": "2026-11-06",
+       "source": "https://store.google.com/product/google_home_premium?hl=en-US",
        "method": "manual"
       }
      }
@@ -21396,7 +21602,9 @@
      "prices": {
       "US": {
        "currency": "USD",
-       "amount": 4.99,
+       "amount": 7.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.life360.com/blog/family-locator-app",
        "method": "manual"
       }
      }
@@ -21413,6 +21621,8 @@
       "US": {
        "currency": "USD",
        "amount": 14.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.life360.com/blog/family-locator-app",
        "method": "manual"
       }
      }
@@ -21445,6 +21655,8 @@
       "US": {
        "currency": "USD",
        "amount": 29.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://support.life360.com/hc/en-us/articles/30582950726167-Tile-Premium-and-Premium-Protect-Pricing",
        "method": "manual"
       }
      }
@@ -21472,7 +21684,7 @@
    "plans": [
     {
      "id": "monthly",
-     "name": "Meta Verified",
+     "name": "Meta Verified Standard (in app)",
      "status": "active",
      "cycle": {
       "unit": "month",
@@ -21482,6 +21694,8 @@
       "US": {
        "currency": "USD",
        "amount": 14.99,
+       "verifiedAt": "2026-11-06",
+       "source": "https://www.meta.com/meta-verified/",
        "method": "manual"
       }
      }
