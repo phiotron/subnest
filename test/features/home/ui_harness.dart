@@ -336,6 +336,9 @@ Future<TestApp> pumpApp(
   bool remindersOn = true,
   ExchangeRates? rates,
   double dpr = 2,
+
+  /// Extra data written before the app is built (labels, budgets, settings…).
+  Future<void> Function(ProviderContainer container)? seed,
 }) async {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   launched.clear();
@@ -391,6 +394,7 @@ Future<TestApp> pumpApp(
       await db.into(db.confirmedPeriods).insert(p.toCompanion());
     }
     await container.read(settingsRepositoryProvider).setOnboardingDone(true);
+    await seed?.call(container);
   });
 
   await tester.pumpWidget(
@@ -437,7 +441,11 @@ Future<void> settle(WidgetTester tester) async {
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 5)));
     await tester.pump();
   }
-  await tester.pumpAndSettle(const Duration(milliseconds: 50), EnginePhase.sendSemanticsUpdate, const Duration(seconds: 10));
+  await tester.pumpAndSettle(
+    const Duration(milliseconds: 50),
+    EnginePhase.sendSemanticsUpdate,
+    const Duration(seconds: 10),
+  );
 }
 
 /// Ends the test cleanly: unmount (cancels drift stream timers), then let them fire.

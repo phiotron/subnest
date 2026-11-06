@@ -60,9 +60,9 @@ void main() {
       expect(find.text('+₫65,000 to confirm'), findsOneWidget);
       final semantics = tester.ensureSemantics();
       await tester.pump();
-      expect(find.bySemanticsLabel(RegExp(r'Fri.* 6: Spotify')), findsOneWidget);
-      expect(find.bySemanticsLabel(RegExp(r'Sat.* 7: ChatGPT Plus')), findsOneWidget);
-      expect(find.bySemanticsLabel(RegExp(r'Sun.* 8: nothing due')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'Fri, 6 Nov: Spotify')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'Sat, 7 Nov: ChatGPT Plus')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'Sun, 8 Nov: nothing due')), findsOneWidget);
       semantics.dispose();
       await closeApp(tester);
     });

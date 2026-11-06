@@ -141,7 +141,11 @@ class WeekCard extends StatelessWidget {
           children: [
             Text(title.toUpperCase(), style: AppType.caption.copyWith(color: c.inkMuted)),
             const SizedBox(height: 2),
-            Text(total, style: AppType.title.copyWith(color: c.ink).tabular),
+            Text(
+              total,
+              semanticsLabel: l.spokenLabel(total),
+              style: AppType.title.copyWith(color: c.ink).tabular,
+            ),
           ],
         ),
         if (toConfirm != null)
@@ -155,6 +159,7 @@ class WeekCard extends StatelessWidget {
                 Flexible(
                   child: Text(
                     l.homeWeekToConfirm(toConfirm!),
+                    semanticsLabel: l.spokenLabel(l.homeWeekToConfirm(toConfirm!)),
                     style: AppType.meta.copyWith(color: c.warningInk).tabular,
                   ),
                 ),
@@ -197,8 +202,7 @@ class WeekCard extends StatelessWidget {
     final fgN = isToday ? c.onBrandSoft : c.ink;
     final names = d.subscriptions.map((s) => s.name).join(', ');
     return Semantics(
-      label:
-          '${AppDates.weekdayShort(l, d.date, today: today)} ${d.date.day}: ${names.isEmpty ? l.homeWeekNothing : names}',
+      label: '${AppDates.weekdayShort(l, d.date, today: today)}: ${names.isEmpty ? l.homeWeekNothing : names}',
       excludeSemantics: true,
       child: TextScaleCap(
         max: 1.3,
