@@ -92,7 +92,7 @@ Sau đó: người dùng upload closed testing → ≥ 14 ngày → production +
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #3 Catalog từ xa + nộp store | 2026-11-06 | Sửa Thống kê (đang chạy) · P1 · P4 · P2 · P3 · QA | ADR 0002 |
+| #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở | ADR 0002; đóng tạm 2026-11-06 — log `memory/sessions/2026-11-06-A001-subnest.md` |
 | #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 
