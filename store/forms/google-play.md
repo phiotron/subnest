@@ -4,8 +4,13 @@
 > (Console hiển thị tiếng Anh), cột "Vì sao" bằng tiếng Việt để người điền hiểu và kiểm lại.
 > **Điều kiện để các câu trả lời này đúng** (phải khớp hành vi thật của build — kiểm lại trước khi nộp):
 > 1. Không có SDK analytics / crash / quảng cáo / Firebase nào trong `pubspec.yaml` (tính đến 2026-11-04: đúng).
-> 2. Mạng chỉ dùng để gọi API tỷ giá, request không kèm dữ liệu người dùng hay ID thiết bị.
+> 2. Mạng chỉ dùng để tải 3 thứ công khai — tỷ giá (open.er-api.com), thư viện dịch vụ (JSON tĩnh trên GitHub Pages
+>    `phamphuongphuongnd.github.io/catalog/subnest/v1/…`, tối đa 1 lần/ngày) và logo dịch vụ (`img.logo.dev`, theo tên miền
+>    dịch vụ, key `pk_` công khai, lưu cache trên máy; ADR 0002) — request không kèm dữ liệu người dùng, ID thiết bị hay
+>    ID do app tạo. Không có server của xưởng nào nhận request từ app.
 > 3. Sao lưu/xuất chỉ qua share sheet/trình chọn file của hệ thống, do người dùng bấm.
+> 4. Logo dịch vụ chỉ được yêu cầu theo **tên miền của dịch vụ** (không kèm tên/ghi chú/giá người dùng); không gọi `img.logo.dev`
+>    kèm bất kỳ tham số nào khác ngoài tên miền, key công khai và kích thước/định dạng ảnh.
 > Nếu sau này thêm bất kỳ SDK nào ở trên → phải làm lại Data safety + privacy policy.
 
 ## 1. Privacy policy
@@ -51,7 +56,7 @@
 ## 6. Data safety
 | Câu hỏi | Trả lời | Vì sao |
 |---|---|---|
-| Does your app collect or share any of the required user data types? | **No** | Không dữ liệu nào được truyền khỏi máy tới nhà phát triển hay bên thứ ba. Toàn bộ dữ liệu lưu cục bộ (theo Google, xử lý trên máy không tính là "collect"). |
+| Does your app collect or share any of the required user data types? | **No** | Không dữ liệu người dùng nào được truyền khỏi máy tới nhà phát triển hay bên thứ ba. Toàn bộ dữ liệu lưu cục bộ (theo Google, xử lý trên máy không tính là "collect"). Ba loại request mạng (tỷ giá, thư viện dịch vụ, logo) là **tải dữ liệu công khai về máy**; chúng chỉ mang tên miền dịch vụ/đường dẫn file công khai, không mang dữ liệu người dùng, tài khoản hay ID → không thuộc loại dữ liệu nào trong danh sách của Data safety (Personal info, Financial info, App activity, Device or other IDs…). Địa chỉ IP bên nhận thấy là phần tất yếu của mọi kết nối, không phải dữ liệu app thu. |
 | (chỉ hiện nếu trả lời Yes ở trên) Encrypted in transit / deletion request | — bỏ qua — | |
 | Account creation | App không tạo tài khoản → không cần URL xoá tài khoản | Checklist Android: mục "có tài khoản → cách xoá" = không áp dụng. |
 | Independent security review (MASA) | Không (tuỳ chọn) | |
@@ -61,6 +66,18 @@ Các điểm dễ hỏi khi review Data safety:
 - **Gọi API tỷ giá:** request chỉ là `GET` tỷ giá, không chứa dữ liệu người dùng. Địa chỉ IP tất yếu đi kèm mọi kết nối
   Internet không phải dữ liệu app "collect" → vẫn "No". Nếu đổi sang API **cần API key gắn theo người dùng** hoặc gửi
   kèm ID thiết bị/tiền tệ của người dùng lên server của mình → phải xem lại.
+- **Tải thư viện dịch vụ (GitHub Pages):** `GET` một file JSON tĩnh công khai, không tham số, không cookie/ID. GitHub
+  là host, không phải "bên nhận dữ liệu người dùng" → vẫn "No".
+- **Tải logo (logo.dev):** `GET img.logo.dev/<tên-miền-dịch-vụ>?token=pk_…`. `pk_` là **khoá công khai của xưởng, cùng
+  một giá trị cho mọi người dùng** (không phải ID người dùng/thiết bị) → không định danh được ai. Điểm cần nói rõ nếu
+  Google hỏi: Logo.dev thấy IP + tên miền dịch vụ nào được yêu cầu từ IP đó; tên miền là của dịch vụ trong thư viện
+  chung, không phải nội dung người dùng gõ. Lập luận này hợp lý nhưng **không chắc 100%** — trước hết giữ "No data collected"; nếu Google
+  phản hồi buộc khai, quay lại mục này (dự phòng: khai App activity "Other actions" là *shared* với Logo.dev, mục đích
+  *App functionality*, không bắt buộc, không dùng cho quảng cáo) và sửa privacy policy cho khớp.
+  Giảm rủi ro: chỉ yêu cầu logo cho dịch vụ **có trong thư viện** (không đoán tên miền từ tên người dùng tự gõ), và
+  tuyệt đối không thêm tham số nào chứa dữ liệu người dùng vào URL logo.
+- **Quyền mạng:** chỉ `INTERNET` (và `ACCESS_NETWORK_STATE` nếu có) — không thêm quyền nào cho logo/thư viện; phần
+  Permissions trong privacy policy đã cập nhật (§ Permissions: "tỷ giá, thư viện dịch vụ và logo").
 - **Xuất JSON/CSV qua share sheet:** người dùng chủ động gửi file của mình đi đâu thì đó là hành động của người dùng,
   không phải app "share" → không khai.
 - **Sao lưu tự động của Android (Auto Backup):** do Google/hệ điều hành làm, nằm ngoài phạm vi Data safety. Ghi chú cho

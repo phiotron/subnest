@@ -22,7 +22,7 @@ Subnest: Subscription Tracker
 Subscription manager & bill reminder. Never miss a renewal or free trial again.
 ```
 
-### Full description (≤ 4000) — 2501
+### Full description (≤ 4000) — 2659
 ```text
 Subnest is a simple, private subscription tracker. See exactly what you pay every month, get a reminder before every renewal, and never get charged for a free trial you forgot to cancel.
 
@@ -30,7 +30,7 @@ No account. No bank linking. No ads. Your data stays on your phone.
 
 ALL YOUR SUBSCRIPTIONS, ONE NEST
 • Add streaming, music, AI tools, cloud storage, apps, games, phone plans and more
-• Pick from a library of about 100 popular services with suggested prices, or create your own in seconds
+• Pick from a library of about 100 popular services with suggested prices for 6 regions (updated weekly), or create your own in seconds
 • Any billing cycle: weekly, monthly, yearly or every N days / weeks / months
 
 BILL REMINDERS THAT ACTUALLY HELP
@@ -56,7 +56,7 @@ PRIVATE BY DESIGN
 • No sign-up, no login, no bank access
 • No analytics, no tracking, no ads
 • Everything is stored only on your device
-• The internet is used only to download exchange rates — none of your data is sent
+• The internet is used only to download exchange rates, service prices and logos — none of your data is sent
 • Back up to a JSON file you keep, or export to CSV for Excel / Google Sheets
 
 ALSO
@@ -67,7 +67,7 @@ ALSO
 
 Subnest is completely free: no ads, no in-app purchases, no premium tier.
 
-Subnest is a personal tracking tool. It does not connect to your bank or to any service provider and cannot cancel subscriptions for you. Service names are trademarks of their respective owners and are used only to identify the services.
+Subnest is a personal tracking tool. It does not connect to your bank or to any service provider and cannot cancel subscriptions for you. Service names and logos belong to their respective owners and are used only to identify the services; Subnest is not affiliated with or endorsed by them. Logos provided by Logo.dev (https://logo.dev).
 
 Questions or ideas? Write to us from Settings → Send feedback.
 ```
@@ -96,7 +96,7 @@ Track every subscription, get reminded before renewals and free trials end, and 
 manager,renewal,budget,expense,spending,recurring,payment,cancel,money,family,split,cost,saver,due
 ```
 
-### Description (≤ 4000) — 2398
+### Description (≤ 4000) — 2556
 ```text
 Subnest is a simple, private subscription tracker. See exactly what you pay every month, get a reminder before every renewal, and never get charged for a free trial you forgot to cancel.
 
@@ -104,7 +104,7 @@ No account. No bank linking. No ads. Your data stays on your iPhone.
 
 ALL YOUR SUBSCRIPTIONS, ONE NEST
 • Add streaming, music, AI tools, cloud storage, apps, games, phone plans and more
-• Pick from a library of about 100 popular services with suggested prices, or create your own in seconds
+• Pick from a library of about 100 popular services with suggested prices for 6 regions (updated weekly), or create your own in seconds
 • Any billing cycle: weekly, monthly, yearly or every N days / weeks / months
 
 BILL REMINDERS THAT ACTUALLY HELP
@@ -130,7 +130,7 @@ PRIVATE BY DESIGN
 • No sign-up, no login, no bank access
 • No analytics, no tracking, no ads
 • Everything is stored only on your device
-• The internet is used only to download exchange rates — none of your data is sent
+• The internet is used only to download exchange rates, service prices and logos — none of your data is sent
 • Back up to a JSON file you keep, or export to CSV for Numbers / Excel
 
 ALSO
@@ -140,7 +140,7 @@ ALSO
 
 Subnest is completely free: no ads, no in-app purchases, no premium tier.
 
-Subnest is a personal tracking tool. It does not connect to your bank or to any service provider and cannot cancel subscriptions for you. Service names are trademarks of their respective owners and are used only to identify the services.
+Subnest is a personal tracking tool. It does not connect to your bank or to any service provider and cannot cancel subscriptions for you. Service names and logos belong to their respective owners and are used only to identify the services; Subnest is not affiliated with or endorsed by them. Logos provided by Logo.dev (https://logo.dev).
 ```
 
 ### What's New — 1.0 (≤ 4000) — 71
@@ -156,6 +156,9 @@ Welcome to Subnest! Track subscriptions, get reminders, see your spend.
 - App Store keywords: no spaces after commas; words already in Name/Subtitle (subnest, subscription,
   tracker, bill, reminder, trial, alerts) are deliberately not repeated. No competitor brand names
   (Apple rejects trademarked keywords).
+- The last paragraph credits the logo source ("Logos provided by Logo.dev" — required by the Logo.dev free tier) and keeps the
+  trademark/no-affiliation sentence (ADR 0002). "6 regions" = VN, US, UK, AU, CA, IN; "updated weekly" = the catalog Action. Remove
+  both claims if the remote catalog is not live in the submitted build.
 - The App Store description and promo text say "iPhone"; "Numbers / Excel" replaces "Excel / Google Sheets".
 - Feature list matches MVP F1–F7. The home-screen widget (F8) is not mentioned — add it only when it ships.
 - "Write to us from Settings → Send feedback" (Play only) matches S10 "Gửi góp ý (email)". App Store has a

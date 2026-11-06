@@ -32,8 +32,11 @@ python store/tools/md_to_html.py
 2. ✅ **Tên nhà phát triển** = `Phiotron` (chốt 2026-11-05) — đã điền vào legal, forms. Lưu ý: tài khoản Apple cá nhân
    hiện **tên thật** trên App Store; nếu khác "Phiotron" thì cân nhắc ghi "Phiotron (<họ tên>)" trong privacy.
 3. ✅ **Privacy policy đã host** (2026-11-05): GitHub Pages repo public `phamphuongphuongnd/legal` → `https://phamphuongphuongnd.github.io/legal/subnest/` (đã điền vào forms). Sửa nội dung: sửa `store/legal/*` rồi chép sang repo legal.
-4. **API tỷ giá:** privacy policy đang ghi **ExchangeRate-API (open.er-api.com)** theo gợi ý APP.md — phiên A chưa
-   chốt (2026-11-04 chưa có code gọi API). Đổi nhà cung cấp → sửa 2 file privacy + chạy `md_to_html.py`.
+4. **Mạng của app (cập nhật 2026-11-06, ADR 0002):** privacy policy/forms nay nêu 3 nguồn — tỷ giá **ExchangeRate-API
+   (open.er-api.com)**, thư viện dịch vụ trên **GitHub Pages** (`phamphuongphuongnd.github.io/catalog/subnest/v1/`), logo từ
+   **Logo.dev** (`img.logo.dev`, ghi nguồn "Logos provided by Logo.dev" ở privacy, terms, listing, và phải có trong app).
+   Đổi nhà cung cấp/thêm nguồn mạng → sửa 2 file privacy + forms + chạy `md_to_html.py`, chép sang repo legal, và nhớ
+   chạy lại đoạn sinh `legal_texts.dart` (xem `notes/2026-11-05-ui-settings.md`).
 5. **Exact alarm:** nếu phiên A/E xin `SCHEDULE_EXACT_ALARM` → xem `forms/google-play.md` §8.
 6. **Dòng "Có trên Android và iPhone"** trong listing Play: xoá nếu bản iOS chưa live lúc đăng.
 7. **Ảnh chụp màn hình + feature graphic** — chưa có (phiên M ở điều phối #3; feature graphic theo `icon-brief.md`).
