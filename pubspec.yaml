@@ -54,6 +54,15 @@ dependencies:
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.3
 
+  # 1.0 expansion (M1, 2026-11-06) — see notes/2026-11-06-m1-core.md for licences.
+  # On-device OCR for S13 screenshot scan (Latin script; nothing leaves the phone). Pinned: 1.0.0 was
+  # published 2026-11-05 (< 2 weeks). iOS: ML Kit needs platform :ios 15.5+ in ios/Podfile (session S/W).
+  google_mlkit_text_recognition: 0.17.1
+  # Pick screenshots / take a receipt photo (Android photo picker: no storage permission).
+  image_picker: ^1.2.4
+  # Home-screen widgets (S11, session W).
+  home_widget: ^0.10.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

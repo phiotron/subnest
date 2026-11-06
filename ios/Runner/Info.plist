@@ -73,5 +73,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pick screenshots of your store subscriptions page or receipts. Text is read on this iPhone only; nothing is uploaded.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a photo of a receipt to add a subscription. Text is read on this iPhone only; nothing is uploaded.</string>
 </dict>
 </plist>
