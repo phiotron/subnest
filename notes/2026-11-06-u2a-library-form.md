@@ -48,7 +48,7 @@ test của 2 feature. Không đụng domain/data/router/core/pubspec.
 
 **Kết quả cuối (2026-11-06):** analyze sạch · merge_arb --check OK · `flutter test` toàn bộ **780 xanh, 97 bỏ qua, 2 đỏ** —
 2 đỏ là `test/a11y/approx_spoken_test.dart` en/vi `/home`: thẻ "Sắp trừ tuần này" của **U1** (`features/home/`) có nhãn
-TalkBack chứa "≈" (cần `l10n.spoken`), không thuộc phạm vi U2a — đã báo U1. Catalog 44/44, Form 41/41 xanh
+TalkBack chứa "≈" (cần `l10n.spoken`), không thuộc phạm vi U2a — đã báo U1. **U1 đã sửa ở `5238357`** (approx_spoken_test xanh trên HEAD dev). Catalog 44/44, Form 41/41 xanh
 (gồm ma trận 320dp × 200%). Dòng thư viện của U2a đã đọc "≈" thành chữ (có test).
 
 ## Việc dở / rủi ro
