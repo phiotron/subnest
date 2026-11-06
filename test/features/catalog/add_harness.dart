@@ -138,6 +138,14 @@ final layoutMatrix = [
         for (final scale in [1.0, 1.3, 2.0]) Setup(width: width, locale: locale, dark: dark, textScale: scale),
 ];
 
+/// [layoutMatrix] plus the smallest phone at the largest text: 320dp × 200%, EN/VI, light/dark
+/// (QA 2026-11-05 found most layout bugs there).
+final layoutMatrixNarrow = [
+  ...layoutMatrix,
+  for (final locale in ['en', 'vi'])
+    for (final dark in [false, true]) Setup(width: 320, height: 640, locale: locale, dark: dark, textScale: 2),
+];
+
 /// Locations the screens navigated to (`/home`, `/subscription/new?…`).
 final visited = <String>[];
 

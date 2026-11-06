@@ -1,6 +1,6 @@
 {
   "catalogTitle": "Thêm subscription",
-  "catalogSearchHint": "Tìm trong 100+ dịch vụ",
+  "catalogSearchHint": "Tìm trong 500+ dịch vụ",
   "catalogClearSearch": "Xoá tìm kiếm",
   "catalogCustom": "Tạo dịch vụ tuỳ chỉnh",
   "catalogCustomSub": "Cho dịch vụ không có trong thư viện",
@@ -20,5 +20,7 @@
   "catalogPlanSub": "Chọn gói · giá gợi ý",
   "catalogPlanMembers": "Tối đa {count} người",
   "catalogPlanNote": "Bạn có thể sửa giá ở bước sau.",
-  "catalogContinueWith": "Tiếp tục với {plan}"
+  "catalogContinueWith": "Tiếp tục với {plan}",
+  "catalogTabGeneral": "Chung",
+  "catalogTabVietnam": "Việt Nam"
 }

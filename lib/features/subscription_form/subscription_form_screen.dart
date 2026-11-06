@@ -8,14 +8,19 @@ import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
 import '../catalog/catalog_helpers.dart';
+import '../catalog/widgets/library_rows.dart';
 import '../catalog/widgets/plan_sheet.dart';
 import 'form_format.dart';
 import 'widgets/currency_sheet.dart';
 import 'widgets/form_parts.dart';
+import 'widgets/organize_parts.dart';
 import 'widgets/tile_sheet.dart';
 
-/// S4 Add / edit subscription (png 20–27). One screen for both: pre-filled from the Catalog
-/// (`serviceId`/`planId`), a custom name, or an existing subscription (`subscriptionId`).
+/// S4 Add / edit subscription (mockup v13 png 26–33, 36–37). One screen for both: pre-filled from
+/// the Catalog (`serviceId`/`planId`, price region of the library tab it was picked from), a custom
+/// name, or an existing subscription (`subscriptionId`). v13 groups: Category (the user's
+/// Categories), Labels + Payment method (from the list, quick add), Remind me (several offsets),
+/// Worth it?, More details (cancel link, notes); Delete at the end when editing.
 /// Business rules stay in [SubscriptionDraft] (validation, My share, next dates, applying edits).
 class SubscriptionFormScreen extends ConsumerStatefulWidget {
   const SubscriptionFormScreen({super.key, this.subscriptionId, this.serviceId, this.planId, this.initialName});
@@ -45,6 +50,12 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   /// the saved name is "Netflix Premium" (same rule as the Catalog).
   CatalogPlan? _plan;
 
+  /// Catalog price region for pre-fill and the plan chip (library tab, else the device region).
+  late String _region = ref.read(catalogRegionProvider);
+
+  /// Pre-filled Catalog price when it is a Reference price (chip while the price is unchanged).
+  CatalogPrice? _refPrice;
+
   /// Price in major units; `null` = empty.
   double? _price;
   bool _urlFromLibrary = false;
@@ -54,7 +65,6 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
 
   final _name = TextEditingController();
   final _every = TextEditingController();
-  final _payment = TextEditingController();
   final _url = TextEditingController();
   final _notes = TextEditingController();
   final _scroll = ScrollController();
@@ -70,7 +80,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
 
   @override
   void dispose() {
-    for (final c in [_name, _every, _payment, _url, _notes]) {
+    for (final c in [_name, _every, _url, _notes]) {
       c.dispose();
     }
     _scroll.dispose();
@@ -82,7 +92,6 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   Future<void> _load() async {
     final today = ref.read(todayProvider);
     final primary = ref.read(primaryCurrencyProvider);
-    final region = ref.read(catalogRegionProvider);
     final catalog = ref.read(catalogRepositoryProvider);
     var name = '';
     SubscriptionDraft draft;
@@ -111,6 +120,8 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     } else if (widget.serviceId != null) {
       final service = await catalog.byId(widget.serviceId!);
       _service = service;
+      _region = ref.read(libraryPickRegionProvider.notifier).take() ?? _region;
+      final region = _region;
       final plan = service == null
           ? null
           : (service.plans.where((p) => p.id == widget.planId).firstOrNull ?? CatalogView.defaultPlan(service, region));
@@ -126,6 +137,8 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
             );
       if (sub != null) {
         draft = SubscriptionDraft.fromSubscription(sub, today);
+        final price = plan!.priceFor(region);
+        if (price != null && price.isReference) _refPrice = price;
       } else {
         draft = SubscriptionDraft.blank(currency: primary, today: today, name: service?.name ?? '');
         if (service != null) {
@@ -153,7 +166,6 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     _name.text = name;
     _price = draft.priceMinor > 0 ? toMajorUnits(draft.priceMinor, draft.currency) : null;
     _every.text = '${draft.cycle.every}';
-    _payment.text = draft.paymentMethod ?? '';
     _url.text = draft.manageUrl ?? '';
     _notes.text = draft.notes ?? '';
     setState(() => _draft = draft);
@@ -172,7 +184,6 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     final d = _draft!;
     d.name = _fullName;
     d.priceMinor = toMinorUnits(_price ?? 0, d.currency);
-    d.paymentMethod = _payment.text;
     d.manageUrl = _url.text;
     d.notes = _notes.text;
   }
@@ -189,12 +200,13 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   Future<void> _pickPlan() async {
     final service = _service;
     if (service == null) return;
-    final region = ref.read(catalogRegionProvider);
+    final region = _region;
     final plan = await showPlanSheet(context, service: service, region: region, initial: _plan);
     if (plan == null || !mounted) return;
     final price = plan.priceFor(region);
     _update(() {
       _plan = plan;
+      _refPrice = price != null && price.isReference ? price : null;
       if (price != null) {
         _draft!.currency = price.currency;
         _price = price.amount;
@@ -389,9 +401,23 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
           const SizedBox(height: AppSpace.s3),
           _categoryCard(context, d),
           const SizedBox(height: AppSpace.s3),
+          _organizeCard(context, d),
+          const SizedBox(height: AppSpace.s3),
           _reminderCard(context, d, today),
           const SizedBox(height: AppSpace.s3),
+          _worthCard(context, d),
+          const SizedBox(height: AppSpace.s3),
           _moreCard(context, d),
+          if (_isEdit) ...[
+            const SizedBox(height: AppSpace.s3),
+            AppButton(
+              label: l.subscriptionFormDelete,
+              kind: AppButtonKind.dangerText,
+              icon: AppIcons.delete,
+              expand: true,
+              onPressed: _delete,
+            ),
+          ],
         ],
       ),
       bottomNavigationBar: _bottomBar(context, blocked: errors.isNotEmpty),
@@ -507,6 +533,22 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                 conversion: converted == null ? null : l.amount(converted, primary, approx: true),
                 errorText: error ? l.subscriptionFormPriceRequired : null,
               ),
+              if (_refPrice != null && _price == _refPrice!.amount && d.currency == _refPrice!.currency) ...[
+                const SizedBox(height: AppSpace.s2),
+                Semantics(
+                  label: l.subscriptionFormReferenceNote,
+                  excludeSemantics: true,
+                  child: Wrap(
+                    spacing: AppSpace.s2,
+                    runSpacing: AppSpace.s1,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      const ReferencePriceChip(),
+                      Text(l.subscriptionFormReferenceHint, style: AppType.meta.copyWith(color: c.inkMuted)),
+                    ],
+                  ),
+                ),
+              ],
               if (changed && o.status != SubscriptionStatus.cancelled) ...[
                 const SizedBox(height: AppSpace.s3),
                 Container(
@@ -581,14 +623,15 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
               ),
               const SizedBox(height: AppSpace.s3),
               // ≥ 150% text: a 2 × 2 grid (real phone, 320dp at 200%: one row cut the labels to "T…").
-              for (final row in MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5
-                  ? const [
-                      [0, 1],
-                      [2, 3],
-                    ]
-                  : const [
-                      [0, 1, 2, 3],
-                    ]) ...[
+              for (final row
+                  in MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5
+                      ? const [
+                          [0, 1],
+                          [2, 3],
+                        ]
+                      : const [
+                          [0, 1, 2, 3],
+                        ]) ...[
                 if (row.first > 0) const SizedBox(height: AppSpace.s2),
                 Row(
                   children: [
@@ -711,6 +754,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   Widget _categoryCard(BuildContext context, SubscriptionDraft d) {
     final l = context.l10n;
     final c = context.colors;
+    final categories = ref.watch(categoriesProvider).value ?? const <Category>[];
     return FormCard(
       children: [
         FormFieldPad(
@@ -721,13 +765,12 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
               const SizedBox(height: AppSpace.s3),
               Wrap(
                 spacing: AppSpace.s2,
-                runSpacing: AppSpace.s2,
                 children: [
-                  for (final cat in SubscriptionCategory.values)
+                  for (final cat in categories)
                     AppChip(
-                      label: l.category(cat),
-                      selected: d.category == cat,
-                      onTap: () => _update(() => d.category = cat),
+                      label: l.categoryName(cat),
+                      selected: d.categoryId == cat.id,
+                      onTap: () => _update(() => d.categoryId = cat.id),
                     ),
                 ],
               ),
@@ -738,19 +781,115 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     );
   }
 
+  /// Labels (multi, "+ New label") and the Payment method row (png 26 / 36).
+  Widget _organizeCard(BuildContext context, SubscriptionDraft d) {
+    final l = context.l10n;
+    final c = context.colors;
+    final labels = ref.watch(labelsProvider).value ?? const <Label>[];
+    // Keep the lists the payment-method sheet reads loaded (a stream read only on tap is still empty).
+    ref
+      ..watch(paymentMethodsProvider)
+      ..watch(subscriptionsProvider);
+    final method = d.paymentMethod?.trim() ?? '';
+    final methodLabel = method.isEmpty ? l.subscriptionFormMethodNone : method;
+    return FormCard(
+      children: [
+        FormFieldPad(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l.subscriptionFormLabels, style: AppType.label.copyWith(color: c.ink)),
+              const SizedBox(height: AppSpace.s2),
+              Wrap(
+                spacing: AppSpace.s2,
+                children: [
+                  for (final label in labels)
+                    DotChip(
+                      label: label.name,
+                      selected: d.labelIds.contains(label.id),
+                      dotColor: label.colorValue == null ? null : Color(label.colorValue!),
+                      onTap: () => _update(() {
+                        final ids = {...d.labelIds};
+                        if (!ids.remove(label.id)) ids.add(label.id);
+                        d.labelIds = ids;
+                      }),
+                    ),
+                  DotChip(label: l.subscriptionFormNewLabel, dashed: true, onTap: _addLabel),
+                ],
+              ),
+            ],
+          ),
+        ),
+        FormFieldPad(
+          child: LabelledRow(
+            label: Text(l.subscriptionFormPaymentMethod, style: AppType.label.copyWith(color: c.ink)),
+            trailing: MiniFieldButton(
+              label: methodLabel,
+              icon: AppIcons.expand,
+              semanticLabel: '${l.subscriptionFormPaymentMethod}: $methodLabel',
+              onTap: _pickMethod,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _addLabel() async {
+    final name = await showNewLabelSheet(context);
+    if (name == null || !mounted) return;
+    final existing = (ref.read(labelsProvider).value ?? const <Label>[])
+        .where((x) => x.name.trim().toLowerCase() == name.toLowerCase())
+        .firstOrNull;
+    final label = existing ?? await ref.read(organizeRepositoryProvider).addLabel(name);
+    if (!mounted) return;
+    _update(() => _draft!.labelIds = {..._draft!.labelIds, label.id});
+  }
+
+  Future<void> _pickMethod() async {
+    final d = _draft!;
+    final methods = ref.read(paymentMethodsProvider).value ?? const <PaymentMethod>[];
+    final usage = <String, int>{};
+    for (final s in ref.read(subscriptionsProvider).value ?? const <Subscription>[]) {
+      final id = s.paymentMethodId;
+      if (id != null) usage[id] = (usage[id] ?? 0) + 1;
+    }
+    final typed = PaymentMethod.normalizeName(d.paymentMethod ?? '');
+    final selectedId =
+        d.paymentMethodId ?? methods.where((m) => PaymentMethod.normalizeName(m.name) == typed).firstOrNull?.id;
+    final choice = await showPaymentMethodSheet(
+      context,
+      methods: methods,
+      usage: usage,
+      selectedId: selectedId,
+      onAdd: (name) => ref.read(organizeRepositoryProvider).addPaymentMethod(name),
+    );
+    if (choice == null || !mounted) return;
+    // Picked from the list → set both id and name (M1 API); None → clear both.
+    _update(() {
+      d.paymentMethodId = choice.method?.id;
+      d.paymentMethod = choice.method?.name;
+    });
+  }
+
+  /// Remind me: each offset toggles on its own (on the day / 1 / 3 / 7 days); none = off.
   Widget _reminderCard(BuildContext context, SubscriptionDraft d, LocalDate today) {
     final l = context.l10n;
     final c = context.colors;
     final settings = ref.watch(settingsProvider).value;
-    final selected = d.reminderDays ?? settings?.defaultReminderDays ?? 3;
-    final due = d.trial ? (d.trialEnd ?? d.dueDate) : d.dueDate;
-    final String note;
-    if (selected == ReminderDays.off) {
-      note = l.subscriptionFormRemindNone;
-    } else {
-      final at = FormFormat.time(settings?.reminderHour ?? 9, settings?.reminderMinute ?? 0);
-      note = l.subscriptionFormRemindAt(at, AppDates.weekdayShort(l, due.addDays(-selected), today: today));
-    }
+    final selected = d.reminderOffsets ?? settings?.defaultReminderOffsets ?? ReminderOffsets.defaults;
+    final at = FormFormat.time(settings?.reminderHour ?? 9, settings?.reminderMinute ?? 0);
+    final note = selected.isEmpty ? l.subscriptionFormRemindNone : l.subscriptionFormRemindMany(at);
+    const choices = ReminderOffsets.choices;
+    final large = MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5;
+    final rows = large
+        ? const [
+            [0, 1],
+            [2, 3],
+          ]
+        : const [
+            [0, 1, 2, 3],
+          ];
     return FormCard(
       children: [
         FormFieldPad(
@@ -759,21 +898,31 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
             children: [
               Text(l.subscriptionFormReminder, style: AppType.label.copyWith(color: c.ink)),
               const SizedBox(height: AppSpace.s2),
-              AppSegmentedControl<int>(
-                segments: [
-                  for (final r in ReminderDays.choices)
-                    AppSegment(
-                      value: r,
-                      label: switch (r) {
-                        ReminderDays.off => l.subscriptionFormRemindOff,
-                        ReminderDays.onTheDay => l.subscriptionFormRemindOnDay,
-                        _ => l.subscriptionFormRemindDays(r),
-                      },
-                    ),
-                ],
-                selected: selected,
-                onChanged: (r) => _update(() => d.reminderDays = r),
-              ),
+              for (final row in rows) ...[
+                if (row.first > 0) const SizedBox(height: AppSpace.s2),
+                Row(
+                  children: [
+                    for (final i in row) ...[
+                      if (i != row.first) const SizedBox(width: AppSpace.s2),
+                      Expanded(
+                        child: AppChip(
+                          label: choices[i] == 0
+                              ? l.subscriptionFormRemindOnDay
+                              : l.subscriptionFormRemindDays(choices[i]),
+                          selected: selected.contains(choices[i]),
+                          showCheck: false,
+                          fit: true,
+                          onTap: () => _update(() {
+                            final next = {...selected};
+                            if (!next.remove(choices[i])) next.add(choices[i]);
+                            d.reminderOffsets = next;
+                          }),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ],
               const SizedBox(height: AppSpace.s2),
               Text(note, style: AppType.meta.copyWith(color: c.inkMuted)),
             ],
@@ -781,6 +930,51 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
         ),
       ],
     );
+  }
+
+  Widget _worthCard(BuildContext context, SubscriptionDraft d) {
+    final l = context.l10n;
+    final c = context.colors;
+    return FormCard(
+      children: [
+        FormFieldPad(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l.subscriptionFormWorthIt, style: AppType.label.copyWith(color: c.ink)),
+              const SizedBox(height: AppSpace.s3),
+              WorthItPicker(value: d.worthIt, onChanged: (w) => _update(() => d.worthIt = w)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _delete() async {
+    final l = context.l10n;
+    final o = _original;
+    if (o == null) return;
+    final ok = await showAppDialog<bool>(
+      context,
+      title: l.subscriptionFormDeleteTitle(o.name),
+      body: l.subscriptionFormDeleteBody,
+      actions: [
+        AppButton.danger(
+          label: l.subscriptionFormDeleteAction,
+          expand: true,
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(true),
+        ),
+        AppButton.text(
+          label: l.commonCancel,
+          expand: true,
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
+        ),
+      ],
+    );
+    if (ok != true || !mounted) return;
+    await ref.read(subscriptionRepositoryProvider).delete(o.id);
+    if (mounted) context.go(AppRoutes.home);
   }
 
   Widget _moreCard(BuildContext context, SubscriptionDraft d) {
@@ -818,41 +1012,9 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
       ),
     );
     if (!_more) return FormCard(children: [header]);
-    final current = _payment.text.trim();
-    final suggestions = <String>{if (current.isNotEmpty) current, ...FormFormat.paymentSuggestions};
     return FormCard(
       children: [
         header,
-        FormFieldPad(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _fieldLabel(context, l.subscriptionFormPaymentMethod),
-              TextField(
-                controller: _payment,
-                onChanged: (_) => setState(() {}),
-                decoration: InputDecoration(
-                  hintText: l.subscriptionFormPaymentHint,
-                  prefixIcon: Icon(AppIcons.payment, size: 18, color: c.inkMuted),
-                ),
-              ),
-              const SizedBox(height: AppSpace.s2),
-              Wrap(
-                spacing: AppSpace.s2,
-                runSpacing: AppSpace.s2,
-                children: [
-                  for (final s in suggestions)
-                    AppChip(
-                      label: s,
-                      selected: s == current,
-                      showCheck: false,
-                      onTap: () => setState(() => _payment.text = s),
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
         FormFieldPad(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -4,14 +4,18 @@ import '../../../core/l10n/l10n.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../domain/domain.dart';
 
-/// S3 library row (design `lrow`): 40px tile · name (`title-sm`) + meta "from ₫74,000/month · 4
-/// plans" · round `brand-soft` plus. The whole row is the touch target (≥ 64dp).
+/// S3 library row (design `lrow`, png 22/34/35): 40px tile (Logo.dev logo via `logoDomain`,
+/// monogram fallback) · name (`title-sm`) + meta "from $7.99/month · ≈ ₫202,946 · 4 plans" (wraps,
+/// never truncates) · optional [ReferencePriceChip] · round `brand-soft` plus. Whole row = target.
 class LibraryRow extends StatelessWidget {
-  const LibraryRow({super.key, required this.service, required this.meta, required this.onTap});
+  const LibraryRow({super.key, required this.service, required this.meta, required this.onTap, this.reference = false});
 
   final CatalogService service;
   final String meta;
   final VoidCallback onTap;
+
+  /// The shown price is a Reference price (unverified).
+  final bool reference;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,11 @@ class LibraryRow extends StatelessWidget {
     final s = service;
     return Semantics(
       button: true,
-      label: context.l10n.catalogAddService(s.name),
+      label: [
+        context.l10n.catalogAddService(s.name),
+        meta,
+        if (reference) context.l10n.commonReferencePrice,
+      ].join(', '),
       excludeSemantics: true,
       onTap: onTap,
       child: InkWell(
@@ -30,7 +38,7 @@ class LibraryRow extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: AppSpace.s3),
             child: Row(
               children: [
-                ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram),
+                ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, logoDomain: s.logoDomain),
                 const SizedBox(width: AppSpace.s4),
                 Expanded(
                   child: Column(
@@ -45,6 +53,7 @@ class LibraryRow extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(meta, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                      if (reference) ...[const SizedBox(height: AppSpace.s1), const ReferencePriceChip()],
                     ],
                   ),
                 ),
@@ -105,6 +114,40 @@ class CustomServiceRow extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// "ⓘ Reference price" chip (design `.ref-chip`): 20px pill, `warning-soft` / `warning-ink`, 11/600.
+/// Marks a Catalog price that is not verified from the provider's page (glossary: Reference price).
+class ReferencePriceChip extends StatelessWidget {
+  const ReferencePriceChip({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Container(
+      constraints: const BoxConstraints(minHeight: 20),
+      padding: const EdgeInsets.fromLTRB(5, 2, 7, 2),
+      decoration: ShapeDecoration(color: c.warningSoft, shape: const StadiumBorder()),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(AppIcons.info, size: 12, color: c.warningInk),
+          const SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              context.l10n.commonReferencePrice,
+              style: AppType.meta.copyWith(
+                fontSize: 11,
+                height: 14 / 11,
+                fontWeight: FontWeight.w600,
+                color: c.warningInk,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -43,6 +43,35 @@ void main() {
       expect(CatalogView.rowMeta(en, netflix, 'VN'), 'from ₫74,000/month · 4 plans');
       expect(CatalogView.plans(netflix, 'US').map((p) => p.id), isNot(contains('mobile')));
     });
+
+    test('v13: plans closed to new customers are never offered', () {
+      final copilot = catalog.firstWhere((s) => s.id == 'copilot');
+      expect(copilot.plans.map((p) => p.id), contains('pro'));
+      expect(CatalogView.plans(copilot, 'US').map((p) => p.id), isNot(contains('pro')));
+    });
+
+    test('v13 tabs: General = global section (US prices), Vietnam = VN section + global sold in VN', () {
+      final general = CatalogView.forTab(catalog, LibraryTab.general);
+      final vietnam = CatalogView.forTab(catalog, LibraryTab.vietnam);
+      expect(general.any((s) => s.isVietnamese), isFalse);
+      expect(general.first.id, 'netflix');
+      expect(vietnam.map((s) => s.id), containsAll(['netflix', 'spotify']));
+      expect(vietnam.map((s) => s.id), isNot(contains('notion')), reason: 'no VN price');
+      expect(vietnam.where((s) => s.isVietnamese), hasLength(catalog.where((s) => s.isVietnamese).length));
+      expect(CatalogView.regionFor(LibraryTab.general), 'US');
+      expect(CatalogView.regionFor(LibraryTab.vietnam), 'VN');
+    });
+
+    test('v13 row meta: US price, ≈ Primary currency, plan count; Reference price flag', () {
+      final netflix = catalog.firstWhere((s) => s.id == 'netflix');
+      expect(
+        CatalogView.rowMeta(en, netflix, 'US', approx: (p) => '≈ ${p.currency}'),
+        'from \$8.99/month · ≈ USD · 3 plans',
+      );
+      expect(CatalogView.rowIsReference(netflix, 'US'), isFalse);
+      final reference = catalog.where((s) => CatalogView.rowIsReference(s, 'US'));
+      expect(reference, isNotEmpty);
+    });
   });
 
   addTest('S3 library: focused search, chips, custom row, popular list (png 16)', (tester) async {
@@ -116,6 +145,45 @@ void main() {
     expect(find.text('Premium'), findsOneWidget, reason: 'plan chip');
   });
 
+  addTest('S3 v13 tabs (png 34, 35): Vietnam first on a VN phone; General shows US prices ≈ VND', (tester) async {
+    final f = await AddFixture.create();
+    await pumpAdd(tester, f, location: '/catalog');
+    expect(find.text('General'), findsOneWidget);
+    expect(find.text('Vietnam'), findsOneWidget);
+    expect(find.text('Search 500+ services'), findsOneWidget);
+    await shot(tester, 's3-vietnam-390-en-light-100');
+    await tester.tap(find.text('General'));
+    await settle(tester);
+    expect(find.text('POPULAR'), findsOneWidget);
+    expect(find.text('from \$8.99/month · ≈ ₫228,346 · 3 plans'), findsOneWidget);
+    await shot(tester, 's3-general-390-en-light-100');
+
+    // Picking from General pre-fills the US price the row showed.
+    await tester.enterText(find.byType(TextField), 'netf');
+    await settle(tester);
+    await tester.tap(find.text('Netflix'));
+    await settle(tester);
+    expect(find.text('Choose a plan · suggested prices'), findsOneWidget);
+    await tester.tap(find.textContaining('Continue with'));
+    await settle(tester);
+    expect(find.text('New subscription'), findsOneWidget);
+    expect(find.text('USD'), findsOneWidget);
+    expect(find.textContaining('≈ ₫'), findsOneWidget);
+  });
+
+  addTest('S3 v13: no tabs outside VN; Reference price chip on unverified prices', (tester) async {
+    final f = await AddFixture.create(primary: 'USD');
+    await pumpAdd(tester, f, location: '/catalog', deviceLocale: 'en_US');
+    expect(find.text('General'), findsNothing);
+    expect(find.text('Vietnam'), findsNothing);
+    final catalog = CatalogRepository.parse(File('assets/catalog/services.json').readAsStringSync());
+    final ref = CatalogView.forTab(catalog, LibraryTab.general).firstWhere((s) => CatalogView.rowIsReference(s, 'US'));
+    await tester.enterText(find.byType(TextField), ref.name);
+    await settle(tester);
+    expect(find.text('Reference price'), findsWidgets);
+    await shot(tester, 's3-reference-390-en-light-100');
+  });
+
   addTest('S3 single-plan service skips the sheet', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/catalog');
@@ -133,8 +201,8 @@ void main() {
     expect(find.text('New subscription'), findsOneWidget);
   });
 
-  group('S3 layout matrix (360/390 · EN/VI · light/dark · 100/130/200%)', () {
-    for (final s in layoutMatrix) {
+  group('S3 layout matrix (360/390 · EN/VI · light/dark · 100/130/200% + 320 × 200%)', () {
+    for (final s in layoutMatrixNarrow) {
       addTest('library + search + sheet ${s.name}', (tester) async {
         final f = await AddFixture.create();
         await pumpAdd(tester, f, location: '/catalog', setup: s);
@@ -142,6 +210,11 @@ void main() {
         await tester.drag(find.byType(Scrollable).last, const Offset(0, -600));
         await settle(tester);
         expectNoLayoutErrors(tester, 'library scrolled');
+        await tester.tap(find.text(l10nFor(s.locale).catalogTabGeneral));
+        await settle(tester);
+        await tester.drag(find.byType(Scrollable).last, const Offset(0, -1200));
+        await settle(tester);
+        expectNoLayoutErrors(tester, 'general tab (≈ prices, Reference price chips)');
         await tester.enterText(find.byType(TextField), 'netf');
         await settle(tester);
         expectNoLayoutErrors(tester, 'search');

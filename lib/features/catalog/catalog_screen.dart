@@ -11,9 +11,11 @@ import 'catalog_helpers.dart';
 import 'widgets/library_rows.dart';
 import 'widgets/plan_sheet.dart';
 
-/// S3 Choose a service (png 16–19): search (focused on open, name + aliases, accent-insensitive),
-/// category chips, "+ Create a custom service", popular services with regional "from" prices,
-/// and a plan sheet for services with several plans. Picking opens S4 pre-filled.
+/// S3 Choose a service (mockup v13 png 22–25, 34–35): search (focused on open, name + aliases,
+/// accent-insensitive), General / Vietnam tabs (Vietnam only on devices in VN), category chips,
+/// "+ Create a custom service", services with "from" prices (General: US prices ≈ Primary currency;
+/// Vietnam: VND), a "Reference price" chip on unverified prices, and a plan sheet (plans on sale only)
+/// for services with several plans. Picking opens S4 pre-filled with the price the row showed.
 class CatalogScreen extends ConsumerStatefulWidget {
   const CatalogScreen({super.key});
 
@@ -26,6 +28,9 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   String _query = '';
   SubscriptionCategory? _category;
 
+  /// `null` until the first build: Vietnam on devices in VN (local prices first), else General.
+  LibraryTab? _tab;
+
   @override
   void dispose() {
     _search.dispose();
@@ -37,9 +42,11 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final region = ref.watch(catalogRegionProvider);
+    final showVietnam = ref.watch(showVietnamSectionProvider);
+    final tab = showVietnam ? (_tab ??= LibraryTab.vietnam) : LibraryTab.general;
+    final region = CatalogView.regionFor(tab);
     final catalog = ref.watch(catalogProvider).value ?? const <CatalogService>[];
-    final ordered = CatalogView.ordered(catalog, region);
+    final ordered = CatalogView.forTab(catalog, tab);
     final query = _query.trim();
     final searching = query.isNotEmpty;
 
@@ -54,6 +61,18 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s3),
               child: _SearchField(controller: _search, hint: l.catalogSearchHint, onChanged: _setQuery),
             ),
+            if (showVietnam)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s2),
+                child: AppSegmentedControl<LibraryTab>(
+                  segments: [
+                    AppSegment(value: LibraryTab.general, label: l.catalogTabGeneral),
+                    AppSegment(value: LibraryTab.vietnam, label: l.catalogTabVietnam),
+                  ],
+                  selected: tab,
+                  onChanged: (t) => setState(() => _tab = t),
+                ),
+              ),
             if (!searching) _chips(context),
             Expanded(
               child: ListView(
@@ -168,11 +187,24 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
 
   Iterable<Widget> _rows(BuildContext context, Iterable<CatalogService> services, String region) sync* {
     final l = context.l10n;
+    final primary = ref.watch(primaryCurrencyProvider);
+    final rates = ref.watch(spendingCalculatorProvider).rates;
+    String? approx(CatalogPrice p) {
+      if (p.currency == primary) return null;
+      final v = rates.convert(p.amount, p.currency, primary);
+      return v == null ? null : l.amount(v, primary, approx: true);
+    }
+
     var first = true;
     for (final s in services) {
       if (!first) yield Divider(height: 1, thickness: 1, color: context.colors.line);
       first = false;
-      yield LibraryRow(service: s, meta: CatalogView.rowMeta(l, s, region), onTap: () => _pick(s, region));
+      yield LibraryRow(
+        service: s,
+        meta: CatalogView.rowMeta(l, s, region, approx: approx),
+        reference: CatalogView.rowIsReference(s, region),
+        onTap: () => _pick(s, region),
+      );
     }
   }
 
@@ -185,6 +217,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
       if (plan == null) return;
     }
     if (!mounted) return;
+    ref.read(libraryPickRegionProvider.notifier).set(region);
     await context.push(AppRoutes.subscriptionNew(serviceId: s.id, planId: plan?.id));
   }
 }

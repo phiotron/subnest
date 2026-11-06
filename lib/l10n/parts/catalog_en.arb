@@ -1,6 +1,6 @@
 {
   "catalogTitle": "Add subscription",
-  "catalogSearchHint": "Search 100+ services",
+  "catalogSearchHint": "Search 500+ services",
   "catalogClearSearch": "Clear search",
   "catalogCustom": "Create a custom service",
   "catalogCustomSub": "Anything not in the library",
@@ -29,5 +29,7 @@
   "@catalogPlanMembers": {"placeholders": {"count": {"type": "int"}}},
   "catalogPlanNote": "You can change the price on the next screen.",
   "catalogContinueWith": "Continue with {plan}",
-  "@catalogContinueWith": {"placeholders": {"plan": {"type": "String"}}}
+  "@catalogContinueWith": {"placeholders": {"plan": {"type": "String"}}},
+  "catalogTabGeneral": "General",
+  "catalogTabVietnam": "Vietnam"
 }

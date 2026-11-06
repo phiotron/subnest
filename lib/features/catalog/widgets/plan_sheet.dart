@@ -5,7 +5,7 @@ import '../../../core/widgets/widgets.dart';
 import '../../../domain/domain.dart';
 import '../catalog_helpers.dart';
 
-/// S3 plan sheet (png 19): tile + name + "Choose a plan · suggested prices for Vietnam", one
+/// S3 plan sheet (v13 png 25; only plans on sale, Reference prices marked in the subtitle): tile + name + "Choose a plan · suggested prices for Vietnam", one
 /// [RadioRow] card per plan with its regional price, a note and "Continue with Premium".
 /// Returns the chosen plan, or `null` when dismissed. Also used by S4's plan chip.
 Future<CatalogPlan?> showPlanSheet(
@@ -83,7 +83,10 @@ class _PlanSheetState extends State<PlanSheet> {
                       RadioOption(
                         value: p.id,
                         title: p.name,
-                        subtitle: CatalogView.planSubtitle(l, p),
+                        subtitle: [
+                          CatalogView.planSubtitle(l, p),
+                          if (p.priceFor(widget.region)?.isReference ?? false) l.commonReferencePrice,
+                        ].join(' · '),
                         trailing: _price(context, p),
                       ),
                   ],
