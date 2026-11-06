@@ -111,13 +111,22 @@ Người dùng cho vượt luật ≤ 3 phiên điều phối (ghi ngoại lệ 
 > Đợt 1 xong 2026-11-06: C1 500 dịch vụ (354/765 giá xác minh), M1 DB v2 + domain (API đợt 2: `notes/2026-11-06-m1-core.md`), P3 logo + thanh tiến độ.
 > Lưu ý đợt 2: gỡ shim API cũ (`category`, `reminderDays`) sau khi UI đổi xong; S hoặc W sửa `ios/Podfile` `platform :ios, '15.5'` (ML Kit);
 > W sửa `app.dart` để gắn WidgetSync; hàng gói cần tone `paused` (P3 tạm dùng `off`).
-> **Mockup v12 đã có** (`design/`, export 2026-11-06: màn 16–20 S2 lọc/hoàn tác/tạm dừng, 33–36 thư viện + tổ chức, 50–53 tạm dừng,
-> 61–63 dự báo/ngân sách, 73–79 cài đặt tổ chức + Tự động, 82 widget v2, 83–85 S13 quét ảnh) — brief đợt 2 trỏ đúng số màn.
+> ~~Mockup v12~~ → **mockup v13** (`design/` `775901b`, 2026-11-06): số màn từ 21 trở đi đã dịch so với v12 — dùng bảng đợt 2 dưới.
 
-**Đợt 2 (sau M1, song song):** **U1** Tổng quan (`features/home/`, `app_shell.dart`) · **U2** Form/Chi tiết/Thư viện
-(`subscription_form/`, `subscription_detail/`, `catalog/`, `confirm/`) · **U3** Thống kê (`insights/`, `calendar/`) ·
-**U4** Cài đặt (`settings/`) · **S** Quét ảnh (`features/scan/`, `domain/detection/`) · **W** Widget (`android/`, `ios/` extension,
-`features/widget_sync/`) · **P2** Catalog từ xa (`lib/data/catalog/**`).
+**Đợt 2 — phiên điều phối #4 (mở 2026-11-06), số màn theo mockup v13** (`design/` `775901b`: 99 màn; token không đổi so v12
+→ không cần phiên Design system). Tối đa ~3 phiên cùng lúc; brief bắt `get_usage` + commit WIP biên dịch được sau mỗi màn.
+| Phiên con | Màn v13 | Phạm vi | Khi nào |
+|---|---|---|---|
+| **U1** Tổng quan | 08–20 (21 sau P2) | `features/home/`, `core/widgets/app_shell.dart`, `subscription_row.dart` (tone `paused`), `home_*.arb` | mở 2026-11-06 |
+| **U2a** Thư viện + Form | 22–37 | `features/catalog/`, `features/subscription_form/`, ARB tương ứng | mở 2026-11-06 |
+| **U2b** Chi tiết + Xác nhận | 38–54, 58–59 (55–57 sau P2) | `features/subscription_detail/`, `features/confirm/` | từ 10/11 |
+| **U3** Lịch + Thống kê | 60–69 | `features/calendar/`, `features/insights/` | từ 10/11 |
+| **U4** Cài đặt | 70–88 | `features/settings/` | từ 10/11 |
+| **S** Quét ảnh | 93–99 | `features/scan/`, `domain/detection/`, `ios/Podfile` (iOS 15.5) | từ 10/11 |
+| **W** Widget | 89, 91, 92 | `android/` widget, `ios/` extension, `features/widget_sync/`, `app.dart` | từ 10/11 |
+| **P2** Catalog từ xa | dữ liệu cho 21, 55–57 | `lib/data/catalog/**`, domain/DB liên quan | từ 10/11 → rồi phiên nhỏ gắn UI 21 + 55–57 |
+Luật đợt 2: component mới để trong thư mục feature (gom lên `core/widgets` sau); không sửa `domain`/`data`/router/`pubspec.yaml`
+(thiếu API → SendMessage); UI mới dùng `categoryId`/`reminderOffsets`, không dùng shim; phiên con chung thư mục `dev` (người dùng chọn).
 
 **Đợt 3 (#4):** P4b pháp lý (quét ảnh trên máy, quyền ảnh/camera, widget) · QA `smoke-android` + ảnh store → `1.0.0+3` → AAB.
 **Chặn nộp store:** người dùng chốt giá/dùng thử Pro. 1.1 (thông báo) / 1.2 (Gmail) grill riêng; phải kiểm chính sách
@@ -126,6 +135,7 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
+| #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan · U2a Thư viện + Form (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 commit `775901b` |
 | #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở · **chiều:** grill lấy giá/quản lý → mở rộng 1.0; đợt 1 **C1 ✅ M1 ✅ P3 ✅** (767 test xanh, `dev` `63a5ded`); repo `phamphuongphuongnd/catalog` public + Pages ✅ (data v12) · **dừng chờ hạn mức tuần (reset 2026-11-10)** → đợt 2 | ADR 0002 (sửa vùng giá), ADR 0003, product.md §10, CONTEXT +13 thuật ngữ — log `memory/sessions/2026-11-06-A001-subnest-phien2.md` |
 | #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
