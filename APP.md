@@ -21,9 +21,15 @@
 5. F5 Thư viện ~100 dịch vụ
 6. F6 Thống kê & biểu đồ
 7. F7 Sao lưu/khôi phục JSON + xuất CSV
-8. F8 *(stretch)* Widget màn hình chính — chỉ làm nếu kịp ở cuối phiên #2, không thì bản 1.1
+8. F8 Widget màn hình chính nhỏ/vừa/lớn, Android + iOS — **vào 1.0** (grill 2026-11-06)
+9. F9 *(mở rộng 2026-11-06)* Đủ chức năng SubFox: nhãn, danh mục sửa được, danh sách phương thức thanh toán, ngân sách theo danh mục,
+   dự báo, chi theo ngày/tuần/tháng/năm, "sắp trừ tuần này", lọc + nhớ lọc/sắp xếp, thanh tiến độ kỳ, tab tự ẩn khi cuộn
+10. F10 Tạm dừng · Đáng tiền? (3 mức) · Nhắc nhiều mốc
+11. F11 Thư viện 500+ dịch vụ toàn cầu (giá US chung + mục/giá VN), logo thật, nhãn Giá tham khảo
+12. F12 Tự phát hiện (Pro): quét ảnh trên máy ở 1.0 (ADR 0003) · thông báo ngân hàng/ví 1.1 · Gmail 1.2
 
-> Vượt luật "MVP ≤ 5" của Playbook v0 — người dùng chấp nhận vì F5–F7 nhỏ và chia song song được; widget là phần cắt đầu tiên.
+> Vượt luật "MVP ≤ 5" — người dùng chấp nhận (2026-11-04, mở rộng lần nữa 2026-11-06 sau khi so đối thủ; spec ở `product.md` §10).
+> **Kiếm tiền:** nhập tay miễn phí, phần tự động thu phí; giá + dùng thử người dùng chốt sau khi chức năng xong (chặn nộp store).
 
 ## Màn hình & luồng chính
 Chi tiết ở `product.md` §4–§6: S1 Onboarding (3 bước + thêm nhanh) · S2 Tổng quan · S3 Thư viện · S4 Form · S5 Chi tiết ·
@@ -89,10 +95,32 @@ Người dùng chốt (grill 2026-11-06): làm đủ tính năng rồi mới upl
 | **QA** | `smoke-android.md` + ảnh store mới (có logo) → version `1.0.0+3` → AAB | toàn app | sau P2, P3 |
 Sau đó: người dùng upload closed testing → ≥ 14 ngày → production + App Store (khi có Apple Developer) → tag `v1.0.0` → retro cuối.
 
+> **Thay thế bởi kế hoạch #3/#4 bên dưới (grill 2026-11-06 chiều).** P1 → gộp vào C1; P2, P3, P4 giữ (P2 dùng schema v4 rút gọn).
+
+### Phiên điều phối #3 (tiếp) + #4 — Mở rộng 1.0 theo SubFox + tự phát hiện (grill 2026-11-06; ADR 0003; product.md §10)
+Người dùng cho vượt luật ≤ 3 phiên điều phối (ghi ngoại lệ METRICS). Mọi phiên con: `flutter analyze` sạch, `flutter test` xanh,
+`merge_arb --check`, commit WIP sớm, báo về phiên điều phối bằng SendMessage.
+
+**Đợt 1 (song song):**
+| Phiên con | Việc | Phạm vi |
+|---|---|---|
+| **C1** Catalog 500+ | Schema v4 rút gọn (giá `US` + `VN`, `verified`, `section: global/vn`, `logoDomain`, tên hiển thị trên trang gói Play/App Store); 99 → 500+; validator; hỏi link repo rồi đẩy repo `catalog` + Pages | `D:\Mobile App\catalog`, `assets/catalog/` |
+| **M1** Lõi | Domain + migration: Paused, Worth-it, Label, Category tuỳ biến, PaymentMethod, Budget, nhắc nhiều mốc, nguồn phát hiện + Hoàn tác, DetectedCharge + luật khớp; backup/CSV; route + ARB placeholder màn mới; cổng Pro (mở hết); package ML Kit text recognition + home_widget | `lib/domain/`, `lib/data/`, `lib/core/router/`, `pubspec.yaml`, `drift_schemas/` |
+| **P3** Logo (tiếp WIP `ab3ea85`) | Hoàn tất logo.dev + thanh tiến độ kỳ trong tile/row | `lib/core/widgets/service_tile*`, `subscription_row.dart`, `lib/data/logos/` |
+
+**Đợt 2 (sau M1, song song):** **U1** Tổng quan (`features/home/`, `app_shell.dart`) · **U2** Form/Chi tiết/Thư viện
+(`subscription_form/`, `subscription_detail/`, `catalog/`, `confirm/`) · **U3** Thống kê (`insights/`, `calendar/`) ·
+**U4** Cài đặt (`settings/`) · **S** Quét ảnh (`features/scan/`, `domain/detection/`) · **W** Widget (`android/`, `ios/` extension,
+`features/widget_sync/`) · **P2** Catalog từ xa (`lib/data/catalog/**`).
+
+**Đợt 3 (#4):** P4b pháp lý (quét ảnh trên máy, quyền ảnh/camera, widget) · QA `smoke-android` + ảnh store → `1.0.0+3` → AAB.
+**Chặn nộp store:** người dùng chốt giá/dùng thử Pro. 1.1 (thông báo) / 1.2 (Gmail) grill riêng; phải kiểm chính sách
+NotificationListener của Play và thẩm định restricted scope Gmail (có miễn CASA khi chỉ xử lý trên máy không).
+
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở | ADR 0002; đóng tạm 2026-11-06 — log `memory/sessions/2026-11-06-A001-subnest.md` |
+| #3 Catalog từ xa + nộp store (đang mở) | 2026-11-06 | Sửa S9 ✅ code (chờ kiểm máy) · P4 pháp lý ✅ · P1 catalog API ⏸ WIP · P3 logo ⏸ WIP · P2, QA chưa mở · **chiều:** grill lấy giá/quản lý → mở rộng 1.0 (C1, M1, P3 đợt 1) | ADR 0002 (sửa vùng giá), ADR 0003, product.md §10, CONTEXT +13 thuật ngữ |
 | #2 Hoàn thiện | 2026-11-05 | QA máy thật ✅ · F Design system ✅ · B2 Giá catalog ✅ (approx 147→114) · I Lịch/Thống kê ✅ · J Cài đặt ✅ · G Home/Detail/Confirm ✅ · H Onboarding/Catalog/Form ✅ (G, H dừng 1 lần vì hết hạn mức → chạy lại) | Toàn bộ S1–S10 theo mockup; phiên điều phối chạy lại: analyze sạch, **603 test xanh**, merge_arb --check OK; build iOS (không ký) xanh với icon/splash mới; vùng chạm 48dp (S-50) |
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 

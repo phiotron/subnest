@@ -30,3 +30,8 @@
 - Bộ đọc trang VN sẽ vỡ khi hãng đổi giao diện → Actions giữ giá cũ + đánh dấu cần xem; không tự sửa được thì nhờ cập nhật tay.
 - App giờ gọi mạng tới GitHub Pages và logo.dev → sửa privacy policy, Data safety, App Privacy (vẫn không thu thập dữ liệu người dùng).
 - Rủi ro duyệt store vì logo thương hiệu → có sẵn đường lùi: tắt logo, nộp lại.
+
+## Sửa đổi 2026-11-06 (grill lấy giá/quản lý)
+- **Vùng giá rút còn US + VN** (thay 6 vùng ở mục 3): giá US dùng chung cho mọi người (quy đổi "≈"); máy ở VN thấy thêm
+  *mục Việt Nam* và giá VND cho dịch vụ bán ở VN. Người dùng chủ yếu ở nước ngoài → ưu tiên độ phủ dịch vụ hơn giá theo nước.
+- **Quy mô 500+ dịch vụ** hướng toàn cầu; giá chưa xác minh vẫn điền sẵn nhưng hiện nhãn *Giá tham khảo*.

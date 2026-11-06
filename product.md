@@ -316,3 +316,47 @@ khi 10+ tile đứng cạnh nhau.
    stepper, date picker, banner, empty state.
 4. **App icon** (1024×1024, ý tưởng "tổ" + subscription) và splash.
 5. Xuất dưới dạng **link claude.ai + file export HTML** (để dev đọc chính xác màu, khoảng cách, font).
+
+---
+
+## 10. Phụ lục 2026-11-06 — Bản 1.0 mở rộng: đủ chức năng SubFox + tự phát hiện
+
+> Từ grill 2026-11-06 (kế hoạch trong `APP.md` phiên #3/#4). Thuật ngữ mới ở `CONTEXT.md`; luật tự xác nhận ở ADR 0003.
+> Người dùng chủ yếu ở nước ngoài → mặc định tiếng Anh, giá US; tiếng Việt + mục Việt Nam khi máy ở VN.
+
+### 10.1 Thư viện (S3)
+- 500+ dịch vụ, hai mục **Chung** / **Việt Nam** (mục VN chỉ hiện khi máy ở VN). Logo thật (Logo.dev), lỗi → monogram.
+- Giá: US cho mọi người (quy đổi "≈" sang tiền tệ chính); VND cho dịch vụ bán ở VN khi máy ở VN.
+- Giá chưa xác minh: điền sẵn + chip nhỏ **"Giá tham khảo"**.
+
+### 10.2 Tổng quan (S2)
+- Hàng gói: logo, **thanh tiến độ của kỳ** (đã qua bao nhiêu % tới Due date), "còn N ngày", **chip Nhãn**, huy hiệu **Tự phát hiện**.
+- **Lọc** theo Danh mục / Nhãn / Trạng thái (gồm Tạm dừng) / Phương thức thanh toán; app **nhớ lọc và cách sắp xếp**.
+- Thẻ **"Sắp trừ tuần này"**: dải 7 ngày, chấm ở ngày có gói, tổng tiền tuần.
+- Thanh **Ngân sách** (tổng % đã dùng; chạm → theo danh mục).
+- Snackbar **Hoàn tác** sau mỗi lần app tự thêm gói / tự xác nhận kỳ.
+- Tuỳ chọn: thanh tab dưới **tự ẩn khi cuộn**.
+
+### 10.3 Form (S4) & Chi tiết (S5)
+- Chọn **Nhãn** (nhiều), **Phương thức thanh toán** (từ danh sách, thêm nhanh), **Nhắc nhiều mốc** (bật riêng: đúng ngày / 1 / 3 / 7 ngày trước).
+- **Đáng tiền?** 3 mức: Đáng · Phân vân · Không đáng (mặc định chưa đánh giá).
+- **Tạm dừng / Bật lại**: tạm dừng có hiệu lực từ Due date kế tiếp ("Tạm dừng từ 15/11"); bật lại → chọn Due date kế tiếp (mặc định hôm nay).
+- Lịch sử kỳ: Payment tự xác nhận có biểu tượng nguồn (ảnh chụp/thông báo/Gmail) + Hoàn tác.
+
+### 10.4 Thống kê (S9)
+- **Dự báo** chi 30 ngày / 12 tháng tới từ các Due date thật.
+- Chi phí quy **ngày / tuần / tháng / năm**.
+- **Ngân sách theo danh mục**: mỗi danh mục một thanh, vượt → đỏ.
+- "Bỏ các gói **Không đáng** tiết kiệm X/năm".
+
+### 10.5 Cài đặt (S10)
+- Quản lý **Danh mục** (thêm/sửa tên, màu, biểu tượng; xoá → chuyển gói sang danh mục khác), **Nhãn**, **Phương thức thanh toán**, **Ngân sách**.
+- Mục **Tự động (Pro)**: Quét ảnh (1.0); Thông báo ngân hàng/ví (1.1, Android); Gmail (1.2). Giá Pro chốt sau.
+
+### 10.6 Quét ảnh (S13, mới)
+- Nút "Mở trang gói của Google Play / App Store" → người dùng chụp màn hình → chọn ảnh (nhiều ảnh được) hoặc chụp hoá đơn.
+- Nhận chữ **trên máy** → tìm gói (tên, giá, chu kỳ, ngày gia hạn) → khớp thư viện → **tự thêm** (nhãn Tự phát hiện) /
+  **tự xác nhận** kỳ đang chờ → màn kết quả "Đã thêm 4 gói, xác nhận 1 kỳ" với Hoàn tác từng dòng.
+
+### 10.7 Widget (S11 — vào 1.0)
+- Nhỏ: một gói (logo, giá, còn N ngày). Vừa/Lớn: danh sách sắp trả + tổng tháng. Sáng/tối. Android + iOS.

@@ -17,7 +17,18 @@
 | **Payment** | Thanh toán | Bản ghi một Billing period **đã được người dùng xác nhận** là đã trả, với số tiền thực trả (sửa được). Chi tiêu thực tế chỉ tính từ Payment. | "transaction" |
 | **Skipped period** | Kỳ bỏ qua | Billing period người dùng xác nhận là *không* trả (được miễn, tạm dừng…). Không tạo Payment. | |
 | **Trial** | Dùng thử | Giai đoạn miễn phí có ngày kết thúc. Hết Trial thì Subscription **tự thành Active**, ngày hết Trial là Due date của kỳ trả phí đầu tiên. | "free plan" |
-| **Status** | Trạng thái | Của Subscription: `Trial` · `Active` · `Cancelled`. | |
+| **Status** | Trạng thái | Của Subscription: `Trial` · `Active` · `Paused` · `Cancelled`. | |
+| **Paused** | Tạm dừng | Người dùng tạm ngưng trả nhưng chưa huỷ. Có hiệu lực từ Due date kế tiếp (kỳ đã trả vẫn dùng hết); khi Paused không có Due date, Reminder, không tính vào tổng chi. Bật lại → người dùng chọn Due date kế tiếp (mặc định ngày bật lại). | "on hold", "suspended" |
+| **Worth-it rating** | Đáng tiền? | Đánh giá của người dùng cho một Subscription: *Đáng* · *Phân vân* · *Không đáng* · (chưa đánh giá). Dùng để gợi ý tiết kiệm: "bỏ các gói Không đáng tiết kiệm X/năm". | "usage", "score" |
+| **Label** | Nhãn | Thẻ tự đặt, gắn nhiều cái cho một Subscription (vd "Công việc", "Có quảng cáo"). Khác Category: một Subscription có đúng một Category nhưng nhiều Label. | "tag" (trong UI dùng "Nhãn") |
+| **Category** | Danh mục | Nhóm chính của Subscription (Video, Nhạc, AI…). Người dùng thêm/sửa/xoá được; mỗi Subscription đúng một Category. | |
+| **Payment method** | Phương thức thanh toán | Thẻ/ví/tài khoản người dùng dùng để trả (vd "Visa ••4821", "MoMo"), quản lý thành danh sách; một Subscription gắn tối đa một. | "card" |
+| **Budget** | Ngân sách | Mức chi tối đa mỗi tháng cho một Category (và một mức tổng), so với Monthly cost của các Subscription `Active` trong Category đó. | "limit" |
+| **Forecast** | Dự báo | Tổng tiền dự kiến phải trả trong một khoảng tới, tính từ các Due date sắp tới (không quy tháng). | "projection" |
+| **Detection source** | Nguồn phát hiện | Nơi app tự lấy thông tin gói/lần trừ tiền, xử lý hoàn toàn trên máy: *Ảnh chụp* (màn hình gói của store, hoá đơn) · *Thông báo* (ngân hàng/ví do người dùng chọn) · *Gmail*. | "sync", "import" |
+| **Detected charge** | Lần trừ tiền phát hiện | Một lần bị trừ tiền đọc được từ Detection source (dịch vụ, số tiền, ngày). Khớp chắc với Billing period đang chờ của một Subscription → **tự xác nhận** kỳ đó với số tiền thực trừ (Hoàn tác được); số tiền lệch chỉ ghi cho kỳ đó, giá Subscription giữ nguyên. | "transaction" |
+| **Auto-detected** | Tự phát hiện | Nhãn của Subscription do app tự thêm từ Detection source (khi khớp dịch vụ trong Catalog, hoặc chỗ lạ có ≥ 2 Detected charge cùng số tiền cách ~1 chu kỳ). Người dùng gỡ được; gỡ thì không tự thêm lại. | |
+| **Pro** | Bản Pro | Phần tự động (mọi Detection source) — thu phí; nhập tay luôn miễn phí. | "premium" |
 | **Cancelled** | Đã huỷ | Người dùng báo đã huỷ. Subscription được giữ lại (khôi phục được), không còn Due date mới. | "deleted", "archived" |
 | **Savings** | Tiết kiệm | Số tiền quy năm của các Subscription Cancelled — "bạn đã tiết kiệm X/năm". | |
 | **Shared plan** | Gói chia sẻ | Subscription chia tiền với N người (Family/Duo). | |
@@ -27,7 +38,9 @@
 | **Monthly cost** | Chi phí quy tháng | Giá của một Subscription (My share) quy về 1 tháng theo Billing cycle và Exchange rate. Tổng chi tháng/năm = tổng Monthly cost của các Subscription `Active`; Trial hiển thị riêng là "sắp tính phí". | "average" |
 | **Reminder** | Nhắc | Thông báo trên máy trước Due date (mặc định 3 ngày, 9:00) và trước khi Trial hết. | "alert", "push" (app không có server push) |
 | **Catalog source** | Nguồn thư viện | Nơi app lấy Catalog: bản **đóng gói** trong app (luôn có, dùng khi offline) và bản **từ xa** của xưởng (cập nhật hằng tuần). App dùng bản mới nhất hợp lệ mà nó có. | "API của hãng" (không hãng nào có) |
-| **Region** | Vùng giá | Nước mà giá gợi ý trong Catalog áp dụng (VN, US, UK, AU, CA, IN), chọn theo vùng của máy. Vùng không có giá → dùng giá US quy đổi, hiển thị "≈". | "currency" (tiền tệ khác vùng) |
+| **Region** | Vùng giá | Giá gợi ý trong Catalog có hai vùng: **US** (giá chung cho mọi người, quy đổi sang Primary currency "≈") và **VN** (giá VND cho dịch vụ bán ở Việt Nam, chỉ dùng khi máy ở VN). | "currency" (tiền tệ khác vùng) |
+| **Catalog section** | Mục thư viện | Thư viện chia *Chung* (dịch vụ toàn cầu, ai cũng thấy) và *Việt Nam* (dịch vụ của VN, chỉ hiện khi máy ở VN). | |
+| **Reference price** | Giá tham khảo | Giá gợi ý trong Catalog chưa được xác minh từ trang của hãng; vẫn điền sẵn nhưng ghi "giá tham khảo — kiểm lại". | "approx" |
 | **Catalog link** | Liên kết thư viện | Mối nối giữa một Subscription và Service/Plan trong Catalog khi người dùng thêm từ thư viện. Subscription luôn là **bản sao riêng** của người dùng; Catalog đổi không tự sửa Subscription. | |
 | **Price change notice** | Báo đổi giá | Khi giá Plan trong Catalog đổi và Subscription có Catalog link với giá còn bằng giá Catalog cũ: app **báo**, người dùng chọn *Cập nhật* (áp từ kỳ tới, Payment cũ giữ nguyên) hoặc *Giữ giá cũ*. Giá người dùng tự sửa thì không báo. | "auto-update" |
 | **Discontinued plan** | Gói ngừng bán | Plan bị bỏ/đổi tên trong Catalog. Subscription đang dùng gói đó giữ nguyên, chi tiết hiện ghi chú nhẹ "gói đã ngừng bán cho khách mới". | "deleted plan" |

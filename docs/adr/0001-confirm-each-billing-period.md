@@ -1,6 +1,6 @@
 # 0001 — Mỗi kỳ phải được xác nhận; Due date đứng yên cho tới khi xác nhận
 
-- **Trạng thái:** Chấp nhận · 2026-11-04
+- **Trạng thái:** Chấp nhận · 2026-11-04 · sửa một phần bởi [0003](0003-auto-confirm-from-detected-charge.md) (tự xác nhận kỳ từ Detected charge)
 - **Bối cảnh:** App cạnh tranh (Bobby, Tilla) tự cuộn ngày gia hạn và coi như đã trả. Người dùng chọn cách
   ghi sổ từng kỳ để chi tiêu thực tế chính xác (giá đổi, kỳ được miễn, gói bị huỷ ngầm…).
 
