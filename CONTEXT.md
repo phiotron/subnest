@@ -26,3 +26,9 @@
 | **Exchange rate** | Tỷ giá | Tỷ giá quy đổi sang Primary currency, tự cập nhật hằng ngày khi có mạng, người dùng ghi đè được. | |
 | **Monthly cost** | Chi phí quy tháng | Giá của một Subscription (My share) quy về 1 tháng theo Billing cycle và Exchange rate. Tổng chi tháng/năm = tổng Monthly cost của các Subscription `Active`; Trial hiển thị riêng là "sắp tính phí". | "average" |
 | **Reminder** | Nhắc | Thông báo trên máy trước Due date (mặc định 3 ngày, 9:00) và trước khi Trial hết. | "alert", "push" (app không có server push) |
+| **Catalog source** | Nguồn thư viện | Nơi app lấy Catalog: bản **đóng gói** trong app (luôn có, dùng khi offline) và bản **từ xa** của xưởng (cập nhật hằng tuần). App dùng bản mới nhất hợp lệ mà nó có. | "API của hãng" (không hãng nào có) |
+| **Region** | Vùng giá | Nước mà giá gợi ý trong Catalog áp dụng (VN, US, UK, AU, CA, IN), chọn theo vùng của máy. Vùng không có giá → dùng giá US quy đổi, hiển thị "≈". | "currency" (tiền tệ khác vùng) |
+| **Catalog link** | Liên kết thư viện | Mối nối giữa một Subscription và Service/Plan trong Catalog khi người dùng thêm từ thư viện. Subscription luôn là **bản sao riêng** của người dùng; Catalog đổi không tự sửa Subscription. | |
+| **Price change notice** | Báo đổi giá | Khi giá Plan trong Catalog đổi và Subscription có Catalog link với giá còn bằng giá Catalog cũ: app **báo**, người dùng chọn *Cập nhật* (áp từ kỳ tới, Payment cũ giữ nguyên) hoặc *Giữ giá cũ*. Giá người dùng tự sửa thì không báo. | "auto-update" |
+| **Discontinued plan** | Gói ngừng bán | Plan bị bỏ/đổi tên trong Catalog. Subscription đang dùng gói đó giữ nguyên, chi tiết hiện ghi chú nhẹ "gói đã ngừng bán cho khách mới". | "deleted plan" |
+| **Service logo** | Logo dịch vụ | Logo thật của Service lấy từ dịch vụ logo bên thứ ba, lưu sẵn trên máy; không có/lỗi → tile monogram. | |
