@@ -25,7 +25,7 @@ class LibraryRow extends StatelessWidget {
       button: true,
       label: [
         context.l10n.catalogAddService(s.name),
-        meta,
+        context.l10n.spoken(meta), // "≈" read as a word (TalkBack skips the symbol)
         if (reference) context.l10n.commonReferencePrice,
       ].join(', '),
       excludeSemantics: true,

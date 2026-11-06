@@ -156,6 +156,7 @@ void main() {
     await settle(tester);
     expect(find.text('POPULAR'), findsOneWidget);
     expect(find.text('from \$8.99/month · ≈ ₫228,346 · 3 plans'), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp('≈')), findsNothing, reason: '"≈" is spoken as a word');
     await shot(tester, 's3-general-390-en-light-100');
 
     // Picking from General pre-fills the US price the row showed.
