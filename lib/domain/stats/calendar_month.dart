@@ -37,15 +37,16 @@ class AgendaGroup {
 ///
 /// Past months (before today's month) total the **Payments** made ("Paid in October");
 /// the current and future months total Payments + periods still expected (awaiting and
-/// upcoming, at the current My share) — the same as `SpendingCalculator.actualInMonth +
-/// projectedInMonth`. Amounts are converted to the Primary currency; unknown rates are left out
-/// and listed in [missingRates].
+/// upcoming, at the current My share) — the same as `SpendingCalculator.actualInMonthMinor +
+/// projectedInMonthMinor`. Each amount is converted to the Primary currency and rounded to its
+/// smallest unit before summing; unknown rates are left out and listed in [missingRates].
 class CalendarMonth {
   CalendarMonth._({
     required this.month,
     required this.today,
     required this.entries,
-    required this.total,
+    required this.totalMinor,
+    required this.currency,
     required this.converted,
     required this.missingRates,
   });
@@ -69,7 +70,7 @@ class CalendarMonth {
       today: today,
     );
     final past = first.isBefore(today.firstOfMonth);
-    var total = 0.0;
+    var total = 0;
     var converted = false;
     final missing = <String>{};
     for (final e in entries) {
@@ -77,7 +78,7 @@ class CalendarMonth {
       if (!counts) continue;
       final m = amountOf(e);
       if (m.currency.toUpperCase() != primaryCurrency.toUpperCase()) converted = true;
-      final v = rates.convert(m.major, m.currency, primaryCurrency);
+      final v = rates.convertMinor(m.minor, m.currency, primaryCurrency);
       if (v == null) {
         missing.add(m.currency);
       } else {
@@ -88,7 +89,8 @@ class CalendarMonth {
       month: first,
       today: today,
       entries: List.unmodifiable(entries),
-      total: total,
+      totalMinor: total,
+      currency: primaryCurrency.toUpperCase(),
       converted: converted,
       missingRates: missing,
     );
@@ -101,8 +103,15 @@ class CalendarMonth {
   /// Every entry of the month, by date then name (see [CalendarBuilder.entries]).
   final List<CalendarEntry> entries;
 
-  /// Header total in the Primary currency (see class doc).
-  final double total;
+  /// Header total in the Primary currency, minor units: the sum of each counted entry's
+  /// Converted amount (see class doc).
+  final int totalMinor;
+
+  /// Primary currency of [total].
+  final String currency;
+
+  /// Header total in the Primary currency, major units.
+  double get total => toMajorUnits(totalMinor, currency);
 
   /// Whether any counted amount was converted from another currency.
   final bool converted;

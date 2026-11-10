@@ -107,7 +107,7 @@ void main() {
         SubscriptionCategory.software,
         SubscriptionCategory.video,
       ]);
-      expect(slices[1].monthly, closeTo(59000 + 1690000 / 12, 1e-6));
+      expect(slices[1].monthly, 59000 + 140833, reason: '1 690 000 ÷ 12 rounded to whole đồng');
       expect(slices[1].subscriptions.map((e) => e.$1.id), ['google1', 'icloud']);
       expect(slices.fold<double>(0, (a, s) => a + s.share), closeTo(1, 1e-9));
       expect(slices.any((s) => s.category == SubscriptionCategory.music), isFalse, reason: 'Spotify is still a Trial');

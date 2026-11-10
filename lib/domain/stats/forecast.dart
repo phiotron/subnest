@@ -7,12 +7,17 @@ import '../subscription.dart';
 
 /// One expected charge on a real Due date.
 class ForecastItem {
-  const ForecastItem(this.subscription, this.date, this.amount);
+  const ForecastItem(this.subscription, this.date, this.amountMinor, this.currency);
   final Subscription subscription;
   final LocalDate date;
 
-  /// My share in the Primary currency (0 when the rate is unknown).
-  final double amount;
+  /// My share as a Converted amount in the Primary currency, minor units (0 when the rate is unknown).
+  final int amountMinor;
+
+  /// Primary currency.
+  final String currency;
+
+  double get amount => toMajorUnits(amountMinor, currency);
 }
 
 /// Monthly cost expressed per day / week / month / year (product.md §10.4).
@@ -26,12 +31,17 @@ class CostRates {
 
 /// "Due this week" card (product.md §10.2): 7 days from [start], items per day and the total.
 class WeekStrip {
-  const WeekStrip(this.start, this.days, this.total);
+  const WeekStrip(this.start, this.days, this.totalMinor, this.currency);
   final LocalDate start;
 
   /// Exactly 7 entries, `days[i]` = items due on `start + i`.
   final List<List<ForecastItem>> days;
-  final double total;
+
+  /// Sum of the items' amounts (minor units of [currency]).
+  final int totalMinor;
+  final String currency;
+
+  double get total => toMajorUnits(totalMinor, currency);
 
   bool hasDueOn(int i) => days[i].isNotEmpty;
 }
@@ -41,7 +51,7 @@ class BudgetUsage {
   const BudgetUsage(this.budget, this.spent, this.limit);
   final Budget budget;
 
-  /// Monthly cost in the Primary currency (major units).
+  /// Monthly cost in the Primary currency (major units; a sum of Converted amounts).
   final double spent;
 
   /// Budget amount in the Primary currency (major units); `null` when its currency cannot be converted.
@@ -62,18 +72,24 @@ class ForecastCalculator {
   List<ForecastItem> items(Iterable<Subscription> subs, LocalDate from, LocalDate to) {
     final out = <ForecastItem>[];
     for (final s in subs) {
-      final cost = calc.periodCost(s) ?? 0;
+      final cost = calc.periodCostMinor(s) ?? 0;
       for (final d in BillingRules.dueDatesBetween(s, from, to)) {
-        out.add(ForecastItem(s, d, cost));
+        out.add(ForecastItem(s, d, cost, calc.primaryCurrency));
       }
     }
     out.sort((a, b) => a.date.compareTo(b.date));
     return out;
   }
 
+  static int _sumMinor(Iterable<ForecastItem> items) => items.fold(0, (a, i) => a + i.amountMinor);
+
+  /// Total due in the next [days] days starting [today] (default 30, today included), minor units.
+  int nextDaysMinor(Iterable<Subscription> subs, LocalDate today, {int days = 30}) =>
+      _sumMinor(items(subs, today, today.addDays(days - 1)));
+
   /// Total due in the next [days] days starting [today] (default 30, today included).
   double nextDays(Iterable<Subscription> subs, LocalDate today, {int days = 30}) =>
-      items(subs, today, today.addDays(days - 1)).fold(0.0, (a, i) => a + i.amount);
+      toMajorUnits(nextDaysMinor(subs, today, days: days), calc.primaryCurrency);
 
   /// Next [count] calendar months starting with the month of [today] (the current month counts
   /// from today on). Returns (first day of month, total).
@@ -85,7 +101,7 @@ class ForecastCalculator {
           final m = first.addMonths(i);
           final from = i == 0 ? today : m;
           final to = m.addMonths(1).addDays(-1);
-          return (m, items(subs, from, to).fold(0.0, (a, it) => a + it.amount));
+          return (m, toMajorUnits(_sumMinor(items(subs, from, to)), calc.primaryCurrency));
         }(),
     ];
   }
@@ -96,37 +112,41 @@ class ForecastCalculator {
   WeekStrip week(Iterable<Subscription> subs, LocalDate start) {
     final list = items(subs, start, start.addDays(6));
     final days = List.generate(7, (_) => <ForecastItem>[]);
-    var total = 0.0;
+    var total = 0;
     for (final it in list) {
       days[start.daysUntil(it.date)].add(it);
-      total += it.amount;
+      total += it.amountMinor;
     }
-    return WeekStrip(start, days, total);
+    return WeekStrip(start, days, total, calc.primaryCurrency);
   }
 
   /// Usage of each budget. A category budget counts Active subscriptions of that category; the total
   /// budget counts all Active subscriptions.
   List<BudgetUsage> budgets(Iterable<Budget> budgets, Iterable<Subscription> subs, LocalDate today) {
-    final byCat = {for (final e in calc.byCategoryId(subs, today)) e.key: e.value};
-    final total = calc.summary(subs, today).monthly;
+    final primary = calc.primaryCurrency;
+    final byCat = {for (final e in calc.byCategoryIdMinor(subs, today)) e.key: e.value};
+    final total = calc.summary(subs, today).monthlyMinor;
     return [
       for (final b in budgets)
-        BudgetUsage(
-          b,
-          b.isTotal ? total : (byCat[b.categoryId] ?? 0),
-          calc.rates.convert(toMajorUnits(b.amountMinor, b.currency), b.currency, calc.primaryCurrency),
-        ),
+        () {
+          final limit = calc.rates.convertMinor(b.amountMinor, b.currency, primary);
+          return BudgetUsage(
+            b,
+            toMajorUnits(b.isTotal ? total : (byCat[b.categoryId] ?? 0), primary),
+            limit == null ? null : toMajorUnits(limit, primary),
+          );
+        }(),
     ];
   }
 
   /// Yearly savings if every Trial/Active subscription rated Not worth were dropped.
   double notWorthSavingsYearly(Iterable<Subscription> subs, LocalDate today) {
-    var sum = 0.0;
+    var sum = 0;
     for (final s in subs) {
       if (s.worthIt != WorthIt.notWorth) continue;
       if (!BillingRules.hasSchedule(BillingRules.effectiveStatus(s, today))) continue;
-      sum += calc.yearlyCost(s) ?? 0;
+      sum += calc.yearlyCostMinor(s) ?? 0;
     }
-    return sum;
+    return toMajorUnits(sum, calc.primaryCurrency);
   }
 }

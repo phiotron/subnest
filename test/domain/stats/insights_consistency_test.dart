@@ -14,7 +14,11 @@ void main() {
   const today = DeviceSample.today;
   final subs = DeviceSample.subscriptions;
   final periods = DeviceSample.periods;
-  const usd = 25701.0;
+  const usd = 25701;
+  // Each line (a Payment, a period, a Monthly cost) is converted on its own and rounded half-up
+  // to whole cents; totals add those lines (decision 2026-11-10 #10). [per] divides first (÷ 12).
+  int cents(int vnd, [int per = 1]) => (vnd * 200 + usd * per) ~/ (2 * usd * per);
+  double usdSum(List<int> vndLines, [int usdCents = 0]) => (vndLines.map(cents).sum + usdCents) / 100;
 
   group('#1 this month: the change compares the number the card shows', () {
     test('nothing paid yet, the whole month is expected; last month is fully tracked', () {
@@ -22,9 +26,9 @@ void main() {
       expect(t.paid, 0);
       // Viettel (awaiting) 150k, Netflix 65k, Spotify 59k (Trial ends 7 Nov), ChatGPT $20,
       // iCloud 59k, YouTube 35.8k.
-      expect(t.expected, closeTo((150000 + 65000 + 59000 + 59000 + 35800) / usd + 20, 1e-9));
+      expect(t.expected, closeTo(usdSum([150000, 65000, 59000, 59000, 35800], 2000), 1e-9));
       // October: Viettel, Netflix, iCloud Payments + ChatGPT $20 (YouTube skipped).
-      expect(t.previousTotal, closeTo((150000 + 65000 + 59000) / usd + 20, 1e-9));
+      expect(t.previousTotal, closeTo(usdSum([150000, 65000, 59000], 2000), 1e-9));
       expect(t.comparable, isTrue);
       expect(t.changePercent, ((t.total - t.previousTotal!) / t.previousTotal! * 100).round());
     });
@@ -80,11 +84,11 @@ void main() {
 
     test('AI = ChatGPT Plus + ChatGPT Pro 100 yearly ÷ 12; Trial and Cancelled left out', () {
       final ai = slices.firstWhere((s) => s.category == SubscriptionCategory.ai);
-      expect(ai.monthly, closeTo(20 + 34188000 / 12 / usd, 1e-9));
+      expect(ai.monthly, closeTo((2000 + cents(34188000, 12)) / 100, 1e-9));
       expect(slices.any((s) => s.category == SubscriptionCategory.music), isFalse);
       expect(slices.expand((s) => s.subscriptions).map((e) => e.$1.id), isNot(contains('duolingo')));
       final video = slices.firstWhere((s) => s.category == SubscriptionCategory.video);
-      expect(video.monthly, closeTo((65000 + 35800) / usd, 1e-9), reason: 'My share, not the full price');
+      expect(video.monthly, closeTo(usdSum([65000, 35800]), 1e-9), reason: 'My share, not the full price');
     });
 
     test('slices add up to the Home monthly total; Top 5 uses the same Monthly cost', () {
@@ -156,7 +160,7 @@ void main() {
         expect(m.actual, closeTo(cal(m.month).total, 1e-9), reason: '${m.month}');
       }
       final march = series.firstWhere((m) => m.month == const LocalDate(2026, 3, 1));
-      expect(march.actual, closeTo((150000 + 65000 + 35800 + 59000 + 1690000) / usd + 20, 1e-9));
+      expect(march.actual, closeTo(usdSum([150000, 65000, 35800, 59000, 1690000], 2000), 1e-9));
     });
 
     test('future bars = Calendar totals (expected periods)', () {
@@ -168,7 +172,7 @@ void main() {
     });
 
     test('Savings = yearly cost of Cancelled plans', () {
-      expect(calc.summary(subs, today).savingsYearly, closeTo((699000 + 65000 * 12) / usd, 1e-9));
+      expect(calc.summary(subs, today).savingsYearly, closeTo(usdSum([699000, 65000 * 12]), 1e-9));
       // Apple Music 65k × 12 = 780k > Duolingo 699k a year: dearest first.
       expect(stats.cancelled(subs, today).map((s) => s.id), ['applemusic', 'duolingo']);
     });

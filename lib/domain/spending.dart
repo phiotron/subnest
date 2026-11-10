@@ -6,32 +6,50 @@ import 'confirmed_period.dart';
 import 'exchange_rates.dart';
 import 'local_date.dart';
 import 'money.dart';
+import 'ratio.dart';
 import 'subscription.dart';
 
-/// Totals for the Home header (amounts in the Primary currency, major units).
+/// Totals for the Home header, in the Primary currency.
+///
+/// Every total is a sum of Converted amounts (each line rounded to the smallest unit of the
+/// Primary currency), kept as integer minor units in the `*Minor` fields; the `double` getters
+/// are the same numbers in major units for display.
 class SpendingSummary {
   const SpendingSummary({
-    required this.monthly,
-    required this.trialMonthly,
-    required this.savingsYearly,
+    required this.currency,
+    required this.monthlyMinor,
+    required this.trialMonthlyMinor,
+    required this.savingsYearlyMinor,
     required this.activeCount,
     required this.trialCount,
     required this.cancelledCount,
     this.pausedCount = 0,
     required this.awaitingCount,
-    required this.awaitingTotal,
+    required this.awaitingTotalMinor,
     required this.missingRates,
   });
 
-  /// Sum of Monthly cost of `Active` subscriptions.
-  final double monthly;
-  double get yearly => monthly * 12;
+  /// Primary currency of every amount here.
+  final String currency;
+
+  /// Sum of Monthly cost of `Active` subscriptions (minor units) — the "monthly total".
+  final int monthlyMinor;
+  int get yearlyMinor => monthlyMinor * 12;
 
   /// Monthly cost of Trials ("will be charged soon"), shown separately.
-  final double trialMonthly;
+  final int trialMonthlyMinor;
 
-  /// Savings: yearly cost of Cancelled subscriptions.
-  final double savingsYearly;
+  /// Savings: sum of the Yearly cost of Cancelled subscriptions.
+  final int savingsYearlyMinor;
+
+  /// Pending Billing periods (all subscriptions) at current My share.
+  final int awaitingTotalMinor;
+
+  double get monthly => toMajorUnits(monthlyMinor, currency);
+  double get yearly => toMajorUnits(yearlyMinor, currency);
+  double get trialMonthly => toMajorUnits(trialMonthlyMinor, currency);
+  double get savingsYearly => toMajorUnits(savingsYearlyMinor, currency);
+  double get awaitingTotal => toMajorUnits(awaitingTotalMinor, currency);
 
   final int activeCount;
   final int trialCount;
@@ -40,9 +58,8 @@ class SpendingSummary {
   /// Paused subscriptions (not in any total).
   final int pausedCount;
 
-  /// Number of pending Billing periods (all subscriptions) and their total at current My share.
+  /// Number of pending Billing periods (all subscriptions).
   final int awaitingCount;
-  final double awaitingTotal;
 
   /// Currencies with no known rate to the Primary currency (excluded from totals).
   final Set<String> missingRates;
@@ -59,35 +76,54 @@ class MonthSpending {
 }
 
 /// Spending maths (Monthly cost, totals, Savings, insights). Pure; amounts in Primary currency.
+///
+/// Each line (a subscription's My share / Monthly cost / Yearly cost, a Payment) is converted
+/// exactly and rounded half-up to the smallest unit of the Primary currency (a Converted
+/// amount, `*Minor` methods); every total is the integer sum of those lines, so totals always
+/// match the lines on screen. The `double` methods return the same numbers in major units.
+/// A line whose currency has no rate is `null` and left out of totals.
 class SpendingCalculator {
   const SpendingCalculator({required this.rates, required this.primaryCurrency});
 
   final ExchangeRates rates;
   final String primaryCurrency;
 
-  double? _toPrimary(Money m) => rates.convert(m.major, m.currency, primaryCurrency);
+  double? _major(int? minor) => minor == null ? null : toMajorUnits(minor, primaryCurrency);
+  double _majorOf(int minor) => toMajorUnits(minor, primaryCurrency);
+
+  /// [m] as a Converted amount in the Primary currency (minor units); `null` when the rate is unknown.
+  int? toPrimaryMinor(Money m) => rates.convertMinor(m.minor, m.currency, primaryCurrency);
+
+  /// My share for one period, converted (minor units).
+  int? periodCostMinor(Subscription s) => toPrimaryMinor(s.myShare);
+
+  /// Monthly cost: My share × periods per month, converted and rounded once (minor units).
+  int? monthlyCostMinor(Subscription s) =>
+      rates.convertMinor(s.myShareMinor, s.currency, primaryCurrency, times: s.cycle.periodsPerMonthRatio);
+
+  /// Yearly cost: My share × periods per year, converted and rounded once (minor units).
+  int? yearlyCostMinor(Subscription s) => rates.convertMinor(
+    s.myShareMinor,
+    s.currency,
+    primaryCurrency,
+    times: s.cycle.periodsPerMonthRatio * Ratio.ints(12),
+  );
 
   /// My share converted to Primary currency for one period; `null` when the rate is unknown.
-  double? periodCost(Subscription s) => _toPrimary(s.myShare);
+  double? periodCost(Subscription s) => _major(periodCostMinor(s));
 
   /// Monthly cost: My share per period × periods per month, in Primary currency.
-  double? monthlyCost(Subscription s) {
-    final p = periodCost(s);
-    return p == null ? null : p * s.cycle.periodsPerMonth;
-  }
+  double? monthlyCost(Subscription s) => _major(monthlyCostMinor(s));
 
-  double? yearlyCost(Subscription s) {
-    final m = monthlyCost(s);
-    return m == null ? null : m * 12;
-  }
+  double? yearlyCost(Subscription s) => _major(yearlyCostMinor(s));
 
   SpendingSummary summary(Iterable<Subscription> subs, LocalDate today) {
-    var monthly = 0.0, trialMonthly = 0.0, savings = 0.0, awaitingTotal = 0.0;
+    var monthly = 0, trialMonthly = 0, savings = 0, awaitingTotal = 0;
     var active = 0, trial = 0, cancelled = 0, paused = 0, awaiting = 0;
     final missing = <String>{};
     for (final s in subs) {
       final status = BillingRules.effectiveStatus(s, today);
-      final cost = monthlyCost(s);
+      final cost = monthlyCostMinor(s);
       if (cost == null) missing.add(s.currency);
       switch (status) {
         case SubscriptionStatus.active:
@@ -98,83 +134,99 @@ class SpendingCalculator {
           trialMonthly += cost ?? 0;
         case SubscriptionStatus.cancelled:
           cancelled++;
-          savings += (cost ?? 0) * 12;
+          savings += yearlyCostMinor(s) ?? 0;
         case SubscriptionStatus.paused:
           paused++;
       }
       final pending = BillingRules.pendingDueDates(s, today).length;
       if (pending > 0) {
         awaiting += pending;
-        awaitingTotal += (periodCost(s) ?? 0) * pending;
+        awaitingTotal += (periodCostMinor(s) ?? 0) * pending;
       }
     }
     return SpendingSummary(
-      monthly: monthly,
-      trialMonthly: trialMonthly,
-      savingsYearly: savings,
+      currency: primaryCurrency,
+      monthlyMinor: monthly,
+      trialMonthlyMinor: trialMonthly,
+      savingsYearlyMinor: savings,
       activeCount: active,
       trialCount: trial,
       cancelledCount: cancelled,
       pausedCount: paused,
       awaitingCount: awaiting,
-      awaitingTotal: awaitingTotal,
+      awaitingTotalMinor: awaitingTotal,
       missingRates: missing,
     );
   }
 
-  /// Monthly cost of Active subscriptions grouped by category, largest first.
-  List<MapEntry<SubscriptionCategory, double>> byCategory(Iterable<Subscription> subs, LocalDate today) {
-    final totals = <SubscriptionCategory, double>{};
+  /// Monthly cost (minor units) of Active subscriptions grouped by [keyOf], largest first.
+  List<MapEntry<K, int>> _byKeyMinor<K>(Iterable<Subscription> subs, LocalDate today, K Function(Subscription) keyOf) {
+    final totals = <K, int>{};
     for (final s in subs) {
       if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
-      totals.update(s.category, (v) => v + (monthlyCost(s) ?? 0), ifAbsent: () => monthlyCost(s) ?? 0);
+      final cost = monthlyCostMinor(s) ?? 0;
+      totals.update(keyOf(s), (v) => v + cost, ifAbsent: () => cost);
     }
     return totals.entries.sorted((a, b) => b.value.compareTo(a.value));
   }
 
+  /// Monthly cost of Active subscriptions grouped by category, largest first.
+  List<MapEntry<SubscriptionCategory, double>> byCategory(Iterable<Subscription> subs, LocalDate today) => [
+    for (final e in _byKeyMinor(subs, today, (s) => s.category)) MapEntry(e.key, _majorOf(e.value)),
+  ];
+
+  /// Monthly cost (minor units) of Active subscriptions grouped by Category id, largest first.
+  List<MapEntry<String, int>> byCategoryIdMinor(Iterable<Subscription> subs, LocalDate today) =>
+      _byKeyMinor(subs, today, (s) => s.categoryId);
+
   /// Monthly cost of Active subscriptions grouped by Category id (custom categories included), largest first.
-  List<MapEntry<String, double>> byCategoryId(Iterable<Subscription> subs, LocalDate today) {
-    final totals = <String, double>{};
-    for (final s in subs) {
-      if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
-      totals.update(s.categoryId, (v) => v + (monthlyCost(s) ?? 0), ifAbsent: () => monthlyCost(s) ?? 0);
-    }
-    return totals.entries.sorted((a, b) => b.value.compareTo(a.value));
-  }
+  List<MapEntry<String, double>> byCategoryId(Iterable<Subscription> subs, LocalDate today) => [
+    for (final e in byCategoryIdMinor(subs, today)) MapEntry(e.key, _majorOf(e.value)),
+  ];
 
   /// Most expensive Active subscriptions by Monthly cost.
   List<(Subscription, double)> top(Iterable<Subscription> subs, LocalDate today, {int count = 5}) {
     return subs
         .where((s) => BillingRules.effectiveStatus(s, today) == SubscriptionStatus.active)
-        .map((s) => (s, monthlyCost(s) ?? 0))
+        .map((s) => (s, monthlyCostMinor(s) ?? 0))
         .sorted((a, b) => b.$2.compareTo(a.$2))
         .take(count)
+        .map((e) => (e.$1, _majorOf(e.$2)))
         .toList();
   }
 
-  /// Actual spending (sum of Payments) with due date in the given month.
-  double actualInMonth(Iterable<ConfirmedPeriod> periods, LocalDate month) {
-    var sum = 0.0;
+  /// Actual spending (sum of converted Payments) with due date in the given month, minor units.
+  int actualInMonthMinor(Iterable<ConfirmedPeriod> periods, LocalDate month) {
+    var sum = 0;
     for (final p in periods) {
       if (!p.isPayment) continue;
       if (p.dueDate.year != month.year || p.dueDate.month != month.month) continue;
-      sum += _toPrimary(p.amount) ?? 0;
+      sum += toPrimaryMinor(p.amount) ?? 0;
     }
     return sum;
   }
 
-  /// Projected spending in a month: unconfirmed/future periods of non-cancelled subscriptions
-  /// (Trials included — they will be charged on their end date).
-  double projectedInMonth(Iterable<Subscription> subs, LocalDate month) {
+  /// Actual spending (sum of Payments) with due date in the given month.
+  double actualInMonth(Iterable<ConfirmedPeriod> periods, LocalDate month) =>
+      _majorOf(actualInMonthMinor(periods, month));
+
+  /// Projected spending in a month (minor units): unconfirmed/future periods of non-cancelled
+  /// subscriptions (Trials included — they will be charged on their end date), each at the
+  /// converted My share.
+  int projectedInMonthMinor(Iterable<Subscription> subs, LocalDate month) {
     final from = month.firstOfMonth;
     final to = from.addMonths(1).addDays(-1);
-    var sum = 0.0;
+    var sum = 0;
     for (final s in subs) {
       final n = BillingRules.dueDatesBetween(s, from, to).length;
-      if (n > 0) sum += (periodCost(s) ?? 0) * n;
+      if (n > 0) sum += (periodCostMinor(s) ?? 0) * n;
     }
     return sum;
   }
+
+  /// Projected spending in a month (see [projectedInMonthMinor]).
+  double projectedInMonth(Iterable<Subscription> subs, LocalDate month) =>
+      _majorOf(projectedInMonthMinor(subs, month));
 
   /// [count] months ending with the month of [lastMonth] (oldest first).
   List<MonthSpending> monthlySeries(
@@ -193,7 +245,10 @@ class SpendingCalculator {
     ];
   }
 
+  /// Total paid over the life of one subscription (sum of its converted Payments), minor units.
+  int totalPaidMinor(Iterable<ConfirmedPeriod> periods) =>
+      periods.where((p) => p.isPayment).fold(0, (a, p) => a + (toPrimaryMinor(p.amount) ?? 0));
+
   /// Total paid over the life of one subscription (its Payments), in Primary currency.
-  double totalPaid(Iterable<ConfirmedPeriod> periods) =>
-      periods.where((p) => p.isPayment).map((p) => _toPrimary(p.amount) ?? 0).sum;
+  double totalPaid(Iterable<ConfirmedPeriod> periods) => _majorOf(totalPaidMinor(periods));
 }

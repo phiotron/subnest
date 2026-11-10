@@ -1,4 +1,5 @@
 import 'local_date.dart';
+import 'ratio.dart';
 
 /// Unit of a [BillingCycle].
 enum CycleUnit { day, week, month, year }
@@ -48,6 +49,14 @@ class BillingCycle {
         return 1 / (12 * every);
     }
   }
+
+  /// [periodsPerMonth] as an exact fraction, for money maths (Monthly cost is rounded once).
+  Ratio get periodsPerMonthRatio => switch (unit) {
+    CycleUnit.day => Ratio.ints(365, 12 * every),
+    CycleUnit.week => Ratio.ints(52, 12 * every),
+    CycleUnit.month => Ratio.ints(1, every),
+    CycleUnit.year => Ratio.ints(1, 12 * every),
+  };
 
   @override
   bool operator ==(Object other) => other is BillingCycle && other.every == every && other.unit == unit;

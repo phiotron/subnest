@@ -5,6 +5,7 @@ import '../billing_rules.dart';
 import '../category.dart';
 import '../confirmed_period.dart';
 import '../local_date.dart';
+import '../money.dart';
 import '../spending.dart';
 import '../subscription.dart';
 
@@ -129,11 +130,13 @@ class InsightsStats {
     };
   }
 
-  double _paid(Iterable<ConfirmedPeriod> periods, RangeMonths span) =>
-      span.months.map((m) => calc.actualInMonth(periods, m)).sum;
+  double _major(int minor) => toMajorUnits(minor, calc.primaryCurrency);
 
-  double _expected(Iterable<Subscription> subs, RangeMonths span) =>
-      span.months.map((m) => calc.projectedInMonth(subs, m)).sum;
+  int _paidMinor(Iterable<ConfirmedPeriod> periods, RangeMonths span) =>
+      span.months.map((m) => calc.actualInMonthMinor(periods, m)).sum;
+
+  int _expectedMinor(Iterable<Subscription> subs, RangeMonths span) =>
+      span.months.map((m) => calc.projectedInMonthMinor(subs, m)).sum;
 
   RangeTotals totals(
     Iterable<Subscription> subs,
@@ -146,9 +149,9 @@ class InsightsStats {
     final start = historyStart(periods);
     final covered = start != null && !start.isAfter(prev.first);
     return RangeTotals(
-      paid: _paid(periods, span),
-      expected: _expected(subs, span),
-      previousTotal: covered ? _paid(periods, prev) + _expected(subs, prev) : null,
+      paid: _major(_paidMinor(periods, span)),
+      expected: _major(_expectedMinor(subs, span)),
+      previousTotal: covered ? _major(_paidMinor(periods, prev) + _expectedMinor(subs, prev)) : null,
     );
   }
 
@@ -182,10 +185,10 @@ class InsightsStats {
     LocalDate today, {
     required bool Function(SubscriptionCategory) hasOwnSlot,
   }) {
-    final groups = <SubscriptionCategory, List<(Subscription, double)>>{};
+    final groups = <SubscriptionCategory, List<(Subscription, int)>>{};
     for (final s in subs) {
       if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
-      final cost = calc.monthlyCost(s);
+      final cost = calc.monthlyCostMinor(s);
       if (cost == null || cost <= 0) continue;
       final key = hasOwnSlot(s.category) ? s.category : SubscriptionCategory.other;
       groups.putIfAbsent(key, () => []).add((s, cost));
@@ -193,12 +196,15 @@ class InsightsStats {
     final total = groups.values.expand((g) => g).map((e) => e.$2).sum;
     final slices = [
       for (final MapEntry(:key, :value) in groups.entries)
-        CategorySlice(
-          category: key,
-          monthly: value.map((e) => e.$2).sum,
-          share: total == 0 ? 0 : value.map((e) => e.$2).sum / total,
-          subscriptions: value.sorted((a, b) => b.$2.compareTo(a.$2)),
-        ),
+        () {
+          final sum = value.map((e) => e.$2).sum;
+          return CategorySlice(
+            category: key,
+            monthly: _major(sum),
+            share: total == 0 ? 0 : sum / total,
+            subscriptions: [for (final e in value.sorted((a, b) => b.$2.compareTo(a.$2))) (e.$1, _major(e.$2))],
+          );
+        }(),
     ];
     return slices.sorted((a, b) {
       final ao = a.category == SubscriptionCategory.other, bo = b.category == SubscriptionCategory.other;
@@ -214,10 +220,14 @@ class InsightsStats {
       for (final cat in watched)
         if (subs
                 .where((s) => s.category == cat && BillingRules.effectiveStatus(s, today) == SubscriptionStatus.active)
-                .sorted((a, b) => (calc.monthlyCost(b) ?? 0).compareTo(calc.monthlyCost(a) ?? 0))
+                .sorted((a, b) => (calc.monthlyCostMinor(b) ?? 0).compareTo(calc.monthlyCostMinor(a) ?? 0))
                 .toList()
             case final list when list.length >= 2)
-          OverlapHint(category: cat, subscriptions: list, monthly: list.map((s) => calc.monthlyCost(s) ?? 0).sum),
+          OverlapHint(
+            category: cat,
+            subscriptions: list,
+            monthly: _major(list.map((s) => calc.monthlyCostMinor(s) ?? 0).sum),
+          ),
     ];
   }
 
