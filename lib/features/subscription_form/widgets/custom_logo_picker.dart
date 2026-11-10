@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
@@ -12,6 +13,9 @@ import '../../../core/widgets/widgets.dart';
 
 /// Side of the saved Custom logo in px (= `CustomLogoStore.side`; crisp on the 80 px tile at 3×).
 const customLogoSide = 256;
+
+/// The Custom logo picker the form uses (overridden in tests: no gallery there).
+final customLogoPickerProvider = Provider<Future<Uint8List?> Function(BuildContext context)>((ref) => pickCustomLogo);
 
 /// Picks a photo from the gallery and lets the user crop it square; returns PNG bytes
 /// ([customLogoSide] px) or `null` when cancelled. Android uses the system Photo Picker

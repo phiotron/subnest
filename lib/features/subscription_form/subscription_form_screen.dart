@@ -17,6 +17,7 @@ import 'form_format.dart';
 import 'widgets/currency_sheet.dart';
 import 'widgets/form_parts.dart';
 import 'widgets/organize_parts.dart';
+import 'widgets/custom_logo_picker.dart';
 import 'widgets/tile_sheet.dart';
 
 /// S4 Add / edit subscription (mockup v13 png 26–33, 36–37). One screen for both: pre-filled from
@@ -254,6 +255,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
       libraryName: _service?.name,
       canUsePhoto: _canUsePhoto(context),
       photo: _photoImage(context),
+      pickPhoto: ref.read(customLogoPickerProvider),
     );
     if (choice == null || !mounted) return;
     _update(() {

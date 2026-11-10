@@ -191,6 +191,7 @@ Future<void> pumpAdd(
   String? push,
   Setup setup = const Setup(),
   double dpr = 2,
+  List<Override> extraOverrides = const [],
 }) async {
   visited.clear();
   tester.view
@@ -204,7 +205,7 @@ Future<void> pumpAdd(
     RepaintBoundary(
       key: shotKey,
       child: ProviderScope(
-        overrides: f.overrides(),
+        overrides: [...f.overrides(), ...extraOverrides],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light(),
