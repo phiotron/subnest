@@ -61,6 +61,25 @@ Grill với người dùng, chốt bỏ mọi suy luận từ ngôn ngữ/vùng 
 - **Version:** `1.0.0` (không kèm số build — người dùng chốt dù Android dùng versionCode 1, không cài đè được bản +2).
 - Ảnh store: EN = USD, VI = VND — **chưa chụp lại** trong phiên này.
 
+### Quyết định 2026-11-10 — Sao lưu, Bảo mật, Widget, Làm tròn (grill, theo A002)
+Kế hoạch: `C:\Users\Admin\.claude\plans\a001-subnes-sao-l-u-robust-kahan.md`. Thuật ngữ mới trong `CONTEXT.md`. Không ADR.
+1. **Code sao lưu dở** (chưa commit trên `dev`, ~1.600 dòng chép từ A002): giữ, làm nốt, thêm test.
+2. **Sao lưu tự động y A002** (F-24, AC-58..60, D-026, D-027): thư mục hệ thống + mật khẩu ≥ 6 ký tự, luôn mã hoá AES-256-GCM,
+   mật khẩu trong Keystore/Keychain; **giờ sao lưu** mặc định 21:00; Android chạy nền cả khi đóng app, iOS khi mở app; bù khi lỡ;
+   chỉ ghi khi dữ liệu đổi; giữ 2 file mới nhất; đuôi `.subnest`; tắt → quên mật khẩu + thư mục, không xoá file.
+3. **Khôi phục chỉ Thay thế** (bỏ Gộp, khác mockup 56): kiểm file trước, file có mật khẩu thì hỏi, một xác nhận.
+4. **Xoá toàn bộ dữ liệu = như mới cài**: 2 bước; xoá cả cài đặt; tắt PIN + sao lưu tự động, xoá dữ liệu widget; mở lại vào onboarding.
+5. Cài đặt có nhóm mới **"Bảo mật"** sau nhóm Dữ liệu: Khoá mã PIN · Che nội dung khi chuyển app.
+6. **PIN y A002** (AC-31..34): 4 số, khoá khi mở/quay lại sau > 1 phút, băm có muối trong Keystore/Keychain, Quên mã → Xoá toàn bộ.
+   Chưa làm vân tay/Face ID (làm sau cho cả A001 + A002).
+7. Thông báo nhắc **không đổi** khi bật PIN (vẫn tên + giá).
+8. **Che nội dung** độc lập, mặc định tắt: Android `FLAG_SECURE`, iOS lớp phủ.
+9. **Widget** (mockup v13 89/91/92): hiện số tiền; **PIN bật → chỉ "Đã khoá bằng PIN"**; chạm gói → Chi tiết, chỗ khác → Tổng quan, qua màn khoá.
+10. **Làm tròn tiền** (theo A002 D-029): tỷ giá chéo phân số chính xác; mỗi dòng quy đổi làm tròn half-up tới đơn vị nhỏ nhất;
+    mọi tổng = cộng dòng đã làm tròn.
+11. Chia việc: đợt 1 **B** Sao lưu + **R** Làm tròn (song song), **W** Widget sau khi B commit phần native; đợt 2 **S** Bảo mật.
+    Phiên con chung thư mục `dev` (Phương chọn); không commit file l10n sinh ra — điều phối gen khi gộp.
+
 ## Kế hoạch 3 phiên điều phối
 
 ### Phiên điều phối #1 — Khởi động (2026-11-04) ← **đang ở đây**

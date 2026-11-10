@@ -45,3 +45,12 @@
 | **Price change notice** | Báo đổi giá | Khi giá Plan trong Catalog đổi và Subscription có Catalog link với giá còn bằng giá Catalog cũ: app **báo**, người dùng chọn *Cập nhật* (áp từ kỳ tới, Payment cũ giữ nguyên) hoặc *Giữ giá cũ*. Giá người dùng tự sửa thì không báo. | "auto-update" |
 | **Discontinued plan** | Gói ngừng bán | Plan bị bỏ/đổi tên trong Catalog. Subscription đang dùng gói đó giữ nguyên, chi tiết hiện ghi chú nhẹ "gói đã ngừng bán cho khách mới". | "deleted plan" |
 | **Service logo** | Logo dịch vụ | Logo thật của Service lấy từ dịch vụ logo bên thứ ba, lưu sẵn trên máy; không có/lỗi → tile monogram. | |
+| **Converted amount** | Số quy đổi | Giá của một Subscription/Payment quy về Primary currency theo Exchange rate hiện tại, **làm tròn tới đơn vị nhỏ nhất** (cent, đồng). Mọi tổng = cộng các Converted amount nên luôn khớp các dòng đang hiện; đổi tiền tệ qua lại cùng một bảng tỷ giá ra đúng số cũ. Giá gốc không bao giờ bị ghi đè. | "giá đã đổi" |
+| **Backup file** | File sao lưu | Một file `.subnest` chứa toàn bộ dữ liệu và cài đặt của app; có thể khoá bằng **Backup password**. **Khôi phục** = thay toàn bộ dữ liệu hiện có bằng nội dung file (không gộp). | "export", "sync" |
+| **Auto backup** | Sao lưu tự động | Mỗi ngày tới **Backup time**, app tự ghi một Backup file (luôn có mật khẩu) vào thư mục người dùng chọn (máy, Drive…), chỉ khi dữ liệu đã đổi; giữ 2 file mới nhất. Lỡ giờ thì bù ở lần mở app kế tiếp. | "cloud sync" |
+| **Backup time** | Giờ sao lưu | Giờ trong ngày Auto backup chạy, mặc định 21:00, đổi được. | |
+| **Backup password** | Mật khẩu sao lưu | Mật khẩu khoá Backup file. Quên thì không mở được file; app không khôi phục được mật khẩu. | |
+| **Delete all data** | Xoá toàn bộ dữ liệu | Đưa app về như mới cài: mất mọi Subscription, Payment và cài đặt, tắt App lock và Auto backup (các Backup file đã ghi vẫn còn). Mở lại vào màn chào. | "reset" |
+| **App lock** | Khoá mã PIN | Mã 4 số chặn mở app (khi mở và khi quay lại sau hơn 1 phút). Quên mã chỉ có cách Delete all data. Khi bật, widget không hiện gì ngoài "Đã khoá bằng PIN"; thông báo Reminder không đổi. | "password" (để dành cho Backup password) |
+| **Privacy screen** | Che nội dung | Tuỳ chọn che màn app khi chuyển app và chặn chụp màn hình; độc lập với App lock, mặc định tắt. | |
+| **Home widget** | Widget | Ô trên màn hình chính điện thoại: cỡ nhỏ hiện gói sắp trả; cỡ vừa/lớn hiện danh sách sắp trả + tổng tháng. Chạm một gói mở chi tiết gói đó. | |
