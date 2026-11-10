@@ -112,11 +112,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       primaryCurrency: _chosenCurrency,
     );
     final now = DateTime(today.year, today.month, today.day);
-    var total = 0.0;
+    var total = 0;
     for (final p in _picks.values) {
-      total += calc.monthlyCost(p.toSubscription(id: p.service.id, today: today, now: now)) ?? 0;
+      total += calc.monthlyCostMinor(p.toSubscription(id: p.service.id, today: today, now: now)) ?? 0;
     }
-    return total;
+    return toMajorUnits(total, _chosenCurrency);
   }
 
   @override
