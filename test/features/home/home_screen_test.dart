@@ -46,7 +46,7 @@ void main() {
       await pumpApp(tester);
       expect(find.text('Wednesday, 4 November'), findsOneWidget);
       expect(find.text('Monthly spend'), findsOneWidget);
-      expect(find.text('₫1,074,467'), findsOneWidget);
+      expect(find.text('₫1,074,466'), findsOneWidget);
       expect(find.text('≈'), findsOneWidget); // ChatGPT is in USD → the total is approximate
       expect(find.text('7 active · 1 trial'), findsOneWidget);
       expect(find.text('Biggest: ChatGPT Plus · 47%'), findsOneWidget);
@@ -72,13 +72,13 @@ void main() {
       await tester.tap(find.text('Year'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 120));
-      expect(find.text('₫1,074,467'), findsNothing); // mid count-up
+      expect(find.text('₫1,074,466'), findsNothing); // mid count-up
       await tester.pumpAndSettle();
       expect(find.text('Yearly spend'), findsOneWidget);
       expect(find.text('₫12,893,600'), findsOneWidget);
       await tester.tap(find.text('Month'));
       await tester.pumpAndSettle();
-      expect(find.text('₫1,074,467'), findsOneWidget);
+      expect(find.text('₫1,074,466'), findsOneWidget);
       await closeApp(tester);
     });
 
@@ -381,7 +381,7 @@ void main() {
       expect(find.text('Thứ Tư, 4 tháng 11'), findsOneWidget);
       expect(find.text('Tổng quan'), findsWidgets);
       expect(find.text('Chi mỗi tháng'), findsOneWidget);
-      expect(find.text('1.074.467đ'), findsOneWidget);
+      expect(find.text('1.074.466đ'), findsOneWidget);
       expect(find.text('7 đang trả · 1 dùng thử'), findsOneWidget);
       expect(find.text('2 khoản cần xác nhận'), findsOneWidget);
       expect(find.text('Dùng thử Spotify hết sau 2 ngày'), findsOneWidget);

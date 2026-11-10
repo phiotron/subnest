@@ -300,7 +300,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         budget == null
             ? SpendHero(
                 label: heroLabel,
-                amount: _yearly ? total * 12 : total,
+                amount: _yearly ? (summary?.yearly ?? 0) : total,
                 format: (v) => l.amount(v, primary),
                 approx: heroApprox,
                 yearly: _yearly,
@@ -314,7 +314,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // meta line (png 08). SpendHero has no slot there, so the bar + meta go in its footer.
             : SpendHero(
                 label: heroLabel,
-                amount: _yearly ? total * 12 : total,
+                amount: _yearly ? (summary?.yearly ?? 0) : total,
                 format: (v) => l.amount(v, primary),
                 approx: heroApprox,
                 yearly: _yearly,

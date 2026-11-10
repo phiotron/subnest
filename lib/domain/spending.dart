@@ -18,6 +18,7 @@ class SpendingSummary {
   const SpendingSummary({
     required this.currency,
     required this.monthlyMinor,
+    required this.yearlyMinor,
     required this.trialMonthlyMinor,
     required this.savingsYearlyMinor,
     required this.activeCount,
@@ -34,7 +35,10 @@ class SpendingSummary {
 
   /// Sum of Monthly cost of `Active` subscriptions (minor units) — the "monthly total".
   final int monthlyMinor;
-  int get yearlyMinor => monthlyMinor * 12;
+
+  /// Sum of Yearly cost of `Active` subscriptions (minor units) — the "yearly total". Each
+  /// Yearly cost is its own rounded line, so this is not always [monthlyMinor] × 12.
+  final int yearlyMinor;
 
   /// Monthly cost of Trials ("will be charged soon"), shown separately.
   final int trialMonthlyMinor;
@@ -118,7 +122,7 @@ class SpendingCalculator {
   double? yearlyCost(Subscription s) => _major(yearlyCostMinor(s));
 
   SpendingSummary summary(Iterable<Subscription> subs, LocalDate today) {
-    var monthly = 0, trialMonthly = 0, savings = 0, awaitingTotal = 0;
+    var monthly = 0, yearly = 0, trialMonthly = 0, savings = 0, awaitingTotal = 0;
     var active = 0, trial = 0, cancelled = 0, paused = 0, awaiting = 0;
     final missing = <String>{};
     for (final s in subs) {
@@ -129,6 +133,7 @@ class SpendingCalculator {
         case SubscriptionStatus.active:
           active++;
           monthly += cost ?? 0;
+          yearly += yearlyCostMinor(s) ?? 0;
         case SubscriptionStatus.trial:
           trial++;
           trialMonthly += cost ?? 0;
@@ -147,6 +152,7 @@ class SpendingCalculator {
     return SpendingSummary(
       currency: primaryCurrency,
       monthlyMinor: monthly,
+      yearlyMinor: yearly,
       trialMonthlyMinor: trialMonthly,
       savingsYearlyMinor: savings,
       activeCount: active,

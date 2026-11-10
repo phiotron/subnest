@@ -145,7 +145,7 @@ void main() {
       final s = calc.summary(subs, today);
       expect(s.monthlyMinor, 117);
       expect(s.monthly, 1.17);
-      expect(s.yearlyMinor, 117 * 12);
+      expect(s.yearlyMinor, 3 * 472, reason: 'Σ Yearly cost: 120 000 ₫ = 4.7244 USD → 4.72 each');
       expect(s.missingRates, {'XYZ'});
       expect(calc.byCategoryIdMinor(subs, today).single.value, 117);
       expect(calc.top(subs, today).map((e) => e.$2), [0.39, 0.39, 0.39, 0.0]);

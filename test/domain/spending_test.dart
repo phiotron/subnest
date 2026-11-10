@@ -74,7 +74,8 @@ void main() {
       // Google One yearly 1 690 000 ÷ 12 = 140 833.33 → each Monthly cost is rounded to whole đồng.
       const expectedMonthly = 65000 + 508000 + 140833 + 150000;
       expect(s.monthly, closeTo(expectedMonthly, 1e-6));
-      expect(s.yearly, closeTo(expectedMonthly * 12, 1e-6));
+      // Yearly = Σ each Yearly cost (Google One stays 1 690 000, not 140 833 × 12).
+      expect(s.yearly, (65000 + 508000 + 150000) * 12 + 1690000);
       expect(s.trialMonthly, closeTo(59000, 1e-6));
       expect(s.savingsYearly, closeTo(699000 + 65000 * 12, 1e-6));
       expect(s.activeCount, 5);

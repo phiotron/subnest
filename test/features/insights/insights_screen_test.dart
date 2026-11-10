@@ -179,8 +179,8 @@ void main() {
       await pump(tester, InsightsRange.thisMonth);
       expect(find.text('Tổng · tháng này'), findsOneWidget);
       expect(find.text('Đã trả · tháng này'), findsNothing);
-      // Nothing paid yet; ≈ $34.35 expected vs $30.66 in October → +12%.
-      expect(find.textContaining(RegExp(r'^≈ 34,35\s')), findsNWidgets(2), reason: 'headline + Expected row');
+      // Nothing paid yet; ≈ $34.36 expected vs $30.67 in October → +12% (each line rounded to cents).
+      expect(find.textContaining(RegExp(r'^≈ 34,36\s')), findsNWidgets(2), reason: 'headline + Expected row');
       expect(find.text('Nhiều hơn 12% so với tháng trước'), findsOneWidget);
     });
 
