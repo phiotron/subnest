@@ -182,3 +182,8 @@ SQLite/drift đọc metadata file trong container app) — plugin có manifest r
 - iOS **không** chạy theo push. Chỉ chạy tay khi đổi `ios/`, plugin native, hoặc trước khi gắn tag phát hành.
 - Phút macOS đo được mỗi lần build: xem `notes/2026-11-04-ci.md`. Repo private: 1 phút macOS = 10 phút quota
   (gói Free: 2.000 phút/tháng ⇒ ~200 phút macOS).
+
+### Kết quả build iOS không ký trên `dev` (2026-11-10, phiên R)
+- Lần 1 [42794154802](https://github.com/phamphuongphuongnd/A001-subnest/actions/runs/42794154802) đỏ 2m14s: `pod install` báo `google_mlkit_commons` cần iOS ≥ 15.5.
+- Nâng `IPHONEOS_DEPLOYMENT_TARGET` Runner 15.0 → 15.5 ⇒ lần 2 [42794545752](https://github.com/phamphuongphuongnd/A001-subnest/actions/runs/42794545752) xanh 2m37s (`Runner.app` 81.7MB, bundle `com.phiotron.subnest` 1.0.0). Chưa có `ios/Podfile` trong repo (Flutter tự sinh khi build).
+- Bước *Check bundle* chưa kiểm `PlugIns/SubnestWidgetExtension.appex` — có thể thêm lần sau nếu muốn chắc extension được nhúng.
