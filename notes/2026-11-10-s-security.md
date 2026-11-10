@@ -67,7 +67,12 @@ Commit trên `dev` (chưa push): `335971f` (WIP lõi) + commit cuối (test, iOS
 - Test cũ dựng `SubnestApp` (`app_flow_test`, `home/flows_test`, `onboarding/add_flows_test`) vẫn xanh — đây là lý do
   `isEnabled()` đọc DB trước: trong widget test, gọi `flutter_secure_storage` thật không bao giờ trả lời (fake async)
   ⇒ màn khoá kẹt ở `checking`.
-- `flutter test` toàn bộ + `flutter build apk --debug`: xem mục cuối.
+- `flutter test` toàn bộ (2026-11-10): **967 xanh, 2 đỏ** — `settings_screens_test` "S10 list" (nhóm Bảo mật đẩy
+  ghi chú Dữ liệu ra khỏi màn khi cuộn tới ghi chú quyền riêng tư → test cuộn tới từng ghi chú, đã sửa, xanh) và
+  `subscription_detail_screen_test` "S5 Edit" (pumpAndSettle hết giờ khi CPU bận — lỗi treo đã biết trong APP.md; chạy
+  lại xanh). Chạy lại 2 file đó: 75 xanh.
+- `flutter build apk --debug` OK (`build/app/outputs/flutter-apk/app-debug.apk`). Đã cài đè lên Galaxy A13
+  (`R58TC12SRZW`, dữ liệu cũ còn); **chưa thử tay** — chờ điều phối báo máy rảnh (Phương đang dùng).
 
 ## Lệch so với A002 (và lý do)
 - `isEnabled()` kiểm mã cài đặt trong DB trước Keychain (xem trên). A002 đọc Keychain trước.
