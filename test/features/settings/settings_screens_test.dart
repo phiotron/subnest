@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/widgets.dart';
+import 'package:subnest/data/backup/auto_backup_service.dart';
+import 'package:subnest/data/backup/backup_folder_service.dart';
+import 'package:subnest/data/backup/backup_schedule.dart';
+import 'package:subnest/data/backup/backup_service.dart';
 import 'package:subnest/data/settings_repository.dart';
 import 'package:subnest/data/subscription_repository.dart';
 import 'package:subnest/domain/domain.dart';
@@ -12,6 +16,7 @@ import 'package:subnest/features/settings/legal_screen.dart';
 import 'package:subnest/features/settings/settings_actions.dart';
 import 'package:subnest/features/settings/settings_format.dart';
 
+import '../../data/backup/backup_test_utils.dart';
 import 'settings_harness.dart';
 
 void main() {
@@ -34,9 +39,8 @@ void main() {
       expect(find.text('On'), findsOneWidget);
       expect(find.text('System'), findsOneWidget, reason: 'theme only — language has no System (S-90)');
       expect(find.text('English'), findsOneWidget, reason: 'language row value');
-      expect(find.text('Last backup was 42 days ago'), findsOneWidget);
       await tester.scrollUntilVisible(find.text(en.settingsPrivacyNote), 300);
-      expect(find.text('Last backup: 24 Sep 2026'), findsOneWidget);
+      expect(find.text(en.settingsDataNote), findsOneWidget);
       expect(find.text('1.0.0'), findsOneWidget);
       for (final label in [
         en.settingsPrivacyPolicy,
@@ -47,15 +51,6 @@ void main() {
       ]) {
         expect(find.text(label), findsOneWidget, reason: label);
       }
-    });
-
-    settingsTest('no backup nudge after a recent backup; "never" wording without one', (tester) async {
-      final recent = await SettingsFixture.create(lastBackup: kNow.subtract(const Duration(days: 3)));
-      await pumpSettings(tester, recent);
-      expect(find.textContaining('Last backup was'), findsNothing);
-      final never = await SettingsFixture.create(neverBackedUp: true);
-      await pumpSettings(tester, never);
-      expect(find.text(en.settingsBackupNeverTitle), findsOneWidget);
     });
 
     settingsTest('notifications off shows a warning value', (tester) async {
@@ -330,65 +325,255 @@ void main() {
     });
   });
 
-  group('Backup & restore', () {
-    settingsTest('nudge after 30 days, last backup file name', (tester) async {
+  group('Data: backup, restore, delete', () {
+    settingsTest('export backup without a password → share sheet, .subnest name, toast', (tester) async {
       final f = await SettingsFixture.create();
-      await pumpSettings(tester, f, location: '/settings/backup');
-      expect(find.text('It’s been 42 days since your last backup'), findsOneWidget);
-      expect(find.text('Last backup: 24 Sep 2026 · subnest-backup-2026-09-24.json'), findsOneWidget);
-    });
-
-    settingsTest('export JSON / CSV go to the share sheet', (tester) async {
-      final f = await SettingsFixture.create();
-      await pumpSettings(tester, f, location: '/settings/backup');
-      await tester.tap(find.text(en.settingsExportJson));
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsExportBackup));
+      expect(find.text(en.settingsBackupProtect), findsOneWidget);
+      await tester.tap(find.text(en.settingsBackupExportAction));
       await settle(tester);
-      expect(f.platform.shared.single.single.name, 'subnest-backup-2026-11-05.json');
+      final file = f.platform.shared.single.single;
+      expect(file.name, 'subnest-20261105-1000.subnest');
+      expect(file.content, contains('"format": "subnest-backup"'));
       expect(find.text(en.settingsExported), findsOneWidget);
-      expect(find.textContaining('It’s been'), findsNothing, reason: 'backup just made');
-      await tester.tap(find.text(en.settingsExportCsv));
-      await settle(tester);
+      expect((await f.settings.load()).lastBackupAt, kNow);
+      await tapVisible(tester, find.text(en.settingsExportCsv));
       expect(f.platform.shared.last.map((e) => e.name), everyElement(endsWith('.csv')));
     });
 
-    settingsTest('dismissed share sheet is not a backup: nudge stays, no toast', (tester) async {
+    settingsTest('export with a password: at least 6 characters, typed twice', (tester) async {
+      final f = await SettingsFixture.create();
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsExportBackup));
+      await tester.tap(find.text(en.settingsBackupProtect));
+      await settle(tester);
+      expect(find.text(en.settingsBackupPasswordWarning), findsOneWidget);
+      final fields = find.byType(TextField);
+      await tester.enterText(fields.at(0), '12345');
+      await tester.enterText(fields.at(1), '12345');
+      await tester.tap(find.text(en.settingsBackupExportAction));
+      await settle(tester);
+      expect(find.text(en.settingsBackupPasswordTooShort), findsOneWidget);
+      await tester.enterText(fields.at(0), 'secret-1');
+      await tester.enterText(fields.at(1), 'secret-2');
+      await tester.tap(find.text(en.settingsBackupExportAction));
+      await settle(tester);
+      expect(find.text(en.settingsBackupPasswordMismatch), findsOneWidget);
+      expect(f.platform.shared, isEmpty);
+    });
+
+    settingsTest('dismissed share sheet is not a backup: no toast, last backup unchanged', (tester) async {
       final f = await SettingsFixture.create();
       f.platform.shareOk = false;
-      await pumpSettings(tester, f, location: '/settings/backup');
-      await tester.tap(find.text(en.settingsExportJson));
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsExportBackup));
+      await tester.tap(find.text(en.settingsBackupExportAction));
       await settle(tester);
       expect(f.platform.shared, hasLength(1));
       expect(find.text(en.settingsExported), findsNothing);
-      expect(find.text('It’s been 42 days since your last backup'), findsOneWidget);
+      expect((await f.settings.load()).lastBackupAt, DateTime(2026, 9, 24, 20));
     });
 
-    settingsTest('restore: dialog shows what the file holds; merge by default, replace is danger', (tester) async {
+    settingsTest('restore: one confirmation (file, what it holds), then everything is replaced', (tester) async {
       final f = await SettingsFixture.create();
-      f.platform.nextPick = (name: 'subnest-backup-2026-09-24.json', text: f.backupJson);
-      await pumpSettings(tester, f, location: '/settings/backup');
-      await tester.tap(find.text(en.settingsRestore));
-      await settle(tester);
+      f.platform.nextPick = (name: 'subnest-20260924-2000.subnest', text: f.backupJson);
+      await SubscriptionRepository(f.db, clock: () => kNow).save(
+        Subscription(
+          id: 'local-only',
+          name: 'Only on this phone',
+          priceMinor: 100,
+          currency: 'USD',
+          cycle: const BillingCycle.monthly(),
+          anchorDate: const LocalDate(2026, 12, 1),
+          startDate: const LocalDate(2026, 1, 1),
+          createdAt: kNow,
+          updatedAt: kNow,
+        ),
+      );
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsRestore));
       expect(find.text(en.settingsRestoreTitle), findsOneWidget);
-      expect(find.text('subnest-backup-2026-09-24.json'), findsOneWidget);
+      expect(find.text('subnest-20260924-2000.subnest'), findsOneWidget);
       expect(find.text('It holds 2 subscriptions and 0 payments.'), findsOneWidget);
-      await tester.tap(find.text(en.settingsRestoreReplace));
-      await settle(tester);
-      expect(find.text(en.settingsRestoreReplaceAction), findsOneWidget);
-      await tester.tap(find.text(en.settingsRestoreMerge));
-      await settle(tester);
-      await tester.tap(find.text(en.settingsRestoreAction));
+      expect(find.text(en.settingsRestoreReplaceNote), findsOneWidget);
+      expect(find.text('Merge'), findsNothing, reason: 'restore always replaces');
+      await tester.tap(find.text(en.settingsRestoreReplaceAction));
       await settle(tester);
       expect(find.text('Restored 2 subscriptions'), findsOneWidget);
+      final ids = (await SubscriptionRepository(f.db).all()).map((s) => s.id).toSet();
+      expect(ids, {'netflix', 'chatgpt'});
     });
 
-    settingsTest('restore: a non-backup file is rejected', (tester) async {
+    settingsTest('restore: cancel changes nothing', (tester) async {
+      final f = await SettingsFixture.create();
+      f.platform.nextPick = (name: 'b.subnest', text: f.backupJson);
+      await SettingsRepository(f.db).setPrimaryCurrency('EUR');
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsRestore));
+      await tester.tap(find.text(en.commonCancel));
+      await settle(tester);
+      expect((await f.settings.load()).primaryCurrency, 'EUR');
+    });
+
+    settingsTest('restore an encrypted automatic file: password asked, wrong one shown, then replaced', (tester) async {
+      final f = await SettingsFixture.create();
+      final envelope = (await tester.runAsync(() => encryptFast(f.backupJson, 'auto-pass-1')))!;
+      f.platform.nextPick = (name: 'subnest-auto-20261104-2100.subnest', text: envelope);
+      await SettingsRepository(f.db).setPrimaryCurrency('EUR');
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsRestore));
+      expect(find.text(en.settingsBackupEnterPasswordTitle), findsOneWidget);
+
+      Future<void> open(String password) async {
+        await tester.enterText(find.byType(TextField), password);
+        await tester.tap(find.text(en.settingsBackupOpen));
+        // Decryption runs on another isolate: give it real time.
+        bool done() =>
+            find.text(en.settingsBackupWrongPassword).evaluate().isNotEmpty ||
+            find.text(en.settingsRestoreTitle).evaluate().isNotEmpty;
+        await tester.pump();
+        for (var i = 0; i < 60 && !done(); i++) {
+          await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
+          await tester.pump();
+        }
+        await settle(tester);
+      }
+
+      await open('wrong-pass');
+      expect(find.text(en.settingsBackupWrongPassword), findsOneWidget);
+      await open('auto-pass-1');
+      expect(find.text(en.settingsRestoreTitle), findsOneWidget);
+      expect(find.text('subnest-auto-20261104-2100.subnest'), findsOneWidget);
+      await tester.tap(find.text(en.settingsRestoreReplaceAction));
+      await settle(tester);
+      expect(find.text('Restored 2 subscriptions'), findsOneWidget);
+      expect((await f.settings.load()).primaryCurrency, 'VND', reason: 'settings come from the file');
+    });
+
+    settingsTest('restore: a non-backup file is rejected before any confirmation', (tester) async {
       final f = await SettingsFixture.create();
       f.platform.nextPick = (name: 'notes.txt', text: 'hello');
-      await pumpSettings(tester, f, location: '/settings/backup');
-      await tester.tap(find.text(en.settingsRestore));
-      await settle(tester);
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsRestore));
       expect(find.text(en.settingsRestoreInvalid), findsOneWidget);
       expect(find.text(en.settingsRestoreTitle), findsNothing);
+    });
+
+    settingsTest('delete all: two confirmations, then a new install and onboarding', (tester) async {
+      final f = await SettingsFixture.create();
+      // Automatic backup is on with a file already in the folder.
+      final auto = AutoBackupService(
+        backup: BackupService(
+          f.db,
+          SubscriptionRepository(f.db, clock: () => kNow),
+          f.settings,
+          f.rates,
+          clock: () => kNow,
+        ),
+        folder: f.folder,
+        secrets: f.secrets,
+        clock: () => kNow,
+        encrypt: encryptFast,
+      );
+      await auto.enable(folder: const PickedFolder(uri: 'content://tree/a', name: 'Backups'), password: 'pass-123');
+      await tester.runAsync(auto.backupNow);
+      expect(f.folder.files, hasLength(1));
+      await f.settings.set(SettingsRepository.kLocale, 'en');
+
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsDeleteAll));
+      expect(find.text(en.settingsDeleteAllTitle), findsOneWidget);
+      await tester.tap(find.text(en.settingsDelete));
+      await settle(tester);
+      expect(find.text(en.settingsCannotUndo), findsOneWidget);
+      await tester.tap(find.text(en.settingsDeleteEverything));
+      await settle(tester);
+
+      expect(find.text('ONBOARDING'), findsOneWidget);
+      expect(find.text(en.settingsDeleteAllDone), findsOneWidget);
+      expect(await SubscriptionRepository(f.db).all(), isEmpty);
+      final s = await f.settings.load();
+      expect(s.onboardingDone, isFalse);
+      expect(s.localeCode, isNull);
+      expect(s.primaryCurrency, 'USD');
+      expect(s.lastBackupAt, isNull);
+      expect(f.secrets.values, isEmpty, reason: 'automatic backup off, password forgotten');
+      expect(f.folder.released, ['content://tree/a']);
+      expect(f.folder.files, hasLength(1), reason: 'files already written stay');
+      expect(f.scheduler.cancels, greaterThan(0));
+    });
+
+    settingsTest('delete all: cancel at the second step keeps everything', (tester) async {
+      final f = await SettingsFixture.create();
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsDeleteAll));
+      await tester.tap(find.text(en.settingsDelete));
+      await settle(tester);
+      await tester.tap(find.text(en.commonCancel));
+      await settle(tester);
+      expect(find.text('ONBOARDING'), findsNothing);
+      expect(await SubscriptionRepository(f.db).all(), hasLength(2));
+      expect((await f.settings.load()).onboardingDone, isTrue);
+    });
+  });
+
+  group('Automatic backup', () {
+    settingsTest('turn on: folder → password twice → time → first backup right away', (tester) async {
+      final f = await SettingsFixture.create();
+      f.folder.pickResult = const PickedFolder(uri: 'content://tree/Drive', name: 'Drive');
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.settingsAutoBackup));
+      expect(find.text(en.settingsAutoBackupPasswordTitle), findsOneWidget);
+      expect(find.text(en.settingsAutoBackupPasswordWarning), findsOneWidget);
+      final fields = find.byType(TextField);
+      await tester.enterText(fields.at(0), 'auto-pass-1');
+      await tester.enterText(fields.at(1), 'auto-pass-1');
+      await tester.tap(find.text(en.settingsAutoBackupTurnOn));
+      await settle(tester);
+      // Material time picker, prefilled 21:00.
+      expect(find.text(en.settingsAutoBackupTime), findsWidgets);
+      await tester.tap(find.text('OK'));
+      for (var i = 0; i < 20 && f.folder.files.isEmpty; i++) {
+        await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+        await tester.pump();
+      }
+      await settle(tester);
+
+      expect(f.folder.files.keys, ['subnest-auto-20261105-1000.subnest']);
+      expect(find.text(en.settingsAutoBackupDone), findsOneWidget);
+      expect(f.secrets.values[AutoBackupService.passwordKey], 'auto-pass-1');
+      expect(f.scheduler.scheduled.last, BackupTime.defaultTime);
+      expect(find.text(en.settingsAutoBackupFolder('Drive')), findsOneWidget);
+      expect(find.text(en.settingsAutoBackupNextToday('9:00 PM')), findsOneWidget);
+      expect(find.text(en.settingsAutoBackupNow), findsOneWidget);
+    });
+
+    settingsTest('folder error: "Choose folder" comes first; turning off keeps the files', (tester) async {
+      final f = await SettingsFixture.create();
+      f.secrets.values.addAll({
+        AutoBackupService.enabledKey: '1',
+        AutoBackupService.uriKey: 'content://tree/old',
+        AutoBackupService.nameKey: 'Old',
+        AutoBackupService.passwordKey: 'pass-123',
+        AutoBackupService.timeKey: '21:00',
+        AutoBackupService.lastAtKey: DateTime(2026, 11, 4, 21, 1).toUtc().toIso8601String(),
+        AutoBackupService.lastResultKey: AutoBackupResult.permissionDenied.name,
+      });
+      f.folder.files['subnest-auto-20261103-2100.subnest'] = Uint8List.fromList([1]);
+      await pumpSettings(tester, f);
+      await tester.scrollUntilVisible(find.text(en.settingsAutoBackupChooseFolder), 300);
+      expect(find.textContaining(en.settingsAutoBackupErrorFolder), findsOneWidget);
+      final choose = tester.getTopLeft(find.text(en.settingsAutoBackupChooseFolder));
+      final now = tester.getTopLeft(find.text(en.settingsAutoBackupNow));
+      expect(choose.dx, lessThan(now.dx), reason: 'the fix goes first');
+
+      await tapVisible(tester, find.text(en.settingsAutoBackup));
+      expect(find.text(en.settingsAutoBackupOffDone), findsOneWidget);
+      expect(f.secrets.values, isEmpty);
+      expect(f.folder.released, ['content://tree/old']);
+      expect(f.folder.files, hasLength(1));
+      expect(f.scheduler.cancels, greaterThan(0));
     });
   });
 
@@ -408,7 +593,7 @@ void main() {
   });
 
   group('accessibility (S-50)', () {
-    for (final location in ['/settings', '/settings/reminders', '/settings/rates', '/settings/backup']) {
+    for (final location in ['/settings', '/settings/reminders', '/settings/rates']) {
       settingsTest('touch targets ≥ 48dp and labelled: $location', (tester) async {
         final handle = tester.ensureSemantics();
         final f = await SettingsFixture.create();

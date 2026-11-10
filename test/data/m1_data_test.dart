@@ -152,11 +152,11 @@ void main() {
       await repo.pause('a');
       await repo.dismiss('service:x');
       final file = await backup().exportJson();
-      expect(jsonDecode(file.content)['version'], 2);
+      expect(jsonDecode(file.content)['version'], 3);
 
       await db.wipeUserData();
       expect(await repo.all(), isEmpty);
-      await backup().importJson(file.content, ImportMode.replace);
+      await backup().importJson(file.content);
       final a = (await repo.get('a'))!;
       expect(a.categoryId, cat.id);
       expect(a.labelIds, {l.id});
@@ -180,7 +180,7 @@ void main() {
           "startDate":"2026-01-01","createdAt":"2026-01-01T00:00:00Z","updatedAt":"2026-01-01T00:00:00Z"}],
         "periods":[{"id":"p","subscriptionId":"a","dueDate":"2026-10-25","outcome":"payment","amountMinor":1000,
           "currency":"VND","confirmedAt":"2026-10-25T00:00:00Z"}]}''';
-      final r = await backup().importJson(v1, ImportMode.replace);
+      final r = await backup().importJson(v1);
       expect(r.subscriptions, 2);
       final a = (await repo.get('a'))!;
       final b = (await repo.get('b'))!;

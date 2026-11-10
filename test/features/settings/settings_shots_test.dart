@@ -42,14 +42,38 @@ final scenarios = <Scenario>[
     },
   ),
   const Scenario('54-reminders-off', '/settings/reminders', notificationsOn: false),
-  const Scenario('55-backup', '/settings/backup'),
+  Scenario('55-data', '/settings', act: (t, f) => t.scrollUntilVisible(find.byIcon(AppIcons.delete), 300)),
+  Scenario(
+    '55b-auto-backup-on',
+    '/settings',
+    act: (t, f) async {
+      f.secrets.values.addAll({
+        'auto_backup_enabled': '1',
+        'auto_backup_uri': 'content://tree/a',
+        'auto_backup_name': 'Google Drive › Backups',
+        'auto_backup_password': 'pass-123',
+        'auto_backup_time': '21:00',
+        'auto_backup_last_at': DateTime(2026, 11, 4, 21, 2).toUtc().toIso8601String(),
+        'auto_backup_last_result': 'permissionDenied',
+      });
+      // The card re-reads its state when the app returns to the foreground.
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await settle(t);
+      await t.scrollUntilVisible(find.byIcon(AppIcons.delete), 300);
+    },
+  ),
   Scenario(
     '56-restore',
-    '/settings/backup',
+    '/settings',
     act: (t, f) async {
-      f.platform.nextPick = (name: 'subnest-backup-2026-09-24.json', text: f.backupJson);
-      await tapVisible(t, find.byIcon(AppIcons.backup));
+      f.platform.nextPick = (name: 'subnest-20260924-2000.subnest', text: f.backupJson);
+      await tapVisible(t, find.byIcon(AppIcons.restore));
     },
+  ),
+  Scenario(
+    '56b-delete-all',
+    '/settings',
+    act: (t, f) => tapVisible(t, find.byIcon(AppIcons.delete)),
   ),
   const Scenario('57-currency', '/settings/currency'),
   const Scenario('58-privacy', '/settings/privacy'),

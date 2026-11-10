@@ -13,7 +13,6 @@ abstract final class AppRoutes {
   // S10 sub-pages
   static const settingsCurrency = '/settings/currency';
   static const settingsRates = '/settings/rates';
-  static const settingsBackup = '/settings/backup';
 
   // S10 › manage lists (1.0 expansion, product.md §10.5)
   static const settingsCategories = '/settings/categories';

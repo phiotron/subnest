@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:drift/drift.dart';
 
 import '../../domain/domain.dart';
@@ -9,14 +10,6 @@ import '../rates/exchange_rate_repository.dart';
 import '../settings_repository.dart';
 import '../subscription_repository.dart';
 import 'backup_codec.dart';
-
-enum ImportMode {
-  /// Delete current data, then load the backup (settings restored too).
-  replace,
-
-  /// Keep current data; add new items, newer `updatedAt` wins. Settings untouched.
-  merge,
-}
 
 class ImportResult {
   const ImportResult(this.subscriptions, this.periods);
@@ -64,12 +57,20 @@ class BackupService {
   Future<void> markBackedUp() => _settings.setLastBackupAt(_clock());
 
   Future<ExportFile> exportJson() async {
+    final text = await exportJsonText();
+    return ExportFile('subnest-backup-${_stamp()}.subnest', text, 'application/json');
+  }
+
+  /// SHA-256 of the data part of a backup (everything except `format`, `version`,
+  /// `exportedAt`, `checksum`). Detects a file that was edited or corrupted after export.
+  static String checksumOf(Object? data) => sha256.convert(utf8.encode(jsonEncode(data))).toString();
+
+  /// Plain JSON backup text. Also used by the auto-backup service; the UI encrypts it when a
+  /// password is set.
+  Future<String> exportJsonText() async {
     final raw = await _settings.raw();
     final rates = await _rates.load();
     final data = {
-      'format': BackupCodec.format,
-      'version': BackupCodec.version,
-      'exportedAt': _clock().toUtc().toIso8601String(),
       'settings': {
         for (final k in SettingsRepository.backupKeys)
           if (raw[k] != null) k: raw[k],
@@ -85,11 +86,13 @@ class BackupService {
       'budgets': [for (final b in await _db.select(_db.budgets).get()) BackupCodec.budgetToJson(b.toDomain())],
       'dismissedDetections': (await _subs.dismissedKeys()).toList()..sort(),
     };
-    return ExportFile(
-      'subnest-backup-${_stamp()}.json',
-      const JsonEncoder.withIndent('  ').convert(data),
-      'application/json',
-    );
+    return const JsonEncoder.withIndent('  ').convert({
+      'format': BackupCodec.format,
+      'version': BackupCodec.version,
+      'exportedAt': _clock().toUtc().toIso8601String(),
+      'checksum': checksumOf(data),
+      ...data,
+    });
   }
 
   /// Two CSV files (UTF-8 with BOM so Excel shows Vietnamese correctly):
@@ -161,8 +164,20 @@ class BackupService {
       throw const BackupFormatException('Not a Subnest backup');
     }
     final v = decoded['version'];
-    if (v is! int || v > BackupCodec.version) {
+    if (v is! int || v < 1 || v > BackupCodec.version) {
       throw const BackupFormatException('Backup made by a newer app version');
+    }
+    // v3 files carry a checksum; v1/v2 files do not and are still accepted.
+    final checksum = decoded['checksum'];
+    if (checksum != null) {
+      final data = {...decoded}
+        ..remove('format')
+        ..remove('version')
+        ..remove('exportedAt')
+        ..remove('checksum');
+      if (checksum is! String || checksum != checksumOf(data)) {
+        throw const BackupFormatException('Backup checksum does not match');
+      }
     }
     try {
       final subs = [
@@ -181,26 +196,26 @@ class BackupService {
     }
   }
 
-  Future<ImportResult> importJson(String text, ImportMode mode) async {
+  /// Restores a backup by REPLACING everything (there is no merge): every subscription, payment,
+  /// list and rate override is deleted, then the file's content is loaded, and every setting in
+  /// [SettingsRepository.backupKeys] takes the file's value (a key the file lacks goes back to its
+  /// default). Device-only state stays: onboarding, the rates cache, "last backup", and the
+  /// automatic-backup configuration (kept in secure storage, never in the database). The file is
+  /// parsed and checked first, and everything runs in one transaction, so a bad file changes nothing.
+  Future<ImportResult> importJson(String text) async {
     final parsed = parse(text);
     final json = parsed.json;
     await _db.transaction(() async {
-      if (mode == ImportMode.replace) {
-        await _db.wipeUserData();
-        final settings = json['settings'];
-        if (settings is Map) {
-          for (final k in SettingsRepository.backupKeys) {
-            final v = settings[k];
-            if (v is String) await _settings.set(k, v);
-          }
-        }
+      await _db.wipeUserData();
+      final settings = json['settings'];
+      for (final k in SettingsRepository.backupKeys) {
+        final v = settings is Map ? settings[k] : null;
+        await _settings.set(k, v is String ? v : null);
       }
-      await _importLists(json, mode);
+      await _importLists(json);
       final knownLabels = {for (final l in await _db.select(_db.labels).get()) l.id};
-      for (final s0 in parsed.subscriptions) {
-        final s = s0.copyWith(labelIds: s0.labelIds.where(knownLabels.contains).toSet());
-        final existing = mode == ImportMode.merge ? await _subs.get(s.id) : null;
-        if (existing == null || s.updatedAt.isAfter(existing.updatedAt)) await _subs.save(s);
+      for (final s in parsed.subscriptions) {
+        await _subs.save(s.copyWith(labelIds: s.labelIds.where(knownLabels.contains).toSet()));
       }
       for (final p in parsed.periods) {
         await _db.into(_db.confirmedPeriods).insert(p.toCompanion(), mode: InsertMode.insertOrIgnore);
@@ -211,19 +226,18 @@ class BackupService {
           if (e.key is! String || e.value is! num) continue;
           await _db.into(_db.rateOverrides).insert(
             RateOverridesCompanion.insert(pair: e.key as String, rate: (e.value as num).toDouble()),
-            mode: mode == ImportMode.replace ? InsertMode.insertOrReplace : InsertMode.insertOrIgnore,
+            mode: InsertMode.insertOrReplace,
           );
         }
       }
-      if (mode == ImportMode.merge) await _reconcile();
       await _fixCategories();
     });
     return ImportResult(parsed.subscriptions.length, parsed.periods.length);
   }
 
-  /// v2 lists (absent in v1 files). Replace overwrites, merge keeps local rows on id clashes.
-  Future<void> _importLists(Map<String, Object?> json, ImportMode mode) async {
-    final m = mode == ImportMode.replace ? InsertMode.insertOrReplace : InsertMode.insertOrIgnore;
+  /// v2 lists (absent in v1 files). Rows from the file overwrite the seeded built-in categories.
+  Future<void> _importLists(Map<String, Object?> json) async {
+    const m = InsertMode.insertOrReplace;
     List<Map<String, Object?>> list(String k) => [for (final j in (json[k] as List? ?? const [])) j as Map<String, Object?>];
     for (final j in list('categories')) {
       await _db.into(_db.categories).insert(BackupCodec.categoryFromJson(j).toCompanion(), mode: m);
@@ -248,24 +262,6 @@ class BackupService {
     for (final s in await _subs.all()) {
       final id = CategoryRules.resolve(s.categoryId, known);
       if (id != s.categoryId) await _subs.save(s.copyWith(categoryId: id));
-    }
-  }
-
-  /// After a merge a subscription may point at a period that is already confirmed
-  /// (history came from the other device). Move it past confirmed periods.
-  Future<void> _reconcile() async {
-    final confirmed = <String, Set<LocalDate>>{};
-    for (final p in await _subs.allPeriods()) {
-      confirmed.putIfAbsent(p.subscriptionId, () => {}).add(p.dueDate);
-    }
-    for (final s in await _subs.all()) {
-      final done = confirmed[s.id];
-      if (done == null) continue;
-      var current = s;
-      while (done.contains(current.dueDate)) {
-        current = current.copyWith(periodIndex: current.periodIndex + 1);
-      }
-      if (!identical(current, s)) await _subs.save(current);
     }
   }
 }

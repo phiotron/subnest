@@ -7,9 +7,12 @@ import '../../domain/domain.dart';
 /// `worthIt`, `detectionSource`, `detectedAt` on subscriptions; `source` on periods; top-level
 /// `categories`, `labels`, `paymentMethods`, `budgets`, `dismissedDetections`. v1 fields are still
 /// written (`category`, `paymentMethod` name, `reminderDays`) and v1 files restore unchanged.
+///
+/// v3 (auto backup): same fields; the top-level `checksum` (SHA-256 of the data part) is added by
+/// [BackupService]. v1/v2 files without a checksum still restore unchanged.
 abstract final class BackupCodec {
   static const format = 'subnest-backup';
-  static const version = 2;
+  static const version = 3;
 
   static Map<String, Object?> subscriptionToJson(Subscription s) => {
     'id': s.id,

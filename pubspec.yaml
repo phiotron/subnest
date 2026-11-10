@@ -40,6 +40,10 @@ dependencies:
   # Backup / restore
   share_plus: ^13.3.1
   file_picker: ^13.3.2
+  # Auto backup (1.0): SHA-256 checksum, AES-256-GCM + PBKDF2 envelopes, password in Keystore/Keychain.
+  crypto: ^3.0.8
+  cryptography: ^2.9.0
+  flutter_secure_storage: ^11.2.0
 
   # Exchange rates
   http: ^1.6.0

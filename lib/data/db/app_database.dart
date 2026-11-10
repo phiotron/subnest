@@ -332,7 +332,17 @@ class AppDatabase extends _$AppDatabase {
     }
   }
 
-  /// Deletes all user data (used by "restore — replace"). Built-in categories are seeded again.
+  /// "Delete all data" = like a new install: [wipeUserData] plus every setting (onboarding,
+  /// language, main currency, theme, reminders…), so the next start opens onboarding in English +
+  /// USD. Only the exchange-rate cache stays (`cached_rates` and its `ratesFetchedAt` row): a
+  /// download cache, not the user's data or a choice they made.
+  Future<void> wipeEverything() => transaction(() async {
+    await wipeUserData();
+    await (delete(settings)..where((t) => t.key.isNotValue('ratesFetchedAt'))).go();
+  });
+
+  /// Deletes all user data (used by restore, which always replaces). Built-in categories are
+  /// seeded again.
   Future<void> wipeUserData() => transaction(() async {
     await delete(subscriptionLabels).go();
     await delete(confirmedPeriods).go();

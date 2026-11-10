@@ -61,6 +61,10 @@ abstract final class AppIcons {
   static const IconData globe = LucideIcons.globe;
   static const IconData theme = LucideIcons.sunMoon;
   static const IconData backup = LucideIcons.download;
+  static const IconData backupNow = LucideIcons.hardDriveDownload;
+  static const IconData autoBackup = LucideIcons.timer;
+  static const IconData folder = LucideIcons.folderOpen;
+  static const IconData schedule = LucideIcons.calendarClock;
   static const IconData restoreFile = LucideIcons.upload;
   static const IconData json = LucideIcons.fileJson;
   static const IconData csv = LucideIcons.fileSpreadsheet;

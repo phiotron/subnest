@@ -15,6 +15,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:subnest/core/l10n/l10n.dart';
 import 'package:subnest/core/widgets/widgets.dart';
+import 'package:subnest/data/backup/auto_backup_service.dart';
+import 'package:subnest/data/backup/backup_schedule.dart';
 import 'package:subnest/data/backup/backup_service.dart';
 import 'package:subnest/data/db/app_database.dart';
 import 'package:subnest/data/notifications/notification_service.dart';
@@ -22,14 +24,17 @@ import 'package:subnest/data/providers.dart';
 import 'package:subnest/data/rates/exchange_rate_repository.dart';
 import 'package:subnest/data/settings_repository.dart';
 import 'package:subnest/data/subscription_repository.dart';
+import 'package:subnest/data/secret_store.dart';
 import 'package:subnest/domain/domain.dart';
-import 'package:subnest/features/settings/backup_screen.dart';
+import 'package:subnest/features/settings/auto_backup_providers.dart';
 import 'package:subnest/features/settings/currency_screen.dart';
 import 'package:subnest/features/settings/legal_screen.dart';
 import 'package:subnest/features/settings/rates_screen.dart';
 import 'package:subnest/features/settings/reminders_screen.dart';
 import 'package:subnest/features/settings/settings_platform.dart';
 import 'package:subnest/features/settings/settings_screen.dart';
+
+import '../../data/backup/backup_test_utils.dart';
 
 /// "Now" in every Settings test: 5 Nov 2026, 10:00 (the mockups' sample data).
 final DateTime kNow = DateTime(2026, 11, 5, 10);
@@ -72,6 +77,24 @@ class FakeSettingsPlatform extends SettingsPlatform {
   Future<PickedBackup?> pickBackup() async => nextPick;
 }
 
+/// Records the backup schedule Settings asked for (Android alarm / iOS notification).
+class FakeAutoBackupScheduler implements AutoBackupScheduler {
+  final scheduled = <BackupTime>[];
+  int cancels = 0;
+
+  @override
+  Future<void> schedule(BackupTime time, {required String title, required String body}) async => scheduled.add(time);
+
+  @override
+  Future<void> cancel() async => cancels++;
+
+  @override
+  bool get usesNotification => false;
+
+  @override
+  Future<bool> hasNotificationPermission() async => true;
+}
+
 /// Sample data like the mockups (§8): VND main currency, Netflix in VND, ChatGPT Plus in USD,
 /// last backup 42 days ago, rates fetched 2 h ago.
 class SettingsFixture {
@@ -79,6 +102,11 @@ class SettingsFixture {
 
   final AppDatabase db;
   final FakeSettingsPlatform platform;
+
+  /// Automatic backup: secure storage, picked folder and schedule, all in memory.
+  final secrets = MemorySecretStore();
+  final folder = FakeFolder();
+  final scheduler = FakeAutoBackupScheduler();
 
   /// `true` → the rates endpoint answers 200, `false` → 503 ("offline").
   bool online = true;
@@ -157,6 +185,18 @@ class SettingsFixture {
     exchangeRateRepositoryProvider.overrideWithValue(rates),
     settingsPlatformProvider.overrideWithValue(platform),
     notificationsEnabledProvider.overrideWith((ref) async => notificationsOn ?? false),
+    secretStoreProvider.overrideWithValue(secrets),
+    backupFolderServiceProvider.overrideWithValue(folder),
+    autoBackupSchedulerProvider.overrideWithValue(scheduler),
+    autoBackupServiceProvider.overrideWith(
+      (ref) => AutoBackupService(
+        backup: ref.watch(backupServiceProvider),
+        folder: ref.watch(backupFolderServiceProvider),
+        secrets: ref.watch(secretStoreProvider),
+        clock: ref.watch(clockProvider),
+        encrypt: encryptFast,
+      ),
+    ),
   ];
 }
 
@@ -164,13 +204,14 @@ class SettingsFixture {
 GoRouter settingsTestRouter(String initial) => GoRouter(
   initialLocation: initial,
   routes: [
+    // "Delete all data" ends here; the real onboarding has its own tests.
+    GoRoute(path: '/onboarding', builder: (_, _) => const Scaffold(body: Text('ONBOARDING'))),
     GoRoute(
       path: '/settings',
       builder: (_, _) => const SettingsScreen(),
       routes: [
         GoRoute(path: 'currency', builder: (_, _) => const CurrencyScreen()),
         GoRoute(path: 'rates', builder: (_, _) => const RatesScreen()),
-        GoRoute(path: 'backup', builder: (_, _) => const BackupScreen()),
         GoRoute(path: 'reminders', builder: (_, _) => const RemindersScreen()),
         GoRoute(
           path: 'privacy',
@@ -223,9 +264,16 @@ Future<void> pumpSettings(
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          builder: (context, w) => MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(textScale)),
-            child: w!,
+          // Keeps the backup schedule in step with the configuration, as `main.dart` does.
+          builder: (context, w) => Consumer(
+            builder: (context, ref, child) {
+              ref.watch(autoBackupScheduleSyncProvider);
+              return child!;
+            },
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(textScale)),
+              child: w!,
+            ),
           ),
           routerConfig: settingsTestRouter(location),
         ),

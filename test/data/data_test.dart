@@ -196,7 +196,7 @@ void main() {
       addTearDown(db2.close);
       final subs2 = SubscriptionRepository(db2, clock: () => now);
       final settings2 = SettingsRepository(db2);
-      final r = await backupFor(db2, subs2, settings2).importJson(json, ImportMode.replace);
+      final r = await backupFor(db2, subs2, settings2).importJson(json);
       expect((r.subscriptions, r.periods), (2, 1));
       final restored = {for (final s in await subs2.all()) s.id: s};
       expect(restored['netflix']!.dueDate, const LocalDate(2026, 11, 4));
@@ -208,30 +208,12 @@ void main() {
       expect((await ExchangeRateRepository(db2, settings2).load()).rate('USD', 'VND'), 26000);
     });
 
-    test('replace wipes current data; merge keeps it', () async {
+    test('restore replaces: data that is only on this phone is gone', () async {
       final json = await seedAndExport();
       await subs.save(sub(id: 'local-only', anchor: const LocalDate(2026, 12, 1)));
-
-      await backupFor(db, subs, settings).importJson(json, ImportMode.merge);
-      expect((await subs.all()).map((s) => s.id).toSet(), {'netflix', 'spotify', 'local-only'});
-      expect(await subs.allPeriods(), hasLength(1), reason: 'no duplicate history');
-
-      await backupFor(db, subs, settings).importJson(json, ImportMode.replace);
+      await backupFor(db, subs, settings).importJson(json);
       expect((await subs.all()).map((s) => s.id).toSet(), {'netflix', 'spotify'});
-    });
-
-    test('merge: newer local edit wins; imported history moves the due date forward', () async {
-      final json = await seedAndExport();
-      // Simulate a device that has the subscription but not its confirmed period.
-      await db.delete(db.confirmedPeriods).go();
-      final local = (await subs.get('netflix'))!;
-      now = now.add(const Duration(hours: 1));
-      await subs.save(local.copyWith(name: 'Netflix (local)', periodIndex: 0, updatedAt: now));
-
-      await backupFor(db, subs, settings).importJson(json, ImportMode.merge);
-      final merged = (await subs.get('netflix'))!;
-      expect(merged.name, 'Netflix (local)');
-      expect(merged.dueDate, const LocalDate(2026, 11, 4), reason: 'already-confirmed 10/04 period is skipped');
+      expect(await subs.allPeriods(), hasLength(1), reason: 'no duplicate history');
     });
 
     test('rejects files that are not Subnest backups', () {

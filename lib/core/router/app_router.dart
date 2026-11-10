@@ -11,7 +11,6 @@ import '../../features/home/home_screen.dart';
 import '../../features/insights/insights_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/scan/scan_screen.dart';
-import '../../features/settings/backup_screen.dart';
 import '../../features/settings/currency_screen.dart';
 import '../../features/settings/manage/manage_screens.dart';
 import '../../features/settings/rates_screen.dart';
@@ -51,7 +50,6 @@ GoRouter createRouter({required String initialLocation, GlobalKey<NavigatorState
                 routes: [
                   GoRoute(path: 'currency', builder: (_, _) => const CurrencyScreen()),
                   GoRoute(path: 'rates', builder: (_, _) => const RatesScreen()),
-                  GoRoute(path: 'backup', builder: (_, _) => const BackupScreen()),
                   GoRoute(path: 'categories', builder: (_, _) => const ManageCategoriesScreen()),
                   GoRoute(path: 'labels', builder: (_, _) => const ManageLabelsScreen()),
                   GoRoute(path: 'payment-methods', builder: (_, _) => const ManagePaymentMethodsScreen()),

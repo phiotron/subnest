@@ -11,6 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../../core/utils/format.dart';
 import '../../domain/domain.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../backup/backup_schedule.dart';
 import '../settings_repository.dart';
 
 /// Local reminders (F3). Strategy: after any change to subscriptions/settings, on app start
@@ -27,6 +28,7 @@ class NotificationService {
 
   final FlutterLocalNotificationsPlugin _plugin;
   final _taps = StreamController<String>.broadcast();
+  final _autoBackupTaps = StreamController<void>.broadcast();
   Timer? _debounce;
   bool _ready = false;
 
@@ -34,6 +36,10 @@ class NotificationService {
 
   /// Router locations from notification taps while the app is running.
   Stream<String> get taps => _taps.stream;
+
+  /// Taps on the iOS "time to back up" notification ([autoBackupPayload]); `main.dart` runs the
+  /// backup catch-up. Kept apart from [taps], which only carries router locations.
+  Stream<void> get autoBackupTaps => _autoBackupTaps.stream;
 
   /// Location to open when the app was launched by tapping a notification.
   String? launchRoute;
@@ -63,7 +69,11 @@ class NotificationService {
       ),
       onDidReceiveNotificationResponse: (r) {
         final p = r.payload;
-        if (p != null && p.startsWith('/')) _taps.add(p);
+        if (p == autoBackupPayload) {
+          _autoBackupTaps.add(null);
+        } else if (p != null && p.startsWith('/')) {
+          _taps.add(p);
+        }
       },
     );
     final launch = await _plugin.getNotificationAppLaunchDetails();
@@ -123,6 +133,47 @@ class NotificationService {
     return opts?.isEnabled ?? false;
   }
 
+  /// Id of the iOS "time to back up" notification, separate from reminders.
+  static const autoBackupNotificationId = 1002;
+
+  /// iOS: iOS does not let a closed app run at an exact time, so a daily local
+  /// notification at the chosen time; tapping it (or opening the app any time
+  /// after) runs the backup catch-up. Android runs a background job instead and
+  /// never calls this.
+  Future<void> scheduleAutoBackup(BackupTime time, {required String title, required String body}) async {
+    if (!_ready) return;
+    try {
+      await _plugin.cancel(id: autoBackupNotificationId);
+      await _plugin.zonedSchedule(
+        id: autoBackupNotificationId,
+        scheduledDate: tz.TZDateTime.from(
+          nextSlot(
+            tz.TZDateTime.now(tz.local),
+            time,
+            at: (y, mo, d, h, mi) => tz.TZDateTime(tz.local, y, mo, d, h, mi),
+          ),
+          tz.local,
+        ),
+        title: title,
+        body: body,
+        payload: autoBackupPayload,
+        notificationDetails: const NotificationDetails(
+          android: AndroidNotificationDetails('auto_backup', 'Auto backup'),
+          iOS: DarwinNotificationDetails(),
+        ),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } catch (_) {}
+  }
+
+  Future<void> cancelAutoBackup() async {
+    if (!_ready) return;
+    try {
+      await _plugin.cancel(id: autoBackupNotificationId);
+    } catch (_) {}
+  }
+
   /// Debounced re-schedule of all reminders.
   void scheduleSync(List<Subscription> subs, AppSettings settings, {Duration delay = const Duration(milliseconds: 400)}) {
     _debounce?.cancel();
@@ -140,7 +191,7 @@ class NotificationService {
     );
     final l10n = _l10n(settings);
     final byId = {for (final s in subs) s.id: s};
-    await _plugin.cancelAllPendingNotifications();
+    await _cancelPendingReminders();
     for (final r in plan) {
       final s = byId[r.subscriptionId]!;
       await _plugin.zonedSchedule(
@@ -164,6 +215,23 @@ class NotificationService {
       );
     }
     lastScheduledCount = plan.length;
+  }
+
+  /// Cancels every pending reminder ("Delete all data"); delivered ones stay in the shade.
+  Future<void> cancelReminders() async {
+    if (!_ready) return;
+    try {
+      await _cancelPendingReminders();
+    } catch (_) {}
+  }
+
+  /// Every pending notification except the iOS "time to back up" one, which has its own schedule
+  /// (`autoBackupScheduleSyncProvider`) and must survive a reminder re-sync.
+  Future<void> _cancelPendingReminders() async {
+    final pending = await _plugin.pendingNotificationRequests();
+    for (final p in pending) {
+      if (p.id != autoBackupNotificationId) await _plugin.cancel(id: p.id);
+    }
   }
 
   /// Stable id per (subscription, kind, days before — multi-point reminders): a later reminder of the same kind replaces the old one,
@@ -245,5 +313,6 @@ class NotificationService {
   void dispose() {
     _debounce?.cancel();
     _taps.close();
+    _autoBackupTaps.close();
   }
 }

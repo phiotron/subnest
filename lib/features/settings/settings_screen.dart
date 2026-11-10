@@ -10,6 +10,7 @@ import '../../data/settings_repository.dart';
 import '../../domain/domain.dart';
 import 'app_info.dart';
 import 'appearance_sheet.dart';
+import 'auto_backup_section.dart';
 import 'backup_actions.dart';
 import 'reminders_screen.dart';
 import 'settings_actions.dart';
@@ -32,9 +33,6 @@ class SettingsScreen extends ConsumerWidget {
     final platform = ref.watch(settingsPlatformProvider);
 
     void openReminders() => Navigator.of(context).push(RemindersScreen.route());
-
-    final lastBackup = settings.lastBackupAt;
-    final backupOverdue = SettingsFormat.backupOverdue(lastBackup, now);
 
     return Scaffold(
       body: SafeArea(
@@ -116,30 +114,22 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            // ---- Backup ----
-            SectionHeader(label: l.settingsSectionBackup),
-            if (backupOverdue) ...[
-              AppBanner(
-                kind: BannerKind.warning,
-                icon: AppIcons.backup,
-                title: lastBackup == null
-                    ? l.settingsBackupNeverTitle
-                    : l.settingsBackupOverdueTitle(SettingsFormat.daysBetween(lastBackup, now)),
-                body: l.settingsBackupOverdueBody,
-                actionLabel: l.settingsBackupAction,
-                onAction: () => context.push(AppRoutes.settingsBackup),
-              ),
-              const SizedBox(height: AppSpace.s2),
-            ],
+            // ---- Data ----
+            SectionHeader(label: l.settingsSectionData),
             AppGroup(
               dividerIndent: 52,
               children: [
                 SettingRow(
-                  icon: AppIcons.json,
-                  label: l.settingsExportJson,
-                  subtitle: l.settingsExportJsonHint,
+                  icon: AppIcons.backup,
+                  label: l.settingsExportBackup,
+                  subtitle: l.settingsExportBackupHint,
                   trailing: Icon(AppIcons.restoreFile, size: 18, color: c.inkMuted),
                   onTap: () => BackupActions.exportJson(context, ref),
+                ),
+                SettingRow(
+                  icon: AppIcons.restore,
+                  label: l.settingsRestore,
+                  onTap: () => BackupActions.restore(context, ref),
                 ),
                 SettingRow(
                   icon: AppIcons.csv,
@@ -148,18 +138,22 @@ class SettingsScreen extends ConsumerWidget {
                   trailing: Icon(AppIcons.restoreFile, size: 18, color: c.inkMuted),
                   onTap: () => BackupActions.exportCsv(context, ref),
                 ),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s2),
+            AutoBackupSection(
+              extraRows: [
+                Divider(height: 1, thickness: 1, indent: 52, color: c.line),
                 SettingRow(
-                  icon: AppIcons.backup,
-                  label: l.settingsRestore,
-                  onTap: () => BackupActions.restore(context, ref),
+                  icon: AppIcons.delete,
+                  label: l.settingsDeleteAll,
+                  subtitle: l.settingsDeleteAllHint,
+                  danger: true,
+                  onTap: () => BackupActions.deleteAll(context, ref),
                 ),
               ],
             ),
-            ListNote(
-              lastBackup == null
-                  ? l.settingsNeverBackedUp
-                  : l.settingsLastBackup(AppDates.full(l, LocalDate.fromDateTime(lastBackup))),
-            ),
+            ListNote(l.settingsDataNote),
             // ---- About ----
             SectionHeader(label: l.settingsSectionAbout),
             AppGroup(
