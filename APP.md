@@ -1,7 +1,7 @@
 # A001-subnest · Subnest: Subscription Tracker — APP.md
 
 > Brief + trạng thái của app. **Chỉ phiên điều phối sửa file này**; phiên con ghi báo cáo vào `notes/`.
-> Spec sản phẩm/giao diện: `product.md` · Thuật ngữ: `CONTEXT.md` · Quyết định khó đảo: `docs/adr/`.
+> Spec sản phẩm/giao diện: `product.md` (v2 2026-11-10, toàn app; v1 ở `docs/product-v1.md`) · Thuật ngữ: `CONTEXT.md` · Quyết định khó đảo: `docs/adr/`.
 
 ## Brief
 - **Mã app / thư mục:** `A001-subnest` → `apps/A001-subnest/` — đã ghi trong `apps/REGISTRY.md`
@@ -46,7 +46,7 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
   - **ARB tách theo feature**: `lib/l10n/parts/<feature>_{en,vi}.arb` + script gộp `tool/merge_arb.dart` chạy trước `flutter gen-l10n`
     → mỗi phiên chỉ sửa ARB của feature mình.
   - Chỉ phiên A (và F ở #2) được sửa `pubspec.yaml`; phiên khác cần package thì ghi vào notes để phiên điều phối giao.
-- Không dùng logo thương hiệu thật: tile monogram màu (product.md §7.4).
+- ~~Không dùng logo thương hiệu thật~~ → logo thật **đóng gói sẵn** trong app (quyết định 2026-11-10 (2), bỏ logo.dev); thiếu → monogram.
 
 ### Quyết định 2026-11-10 — Mặc định toàn cầu: English + USD (S-90)
 Grill với người dùng, chốt bỏ mọi suy luận từ ngôn ngữ/vùng máy cho bản cài mới (A002 đã theo cùng hướng D-036):
@@ -81,6 +81,31 @@ Kế hoạch: `C:\Users\Admin\.claude\plans\a001-subnes-sao-l-u-robust-kahan.md`
     Phiên con chung thư mục `dev` (Phương chọn); không commit file l10n sinh ra — điều phối gen khi gộp.
 12. *(sau B, 2026-11-10)* Bỏ banner "Lâu rồi chưa sao lưu" và màn riêng `/settings/backup` — mọi thứ trong nhóm Dữ liệu +
     khối Sao lưu tự động ngay trong Cài đặt (như A002). Galaxy A13 không có dữ liệu thật → được thử Khôi phục/Xoá/Quên mã trên máy.
+
+### Quyết định 2026-11-10 (2) — Thống kê theo tháng, logo đóng gói, giá tăng, dự đoán (grill popup, phiên #7)
+Kế hoạch: `C:\Users\Admin\.claude\plans\pasted-content-id-7366-grill-with-docs-shimmying-jellyfish.md`. Thuật ngữ mới
+trong `CONTEXT.md` (Month spend, Daily average, Month cash flow, Price history, Price increase, Custom logo). Không ADR.
+1. **Thống kê:** segment Tháng | Năm + `‹ tháng ›`; chạm cột chọn tháng; mọi thẻ theo khoảng đang chọn.
+2. **Month spend:** gói tháng = giá tháng; gói năm/khác quy tháng chỉ khi đã đăng ký trước/trong tháng; chỉ tháng đang trả
+   (Trial = 0, sau tháng huỷ = 0, Paused cả tháng = 0); giá theo Lịch sử giá. Trung bình/ngày = ÷ số ngày tháng.
+3. **Đã thanh toán / Còn phải thanh toán** = tiền trừ thật (gói năm đủ giá ở tháng gia hạn) + nút (i).
+4. **Tổng quan:** header thành thẻ Chi phí (Tháng/Năm, chênh tháng trước, số gói, /ngày, thanh Đã/Còn, cột 6 tháng → Thống kê).
+5. **Logo đóng gói** 500 dịch vụ, đẩy kèm repo catalog; **bỏ logo.dev** (code, key, chính sách, listing); tự tạo: chữ/emoji + **Chọn ảnh**.
+6. **Thẻ dùng thử:** 3 nút Giữ lại · Xem gói đăng ký · Cách huỷ + "huỷ trước khi tính phí tiết kiệm X/năm".
+7. **Chip chu kỳ** (Hàng tháng/Hàng năm/Mỗi 3 tháng…) dưới mọi giá.
+8. **Lịch sử giá** (bảng mới, backfill từ Payment); Chi tiết cả tăng/giảm; Thống kê thẻ Tăng giá (so 12 tháng trước, chỉ tăng); ↑ ở hàng khi tăng ≤ 90 ngày.
+9. **Dự đoán** 12 tháng tới vs 12 tháng qua, tách gói thêm/tăng giá/khác + Sắp tới 13 tuần/12 tháng.
+10. Việc dở đợt này: U2b + U4 (+ lỗi Tạm dừng) · S Quét ảnh · P2 Catalog từ xa + Báo đổi giá · phát hành.
+11. **Lõi trước, giao diện sau mockup v14.** 12. `product.md` v2 viết lại toàn app, **không nhắc app đối thủ**.
+
+### Phiên điều phối #7 — kế hoạch
+| Đợt | Phiên con | Việc | Khi nào |
+|---|---|---|---|
+| 0 | điều phối | product.md v2, CONTEXT, APP, TASKS; chip chu kỳ + thẻ dùng thử 3 nút | 2026-11-10 |
+| 1 | **L** Logo · **M** Lõi số liệu · **R** CI iOS + push | xem kế hoạch; M làm migration (gồm cột ảnh tự chọn của L) | đề xuất 2026-11-10 |
+| 1b | **P2** Catalog từ xa (data) | sau khi M commit migration | |
+| 2 | U-Home · U-Insights · U2b · U4 · S UI · Lịch | sau mockup v14 (Phương gửi product.md v2 cho Claude Design) | |
+| 3 | pháp lý (bỏ logo.dev, quyền ảnh) · QA A13 · ảnh store · AAB | | |
 
 ## Kế hoạch 3 phiên điều phối
 
@@ -170,6 +195,7 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
+| #7 Thống kê theo tháng · logo đóng gói · giá tăng · dự đoán (grill popup) | 2026-11-10 | đề xuất L, M, R | 12 quyết định + 6 thuật ngữ; product.md v2 toàn app (gửi Claude Design → v14) |
 | #6 Sao lưu · Bảo mật · Widget · Làm tròn (grill, theo A002) | 2026-11-10 | B Sao lưu ✅ · R Làm tròn ✅ · W Widget ✅ (đang sửa màu chữ widget trên One UI) · S Bảo mật ✅ | 12 quyết định + 9 thuật ngữ; `dev` `9171a92`…`b0f32fa` (chưa push); analyze sạch, **970 test xanh**; thử A13: S (PIN, che nội dung, Quên mã) đạt, W (3 widget, chạm, khoá) đạt, điều phối (làm tròn, sao lưu tự động + hẹn giờ khi app tắt, giữ 2 file, xoá toàn bộ, khôi phục mã hoá) đạt + sửa lỗi time picker cỡ chữ nhỏ — `notes/2026-11-10-*.md`. Còn: CI iOS tay, App Group, ảnh store |
 | #5 Mặc định English + USD (S-90) | 2026-11-10 | không (làm trực tiếp) | English lần đầu + USD mặc định + Thư viện mở tab Chung (giá US) + Settings chỉ EN/VI; thêm S1.0 Language trước Welcome (chữ tiếng Anh, không dịch); version `1.0.0`; analyze sạch, **823 test xanh**; APK release `build/app/outputs/flutter-apk/app-release.apk` cài Galaxy A13 (máy `vi-VN`) mở English + USD |
 | #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan ✅ · U2a Thư viện + Form ✅ (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 `775901b`; U1 `4075597`…`058cf34`, U2a `522df46` `ed06826` `09faefd`, U1 `3cb500c`; điều phối chạy lại ở `09faefd`: analyze sạch, merge_arb OK, **823 test xanh** (97 golden bỏ qua khi không bật cờ) |
