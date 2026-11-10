@@ -3,54 +3,113 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../domain/domain.dart';
+import 'catalog/catalog_cache.dart';
+import 'catalog/catalog_data.dart';
+import 'catalog/catalog_validator.dart';
 
-/// Loads the bundled service Catalog (`assets/catalog/services.json`, owned by the Catalog session).
-/// Tolerant: an invalid service is skipped, a missing file gives an empty catalog
-/// (the "custom service" path always works).
+export 'catalog/catalog_data.dart' show CatalogData, CatalogOrigin;
+
+/// Loads the service Catalog: the bundled file (`assets/catalog/services.json`, owned by the Catalog
+/// session) or, when newer and valid, the copy downloaded from the remote Catalog ([cache], ADR 0002).
+/// Tolerant for the bundled file: an invalid service is skipped, a missing file gives an empty catalog
+/// (the "custom service" path always works). The cached copy must pass [CatalogValidator] or it is ignored.
 class CatalogRepository {
-  CatalogRepository({AssetBundle? bundle}) : _bundle = bundle ?? rootBundle;
+  CatalogRepository({AssetBundle? bundle, this.cache}) : _bundle = bundle ?? rootBundle;
+
+  /// The app's repository: bundled file + the device cache of the remote Catalog.
+  factory CatalogRepository.device() => CatalogRepository(cache: CatalogCache.instance);
 
   static const assetPath = 'assets/catalog/services.json';
 
   final AssetBundle _bundle;
-  List<CatalogService>? _cache;
 
-  Future<List<CatalogService>> load() async {
-    if (_cache != null) return _cache!;
+  /// Remote Catalog cache; `null` = bundled file only (tests, screenshots).
+  final CatalogCache? cache;
+
+  Future<CatalogData>? _data;
+  Future<CatalogData>? _bundled;
+
+  /// Services of [loadData].
+  Future<List<CatalogService>> load() async => (await loadData()).services;
+
+  /// The Catalog in use: the newest valid of bundled and cached (glossary: Catalog source).
+  Future<CatalogData> loadData() => _data ??= _loadBest();
+
+  /// The bundled file alone.
+  Future<CatalogData> loadBundled() => _bundled ??= _loadBundled();
+
+  /// Forget what was loaded (after a remote update) so the next [loadData] reads again.
+  void reset() => _data = null;
+
+  Future<CatalogService?> byId(String id) async => (await loadData()).byId(id);
+
+  Future<CatalogData> _loadBundled() async {
     try {
-      _cache = parse(await _bundle.loadString(assetPath));
+      return parseData(await _bundle.loadString(assetPath), origin: CatalogOrigin.bundled);
     } catch (_) {
-      _cache = const [];
+      return CatalogData.empty;
     }
-    return _cache!;
   }
 
-  Future<CatalogService?> byId(String id) async {
-    for (final s in await load()) {
-      if (s.id == id) return s;
-    }
-    return null;
+  Future<CatalogData> _loadBest() async {
+    final bundled = await loadBundled();
+    final cached = await _loadCached();
+    return cached != null && cached.version > bundled.version ? cached : bundled;
   }
+
+  Future<CatalogData?> _loadCached() async {
+    final c = cache;
+    if (c == null) return null;
+    try {
+      final text = await c.readCatalog();
+      if (text == null) return null;
+      final state = await c.readState();
+      return CatalogValidator.validate(text).withDownloadedAt(state.downloadedAt);
+    } catch (_) {
+      return null; // Broken cache: the bundled file is used; the next refresh writes a good copy.
+    }
+  }
+
+  /// Services of [parseData] (tolerant).
+  static List<CatalogService> parse(String text, {LocalDate? today}) => parseData(text, today: today).services;
 
   /// Parses the bundled v3 file and the v4 schema (`D:\Mobile App\catalog\README.md`).
   /// Reference prices: v4 → no `verifiedAt` or older than `staleAfterDays` (relative to [today], default
   /// the clock); v3 → `approx: true`. Unknown regions are kept but only `US`/`VN` are ever looked up.
-  static List<CatalogService> parse(String text, {LocalDate? today}) {
-    final json = jsonDecode(text) as Map<String, Object?>;
+  ///
+  /// Tolerant by default (a malformed service is skipped); [strict] throws [CatalogFormatException]
+  /// on the first malformed one instead (remote files, see [CatalogValidator]).
+  static CatalogData parseData(
+    String text, {
+    LocalDate? today,
+    CatalogOrigin origin = CatalogOrigin.bundled,
+    bool strict = false,
+  }) {
+    final decoded = jsonDecode(text);
+    if (decoded is! Map<String, Object?>) throw const CatalogFormatException('root is not an object');
+    final json = decoded;
+    final schema = json['schemaVersion'] as int? ?? 3;
     final ctx = _Ctx(
-      v4: (json['schemaVersion'] as int? ?? 3) >= 4,
+      v4: schema >= 4,
       staleAfterDays: json['staleAfterDays'] as int? ?? 90,
       today: today ?? LocalDate.fromDateTime(DateTime.now()),
     );
     final out = <CatalogService>[];
-    for (final raw in (json['services'] as List? ?? const [])) {
+    for (final (i, raw) in (json['services'] as List? ?? const []).indexed) {
       try {
         out.add(_service(raw as Map<String, Object?>, ctx));
-      } catch (_) {
-        // Skip malformed entries; the validator in assets/catalog/tool catches them at authoring time.
+      } catch (e) {
+        // Bundled: skip malformed entries; the validator in assets/catalog/tool catches them at authoring time.
+        if (strict) throw CatalogFormatException('service #$i: $e');
       }
     }
-    return out;
+    return CatalogData(
+      services: out,
+      origin: origin,
+      schemaVersion: schema,
+      version: json['version'] as int? ?? 0,
+      updatedOn: LocalDate.tryParse(json['updatedAt'] as String?),
+    );
   }
 
   static List<String> _strings(Object? v) => [for (final a in (v as List? ?? const [])) a as String];
