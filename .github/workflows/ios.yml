@@ -44,11 +44,7 @@ jobs:
           grep -q 'PrivacyInfo.xcprivacy in Resources' ios/Runner.xcodeproj/project.pbxproj
 
       - name: Build (no codesign)
-        env:
-          LOGO_DEV_KEY: ${{ secrets.LOGO_DEV_KEY }}   # Logo.dev publishable key (docs/ci.md §2); empty = monogram tiles only
-        run: |
-          [ -n "$LOGO_DEV_KEY" ] || echo "::warning::LOGO_DEV_KEY secret missing - service logos off in this build (docs/ci.md section 2)."
-          flutter build ios --release --no-codesign --dart-define=LOGO_DEV_KEY="$LOGO_DEV_KEY"
+        run: flutter build ios --release --no-codesign
 
       - name: Check bundle
         run: |
