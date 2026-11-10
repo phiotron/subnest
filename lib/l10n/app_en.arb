@@ -683,6 +683,15 @@
   },
   "homeHowToCancel": "How to cancel",
   "homeKeepIt": "Keep it",
+  "homeViewSubscription": "View subscription",
+  "homeTrialSavings": "Cancel before the first charge to save {amount} a year",
+  "@homeTrialSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "homeKept": "Keeping {name}. The first charge is on {date}.",
   "@homeKept": {
     "placeholders": {

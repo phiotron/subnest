@@ -832,6 +832,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeKeepIt => 'Keep it';
 
   @override
+  String get homeViewSubscription => 'View subscription';
+
+  @override
+  String homeTrialSavings(String amount) {
+    return 'Cancel before the first charge to save $amount a year';
+  }
+
+  @override
   String homeKept(String name, String date) {
     return 'Keeping $name. The first charge is on $date.';
   }

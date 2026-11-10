@@ -20,6 +20,8 @@
   "homeTrialThen": "Sau đó {price} từ {date}",
   "homeHowToCancel": "Cách huỷ",
   "homeKeepIt": "Giữ lại",
+  "homeViewSubscription": "Xem gói đăng ký",
+  "homeTrialSavings": "Huỷ trước khi tính phí sẽ tiết kiệm {amount} mỗi năm",
   "homeKept": "Giữ {name}. Lần trừ đầu vào {date}.",
   "homeUpcoming": "Sắp tới · 7 ngày",
   "homeCalendar": "Lịch",

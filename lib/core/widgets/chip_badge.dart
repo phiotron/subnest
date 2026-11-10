@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/domain.dart';
+import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
 import 'touch.dart';
@@ -165,6 +167,31 @@ class ShareMark extends StatelessWidget {
           const SizedBox(width: 2),
           Text('÷$count', style: AppType.caption.copyWith(letterSpacing: 0, color: c.inkMuted).tabular),
         ],
+      ),
+    );
+  }
+}
+
+/// Outlined cycle chip under a price ("Monthly" / "Yearly" / "Every 3 months"), so a bare amount
+/// never leaves the period unclear (decision 2026-11-10 (2) #7). Not interactive; caption 12/500.
+class CycleChip extends StatelessWidget {
+  const CycleChip({super.key, required this.cycle});
+
+  final BillingCycle cycle;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      decoration: ShapeDecoration(
+        shape: StadiumBorder(side: BorderSide(color: c.lineStrong)),
+      ),
+      child: Text(
+        context.l10n.cycle(cycle),
+        maxLines: 1,
+        softWrap: false,
+        style: AppType.caption.copyWith(color: c.inkMuted, letterSpacing: 0, fontWeight: FontWeight.w500),
       ),
     );
   }

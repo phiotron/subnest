@@ -78,7 +78,9 @@ class AwaitingCard extends StatelessWidget {
 }
 
 /// S2 "Spotify trial ends in 2 days" card (`card-trial`): tile with hourglass badge, title +
-/// "Then ₫59,000/month from Fri, 6 Nov", actions "How to cancel" (tonal, external) and "Keep it".
+/// "Then ₫59,000/month from Fri, 6 Nov", optional savings line ("Cancel before the first charge to
+/// save ₫708,000 a year"), actions "Keep it" (primary), "View subscription" and "How to cancel"
+/// (external; hidden without a link) — decision 2026-11-10 (2) #6.
 class TrialEndingCard extends StatelessWidget {
   const TrialEndingCard({
     super.key,
@@ -88,14 +90,20 @@ class TrialEndingCard extends StatelessWidget {
     required this.onTap,
     required this.onHowToCancel,
     required this.onKeep,
+    required this.onView,
+    this.savings,
   });
 
   final Subscription subscription;
   final String title;
   final String subtitle;
   final VoidCallback onTap;
-  final VoidCallback onHowToCancel;
+  final VoidCallback? onHowToCancel;
   final VoidCallback onKeep;
+  final VoidCallback onView;
+
+  /// "Cancel before the first charge to save … a year" (null when the yearly cost is unknown).
+  final String? savings;
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +132,16 @@ class TrialEndingCard extends StatelessWidget {
               ),
             ],
           ),
+          if (savings != null) ...[
+            const SizedBox(height: AppSpace.s2),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(start: 40 + AppSpace.s3),
+              child: Text(
+                savings!,
+                style: AppType.meta.copyWith(color: c.warningInk, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
           const SizedBox(height: AppSpace.s1),
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 40 + AppSpace.s3 - 4),
@@ -131,13 +149,15 @@ class TrialEndingCard extends StatelessWidget {
               spacing: AppSpace.s2,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                AppButton.tonal(
-                  label: l.homeHowToCancel,
-                  icon: AppIcons.external,
-                  small: true,
-                  onPressed: onHowToCancel,
-                ),
-                AppButton.text(label: l.homeKeepIt, small: true, onPressed: onKeep),
+                AppButton.primary(label: l.homeKeepIt, small: true, onPressed: onKeep),
+                AppButton.text(label: l.homeViewSubscription, small: true, onPressed: onView),
+                if (onHowToCancel != null)
+                  AppButton.text(
+                    label: l.homeHowToCancel,
+                    icon: AppIcons.external,
+                    small: true,
+                    onPressed: onHowToCancel,
+                  ),
               ],
             ),
           ),

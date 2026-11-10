@@ -1184,6 +1184,18 @@ abstract class AppLocalizations {
   /// **'Keep it'**
   String get homeKeepIt;
 
+  /// No description provided for @homeViewSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'View subscription'**
+  String get homeViewSubscription;
+
+  /// No description provided for @homeTrialSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel before the first charge to save {amount} a year'**
+  String homeTrialSavings(String amount);
+
   /// No description provided for @homeKept.
   ///
   /// In en, this message translates to:

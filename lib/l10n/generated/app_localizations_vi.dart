@@ -809,6 +809,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get homeKeepIt => 'Giữ lại';
 
   @override
+  String get homeViewSubscription => 'Xem gói đăng ký';
+
+  @override
+  String homeTrialSavings(String amount) {
+    return 'Huỷ trước khi tính phí sẽ tiết kiệm $amount mỗi năm';
+  }
+
+  @override
   String homeKept(String name, String date) {
     return 'Giữ $name. Lần trừ đầu vào $date.';
   }

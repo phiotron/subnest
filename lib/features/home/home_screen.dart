@@ -380,7 +380,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           title: l.homeTrialEnds(name, BillingRules.daysUntilDue(trial, today)),
           subtitle: l.homeTrialThen(pricePerCycle(l, trial), AppDates.weekdayShort(l, trial.dueDate, today: today)),
           onTap: () => context.push(AppRoutes.subscriptionDetail(trial.id)),
-          onHowToCancel: () => _openLink(trial, cancelLink(trial, catalog)),
+          savings: switch (calc.yearlyCost(trial)) {
+            final y? when y > 0 => l.homeTrialSavings(l.amount(y, primary, approx: anyConverted({trial}, primary))),
+            _ => null,
+          },
+          onView: () => context.push(AppRoutes.subscriptionDetail(trial.id)),
+          onHowToCancel: switch (cancelLink(trial, catalog)) {
+            final link? => () => _openLink(trial, link),
+            null => null,
+          },
           onKeep: () {
             ref.read(keptTrialsProvider.notifier).keep(trial.id);
             showAppToast(context, l.homeKept(name, AppDates.weekdayShort(l, trial.dueDate, today: today)));

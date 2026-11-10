@@ -63,6 +63,9 @@ class CalendarEntryRow extends StatelessWidget {
           .tabular,
     );
 
+    // "Monthly" / "Yearly" under the amount — a bare price left the period unclear (2026-11-10 (2) #7).
+    final cycleChip = CycleChip(cycle: s.cycle);
+
     final confirm = kind == CalendarEntryKind.awaiting && onConfirm != null
         // The 40px pill sits in a 48px-high hit area (S-50).
         ? GestureDetector(
@@ -140,7 +143,7 @@ class CalendarEntryRow extends StatelessWidget {
                       Wrap(
                         spacing: AppSpace.s3,
                         crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [amount, ?confirm],
+                        children: [amount, cycleChip, ?confirm],
                       ),
                     ],
                   ],
@@ -163,6 +166,8 @@ class CalendarEntryRow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           amount,
+                          const SizedBox(height: 2),
+                          cycleChip,
                           if (confirm != null) ...[const SizedBox(height: 2), confirm],
                         ],
                       ),

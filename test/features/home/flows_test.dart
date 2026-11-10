@@ -92,4 +92,19 @@ void main() {
     expect(find.text('Spotify trial ends in 2 days'), findsNothing); // kept → card hidden
     await closeApp(tester);
   });
+
+  testWidgets('trial card: savings line + Keep it / View subscription / How to cancel', (tester) async {
+    await pumpApp(tester);
+    expect(find.textContaining('Cancel before the first charge to save'), findsOneWidget);
+    expect(find.text('How to cancel'), findsOneWidget);
+    await tester.tap(find.text('View subscription'));
+    await settle(tester);
+    expect(find.text('Trial ends Fri, 6 Nov'), findsOneWidget); // S5 Detail
+    await tester.pageBack();
+    await settle(tester);
+    await tester.tap(find.text('Keep it'));
+    await tester.pumpAndSettle();
+    expect(find.text('Spotify trial ends in 2 days'), findsNothing);
+    await closeApp(tester);
+  });
 }
