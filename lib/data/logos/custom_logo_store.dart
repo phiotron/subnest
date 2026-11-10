@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -63,6 +64,15 @@ class CustomLogoStore extends ChangeNotifier {
     return _dir!;
   }
 
+  /// Runs [op] now when the folder is known; otherwise right after [load] finishes, without
+  /// waiting for it. "Delete all data" and restore must never hang on the logo folder (the app
+  /// loads it at start-up, `app.dart`; in widget tests the platform never answers).
+  Future<T> _whenLoaded<T>(Future<T> Function() op, T notYet) async {
+    if (loaded) return op();
+    unawaited(load().then((_) => op()).then<void>((_) {}, onError: (Object _) {}));
+    return notYet;
+  }
+
   /// The file for a `customLogoFile` name, or `null` (not loaded yet / invalid name). The file may
   /// be missing (e.g. a backup restored without its pictures) — the tile then keeps its letters.
   File? fileOf(String name) {
@@ -115,13 +125,13 @@ class CustomLogoStore extends ChangeNotifier {
   Future<Set<String>> names() async => {for (final f in await _files()) p.basename(f.path)};
 
   /// Deletes every picture ("Delete all data").
-  Future<void> clear() async {
+  Future<void> clear() => _whenLoaded(() async {
     for (final f in await _files()) {
       await _delete(f);
       _evict(f);
     }
     notifyListeners();
-  }
+  }, null);
 
   /// Deletes pictures no subscription points at ([used] = every `customLogoFile`).
   Future<void> keepOnly(Set<String> used) async {
@@ -148,8 +158,10 @@ class CustomLogoStore extends ChangeNotifier {
   }
 
   /// Restore: deletes every picture, then writes [logos] (name → bytes; invalid names/images are
-  /// skipped). Returns how many were written.
-  Future<int> replaceAll(Map<String, Uint8List> logos) async {
+  /// skipped). Returns how many were written (0 when it runs later, see [_whenLoaded]).
+  Future<int> replaceAll(Map<String, Uint8List> logos) => _whenLoaded(() => _replaceAll(logos), 0);
+
+  Future<int> _replaceAll(Map<String, Uint8List> logos) async {
     final dir = await _ready();
     for (final f in await _files()) {
       await _delete(f);

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -80,6 +81,23 @@ void main() {
       expect(fileOf(b).existsSync(), isFalse);
       await store.clear();
       expect(await store.names(), isEmpty);
+    });
+
+    test('folder never resolves (widget tests, no platform) → clear / replaceAll return at once', () async {
+      final stuck = CustomLogoStore(() => Completer<Directory>().future);
+      await stuck.clear();
+      expect(await stuck.replaceAll({'a-1.png': png1}), 0);
+      expect(stuck.loaded, isFalse);
+    });
+
+    test('not loaded yet → clear runs right after the folder is known', () async {
+      Directory('${tmp.path}/custom_logos').createSync();
+      fileOf('x-1.png').writeAsBytesSync(png1);
+      await store.clear();
+      await store.load();
+      await Future<void>.delayed(Duration.zero);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(fileOf('x-1.png').existsSync(), isFalse);
     });
 
     test('readAll / replaceAll round trip; invalid entries skipped', () async {
