@@ -31,6 +31,8 @@ class SubnestApp extends ConsumerStatefulWidget {
 class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObserver {
   StreamSubscription<String>? _tapSub;
   StreamSubscription<Uri?>? _widgetTapSub;
+  (String, DateTime)? _lastWidgetLink;
+  static const _widgetLinkRepeat = Duration(seconds: 2);
 
   @override
   void initState() {
@@ -76,9 +78,15 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
 
   /// A widget row opens that subscription's detail over the current screen; anything else on the
   /// widget opens the Overview. Ignored before onboarding is done (nothing to show yet).
+  /// The same tap can arrive twice right after a cold start (start-up read + stream): skip a repeat
+  /// of the last link within [_widgetLinkRepeat].
   Future<void> _openWidgetLink(Uri? link) async {
     final location = widgetRouteFor(link);
     if (location == null || !mounted) return;
+    final now = DateTime.now();
+    final last = _lastWidgetLink;
+    if (last != null && last.$1 == location && now.difference(last.$2) < _widgetLinkRepeat) return;
+    _lastWidgetLink = (location, now);
     final settings = await ref.read(settingsProvider.future);
     if (!settings.onboardingDone || !mounted) return;
     if (location == AppRoutes.home) {

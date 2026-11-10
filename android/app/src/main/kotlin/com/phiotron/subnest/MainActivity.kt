@@ -25,6 +25,16 @@ class MainActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Widget tap while the task exists but the process was killed: the system rebuilds this
+        // activity with its old intent, then delivers the tap here — before Dart listens to
+        // `HomeWidget.widgetClicked`. Keep it as the current intent so Dart's start-up read
+        // (`initiallyLaunchedFromHomeWidget`) still finds the link. Dart ignores a repeat of the
+        // same link that arrives twice (stream + start-up read).
+        if (intent.action == HomeWidgetLaunchIntent.HOME_WIDGET_LAUNCH_ACTION) setIntent(intent)
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val messenger = flutterEngine.dartExecutor.binaryMessenger
