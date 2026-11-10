@@ -154,7 +154,7 @@ tương ứng. (Tự động upload qua Play Developer API/`r0adkll/upload-googl
 ## 5. iOS — trạng thái & việc khi có Apple Developer
 
 **Hiện tại:** `ios.yml` build `--no-codesign` để chắc dự án iOS biên dịch được trên macOS (bundle `com.phiotron.subnest`,
-iOS ≥ 15.0). Không tạo `.ipa`, không TestFlight. Đã có: `ITSAppUsesNonExemptEncryption=false` trong `Info.plist`;
+iOS ≥ 15.5; widget extension ≥ 16.0). Không tạo `.ipa`, không TestFlight. Đã có: `ITSAppUsesNonExemptEncryption=false` trong `Info.plist`;
 `ios/Runner/PrivacyInfo.xcprivacy` (không tracking, không thu thập dữ liệu; API *File timestamp* lý do `C617.1` cho
 SQLite/drift đọc metadata file trong container app) — plugin có manifest riêng thì Xcode tự gộp.
 
