@@ -147,20 +147,29 @@ test/                       domain/ (luật) · data/ (DB in-memory, backup, t�
 Không commit keystore/`key.properties`/`.p12`/`.env` (đã có trong `.gitignore`). Ký release + CI: phiên E (`docs/ci.md`).
 Nguồn tỷ giá yêu cầu ghi công "Rates by Exchange Rate API" (đã có ở Cài đặt → Tỷ giá).
 
-**Logo dịch vụ (Logo.dev, phiên P3 2026-11-06):** cần khoá `pk_` lúc build — không có ⇒ chỉ tile chữ, không gọi mạng
-(test luôn chạy không khoá). Chạy app có logo (Git Bash):
+**Logo dịch vụ (phiên L 2026-11-10, thay Logo.dev):** logo thật **đóng gói sẵn** trong app — không mạng, không khoá,
+hiện ngay cả khi offline/lần đầu mở. PNG vuông 192px (256 màu) `assets/logos/png/<serviceId>.png`, danh sách id trong
+`lib/data/logos/bundled_logos.g.dart`, nguồn từng logo + dịch vụ thiếu trong `assets/logos/SOURCES.md` (thư mục
+`assets/logos/` không đóng gói, chỉ `png/`). Tạo/cập nhật (Python + Pillow, chạy cô lập):
 ```bash
-flutter run --dart-define=LOGO_DEV_KEY="$(tr -d ' \r\n' < C:/Users/Admin/keystores/A001-subnest/logo-dev.key)"
+python -I tool/fetch_logos.py                 # dịch vụ mới chưa có logo (Catalog thêm dịch vụ → chạy lại)
+python -I tool/fetch_logos.py --only a,b      # lấy lại vài id sau khi sửa OVERRIDES trong script
+python -I tool/fetch_logos.py --sheet <thư mục nháp>   # tờ kiểm (contact sheet) để soi nhanh
 ```
-PowerShell: `flutter run --dart-define=LOGO_DEV_KEY=$((Get-Content C:/Users/Admin/keystores/A001-subnest/logo-dev.key -Raw).Trim())`.
-Tạo khoá + GitHub secret: `docs/ci.md` mục *Khoá Logo.dev*. Code: `lib/data/logos/` (`LogoDev` = URL + khoá,
-`LogoRepository` = tải lười + cache `<app cache>/service_logos/`, 30 ngày, ≤ 20 MB, 404 nhớ 7 ngày, lỗi mạng chờ 15 phút).
-Tile: `ServiceTile(…, logoDomain: service.logoDomain)` — **chỉ** tên miền từ Catalog, dịch vụ tuỳ chỉnh không truyền
-(chính sách quyền riêng tư đã cam kết). Nguồn logo gắn **một lần ở gốc** (`app.dart`: `ServiceLogoScope(source:
-LogoRepository.instance)`); `core/widgets` không import `data/` (interface `ServiceLogoSource` ở
-`core/widgets/service_logo_source.dart`, không có scope ⇒ `ServiceLogoSource.none` = monogram). Test/gallery bơm nguồn giả
-bằng `ServiceLogoScope(source: FakeLogoSource(…))` (`test/core/widgets/service_tile_logo_test.dart`). CI: `ci.yml` (AAB)
-và `ios.yml` truyền `--dart-define=LOGO_DEV_KEY` từ secret; thiếu secret ⇒ cảnh báo vàng, vẫn build (không logo).
+Nguồn (không cần khoá): icon app App Store (iTunes Search API, khớp tên/nhà phát hành) → apple-touch-icon/manifest của
+trang hãng → favicon Google 256px; < 128px bỏ. Sửa tay logo sai bằng `OVERRIDES` (URL/App Store id/domain khác/`none`).
+Code: `AppLogoSource` (`lib/data/logos/app_logo_source.dart`, gắn **một lần ở gốc** `app.dart`:
+`ServiceLogoScope(source: AppLogoSource.instance)`) = logo đóng gói theo `serviceId` → `remote` (chỗ cắm cho logo từ
+Catalog từ xa, phiên P2) → ảnh tự chọn → monogram. Tile: `ServiceTile(…, serviceId: s.serviceId, subscriptionId: s.id)`
+(dịch vụ trong Catalog: `serviceId: service.id`); `logo:` = ảnh tường minh (xem trước ở form). `core/widgets` không import
+`data/` (interface `ServiceLogoSource` ở `core/widgets/service_logo_source.dart`, là `Listenable` để tile vẽ lại khi ảnh tự
+chọn đổi; không có scope ⇒ monogram). Test/gallery bơm `FakeLogoSource` (`test/core/widgets/service_tile_logo_test.dart`).
+
+**Logo tự chọn (Custom logo):** S4 › chạm tile › *Ảnh: Chọn ảnh / Đổi ảnh / Gỡ ảnh* — chỉ khi dịch vụ không có logo
+đóng gói. Android dùng Photo Picker (không xin quyền), iOS PHPicker; cắt vuông (kéo/phóng) → PNG 256px. Lưu
+`<app support>/custom_logos/<subscriptionId>.png` (`CustomLogoStore`, không cột DB: tên file = id gói); vào sao lưu
+(khoá `customLogos` = base64, `lib/data/backup/backup_logos.dart`), khôi phục ghi lại, *Xoá toàn bộ dữ liệu* xoá, xoá
+gói xoá ảnh, ảnh mồ côi dọn lúc mở app (`app.dart` `_housekeeping`).
 
 ## 8. UI conventions (design system — phiên F, 2026-11-05)
 
@@ -186,8 +195,8 @@ Xem trực tiếp mọi component × trạng thái: gallery `/dev/gallery` (debu
 ### 8.2 Component nào cho việc gì
 | Việc | Component |
 |---|---|
-| Tile dịch vụ | `ServiceTile(name, colorValue, iconText, size: 24/32/40/56/80, awaiting:, trial:, off:, faded:, logoDomain:)` (`logoDomain` chỉ từ Catalog → logo thật, xem §7) · ô "thêm tuỳ chỉnh" `GhostTile` |
-| Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:, logoDomain:, progress:, progressTone:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn). Tuỳ chọn (không truyền ⇒ y như cũ): `logoDomain:` (chỉ từ Catalog) → logo trên tile; `progress: CycleProgress.forSubscription(sub, today: today)` → thanh tiến độ kỳ 4px dưới dòng 2 (màu theo `state`: brand / trial `ink-muted` / awaiting `warning` / cancelled `line-strong`; gói **Tạm dừng** truyền `progressTone: CycleProgressTone.off`); trình đọc màn hình đọc "còn N ngày" + %; giảm chuyển động ⇒ không animate. Dùng riêng: `CycleProgressBar(progress:, tone:)` |
+| Tile dịch vụ | `ServiceTile(name, colorValue, iconText, size: 24/32/40/56/80, awaiting:, trial:, off:, faded:, serviceId:, subscriptionId:, logo:)` (logo đóng gói / ảnh tự chọn, xem §7) · ô "thêm tuỳ chỉnh" `GhostTile` |
+| Hàng subscription (S2, S7, list S8) | `SubscriptionRow(state: normal/awaiting/trial/cancelled, meta:, awaitingCount:, sharedCount:, amount:, amountMeta:, onTap:, onConfirm:, onCancel:, highlight:, queued:, serviceId:, subscriptionId:, progress:, progressTone:)` trong `AppGroup(dividerIndent: 68)`; vuốt trái = Xác nhận/Huỷ (haptic + action trợ năng có sẵn). Tuỳ chọn (không truyền ⇒ y như cũ): `serviceId:`/`subscriptionId:` → logo trên tile; `progress: CycleProgress.forSubscription(sub, today: today)` → thanh tiến độ kỳ 4px dưới dòng 2 (màu theo `state`: brand / trial `ink-muted` / awaiting `warning` / cancelled `line-strong`; gói **Tạm dừng** truyền `progressTone: CycleProgressTone.off`); trình đọc màn hình đọc "còn N ngày" + %; giảm chuyển động ⇒ không animate. Dùng riêng: `CycleProgressBar(progress:, tone:)` |
 | Hero tổng chi (S2, tổng tháng S8) | `SpendHero(label, amount, format, approx, yearly, onPeriodChanged, segments, leadingMeta, trailingMeta, footer)` — tự đếm số 240 ms; `SpendStrip`, `CountUpText` dùng riêng được |
 | Nút | `AppButton.primary/tonal/outline/text/danger` (+ `AppButtonKind.dangerText`), `small:` (40, pill), `expand:` (full width), `icon:`, `loading:`; FAB `AppFab`; icon 44px `AppIconButton` |
 | Chip / badge | `AppChip(selected, fit:)` (đặt trong `Wrap(spacing: 8, runSpacing: -4)`; `fit` = 4 chip chu kỳ 1 hàng) · `StatusBadge.awaiting/trial/paid` hoặc `StatusBadge(kind:, icon:, large:)` · `ShareMark(count)` |

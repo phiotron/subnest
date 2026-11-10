@@ -74,7 +74,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Pick screenshots of your store subscriptions page or receipts. Text is read on this iPhone only; nothing is uploaded.</string>
+	<string>Pick screenshots of your store subscriptions page or receipts, or a picture to use as a service logo. Everything stays on this iPhone; nothing is uploaded.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take a photo of a receipt to add a subscription. Text is read on this iPhone only; nothing is uploaded.</string>
 	<!-- Home-screen widget taps (S11): subnest://widget/…?homeWidget, read by the home_widget plugin and
