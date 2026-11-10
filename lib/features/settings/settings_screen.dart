@@ -13,12 +13,13 @@ import 'appearance_sheet.dart';
 import 'auto_backup_section.dart';
 import 'backup_actions.dart';
 import 'reminders_screen.dart';
+import 'security_section.dart';
 import 'settings_actions.dart';
 import 'settings_format.dart';
 import 'settings_platform.dart';
 import 'widgets/settings_bits.dart';
 
-/// S10 Settings (png 48, 49): Money · Reminders · Appearance · Backup · About + privacy card.
+/// S10 Settings (png 48, 49): Money · Reminders · Appearance · Data · Security · About + privacy card.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -154,6 +155,8 @@ class SettingsScreen extends ConsumerWidget {
               ],
             ),
             ListNote(l.settingsDataNote),
+            // ---- Security ----
+            const SecuritySection(),
             // ---- About ----
             SectionHeader(label: l.settingsSectionAbout),
             AppGroup(

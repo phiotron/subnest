@@ -189,7 +189,7 @@
   "settingsDeleteAll": "Delete all data",
   "settingsDeleteAllHint": "Everything, like a new install",
   "settingsDeleteAllTitle": "Delete all data?",
-  "settingsDeleteAllConfirm": "This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup. Files already backed up stay in their folder. Subnest then starts again like a new install.",
+  "settingsDeleteAllConfirm": "This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.",
   "settingsDeleteAllConfirm2": "This cannot be undone. Export a backup first if you might need it.",
   "settingsCannotUndo": "This cannot be undone",
   "settingsDeleteEverything": "Delete everything",

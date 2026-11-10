@@ -1,0 +1,19 @@
+{
+  "securitySection": "Bảo mật",
+  "securityPinLock": "Khoá mã PIN",
+  "securityPinWarning": "Nếu quên mã, cách duy nhất để dùng lại là xóa toàn bộ dữ liệu trong app.",
+  "securityEnterPin": "Nhập mã PIN",
+  "securityNewPin": "Đặt mã PIN 4 số",
+  "securityConfirmPin": "Nhập lại mã PIN",
+  "securityPinMismatch": "Hai lần nhập không khớp. Thử lại.",
+  "securityWrongPin": "Sai mã PIN",
+  "securityForgotPin": "Quên mã",
+  "securityForgotPinTitle": "Quên mã PIN?",
+  "securityForgotPinBody": "Subnest không có máy chủ nên không lấy lại được mã PIN. Bạn có thể xóa toàn bộ dữ liệu trong app để dùng lại.",
+  "securityKeypadDigit": "Số {digit}",
+  "securityKeypadBackspace": "Xóa số cuối",
+  "securityPinProgress": "Đã nhập {count} trên 4 số",
+  "securityPrivacyScreen": "Che nội dung khi chuyển app",
+  "securityPrivacyScreenNote": "Chặn chụp màn hình và ẩn nội dung trong danh sách app gần đây",
+  "securityPrivacyScreenNoteIos": "Ẩn nội dung trong màn chuyển app. iPhone không cho app chặn chụp màn hình."
+}

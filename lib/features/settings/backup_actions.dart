@@ -9,6 +9,7 @@ import '../../data/backup/backup_crypto.dart';
 import '../../data/backup/backup_service.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
+import '../lock/app_lock.dart';
 import 'auto_backup_providers.dart';
 import 'backup_password_dialogs.dart';
 import 'settings_platform.dart';
@@ -175,8 +176,8 @@ abstract final class BackupActions {
       () => ref.read(autoBackupSchedulerProvider).cancel(),
       () => ref.read(notificationServiceProvider).cancelReminders(),
       // ---- Hooks for later sessions: add the step to this list ----------------------------------
-      // [S · App lock] turn the PIN off: `ref.read(pinServiceProvider).disable()`, then invalidate
-      //   the provider that says whether the lock is on.
+      // [S · App lock] turn the PIN off (hash, salt and install id leave secure storage).
+      () => ref.read(pinServiceProvider).disable(),
       // [W · Widget] clear the home-screen widget data (e.g. `WidgetSync.clear()`), so the widget
       //   shows its empty state instead of old amounts.
     ];
@@ -188,6 +189,8 @@ abstract final class BackupActions {
       }
     }
     ref.invalidate(autoBackupStateProvider);
+    // [S · App lock] Settings switch and home-screen widget follow the PIN being gone.
+    ref.invalidate(pinEnabledProvider);
   }
 }
 

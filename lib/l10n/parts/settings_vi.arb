@@ -158,7 +158,7 @@
   "settingsDeleteAll": "Xóa toàn bộ dữ liệu",
   "settingsDeleteAllHint": "Mọi thứ, như mới cài",
   "settingsDeleteAllTitle": "Xóa toàn bộ dữ liệu?",
-  "settingsDeleteAllConfirm": "Việc này xóa mọi subscription, thanh toán, danh mục, nhãn, ngân sách và cài đặt khỏi máy này, đồng thời tắt sao lưu tự động. Các file đã sao lưu vẫn còn trong thư mục. Sau đó Subnest bắt đầu lại như mới cài.",
+  "settingsDeleteAllConfirm": "Việc này xóa mọi subscription, thanh toán, danh mục, nhãn, ngân sách và cài đặt khỏi máy này, đồng thời tắt sao lưu tự động và khoá mã PIN. Các file đã sao lưu vẫn còn trong thư mục. Sau đó Subnest bắt đầu lại như mới cài.",
   "settingsDeleteAllConfirm2": "Không thể hoàn tác. Hãy xuất bản sao lưu trước nếu có thể cần.",
   "settingsCannotUndo": "Không thể hoàn tác",
   "settingsDeleteEverything": "Xóa hết",
