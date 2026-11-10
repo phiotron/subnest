@@ -25,6 +25,12 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Flutter turns deep linking ON when this is missing: an intent's data would be pushed
+                 into go_router as a path. Off: widget taps reach Dart through home_widget and are
+                 mapped to routes in lib/features/widget_sync/widget_link.dart. -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="false"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -58,6 +64,40 @@
             android:exported="false"
             android:name=".BackupJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <!-- Home-screen widgets (S11): small / medium / large. Only the system sends them updates. -->
+        <receiver
+            android:exported="false"
+            android:label="@string/widget_small_label"
+            android:name=".SubnestWidgetSmall">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_small_info"/>
+        </receiver>
+        <receiver
+            android:exported="false"
+            android:label="@string/widget_medium_label"
+            android:name=".SubnestWidgetMedium">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_medium_info"/>
+        </receiver>
+        <receiver
+            android:exported="false"
+            android:label="@string/widget_large_label"
+            android:name=".SubnestWidgetLarge">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_large_info"/>
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

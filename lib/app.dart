@@ -5,15 +5,20 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'core/router/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/service_tile_logo.dart';
 import 'data/logos/logo_repository.dart';
 import 'data/providers.dart';
 import 'data/settings_repository.dart';
+import 'features/lock/lock_screen.dart';
+import 'features/lock/privacy_screen.dart';
+import 'features/widget_sync/widget_sync.dart';
 import 'l10n/generated/app_localizations.dart';
 
 /// Root widget: theme, locale, router, and app-lifecycle housekeeping
-/// (Trial → Active, daily rate refresh, reminder re-sync, notification deep links).
+/// (Trial → Active, daily rate refresh, reminder and home-widget re-sync, notification and widget
+/// deep links).
 class SubnestApp extends ConsumerStatefulWidget {
   const SubnestApp({super.key, required this.router});
 
@@ -25,6 +30,7 @@ class SubnestApp extends ConsumerStatefulWidget {
 
 class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObserver {
   StreamSubscription<String>? _tapSub;
+  StreamSubscription<Uri?>? _widgetTapSub;
 
   @override
   void initState() {
@@ -37,6 +43,10 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
       notifications.launchRoute = null;
       WidgetsBinding.instance.addPostFrameCallback((_) => _openDeepLink(launch));
     }
+    // Home-screen widget taps: the link that launched the app, then taps while it runs.
+    final widgetLinks = ref.read(widgetLinkSourceProvider);
+    _widgetTapSub = widgetLinks.taps.listen(_openWidgetLink);
+    WidgetsBinding.instance.addPostFrameCallback((_) async => _openWidgetLink(await widgetLinks.initialLink()));
     unawaited(_housekeeping());
   }
 
@@ -44,6 +54,7 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _tapSub?.cancel();
+    _widgetTapSub?.cancel();
     super.dispose();
   }
 
@@ -63,9 +74,25 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
 
   void _openDeepLink(String location) => widget.router.push(location);
 
+  /// A widget row opens that subscription's detail over the current screen; anything else on the
+  /// widget opens the Overview. Ignored before onboarding is done (nothing to show yet).
+  Future<void> _openWidgetLink(Uri? link) async {
+    final location = widgetRouteFor(link);
+    if (location == null || !mounted) return;
+    final settings = await ref.read(settingsProvider.future);
+    if (!settings.onboardingDone || !mounted) return;
+    if (location == AppRoutes.home) {
+      widget.router.go(location);
+    } else {
+      widget.router.push(location);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.watch(reminderSyncProvider);
+    ref.watch(widgetSyncProvider);
+    ref.watch(privacyScreenSyncProvider);
     final settings = ref.watch(settingsProvider).value;
     // English is the default for every new install; only English and Vietnamese are offered (S-90).
     final code = settings?.localeCode ?? 'en';
@@ -91,6 +118,9 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
           GlobalCupertinoLocalizations.delegate,
         ],
         routerConfig: widget.router,
+        // App lock: the lock screen covers every route (they stay mounted, hidden, underneath), so
+        // notification and widget deep links land behind it and show after the right PIN.
+        builder: (context, child) => LockGate(router: widget.router, child: child ?? const SizedBox.shrink()),
       ),
     );
   }

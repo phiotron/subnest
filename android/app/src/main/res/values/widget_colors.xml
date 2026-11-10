@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home-screen widgets (S11), light theme: design tokens surface / ink / ink-muted / brand /
+     warning-ink / warning-soft (lib/core/theme/tokens.g.dart). Dark: values-night/widget_colors.xml. -->
+<resources>
+    <color name="widget_surface">#FFFFFF</color>
+    <color name="widget_ink">#101618</color>
+    <color name="widget_ink_muted">#566065</color>
+    <color name="widget_brand">#0E6B63</color>
+    <color name="widget_warning_ink">#8A4700</color>
+    <color name="widget_warning_soft">#FFF1D6</color>
+</resources>

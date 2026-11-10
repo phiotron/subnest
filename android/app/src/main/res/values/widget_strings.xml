@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker names (system language). What the widget itself shows comes from the app
+     (lib/l10n/parts/widget_*.arb) in the app's language. -->
+<resources>
+    <string name="widget_small_label">Subnest · Next</string>
+    <string name="widget_small_description">The next subscription to be charged</string>
+    <string name="widget_medium_label">Subnest · Upcoming</string>
+    <string name="widget_medium_description">Next charges and your monthly total</string>
+    <string name="widget_large_label">Subnest · This month</string>
+    <string name="widget_large_description">Monthly total and the next charges</string>
+    <!-- Shown until the app has opened once after the widget was added. -->
+    <string name="widget_open_app">Open Subnest</string>
+</resources>

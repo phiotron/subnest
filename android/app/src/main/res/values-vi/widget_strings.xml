@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_small_label">Subnest · Tiếp theo</string>
+    <string name="widget_small_description">Gói sắp trừ tiền gần nhất</string>
+    <string name="widget_medium_label">Subnest · Sắp trả</string>
+    <string name="widget_medium_description">Các khoản sắp trả và tổng mỗi tháng</string>
+    <string name="widget_large_label">Subnest · Tháng này</string>
+    <string name="widget_large_description">Tổng mỗi tháng và các khoản sắp trả</string>
+    <string name="widget_open_app">Mở Subnest</string>
+</resources>

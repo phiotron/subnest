@@ -1,0 +1,4 @@
+/* Widget gallery texts (system language). What the widget shows comes from the app (lib/l10n/parts/widget_*.arb). */
+"widgetPickerName" = "Subnest";
+"widgetPickerDescription" = "Next charges and your monthly total";
+"widgetOpenApp" = "Open Subnest";

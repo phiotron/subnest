@@ -1,0 +1,4 @@
+/* Chữ trong bộ chọn widget (ngôn ngữ máy). Nội dung widget lấy từ app (lib/l10n/parts/widget_*.arb). */
+"widgetPickerName" = "Subnest";
+"widgetPickerDescription" = "Các khoản sắp trả và tổng mỗi tháng";
+"widgetOpenApp" = "Mở Subnest";

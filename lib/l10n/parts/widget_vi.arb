@@ -1,0 +1,16 @@
+{
+  "widgetNext": "Tiếp theo",
+  "widgetUpcoming": "Sắp trả",
+  "widgetThisMonth": "Tháng này",
+  "widgetPerMonth": "{amount}/tháng",
+  "widgetMonthlyTotalA11y": "Tổng mỗi tháng {amount}",
+  "widgetToConfirm": "{count} chờ xác nhận",
+  "widgetAwaiting": "Chờ xác nhận",
+  "widgetDueTomorrow": "Ngày mai",
+  "widgetDueInDays": "Còn {days} ngày",
+  "widgetFirstCharge": "lần trừ tiền đầu",
+  "widgetEmptyTitle": "Chưa có gói sắp trả",
+  "widgetEmptyBody": "Mở Subnest để thêm gói đầu tiên",
+  "widgetLocked": "Đã khoá bằng PIN",
+  "widgetOpenApp": "Mở Subnest"
+}
