@@ -220,10 +220,13 @@ Future<void> enableAutoBackup(BuildContext context, WidgetRef ref) async {
   }
   var time = BackupTime.defaultTime;
   if (context.mounted) {
+    // `dialOnly` like the reminder-time picker: the keyboard-input mode throws "BoxConstraints has
+    // non-normalized height constraints" when the system font size is small (Galaxy A13 at 0.8).
     final picked = await showTimePicker(
       context: context,
       initialTime: _timeOfDay(time),
       helpText: l.settingsAutoBackupTime,
+      initialEntryMode: TimePickerEntryMode.dialOnly,
     );
     if (picked != null) time = BackupTime(picked.hour, picked.minute);
   }
@@ -256,6 +259,7 @@ Future<void> pickBackupTime(BuildContext context, WidgetRef ref) async {
     context: context,
     initialTime: _timeOfDay(current),
     helpText: l.settingsAutoBackupTime,
+    initialEntryMode: TimePickerEntryMode.dialOnly, // see enable flow above
   );
   if (picked == null) return;
   final time = BackupTime(picked.hour, picked.minute);
