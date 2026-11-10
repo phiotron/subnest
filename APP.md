@@ -79,6 +79,8 @@ Kế hoạch: `C:\Users\Admin\.claude\plans\a001-subnes-sao-l-u-robust-kahan.md`
     mọi tổng = cộng dòng đã làm tròn.
 11. Chia việc: đợt 1 **B** Sao lưu + **R** Làm tròn (song song), **W** Widget sau khi B commit phần native; đợt 2 **S** Bảo mật.
     Phiên con chung thư mục `dev` (Phương chọn); không commit file l10n sinh ra — điều phối gen khi gộp.
+12. *(sau B, 2026-11-10)* Bỏ banner "Lâu rồi chưa sao lưu" và màn riêng `/settings/backup` — mọi thứ trong nhóm Dữ liệu +
+    khối Sao lưu tự động ngay trong Cài đặt (như A002). Galaxy A13 không có dữ liệu thật → được thử Khôi phục/Xoá/Quên mã trên máy.
 
 ## Kế hoạch 3 phiên điều phối
 

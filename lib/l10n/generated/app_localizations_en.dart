@@ -1520,6 +1520,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanPlaceholder => 'Coming soon';
 
   @override
+  String get securitySection => 'Security';
+
+  @override
+  String get securityPinLock => 'PIN lock';
+
+  @override
+  String get securityPinWarning =>
+      'If you forget the PIN, the only way back in is to delete all data in the app.';
+
+  @override
+  String get securityEnterPin => 'Enter PIN';
+
+  @override
+  String get securityNewPin => 'Choose a 4-digit PIN';
+
+  @override
+  String get securityConfirmPin => 'Enter the PIN again';
+
+  @override
+  String get securityPinMismatch => 'The PINs do not match. Try again.';
+
+  @override
+  String get securityWrongPin => 'Wrong PIN';
+
+  @override
+  String get securityForgotPin => 'Forgot PIN';
+
+  @override
+  String get securityForgotPinTitle => 'Forgot your PIN?';
+
+  @override
+  String get securityForgotPinBody =>
+      'Subnest has no server, so a PIN cannot be recovered. You can delete all data in the app to use it again.';
+
+  @override
+  String securityKeypadDigit(String digit) {
+    return 'Digit $digit';
+  }
+
+  @override
+  String get securityKeypadBackspace => 'Delete last digit';
+
+  @override
+  String securityPinProgress(int count) {
+    return '$count of 4 digits entered';
+  }
+
+  @override
+  String get securityPrivacyScreen => 'Hide content when switching apps';
+
+  @override
+  String get securityPrivacyScreenNote =>
+      'Blocks screenshots and hides content in the recent apps list';
+
+  @override
+  String get securityPrivacyScreenNoteIos =>
+      'Hides content in the app switcher. iPhone does not let apps block screenshots.';
+
+  @override
   String get settingsSectionMoney => 'Money';
 
   @override
@@ -1865,7 +1924,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsRestore => 'Restore from file';
 
   @override
-  String get settingsRestoreHint => 'Pick a Subnest .json backup';
+  String get settingsRestoreHint => 'Pick a Subnest backup (.subnest)';
 
   @override
   String settingsLastBackup(String date) {
@@ -1901,24 +1960,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsRestoreMerge => 'Merge';
-
-  @override
-  String get settingsRestoreMergeHint =>
-      'Add what’s missing, keep your current data';
-
-  @override
-  String get settingsRestoreReplace => 'Replace';
-
-  @override
-  String get settingsRestoreReplaceHint =>
-      'Delete current data and use the backup';
-
-  @override
-  String get settingsRestoreAction => 'Restore';
-
-  @override
   String get settingsRestoreReplaceAction => 'Replace my data';
+
+  @override
+  String get settingsRestoreReplaceNote =>
+      'Everything on this phone — subscriptions, payments, lists and settings — will be replaced by this backup. Automatic backup stays as it is.';
 
   @override
   String get settingsRestoreInvalid => 'That file isn’t a Subnest backup.';
@@ -1986,6 +2032,209 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsPrivacyNote =>
       'Your data stays on this phone. Subnest collects nothing.';
+
+  @override
+  String get settingsSectionData => 'Data';
+
+  @override
+  String get settingsDataNote =>
+      'Your data stays on this phone. Back it up before changing phones.';
+
+  @override
+  String get settingsExportBackup => 'Export backup';
+
+  @override
+  String get settingsExportBackupHint =>
+      'Encrypted .subnest file to restore later';
+
+  @override
+  String get settingsAutoBackup => 'Automatic backup';
+
+  @override
+  String get settingsAutoBackupNote =>
+      'Backs up once a day to a folder you choose. Uploading to Google Drive or Dropbox is done by that app.';
+
+  @override
+  String get settingsAutoBackupNoteIos =>
+      'Subnest only writes files to the folder you choose in the Files app, for example in iCloud Drive.';
+
+  @override
+  String get settingsAutoBackupRunsOnOpenIos =>
+      'iPhone does not let closed apps run on their own. At the time you chose, Subnest sends a notification; tap it or open the app to back up. If the time is missed, the backup catches up when you open the app, at most once a day.';
+
+  @override
+  String settingsAutoBackupFolder(String name) {
+    return 'Folder: $name';
+  }
+
+  @override
+  String get settingsAutoBackupFolderUnknown => 'Chosen folder';
+
+  @override
+  String get settingsAutoBackupLocalFolderWarningIos =>
+      'This folder may be stored only on this iPhone. If so, losing the phone means losing these files. To keep them safe, choose a folder in iCloud Drive or Google Drive.';
+
+  @override
+  String settingsAutoBackupLast(String time) {
+    return 'Last backup $time';
+  }
+
+  @override
+  String settingsAutoBackupLastUnchanged(String checked, String last) {
+    return 'Checked $checked: data unchanged, kept the earlier copy. Last backup $last.';
+  }
+
+  @override
+  String get settingsAutoBackupNever => 'No automatic backup yet';
+
+  @override
+  String settingsAutoBackupFailedAt(String time, String error) {
+    return 'Last attempt $time: $error';
+  }
+
+  @override
+  String get settingsAutoBackupErrorFolder =>
+      'folder unavailable — choose it again';
+
+  @override
+  String get settingsAutoBackupErrorOther => 'backup failed';
+
+  @override
+  String settingsAutoBackupNextToday(String time) {
+    return 'Next: today, $time';
+  }
+
+  @override
+  String settingsAutoBackupNextTomorrow(String time) {
+    return 'Next: tomorrow, $time';
+  }
+
+  @override
+  String get settingsAutoBackupNextSoon =>
+      'Due now — runs when you leave the app';
+
+  @override
+  String get settingsAutoBackupNextSoonIos =>
+      'Due now — runs when you open the app';
+
+  @override
+  String get settingsAutoBackupNow => 'Back up now';
+
+  @override
+  String get settingsAutoBackupChooseFolder => 'Choose folder';
+
+  @override
+  String get settingsAutoBackupTime => 'Backup time';
+
+  @override
+  String get settingsAutoBackupTurnOn => 'Turn on';
+
+  @override
+  String get settingsAutoBackupOffDone => 'Automatic backup turned off';
+
+  @override
+  String get settingsAutoBackupDone => 'Backup saved';
+
+  @override
+  String get settingsAutoBackupBusy => 'A backup is already running';
+
+  @override
+  String get settingsAutoBackupPickFailed => 'Couldn’t open the folder picker';
+
+  @override
+  String get settingsAutoBackupPasswordTitle =>
+      'Password for automatic backups';
+
+  @override
+  String get settingsAutoBackupPasswordWarning =>
+      'If you forget this password, the backup cannot be opened. Subnest cannot recover it.';
+
+  @override
+  String get settingsAutoBackupNotifyTitleIos => 'Allow backup reminders?';
+
+  @override
+  String get settingsAutoBackupNotifyBodyIos =>
+      'Subnest sends one reminder at your backup time. Tapping it backs up your data.';
+
+  @override
+  String get settingsAutoBackupNotifyDeniedIos =>
+      'Notifications are off. Automatic backup still runs when you open the app.';
+
+  @override
+  String get settingsAutoBackupNotificationBody =>
+      'Time to back up your subscriptions.';
+
+  @override
+  String get settingsBackupPassword => 'Password';
+
+  @override
+  String get settingsBackupPasswordConfirm => 'Repeat password';
+
+  @override
+  String get settingsBackupPasswordTooShort => 'Use at least 6 characters';
+
+  @override
+  String get settingsBackupPasswordMismatch => 'Passwords don’t match';
+
+  @override
+  String get settingsBackupPasswordWarning =>
+      'Without this password the file cannot be opened. Keep it somewhere safe.';
+
+  @override
+  String get settingsBackupProtect => 'Protect with a password';
+
+  @override
+  String get settingsBackupExportNote =>
+      'The file holds everything: subscriptions, payments, categories and settings.';
+
+  @override
+  String get settingsBackupExportAction => 'Export';
+
+  @override
+  String get settingsBackupWorking => 'Working…';
+
+  @override
+  String get settingsBackupEnterPasswordTitle => 'Enter backup password';
+
+  @override
+  String get settingsBackupEnterPasswordBody =>
+      'This backup is encrypted. Enter the password you set when exporting it.';
+
+  @override
+  String get settingsBackupWrongPassword =>
+      'Wrong password, or the file was changed';
+
+  @override
+  String get settingsBackupOpen => 'Open';
+
+  @override
+  String get settingsDeleteAll => 'Delete all data';
+
+  @override
+  String get settingsDeleteAllHint => 'Everything, like a new install';
+
+  @override
+  String get settingsDeleteAllTitle => 'Delete all data?';
+
+  @override
+  String get settingsDeleteAllConfirm =>
+      'This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.';
+
+  @override
+  String get settingsDeleteAllConfirm2 =>
+      'This cannot be undone. Export a backup first if you might need it.';
+
+  @override
+  String get settingsCannotUndo => 'This cannot be undone';
+
+  @override
+  String get settingsDeleteEverything => 'Delete everything';
+
+  @override
+  String get settingsDelete => 'Delete';
+
+  @override
+  String get settingsDeleteAllDone => 'All data deleted';
 
   @override
   String get subscriptionDetailEdit => 'Edit';
@@ -2658,4 +2907,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionFormDeleteAction => 'Delete';
+
+  @override
+  String get widgetNext => 'Next';
+
+  @override
+  String get widgetUpcoming => 'Upcoming';
+
+  @override
+  String get widgetThisMonth => 'This month';
+
+  @override
+  String widgetPerMonth(String amount) {
+    return '$amount/mo';
+  }
+
+  @override
+  String widgetMonthlyTotalA11y(String amount) {
+    return 'Monthly total $amount';
+  }
+
+  @override
+  String widgetToConfirm(int count) {
+    return '$count to confirm';
+  }
+
+  @override
+  String get widgetAwaiting => 'To confirm';
+
+  @override
+  String get widgetDueTomorrow => 'Tomorrow';
+
+  @override
+  String widgetDueInDays(String days) {
+    return 'In $days days';
+  }
+
+  @override
+  String get widgetFirstCharge => 'first charge';
+
+  @override
+  String get widgetEmptyTitle => 'No renewals yet';
+
+  @override
+  String get widgetEmptyBody => 'Open Subnest to add your first subscription';
+
+  @override
+  String get widgetLocked => 'Locked with PIN';
+
+  @override
+  String get widgetOpenApp => 'Open Subnest';
 }

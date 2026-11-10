@@ -1466,6 +1466,65 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scanPlaceholder => 'Sắp có';
 
   @override
+  String get securitySection => 'Bảo mật';
+
+  @override
+  String get securityPinLock => 'Khoá mã PIN';
+
+  @override
+  String get securityPinWarning =>
+      'Nếu quên mã, cách duy nhất để dùng lại là xóa toàn bộ dữ liệu trong app.';
+
+  @override
+  String get securityEnterPin => 'Nhập mã PIN';
+
+  @override
+  String get securityNewPin => 'Đặt mã PIN 4 số';
+
+  @override
+  String get securityConfirmPin => 'Nhập lại mã PIN';
+
+  @override
+  String get securityPinMismatch => 'Hai lần nhập không khớp. Thử lại.';
+
+  @override
+  String get securityWrongPin => 'Sai mã PIN';
+
+  @override
+  String get securityForgotPin => 'Quên mã';
+
+  @override
+  String get securityForgotPinTitle => 'Quên mã PIN?';
+
+  @override
+  String get securityForgotPinBody =>
+      'Subnest không có máy chủ nên không lấy lại được mã PIN. Bạn có thể xóa toàn bộ dữ liệu trong app để dùng lại.';
+
+  @override
+  String securityKeypadDigit(String digit) {
+    return 'Số $digit';
+  }
+
+  @override
+  String get securityKeypadBackspace => 'Xóa số cuối';
+
+  @override
+  String securityPinProgress(int count) {
+    return 'Đã nhập $count trên 4 số';
+  }
+
+  @override
+  String get securityPrivacyScreen => 'Che nội dung khi chuyển app';
+
+  @override
+  String get securityPrivacyScreenNote =>
+      'Chặn chụp màn hình và ẩn nội dung trong danh sách app gần đây';
+
+  @override
+  String get securityPrivacyScreenNoteIos =>
+      'Ẩn nội dung trong màn chuyển app. iPhone không cho app chặn chụp màn hình.';
+
+  @override
   String get settingsSectionMoney => 'Tiền';
 
   @override
@@ -1802,7 +1861,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsRestore => 'Khôi phục từ file';
 
   @override
-  String get settingsRestoreHint => 'Chọn file sao lưu .json của Subnest';
+  String get settingsRestoreHint => 'Chọn file sao lưu của Subnest (.subnest)';
 
   @override
   String settingsLastBackup(String date) {
@@ -1836,24 +1895,11 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get settingsRestoreMerge => 'Gộp';
-
-  @override
-  String get settingsRestoreMergeHint =>
-      'Thêm phần còn thiếu, giữ dữ liệu hiện tại';
-
-  @override
-  String get settingsRestoreReplace => 'Thay thế';
-
-  @override
-  String get settingsRestoreReplaceHint =>
-      'Xoá dữ liệu hiện tại và dùng bản sao lưu';
-
-  @override
-  String get settingsRestoreAction => 'Khôi phục';
-
-  @override
   String get settingsRestoreReplaceAction => 'Thay dữ liệu của tôi';
+
+  @override
+  String get settingsRestoreReplaceNote =>
+      'Mọi thứ trên máy này — subscription, thanh toán, danh sách và cài đặt — sẽ được thay bằng bản sao lưu. Sao lưu tự động giữ nguyên.';
 
   @override
   String get settingsRestoreInvalid =>
@@ -1921,6 +1967,206 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get settingsPrivacyNote =>
       'Dữ liệu của bạn chỉ nằm trên máy này. Subnest không thu thập gì.';
+
+  @override
+  String get settingsSectionData => 'Dữ liệu';
+
+  @override
+  String get settingsDataNote =>
+      'Dữ liệu của bạn nằm trên máy này. Hãy sao lưu trước khi đổi máy.';
+
+  @override
+  String get settingsExportBackup => 'Xuất bản sao lưu';
+
+  @override
+  String get settingsExportBackupHint =>
+      'File .subnest mã hóa để khôi phục sau';
+
+  @override
+  String get settingsAutoBackup => 'Sao lưu tự động';
+
+  @override
+  String get settingsAutoBackupNote =>
+      'Sao lưu mỗi ngày một lần vào thư mục bạn chọn. Việc tải lên Google Drive hay Dropbox do app đó thực hiện.';
+
+  @override
+  String get settingsAutoBackupNoteIos =>
+      'Subnest chỉ ghi file vào thư mục bạn chọn trong app Tệp, ví dụ trong iCloud Drive.';
+
+  @override
+  String get settingsAutoBackupRunsOnOpenIos =>
+      'iPhone không cho app tự chạy khi đã đóng. Đúng giờ bạn chọn, Subnest gửi thông báo; chạm vào hoặc mở app để sao lưu. Lỡ giờ thì sao lưu bù khi bạn mở app, mỗi ngày tối đa một lần.';
+
+  @override
+  String settingsAutoBackupFolder(String name) {
+    return 'Thư mục: $name';
+  }
+
+  @override
+  String get settingsAutoBackupFolderUnknown => 'Thư mục đã chọn';
+
+  @override
+  String get settingsAutoBackupLocalFolderWarningIos =>
+      'Thư mục này có thể chỉ nằm trên iPhone. Nếu vậy, mất máy là mất luôn các file này. Để giữ an toàn, hãy chọn thư mục trong iCloud Drive hoặc Google Drive.';
+
+  @override
+  String settingsAutoBackupLast(String time) {
+    return 'Sao lưu gần nhất $time';
+  }
+
+  @override
+  String settingsAutoBackupLastUnchanged(String checked, String last) {
+    return 'Đã kiểm $checked: dữ liệu không đổi, giữ bản cũ. Sao lưu gần nhất $last.';
+  }
+
+  @override
+  String get settingsAutoBackupNever => 'Chưa sao lưu tự động lần nào';
+
+  @override
+  String settingsAutoBackupFailedAt(String time, String error) {
+    return 'Lần thử gần nhất $time: $error';
+  }
+
+  @override
+  String get settingsAutoBackupErrorFolder =>
+      'không vào được thư mục — hãy chọn lại';
+
+  @override
+  String get settingsAutoBackupErrorOther => 'sao lưu thất bại';
+
+  @override
+  String settingsAutoBackupNextToday(String time) {
+    return 'Lần tới: hôm nay, $time';
+  }
+
+  @override
+  String settingsAutoBackupNextTomorrow(String time) {
+    return 'Lần tới: ngày mai, $time';
+  }
+
+  @override
+  String get settingsAutoBackupNextSoon => 'Đến giờ — sẽ chạy khi bạn rời app';
+
+  @override
+  String get settingsAutoBackupNextSoonIos =>
+      'Đến giờ — sẽ chạy khi bạn mở app';
+
+  @override
+  String get settingsAutoBackupNow => 'Sao lưu ngay';
+
+  @override
+  String get settingsAutoBackupChooseFolder => 'Chọn thư mục';
+
+  @override
+  String get settingsAutoBackupTime => 'Giờ sao lưu';
+
+  @override
+  String get settingsAutoBackupTurnOn => 'Bật';
+
+  @override
+  String get settingsAutoBackupOffDone => 'Đã tắt sao lưu tự động';
+
+  @override
+  String get settingsAutoBackupDone => 'Đã lưu bản sao lưu';
+
+  @override
+  String get settingsAutoBackupBusy => 'Đang có một lần sao lưu chạy';
+
+  @override
+  String get settingsAutoBackupPickFailed => 'Không mở được bộ chọn thư mục';
+
+  @override
+  String get settingsAutoBackupPasswordTitle => 'Mật khẩu cho sao lưu tự động';
+
+  @override
+  String get settingsAutoBackupPasswordWarning =>
+      'Quên mật khẩu này thì không mở được bản sao lưu. Subnest không khôi phục được.';
+
+  @override
+  String get settingsAutoBackupNotifyTitleIos => 'Cho phép nhắc sao lưu?';
+
+  @override
+  String get settingsAutoBackupNotifyBodyIos =>
+      'Subnest báo một lần đúng giờ sao lưu. Chạm vào để sao lưu dữ liệu.';
+
+  @override
+  String get settingsAutoBackupNotifyDeniedIos =>
+      'Thông báo đang tắt. Sao lưu tự động vẫn chạy khi bạn mở app.';
+
+  @override
+  String get settingsAutoBackupNotificationBody =>
+      'Đến giờ sao lưu các gói đăng ký.';
+
+  @override
+  String get settingsBackupPassword => 'Mật khẩu';
+
+  @override
+  String get settingsBackupPasswordConfirm => 'Nhập lại mật khẩu';
+
+  @override
+  String get settingsBackupPasswordTooShort => 'Dùng ít nhất 6 ký tự';
+
+  @override
+  String get settingsBackupPasswordMismatch => 'Mật khẩu không khớp';
+
+  @override
+  String get settingsBackupPasswordWarning =>
+      'Không có mật khẩu này thì không mở được file. Hãy giữ nó cẩn thận.';
+
+  @override
+  String get settingsBackupProtect => 'Đặt mật khẩu bảo vệ';
+
+  @override
+  String get settingsBackupExportNote =>
+      'File chứa mọi thứ: gói đăng ký, thanh toán, danh mục và cài đặt.';
+
+  @override
+  String get settingsBackupExportAction => 'Xuất';
+
+  @override
+  String get settingsBackupWorking => 'Đang xử lý…';
+
+  @override
+  String get settingsBackupEnterPasswordTitle => 'Nhập mật khẩu bản sao lưu';
+
+  @override
+  String get settingsBackupEnterPasswordBody =>
+      'Bản sao lưu này đã mã hóa. Nhập mật khẩu bạn đặt khi xuất file.';
+
+  @override
+  String get settingsBackupWrongPassword => 'Sai mật khẩu, hoặc file đã bị sửa';
+
+  @override
+  String get settingsBackupOpen => 'Mở';
+
+  @override
+  String get settingsDeleteAll => 'Xóa toàn bộ dữ liệu';
+
+  @override
+  String get settingsDeleteAllHint => 'Mọi thứ, như mới cài';
+
+  @override
+  String get settingsDeleteAllTitle => 'Xóa toàn bộ dữ liệu?';
+
+  @override
+  String get settingsDeleteAllConfirm =>
+      'Việc này xóa mọi subscription, thanh toán, danh mục, nhãn, ngân sách và cài đặt khỏi máy này, đồng thời tắt sao lưu tự động và khoá mã PIN. Các file đã sao lưu vẫn còn trong thư mục. Sau đó Subnest bắt đầu lại như mới cài.';
+
+  @override
+  String get settingsDeleteAllConfirm2 =>
+      'Không thể hoàn tác. Hãy xuất bản sao lưu trước nếu có thể cần.';
+
+  @override
+  String get settingsCannotUndo => 'Không thể hoàn tác';
+
+  @override
+  String get settingsDeleteEverything => 'Xóa hết';
+
+  @override
+  String get settingsDelete => 'Xóa';
+
+  @override
+  String get settingsDeleteAllDone => 'Đã xóa toàn bộ dữ liệu';
 
   @override
   String get subscriptionDetailEdit => 'Sửa';
@@ -2557,4 +2803,54 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get subscriptionFormDeleteAction => 'Xoá';
+
+  @override
+  String get widgetNext => 'Tiếp theo';
+
+  @override
+  String get widgetUpcoming => 'Sắp trả';
+
+  @override
+  String get widgetThisMonth => 'Tháng này';
+
+  @override
+  String widgetPerMonth(String amount) {
+    return '$amount/tháng';
+  }
+
+  @override
+  String widgetMonthlyTotalA11y(String amount) {
+    return 'Tổng mỗi tháng $amount';
+  }
+
+  @override
+  String widgetToConfirm(int count) {
+    return '$count chờ xác nhận';
+  }
+
+  @override
+  String get widgetAwaiting => 'Chờ xác nhận';
+
+  @override
+  String get widgetDueTomorrow => 'Ngày mai';
+
+  @override
+  String widgetDueInDays(String days) {
+    return 'Còn $days ngày';
+  }
+
+  @override
+  String get widgetFirstCharge => 'lần trừ tiền đầu';
+
+  @override
+  String get widgetEmptyTitle => 'Chưa có gói sắp trả';
+
+  @override
+  String get widgetEmptyBody => 'Mở Subnest để thêm gói đầu tiên';
+
+  @override
+  String get widgetLocked => 'Đã khoá bằng PIN';
+
+  @override
+  String get widgetOpenApp => 'Mở Subnest';
 }

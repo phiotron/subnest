@@ -1276,6 +1276,69 @@
   "onboardingNoThanks": "Not now",
   "scanTitle": "Scan screenshots",
   "scanPlaceholder": "Coming soon",
+  "securitySection": "Security",
+  "@securitySection": {
+    "description": "Settings: section header after Data (PIN lock, Privacy screen)."
+  },
+  "securityPinLock": "PIN lock",
+  "@securityPinLock": {
+    "description": "Settings: switch row for App lock (4-digit PIN); also the title bar of the PIN screens."
+  },
+  "securityPinWarning": "If you forget the PIN, the only way back in is to delete all data in the app.",
+  "@securityPinWarning": {
+    "description": "Under the PIN lock switch and on the first step of choosing a PIN."
+  },
+  "securityEnterPin": "Enter PIN",
+  "@securityEnterPin": {
+    "description": "Lock screen title; also when turning the PIN lock off."
+  },
+  "securityNewPin": "Choose a 4-digit PIN",
+  "securityConfirmPin": "Enter the PIN again",
+  "securityPinMismatch": "The PINs do not match. Try again.",
+  "@securityPinMismatch": {
+    "description": "Choosing a PIN: the second entry differs; the user starts over."
+  },
+  "securityWrongPin": "Wrong PIN",
+  "securityForgotPin": "Forgot PIN",
+  "@securityForgotPin": {
+    "description": "Text button at the bottom of the lock screen."
+  },
+  "securityForgotPinTitle": "Forgot your PIN?",
+  "securityForgotPinBody": "Subnest has no server, so a PIN cannot be recovered. You can delete all data in the app to use it again.",
+  "@securityForgotPinBody": {
+    "description": "Dialog from Forgot PIN; the next step is Delete all data (two more confirmations)."
+  },
+  "securityKeypadDigit": "Digit {digit}",
+  "@securityKeypadDigit": {
+    "description": "Screen reader label of a PIN keypad key.",
+    "placeholders": {
+      "digit": {
+        "type": "String"
+      }
+    }
+  },
+  "securityKeypadBackspace": "Delete last digit",
+  "@securityKeypadBackspace": {
+    "description": "Screen reader label of the PIN keypad backspace key."
+  },
+  "securityPinProgress": "{count} of 4 digits entered",
+  "@securityPinProgress": {
+    "description": "Screen reader label of the PIN dots.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securityPrivacyScreen": "Hide content when switching apps",
+  "@securityPrivacyScreen": {
+    "description": "Settings: Privacy screen switch (independent of PIN lock, off by default)."
+  },
+  "securityPrivacyScreenNote": "Blocks screenshots and hides content in the recent apps list",
+  "@securityPrivacyScreenNote": {
+    "description": "Under the Privacy screen switch on Android."
+  },
+  "securityPrivacyScreenNoteIos": "Hides content in the app switcher. iPhone does not let apps block screenshots.",
   "settingsSectionMoney": "Money",
   "settingsPrimaryCurrency": "Main currency",
   "settingsSearchCurrency": "Search currency or country",
@@ -1504,7 +1567,7 @@
   "settingsExported": "Saved — keep it somewhere safe",
   "settingsExportFailed": "Couldn’t create the file. Please try again.",
   "settingsRestore": "Restore from file",
-  "settingsRestoreHint": "Pick a Subnest .json backup",
+  "settingsRestoreHint": "Pick a Subnest backup (.subnest)",
   "settingsLastBackup": "Last backup: {date}",
   "@settingsLastBackup": {
     "placeholders": {
@@ -1537,12 +1600,8 @@
       }
     }
   },
-  "settingsRestoreMerge": "Merge",
-  "settingsRestoreMergeHint": "Add what’s missing, keep your current data",
-  "settingsRestoreReplace": "Replace",
-  "settingsRestoreReplaceHint": "Delete current data and use the backup",
-  "settingsRestoreAction": "Restore",
   "settingsRestoreReplaceAction": "Replace my data",
+  "settingsRestoreReplaceNote": "Everything on this phone — subscriptions, payments, lists and settings — will be replaced by this backup. Automatic backup stays as it is.",
   "settingsRestoreInvalid": "That file isn’t a Subnest backup.",
   "settingsRestoreFailed": "Couldn’t restore that backup. Nothing was changed.",
   "settingsRestoreDone": "{count, plural, =1{Restored 1 subscription} other{Restored {count} subscriptions}}",
@@ -1581,6 +1640,111 @@
   "settingsLinkFailed": "Couldn’t open the page.",
   "settingsLegalese": "Made by Phiotron. Subnest keeps your data on this device.",
   "settingsPrivacyNote": "Your data stays on this phone. Subnest collects nothing.",
+  "settingsSectionData": "Data",
+  "settingsDataNote": "Your data stays on this phone. Back it up before changing phones.",
+  "settingsExportBackup": "Export backup",
+  "settingsExportBackupHint": "Encrypted .subnest file to restore later",
+  "settingsAutoBackup": "Automatic backup",
+  "settingsAutoBackupNote": "Backs up once a day to a folder you choose. Uploading to Google Drive or Dropbox is done by that app.",
+  "settingsAutoBackupNoteIos": "Subnest only writes files to the folder you choose in the Files app, for example in iCloud Drive.",
+  "settingsAutoBackupRunsOnOpenIos": "iPhone does not let closed apps run on their own. At the time you chose, Subnest sends a notification; tap it or open the app to back up. If the time is missed, the backup catches up when you open the app, at most once a day.",
+  "settingsAutoBackupFolder": "Folder: {name}",
+  "@settingsAutoBackupFolder": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupFolderUnknown": "Chosen folder",
+  "settingsAutoBackupLocalFolderWarningIos": "This folder may be stored only on this iPhone. If so, losing the phone means losing these files. To keep them safe, choose a folder in iCloud Drive or Google Drive.",
+  "settingsAutoBackupLast": "Last backup {time}",
+  "@settingsAutoBackupLast": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupLastUnchanged": "Checked {checked}: data unchanged, kept the earlier copy. Last backup {last}.",
+  "@settingsAutoBackupLastUnchanged": {
+    "placeholders": {
+      "checked": {
+        "type": "String"
+      },
+      "last": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupNever": "No automatic backup yet",
+  "settingsAutoBackupFailedAt": "Last attempt {time}: {error}",
+  "@settingsAutoBackupFailedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupErrorFolder": "folder unavailable — choose it again",
+  "settingsAutoBackupErrorOther": "backup failed",
+  "settingsAutoBackupNextToday": "Next: today, {time}",
+  "@settingsAutoBackupNextToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupNextTomorrow": "Next: tomorrow, {time}",
+  "@settingsAutoBackupNextTomorrow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupNextSoon": "Due now — runs when you leave the app",
+  "settingsAutoBackupNextSoonIos": "Due now — runs when you open the app",
+  "settingsAutoBackupNow": "Back up now",
+  "settingsAutoBackupChooseFolder": "Choose folder",
+  "settingsAutoBackupTime": "Backup time",
+  "settingsAutoBackupTurnOn": "Turn on",
+  "settingsAutoBackupOffDone": "Automatic backup turned off",
+  "settingsAutoBackupDone": "Backup saved",
+  "settingsAutoBackupBusy": "A backup is already running",
+  "settingsAutoBackupPickFailed": "Couldn’t open the folder picker",
+  "settingsAutoBackupPasswordTitle": "Password for automatic backups",
+  "settingsAutoBackupPasswordWarning": "If you forget this password, the backup cannot be opened. Subnest cannot recover it.",
+  "settingsAutoBackupNotifyTitleIos": "Allow backup reminders?",
+  "settingsAutoBackupNotifyBodyIos": "Subnest sends one reminder at your backup time. Tapping it backs up your data.",
+  "settingsAutoBackupNotifyDeniedIos": "Notifications are off. Automatic backup still runs when you open the app.",
+  "settingsAutoBackupNotificationBody": "Time to back up your subscriptions.",
+  "settingsBackupPassword": "Password",
+  "settingsBackupPasswordConfirm": "Repeat password",
+  "settingsBackupPasswordTooShort": "Use at least 6 characters",
+  "settingsBackupPasswordMismatch": "Passwords don’t match",
+  "settingsBackupPasswordWarning": "Without this password the file cannot be opened. Keep it somewhere safe.",
+  "settingsBackupProtect": "Protect with a password",
+  "settingsBackupExportNote": "The file holds everything: subscriptions, payments, categories and settings.",
+  "settingsBackupExportAction": "Export",
+  "settingsBackupWorking": "Working…",
+  "settingsBackupEnterPasswordTitle": "Enter backup password",
+  "settingsBackupEnterPasswordBody": "This backup is encrypted. Enter the password you set when exporting it.",
+  "settingsBackupWrongPassword": "Wrong password, or the file was changed",
+  "settingsBackupOpen": "Open",
+  "settingsDeleteAll": "Delete all data",
+  "settingsDeleteAllHint": "Everything, like a new install",
+  "settingsDeleteAllTitle": "Delete all data?",
+  "settingsDeleteAllConfirm": "This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.",
+  "settingsDeleteAllConfirm2": "This cannot be undone. Export a backup first if you might need it.",
+  "settingsCannotUndo": "This cannot be undone",
+  "settingsDeleteEverything": "Delete everything",
+  "settingsDelete": "Delete",
+  "settingsDeleteAllDone": "All data deleted",
   "subscriptionDetailEdit": "Edit",
   "subscriptionDetailStatusActive": "Active",
   "subscriptionDetailStatusTrial": "{days, plural, =0{Trial · ends today} =1{Trial · 1 day left} other{Trial · {days} days left}}",
@@ -2117,5 +2281,72 @@
     }
   },
   "subscriptionFormDeleteBody": "Its payment history goes too. This can't be undone.",
-  "subscriptionFormDeleteAction": "Delete"
+  "subscriptionFormDeleteAction": "Delete",
+  "widgetNext": "Next",
+  "@widgetNext": {
+    "description": "Home widget (small): eyebrow above the next subscription to be charged."
+  },
+  "widgetUpcoming": "Upcoming",
+  "@widgetUpcoming": {
+    "description": "Home widget (medium): title of the list of next charges."
+  },
+  "widgetThisMonth": "This month",
+  "@widgetThisMonth": {
+    "description": "Home widget (large): title above the monthly total."
+  },
+  "widgetPerMonth": "{amount}/mo",
+  "@widgetPerMonth": {
+    "description": "Home widget (medium): monthly total with a short 'per month'.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetMonthlyTotalA11y": "Monthly total {amount}",
+  "@widgetMonthlyTotalA11y": {
+    "description": "Home widget: screen reader label of the monthly total.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetToConfirm": "{count} to confirm",
+  "@widgetToConfirm": {
+    "description": "Home widget (large): badge with the number of Billing periods waiting for confirmation.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "widgetAwaiting": "To confirm",
+  "@widgetAwaiting": {
+    "description": "Home widget: the Due date has come and the payment waits for the user."
+  },
+  "widgetDueTomorrow": "Tomorrow",
+  "widgetDueInDays": "In {days} days",
+  "@widgetDueInDays": {
+    "description": "Home widget: days left until the Due date (2 or more). The widget fills {days} itself, so it stays right after midnight.",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetFirstCharge": "first charge",
+  "@widgetFirstCharge": {
+    "description": "Home widget (small): after the days left, when the subscription is a Trial."
+  },
+  "widgetEmptyTitle": "No renewals yet",
+  "widgetEmptyBody": "Open Subnest to add your first subscription",
+  "widgetLocked": "Locked with PIN",
+  "@widgetLocked": {
+    "description": "Home widget when App lock is on: the only text shown (no names, no amounts)."
+  },
+  "widgetOpenApp": "Open Subnest",
+  "@widgetOpenApp": {
+    "description": "Home widget: screen reader label of the parts that open the Overview."
+  }
 }

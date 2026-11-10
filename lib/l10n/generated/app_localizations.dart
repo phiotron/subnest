@@ -2114,6 +2114,108 @@ abstract class AppLocalizations {
   /// **'Coming soon'**
   String get scanPlaceholder;
 
+  /// Settings: section header after Data (PIN lock, Privacy screen).
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get securitySection;
+
+  /// Settings: switch row for App lock (4-digit PIN); also the title bar of the PIN screens.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN lock'**
+  String get securityPinLock;
+
+  /// Under the PIN lock switch and on the first step of choosing a PIN.
+  ///
+  /// In en, this message translates to:
+  /// **'If you forget the PIN, the only way back in is to delete all data in the app.'**
+  String get securityPinWarning;
+
+  /// Lock screen title; also when turning the PIN lock off.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter PIN'**
+  String get securityEnterPin;
+
+  /// No description provided for @securityNewPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a 4-digit PIN'**
+  String get securityNewPin;
+
+  /// No description provided for @securityConfirmPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the PIN again'**
+  String get securityConfirmPin;
+
+  /// Choosing a PIN: the second entry differs; the user starts over.
+  ///
+  /// In en, this message translates to:
+  /// **'The PINs do not match. Try again.'**
+  String get securityPinMismatch;
+
+  /// No description provided for @securityWrongPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong PIN'**
+  String get securityWrongPin;
+
+  /// Text button at the bottom of the lock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot PIN'**
+  String get securityForgotPin;
+
+  /// No description provided for @securityForgotPinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your PIN?'**
+  String get securityForgotPinTitle;
+
+  /// Dialog from Forgot PIN; the next step is Delete all data (two more confirmations).
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest has no server, so a PIN cannot be recovered. You can delete all data in the app to use it again.'**
+  String get securityForgotPinBody;
+
+  /// Screen reader label of a PIN keypad key.
+  ///
+  /// In en, this message translates to:
+  /// **'Digit {digit}'**
+  String securityKeypadDigit(String digit);
+
+  /// Screen reader label of the PIN keypad backspace key.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete last digit'**
+  String get securityKeypadBackspace;
+
+  /// Screen reader label of the PIN dots.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 4 digits entered'**
+  String securityPinProgress(int count);
+
+  /// Settings: Privacy screen switch (independent of PIN lock, off by default).
+  ///
+  /// In en, this message translates to:
+  /// **'Hide content when switching apps'**
+  String get securityPrivacyScreen;
+
+  /// Under the Privacy screen switch on Android.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocks screenshots and hides content in the recent apps list'**
+  String get securityPrivacyScreenNote;
+
+  /// No description provided for @securityPrivacyScreenNoteIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Hides content in the app switcher. iPhone does not let apps block screenshots.'**
+  String get securityPrivacyScreenNoteIos;
+
   /// No description provided for @settingsSectionMoney.
   ///
   /// In en, this message translates to:
@@ -2615,7 +2717,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRestoreHint.
   ///
   /// In en, this message translates to:
-  /// **'Pick a Subnest .json backup'**
+  /// **'Pick a Subnest backup (.subnest)'**
   String get settingsRestoreHint;
 
   /// No description provided for @settingsLastBackup.
@@ -2648,41 +2750,17 @@ abstract class AppLocalizations {
   /// **'It holds {subs, plural, =1{1 subscription} other{{subs} subscriptions}} and {payments, plural, =1{1 payment} other{{payments} payments}}.'**
   String settingsRestoreHolds(int subs, int payments);
 
-  /// No description provided for @settingsRestoreMerge.
-  ///
-  /// In en, this message translates to:
-  /// **'Merge'**
-  String get settingsRestoreMerge;
-
-  /// No description provided for @settingsRestoreMergeHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Add what’s missing, keep your current data'**
-  String get settingsRestoreMergeHint;
-
-  /// No description provided for @settingsRestoreReplace.
-  ///
-  /// In en, this message translates to:
-  /// **'Replace'**
-  String get settingsRestoreReplace;
-
-  /// No description provided for @settingsRestoreReplaceHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete current data and use the backup'**
-  String get settingsRestoreReplaceHint;
-
-  /// No description provided for @settingsRestoreAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Restore'**
-  String get settingsRestoreAction;
-
   /// No description provided for @settingsRestoreReplaceAction.
   ///
   /// In en, this message translates to:
   /// **'Replace my data'**
   String get settingsRestoreReplaceAction;
+
+  /// No description provided for @settingsRestoreReplaceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything on this phone — subscriptions, payments, lists and settings — will be replaced by this backup. Automatic backup stays as it is.'**
+  String get settingsRestoreReplaceNote;
 
   /// No description provided for @settingsRestoreInvalid.
   ///
@@ -2785,6 +2863,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your data stays on this phone. Subnest collects nothing.'**
   String get settingsPrivacyNote;
+
+  /// No description provided for @settingsSectionData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get settingsSectionData;
+
+  /// No description provided for @settingsDataNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data stays on this phone. Back it up before changing phones.'**
+  String get settingsDataNote;
+
+  /// No description provided for @settingsExportBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Export backup'**
+  String get settingsExportBackup;
+
+  /// No description provided for @settingsExportBackupHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted .subnest file to restore later'**
+  String get settingsExportBackupHint;
+
+  /// No description provided for @settingsAutoBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup'**
+  String get settingsAutoBackup;
+
+  /// No description provided for @settingsAutoBackupNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Backs up once a day to a folder you choose. Uploading to Google Drive or Dropbox is done by that app.'**
+  String get settingsAutoBackupNote;
+
+  /// No description provided for @settingsAutoBackupNoteIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest only writes files to the folder you choose in the Files app, for example in iCloud Drive.'**
+  String get settingsAutoBackupNoteIos;
+
+  /// No description provided for @settingsAutoBackupRunsOnOpenIos.
+  ///
+  /// In en, this message translates to:
+  /// **'iPhone does not let closed apps run on their own. At the time you chose, Subnest sends a notification; tap it or open the app to back up. If the time is missed, the backup catches up when you open the app, at most once a day.'**
+  String get settingsAutoBackupRunsOnOpenIos;
+
+  /// No description provided for @settingsAutoBackupFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder: {name}'**
+  String settingsAutoBackupFolder(String name);
+
+  /// No description provided for @settingsAutoBackupFolderUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Chosen folder'**
+  String get settingsAutoBackupFolderUnknown;
+
+  /// No description provided for @settingsAutoBackupLocalFolderWarningIos.
+  ///
+  /// In en, this message translates to:
+  /// **'This folder may be stored only on this iPhone. If so, losing the phone means losing these files. To keep them safe, choose a folder in iCloud Drive or Google Drive.'**
+  String get settingsAutoBackupLocalFolderWarningIos;
+
+  /// No description provided for @settingsAutoBackupLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup {time}'**
+  String settingsAutoBackupLast(String time);
+
+  /// No description provided for @settingsAutoBackupLastUnchanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked {checked}: data unchanged, kept the earlier copy. Last backup {last}.'**
+  String settingsAutoBackupLastUnchanged(String checked, String last);
+
+  /// No description provided for @settingsAutoBackupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'No automatic backup yet'**
+  String get settingsAutoBackupNever;
+
+  /// No description provided for @settingsAutoBackupFailedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Last attempt {time}: {error}'**
+  String settingsAutoBackupFailedAt(String time, String error);
+
+  /// No description provided for @settingsAutoBackupErrorFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'folder unavailable — choose it again'**
+  String get settingsAutoBackupErrorFolder;
+
+  /// No description provided for @settingsAutoBackupErrorOther.
+  ///
+  /// In en, this message translates to:
+  /// **'backup failed'**
+  String get settingsAutoBackupErrorOther;
+
+  /// No description provided for @settingsAutoBackupNextToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: today, {time}'**
+  String settingsAutoBackupNextToday(String time);
+
+  /// No description provided for @settingsAutoBackupNextTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: tomorrow, {time}'**
+  String settingsAutoBackupNextTomorrow(String time);
+
+  /// No description provided for @settingsAutoBackupNextSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Due now — runs when you leave the app'**
+  String get settingsAutoBackupNextSoon;
+
+  /// No description provided for @settingsAutoBackupNextSoonIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Due now — runs when you open the app'**
+  String get settingsAutoBackupNextSoonIos;
+
+  /// No description provided for @settingsAutoBackupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get settingsAutoBackupNow;
+
+  /// No description provided for @settingsAutoBackupChooseFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose folder'**
+  String get settingsAutoBackupChooseFolder;
+
+  /// No description provided for @settingsAutoBackupTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup time'**
+  String get settingsAutoBackupTime;
+
+  /// No description provided for @settingsAutoBackupTurnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get settingsAutoBackupTurnOn;
+
+  /// No description provided for @settingsAutoBackupOffDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup turned off'**
+  String get settingsAutoBackupOffDone;
+
+  /// No description provided for @settingsAutoBackupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get settingsAutoBackupDone;
+
+  /// No description provided for @settingsAutoBackupBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'A backup is already running'**
+  String get settingsAutoBackupBusy;
+
+  /// No description provided for @settingsAutoBackupPickFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t open the folder picker'**
+  String get settingsAutoBackupPickFailed;
+
+  /// No description provided for @settingsAutoBackupPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Password for automatic backups'**
+  String get settingsAutoBackupPasswordTitle;
+
+  /// No description provided for @settingsAutoBackupPasswordWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'If you forget this password, the backup cannot be opened. Subnest cannot recover it.'**
+  String get settingsAutoBackupPasswordWarning;
+
+  /// No description provided for @settingsAutoBackupNotifyTitleIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow backup reminders?'**
+  String get settingsAutoBackupNotifyTitleIos;
+
+  /// No description provided for @settingsAutoBackupNotifyBodyIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest sends one reminder at your backup time. Tapping it backs up your data.'**
+  String get settingsAutoBackupNotifyBodyIos;
+
+  /// No description provided for @settingsAutoBackupNotifyDeniedIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off. Automatic backup still runs when you open the app.'**
+  String get settingsAutoBackupNotifyDeniedIos;
+
+  /// No description provided for @settingsAutoBackupNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to back up your subscriptions.'**
+  String get settingsAutoBackupNotificationBody;
+
+  /// No description provided for @settingsBackupPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get settingsBackupPassword;
+
+  /// No description provided for @settingsBackupPasswordConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat password'**
+  String get settingsBackupPasswordConfirm;
+
+  /// No description provided for @settingsBackupPasswordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 6 characters'**
+  String get settingsBackupPasswordTooShort;
+
+  /// No description provided for @settingsBackupPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords don’t match'**
+  String get settingsBackupPasswordMismatch;
+
+  /// No description provided for @settingsBackupPasswordWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Without this password the file cannot be opened. Keep it somewhere safe.'**
+  String get settingsBackupPasswordWarning;
+
+  /// No description provided for @settingsBackupProtect.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect with a password'**
+  String get settingsBackupProtect;
+
+  /// No description provided for @settingsBackupExportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The file holds everything: subscriptions, payments, categories and settings.'**
+  String get settingsBackupExportNote;
+
+  /// No description provided for @settingsBackupExportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get settingsBackupExportAction;
+
+  /// No description provided for @settingsBackupWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Working…'**
+  String get settingsBackupWorking;
+
+  /// No description provided for @settingsBackupEnterPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter backup password'**
+  String get settingsBackupEnterPasswordTitle;
+
+  /// No description provided for @settingsBackupEnterPasswordBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This backup is encrypted. Enter the password you set when exporting it.'**
+  String get settingsBackupEnterPasswordBody;
+
+  /// No description provided for @settingsBackupWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong password, or the file was changed'**
+  String get settingsBackupWrongPassword;
+
+  /// No description provided for @settingsBackupOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get settingsBackupOpen;
+
+  /// No description provided for @settingsDeleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data'**
+  String get settingsDeleteAll;
+
+  /// No description provided for @settingsDeleteAllHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything, like a new install'**
+  String get settingsDeleteAllHint;
+
+  /// No description provided for @settingsDeleteAllTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data?'**
+  String get settingsDeleteAllTitle;
+
+  /// No description provided for @settingsDeleteAllConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.'**
+  String get settingsDeleteAllConfirm;
+
+  /// No description provided for @settingsDeleteAllConfirm2.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone. Export a backup first if you might need it.'**
+  String get settingsDeleteAllConfirm2;
+
+  /// No description provided for @settingsCannotUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone'**
+  String get settingsCannotUndo;
+
+  /// No description provided for @settingsDeleteEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete everything'**
+  String get settingsDeleteEverything;
+
+  /// No description provided for @settingsDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get settingsDelete;
+
+  /// No description provided for @settingsDeleteAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All data deleted'**
+  String get settingsDeleteAllDone;
 
   /// No description provided for @subscriptionDetailEdit.
   ///
@@ -3721,6 +4141,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get subscriptionFormDeleteAction;
+
+  /// Home widget (small): eyebrow above the next subscription to be charged.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get widgetNext;
+
+  /// Home widget (medium): title of the list of next charges.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get widgetUpcoming;
+
+  /// Home widget (large): title above the monthly total.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get widgetThisMonth;
+
+  /// Home widget (medium): monthly total with a short 'per month'.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/mo'**
+  String widgetPerMonth(String amount);
+
+  /// Home widget: screen reader label of the monthly total.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly total {amount}'**
+  String widgetMonthlyTotalA11y(String amount);
+
+  /// Home widget (large): badge with the number of Billing periods waiting for confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} to confirm'**
+  String widgetToConfirm(int count);
+
+  /// Home widget: the Due date has come and the payment waits for the user.
+  ///
+  /// In en, this message translates to:
+  /// **'To confirm'**
+  String get widgetAwaiting;
+
+  /// No description provided for @widgetDueTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get widgetDueTomorrow;
+
+  /// Home widget: days left until the Due date (2 or more). The widget fills {days} itself, so it stays right after midnight.
+  ///
+  /// In en, this message translates to:
+  /// **'In {days} days'**
+  String widgetDueInDays(String days);
+
+  /// Home widget (small): after the days left, when the subscription is a Trial.
+  ///
+  /// In en, this message translates to:
+  /// **'first charge'**
+  String get widgetFirstCharge;
+
+  /// No description provided for @widgetEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No renewals yet'**
+  String get widgetEmptyTitle;
+
+  /// No description provided for @widgetEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Subnest to add your first subscription'**
+  String get widgetEmptyBody;
+
+  /// Home widget when App lock is on: the only text shown (no names, no amounts).
+  ///
+  /// In en, this message translates to:
+  /// **'Locked with PIN'**
+  String get widgetLocked;
+
+  /// Home widget: screen reader label of the parts that open the Overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Subnest'**
+  String get widgetOpenApp;
 }
 
 class _AppLocalizationsDelegate
