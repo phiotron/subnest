@@ -60,9 +60,51 @@ UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like 
 #   'none'              -> no bundled logo (monogram)            e.g. a parent-company logo only
 #   'https://...'       -> this exact image URL
 #   {'itunes': 123}     -> App Store app id (icon of that app)
-#   {'domain': 'x.com'} -> look at this website instead of the Catalog logoDomain
-#   {'term': 'name'}    -> App Store search with this name (still strict match)
-OVERRIDES: dict[str, object] = {}
+#   {'term': 'name'}    -> App Store search with this name (still strict match); + 'country': 'au'
+#   {'domain': 'x.com'} -> skip the App Store, use this website (then Google favicon) instead
+OVERRIDES: dict[str, object] = {
+    # Wrong App Store match (same name, other app) or parent-company logo — reviewed 2026-11-10.
+    'stan': {'itunes': 948095331, 'country': 'au'},
+    'microsoft-copilot-pro': {'itunes': 541164041},
+    'microsoft-365': {'itunes': 541164041},
+    'onedrive': {'itunes': 477537958},
+    'claude-team': {'itunes': 6473753684},
+    'beautiful-ai': {'domain': 'beautiful.ai'},
+    'apple-arcade': {'itunes': 6744464675},  # Apple Games (home of Arcade), not the Apple logo
+    'apple-one': 'none',  # bundle of Apple services; matched Apple TV
+    'fitbit-premium': {'itunes': 462638897},
+    'glo': {'itunes': 1023475268},
+    'verizon': {'itunes': 416023011},
+    # Missing after the first run (rate-limited search, no own app, or site blocks bots).
+    'clip-tv': {'itunes': 6529556711, 'country': 'vn'},
+    'spotify-audiobooks': {'itunes': 324684580},
+    'zcloud': {'itunes': 579523206, 'country': 'vn'},
+    'private-internet-access': {'itunes': 955626407},
+    'windscribe': {'itunes': 1129435228},
+    'cloudflare-warp': {'itunes': 1423538627},
+    'epic-games': {'itunes': 6483539426},
+    'pubg-mobile': {'itunes': 1330123889},
+    'free-fire': {'itunes': 1300146617},
+    'kindle-unlimited': {'itunes': 302584613},
+    'wondery-plus': {'domain': 'wondery.com'},
+    'insight-timer': {'itunes': 337472899},
+    'fpt-internet': {'itunes': 1144417173, 'country': 'vn'},
+    'spectrum': {'itunes': 942608209},
+    'amazon-prime': {'itunes': 297606951},
+    'doordash-dashpass': {'itunes': 719972451},
+    'dollar-shave-club': {'domain': 'dollarshaveclub.com'},
+    'viettel-mobile': {'domain': 'vietteltelecom.vn'},
+    'viettel-internet': {'domain': 'vietteltelecom.vn'},
+    # No usable official image without a key → monogram.
+    'k-plus': 'none',
+    'google-workspace': 'none',
+    'google-play-pass': 'none',
+    'geforce-now': 'none',
+    'world-of-warcraft': 'none',
+    'eve-online': 'none',
+    'elder-scrolls-online': 'none',
+    'fallout-1st': 'none',
+}
 
 # Words dropped from a service name before matching an App Store app name.
 _SUFFIXES = {
@@ -190,12 +232,13 @@ def _app_core(track: str) -> str:
     return _core(re.split(r'\s[-–—|:]\s|:\s', track)[0])
 
 
-def from_app_store(service: dict, term: str | None = None, app_id: int | None = None) -> tuple[Image.Image, str] | None:
+def from_app_store(service: dict, term: str | None = None, app_id: int | None = None,
+                   country: str | None = None) -> tuple[Image.Image, str] | None:
     if app_id is not None:
-        results = itunes({'_path': 'lookup', 'id': str(app_id)})
+        results = itunes({'_path': 'lookup', 'id': str(app_id), 'country': country or 'us'})
         picked = results[0] if results else None
     else:
-        country = 'vn' if service.get('market') == 'vn' else 'us'
+        country = country or ('vn' if service.get('market') == 'vn' else 'us')
         core = _core(term or service['name'])
         stem = service.get('logoDomain', '').split('.')[0].replace('-', '')
         results = itunes({'term': term or service['name'], 'entity': 'software', 'limit': '10', 'country': country})
@@ -322,14 +365,16 @@ def fetch_one(service: dict) -> tuple[str, dict]:
         got = try_image(o, 96)
         result, kind = ((got[0], o), 'manual') if got else (None, '')
     elif isinstance(o, dict) and 'itunes' in o:
-        result, kind = from_app_store(service, app_id=int(o['itunes'])), 'appstore'
+        result, kind = from_app_store(service, app_id=int(o['itunes']), country=o.get('country')), 'appstore'
     elif isinstance(o, dict) and 'term' in o:
-        result, kind = from_app_store(service, term=str(o['term'])), 'appstore'
+        result, kind = from_app_store(service, term=str(o['term']), country=o.get('country')), 'appstore'
     elif isinstance(o, dict) and 'domain' in o:
         domain = str(o['domain'])
     if result is None and not isinstance(o, (str,)) and not (isinstance(o, dict) and ('itunes' in o or 'term' in o)):
         steps = [('appstore', lambda: from_app_store(service)), ('website', lambda: from_website(domain)),
                  ('google-favicon', lambda: from_google(domain))]
+        if isinstance(o, dict) and 'domain' in o:
+            steps = steps[1:]
         for k, fn in steps:
             if k != 'appstore' and not domain:
                 continue

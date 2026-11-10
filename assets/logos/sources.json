@@ -1,0 +1,2502 @@
+{
+ "1password": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/32/86/4d/32864d15-d7db-8869-37dd-6f84c020d104/AppIcon-0-0-1x_U007epad-0-8-0-P3-85-220.png/256x256bb.png  (App Store: 1Password: Password Manager, id 1511601750)",
+  "note": ""
+ },
+ "abcmouse": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/74/7e/7a/747e7aa6-f7a1-a735-b5cc-13b7b255166f/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: ABCmouse: Kids Learning Games, id 6460300848)",
+  "note": ""
+ },
+ "acorn-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/22/93/68/22936840-60e1-6db1-89e1-8c86951f39d8/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Acorn TV: Brilliant Mysteries, id 896014310)",
+  "note": ""
+ },
+ "adobe-acrobat": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e6/f2/69/e6f269c4-2ab6-5fcb-769b-29ae73de8773/EchoSign_AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Adobe Acrobat Sign, id 481082197)",
+  "note": ""
+ },
+ "adobe-cc": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/84/11/fb/8411fbee-f068-1351-3917-708646eb310f/AppIconSpark-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/256x256bb.png  (App Store: Adobe Express: Create Anything, id 1051937863)",
+  "note": ""
+ },
+ "adobe-express": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/84/11/fb/8411fbee-f068-1351-3917-708646eb310f/AppIconSpark-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/256x256bb.png  (App Store: Adobe Express: Create Anything, id 1051937863)",
+  "note": ""
+ },
+ "airalo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/34/cc/f3/34ccf38c-e043-885e-339a-75514051541d/AppIcon-0-0-1x_U007ephone-0-1-sRGB-85-220.png/256x256bb.png  (App Store: Airalo: eSIM for travel & data, id 1475911720)",
+  "note": ""
+ },
+ "airtable": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/09/8c/5f/098c5f19-27f1-146a-34a7-4323154e0044/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Airtable, id 914172636)",
+  "note": ""
+ },
+ "alltrails": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ad/2b/b4/ad2bb40d-cf0a-a7b6-3615-4e62b9149cd0/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: AllTrails: Hike, Bike & Run, id 405075943)",
+  "note": ""
+ },
+ "amazon-luna": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=luna.amazon.com&sz=256",
+  "note": ""
+ },
+ "amazon-music": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8c/47/c8/8c47c833-4da7-ec2c-9d60-63ccfe28f301/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Amazon Music: Songs & Podcasts, id 510855668)",
+  "note": ""
+ },
+ "amazon-photos": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/49/d1/9b/49d19b5f-94ff-8b87-612e-1c6868c4d5b7/AppIconRelease-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Amazon Photos: Photo & Video, id 621574163)",
+  "note": ""
+ },
+ "amazon-prime": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/87/2c/05/872c0572-ddd5-ee40-23af-41860e79bf16/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Amazon Shopping, id 297606951)",
+  "note": ""
+ },
+ "amc-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e9/b8/4f/e9b84f89-7d63-8ae3-6550-35d12fa51acd/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: AMC+ | TV Shows & Movies, id 1578728899)",
+  "note": ""
+ },
+ "anghami": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ca/b1/0c/cab10cae-c695-7ee8-c3f0-9431729d4638/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Anghami: Play Music & Podcasts, id 545395155)",
+  "note": ""
+ },
+ "anthropic-api": {
+  "kind": "website",
+  "url": "https://platform.claude.com/images/claude-platform-app-icon-512.png",
+  "note": ""
+ },
+ "anytime-fitness": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=anytimefitness.com&sz=256",
+  "note": ""
+ },
+ "apple-arcade": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/82/70/ae/8270ae5e-d29e-923f-3f7c-3271516cc443/gamesCalistoga-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Apple Games, id 6744464675)",
+  "note": ""
+ },
+ "apple-fitness-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5b/48/75/5b487566-14e4-804f-609b-1a57e7d69c78/fitnessCalistoga-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Apple Fitness, id 1208224953)",
+  "note": ""
+ },
+ "apple-music": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/45/38/d5453893-7719-0067-ed45-1de44d0d8eb9/musicValkyrie-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Apple Music, id 1108187390)",
+  "note": ""
+ },
+ "apple-music-classical": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8b/bc/44/8bbc44fd-a002-8eb9-ad68-b52c261f9c64/AppIcon-0-1x_U007epad-0-0-0-1-0-0-85-220-0.png/256x256bb.png  (App Store: Apple Music Classical, id 1598433714)",
+  "note": ""
+ },
+ "apple-news-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/69/d7/ed/69d7ed5e-45ca-d921-a7ad-cda01b48f55d/newsCalistoga-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Apple News, id 1066498020)",
+  "note": ""
+ },
+ "apple-one": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "apple-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a2/74/61/a274610a-1537-0429-df1b-afacfad5a478/tvCalistoga-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Apple TV, id 1174078549)",
+  "note": ""
+ },
+ "arlo-secure": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/86/7a/03/867a0383-6123-690c-5c55-8766c94bb17f/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/256x256bb.png  (App Store: Arlo Secure: Home Security, id 1459289784)",
+  "note": ""
+ },
+ "asana": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/3a/f8/a53af856-1d2a-275e-7675-1ce14714c9c0/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Asana: Work Management, id 489969512)",
+  "note": ""
+ },
+ "at-and-t": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d4/49/e4/d449e452-c95e-3b0b-f15b-5a3938daf0c4/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: AT&T, id 309172177)",
+  "note": ""
+ },
+ "audible": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3b/f0/90/3bf090c8-d53a-a202-1e44-e364e98b30e4/AppIcon-0-0-1x_U007emarketing-0-0-0-8-0-0-0-85-220.png/256x256bb.png  (App Store: Audible: Audiobooks & Podcasts, id 379693831)",
+  "note": ""
+ },
+ "audiobooks-com": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/23/ec/9e/23ec9e3b-7258-54cc-0c9c-6d3fee9fd372/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Audiobooks.com: Get audiobooks, id 521227008)",
+  "note": ""
+ },
+ "audiomack": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3b/3c/55/3b3c5572-a79b-85f0-3bcb-9eafb2b1dab5/AppIcon-1-0-0-1x_U007emarketing-0-6-0-85-220.png/256x256bb.png  (App Store: Audiomack - Play Music Offline, id 921765888)",
+  "note": ""
+ },
+ "aura": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/46/fb/78/46fb789e-7d58-5c12-bc92-ce84411c1cb1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Aura: Security & Protection, id 1547735089)",
+  "note": ""
+ },
+ "autocad": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/76/87/7f/76877f05-07d8-de8b-274c-6681f3ace41f/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: AutoCAD, id 393149734)",
+  "note": ""
+ },
+ "avast": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/52/fe/f6/52fef665-a556-e10f-b34e-184ddf87f534/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Avast One: Security & Privacy, id 1276551855)",
+  "note": ""
+ },
+ "aws": {
+  "kind": "website",
+  "url": "https://aws.amazon.com/apple-touch-icon.png",
+  "note": ""
+ },
+ "babbel": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6b/5e/c8/6b5ec81a-6cce-ac88-2ecf-5d3e9a51f495/AppIcon-Default-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Babbel - Language Learning, id 829587759)",
+  "note": ""
+ },
+ "backblaze": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ab/93/f9/ab93f9af-003a-b72b-a43d-874196e4cc5a/AppIcon-0-1x_U007emarketing-0-11-0-85-220-0.png/256x256bb.png  (App Store: Backblaze, id 628638330)",
+  "note": ""
+ },
+ "barkbox": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3c/5a/04/3c5a04ac-c3a1-89d5-5eef-473c20e57370/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: BARK - BarkBox, Super Chewer, id 570764065)",
+  "note": ""
+ },
+ "beachbody": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bb/cc/6b/bbcc6b5d-f855-1045-35a7-edc3ac4360d7/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: BODi Fitness: Home Workouts, id 1031660123)",
+  "note": ""
+ },
+ "bear": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/17/8d/54/178d5470-51d1-7bee-5e1d-fe41f8abdea5/AppIcon-26-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Bear Markdown Notes & Journal, id 1016366447)",
+  "note": ""
+ },
+ "beautiful-ai": {
+  "kind": "website",
+  "url": "https://cdn.prod.website-files.com/59deb588800ae30001ec19c9/691b4ae4a724e6c686bfb035_BAI%20symbol%3Dfull%20color%20black.png",
+  "note": ""
+ },
+ "bet-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2f/96/08/2f96086d-d6a3-1cb3-15dc-d3e8fb49d43c/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: BET Experience 2026, id 654012055)",
+  "note": ""
+ },
+ "betterhelp": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/de/f9/6c/def96c1c-fefa-2995-d9a6-90f7cfbdb149/BetterHelp-AppIcon-0-0-1x_U007emarketing-0-10-0-85-220.png/256x256bb.png  (App Store: BetterHelp - Therapy, id 995252384)",
+  "note": ""
+ },
+ "bitdefender": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1a/50/e5/1a50e50c-7466-76f4-813c-13ce941aca03/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Bitdefender Mobile Security, id 1255893012)",
+  "note": ""
+ },
+ "bitwarden": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7f/7a/e3/7f7ae3da-275c-afac-1311-e047618524c6/AppIcon-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: Bitwarden Password Manager, id 1137397744)",
+  "note": ""
+ },
+ "bkav-pro": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e8/f2/e6/e8f2e6a3-ae38-9466-64bf-26af832db8f7/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Bkav Pro Mobile, id 580725506)",
+  "note": ""
+ },
+ "blinkist": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d3/2d/2e/d32d2ec4-a3db-6bf0-4032-453a12c617fd/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Blinkist: Book Summaries Daily, id 568839295)",
+  "note": ""
+ },
+ "bloomberg": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a9/ba/a1/a9baa159-de19-19e2-cfe3-4d5867823917/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Bloomberg: Business News Daily, id 281941097)",
+  "note": ""
+ },
+ "bolt": {
+  "kind": "website",
+  "url": "https://bolt.new/static/pwa-icon-512.png",
+  "note": ""
+ },
+ "boomplay": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/bd/3f/29/bd3f298a-a861-2ca7-f649-bdf7e0bf8386/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Boomplay: Music & Live Stream, id 1437251983)",
+  "note": ""
+ },
+ "boosteroid": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/13/40/26/13402630-8b6b-8b34-1c62-a1df45692734/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/256x256bb.png  (App Store: Boosteroid Gamepad, id 1608340078)",
+  "note": ""
+ },
+ "box": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b5/e3/8c/b5e38cf0-ae93-8d2c-f8d0-6faa9c6a9eaf/AppIconAppStore-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Box: The power of Content + AI, id 290853822)",
+  "note": ""
+ },
+ "brainly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/58/8e/6e/588e6e5b-cece-1119-25da-f566135e05de/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Brainly: Your Personal Tutor, id 745089947)",
+  "note": ""
+ },
+ "brawl-stars": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ea/d3/a3/ead3a3b6-7ace-a7b6-9912-1902036c6dee/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Brawl Stars, id 1229016807)",
+  "note": ""
+ },
+ "brilliant": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/08/24/72/0824727e-dab9-8d45-f949-a3e4ac892f86/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Brilliant: Learn Math & Coding, id 913335252)",
+  "note": ""
+ },
+ "britbox": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/44/19/56/44195664-be4f-f892-72c7-24a9be411154/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: BritBox: The Best British TV, id 1206838907)",
+  "note": ""
+ },
+ "bumble": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/da/ad/fd/daadfd93-cb44-1d20-0720-d48564af833e/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Bumble Dating App: Meet & Date, id 930441707)",
+  "note": ""
+ },
+ "busuu": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9d/64/aa/9d64aa9d-d469-2be3-fdf1-2833df4516b7/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-0-85-220.png/256x256bb.png  (App Store: Busuu: Language Learning App, id 379968583)",
+  "note": ""
+ },
+ "calendly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/07/99/44/079944e8-fbb8-cddf-b2b4-35e661bfbfae/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Calendly: Meeting Scheduling, id 1451094657)",
+  "note": ""
+ },
+ "call-of-duty-mobile": {
+  "kind": "website",
+  "url": "https://www.activision.com/content/dam/atvi/global/apple-touch-icon.png",
+  "note": ""
+ },
+ "calm": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/76/fd/5f76fdba-aac5-45dd-9abe-0fded46bfe57/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Calm, id 571800810)",
+  "note": ""
+ },
+ "cambly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/2a/dd/2c/2add2c45-23ee-0bfe-c182-d7d1b1648970/CamblyAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Cambly – Learn English, id 564024107)",
+  "note": ""
+ },
+ "camscanner": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/52/aa/58/52aa587a-7f12-f138-1fab-8ed67d74e8c5/AppIconLite-0-0-1x_U007ephone-0-6-0-0-sRGB-85-220.png/256x256bb.png  (App Store: CamScanner - PDF Scanner App, id 388627783)",
+  "note": ""
+ },
+ "candy-crush": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f3/ca/f9/f3caf98d-c345-2106-41e1-4d76c45caf2f/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Candy Crush Jelly Saga, id 1047246341)",
+  "note": ""
+ },
+ "canva": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b3/61/b0/b361b0a6-4295-6738-be3d-0f97418cfbf9/AppIcon-0-0-1x_U007epad-0-11-0-85-220.png/256x256bb.png  (App Store: Canva AI Photo & Video Editor, id 897446215)",
+  "note": ""
+ },
+ "capcut": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ef/eb/ab/efebab85-a422-d5da-1fab-23de4f2845ea/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: CapCut: Photo & Video Editor, id 1500855883)",
+  "note": ""
+ },
+ "carbonite": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/16/5f/63/165f6353-8e1b-6dcb-f3ee-ba9f0d5ddbb2/AppIcon-0-0-1x_U007epad-0-8-0-85-220.png/256x256bb.png  (App Store: Carbonite Mobile, id 347953228)",
+  "note": ""
+ },
+ "centr": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/44/14/6c/44146c17-0ee3-5a53-b973-5f35997d95d6/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Centr: Strength & Fitness App, id 1382530817)",
+  "note": ""
+ },
+ "character-ai": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/e6/a6/b2e6a6a8-cd3e-5f09-c19a-da0186b7ead7/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Character AI: Chat, Talk, Text, id 1671705818)",
+  "note": ""
+ },
+ "chatgpt": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5c/9c/84/5c9c8431-bd39-08fa-cba4-8bb6561f9877/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/256x256bb.png  (App Store: ChatGPT, id 6448311069)",
+  "note": ""
+ },
+ "chatgpt-team": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5c/9c/84/5c9c8431-bd39-08fa-cba4-8bb6561f9877/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/256x256bb.png  (App Store: ChatGPT, id 6448311069)",
+  "note": ""
+ },
+ "chegg": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/95/61/ea/9561ea6b-f69a-4662-5d8c-7fed492f8e7e/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Chegg Study - Homework Help, id 385758163)",
+  "note": ""
+ },
+ "chess-com": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b6/4f/fb/b64ffb2b-8ed9-a000-a3b8-cb8de6f64245/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Chess.com - Play and Learn, id 329218549)",
+  "note": ""
+ },
+ "clash-of-clans": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e3/0a/6d/e30a6d11-7bed-dcf6-0659-ee8c7b27c400/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Clash of Clans, id 529479190)",
+  "note": ""
+ },
+ "clash-royale": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/82/9e/a7/829ea73c-c333-1953-f5fb-c16ea2ed80e3/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: Clash Royale, id 1053012308)",
+  "note": ""
+ },
+ "classpass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0f/17/0b/0f170b05-5e88-c033-ebea-0179ef66fc8b/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: ClassPass: Fitness, Spa, Salon, id 912947244)",
+  "note": ""
+ },
+ "claude": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/eb/08/a2/eb08a23b-5d02-23e3-da67-f08d5a11f774/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Claude by Anthropic, id 6473753684)",
+  "note": ""
+ },
+ "claude-team": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/eb/08/a2/eb08a23b-5d02-23e3-da67-f08d5a11f774/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Claude by Anthropic, id 6473753684)",
+  "note": ""
+ },
+ "cleanmymac": {
+  "kind": "website",
+  "url": "https://cdn3.macpaw.com/images/favicons/apple-touch-icon.png?id=92af76cf08117ef48964c0c815b89f3b",
+  "note": ""
+ },
+ "clickup": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3c/ca/db/3ccadbd2-32f7-4391-1213-a4aaebd8a9ed/AppIcon-0-0-1x_U007epad-0-11-0-85-220.png/256x256bb.png  (App Store: ClickUp: Tasks, Chat, Docs, AI, id 1535098836)",
+  "note": ""
+ },
+ "clip-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1a/7c/4e/1a7c4ede-21c9-ef4e-ccc0-df73083000d7/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: CLIP TV, id 6529556711)",
+  "note": ""
+ },
+ "cloudflare": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1a/73/24/1a7324f8-3cbf-c078-d8c9-8f5edd20c6fd/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Cloudflare One Agent, id 6443476492)",
+  "note": ""
+ },
+ "cloudflare-warp": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d6/f9/f1/d6f9f1f7-0417-3ab7-095d-2988dcc9a11b/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/256x256bb.png  (App Store: 1.1.1.1: Faster Internet, id 1423538627)",
+  "note": ""
+ },
+ "clue": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4a/b4/22/4ab422e2-b40b-bb46-1a18-55b2f07e614b/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Clue Period & Cycle Tracker, id 657189652)",
+  "note": ""
+ },
+ "codecademy": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/58/a0/37/58a03726-ed8b-75a0-e558-6b6ee76dd267/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Codecademy Go, id 1376029326)",
+  "note": ""
+ },
+ "coffee-meets-bagel": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/20/0b/4b/200b4b93-7aec-01f1-9373-52f067bbc28e/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Coffee Meets Bagel: Dating App, id 6502307144)",
+  "note": ""
+ },
+ "confluence": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/04/52/01/045201ed-6725-c7ef-6e2a-d7eb13a7e42e/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Confluence Cloud, id 1006971684)",
+  "note": ""
+ },
+ "convertkit": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d3/27/6a/d3276acb-1f11-bcdc-3047-517700954584/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Kit - The way to innerNet, id 6739243086)",
+  "note": ""
+ },
+ "copilot": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/37/f0/80/37f08024-9e09-9b28-ad94-3ce4c29f2a95/AppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Microsoft Copilot, id 541164041)",
+  "note": ""
+ },
+ "copy-ai": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ef/f5/64/eff5641f-b51b-d739-ac99-f49095e03844/AppIcon-prod-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Copy AI: Content Script Writer, id 6446693452)",
+  "note": ""
+ },
+ "costco": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/39/98/ca/3998cae9-3fbf-b523-8ae1-78b7c521aff5/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220-0.png/256x256bb.png  (App Store: Costco, id 535509415)",
+  "note": ""
+ },
+ "course-hero": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ad/5b/4d/ad5b4d6d-5fee-2d0f-7515-74827e88c110/AppIcon-0-0-1x_U007emarketing-0-5-0-85-220.png/256x256bb.png  (App Store: Course Hero: AI Homework Help, id 922208952)",
+  "note": ""
+ },
+ "coursera": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f9/b3/f4/f9b3f467-74db-0bb2-97a2-1a5f9bb5fee7/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Coursera: Grow your career, id 736535961)",
+  "note": ""
+ },
+ "craft": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f1/f4/18/f1f41890-45a7-4e45-dfc5-96e3eeeedd88/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Craft: Notes, Documents, AI, id 1487937127)",
+  "note": ""
+ },
+ "crave": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f1/c0/74/f1c074e8-4db7-2f18-1222-006742040196/AppIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/256x256bb.png  (App Store: Crave Cookies - On Demand, id 6503451129)",
+  "note": ""
+ },
+ "criterion-channel": {
+  "kind": "website",
+  "url": "https://www.criterionchannel.com/apple-touch-icon.png",
+  "note": ""
+ },
+ "cronometer": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f2/9f/df/f29fdfb9-c5f1-d2b3-67db-bc0f3b119412/CRONOMETER-GOLDAppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Cronometer: Calorie Counter, id 1145935738)",
+  "note": ""
+ },
+ "crunchyroll": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/51/e2/8f/51e28f69-7bc1-d9e1-5c7e-d636f53ed0d2/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Crunchyroll, id 329913454)",
+  "note": ""
+ },
+ "curiositystream": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d3/e6/a4/d3e6a4ec-53af-f43c-3c21-0c6d7a2085a4/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: CuriosityStream, id 971830624)",
+  "note": ""
+ },
+ "cursor": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/03/df/5e/03df5e09-ff05-767f-e27b-984c6ea39d92/AppIcon-Light-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: Cursor, id 6767085653)",
+  "note": ""
+ },
+ "cyberghost": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4a/65/3e/4a653ef6-1781-78c5-f222-07cd131c382c/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: CyberGhost: Safe & Private VPN, id 583009522)",
+  "note": ""
+ },
+ "dashlane": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/7c/6e/4b/7c6e4b0c-436e-f227-c108-23b92bba7a2e/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Dashlane Password Manager, id 517914548)",
+  "note": ""
+ },
+ "datacamp": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5c/5c/ca/5c5ccacb-a0e1-468b-8300-c93ce82b1a32/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: DataCamp: Learn Data, AI, Code, id 1263413087)",
+  "note": ""
+ },
+ "day-one": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/23/d0/d6/23d0d6ab-f3ff-ef45-47ac-350995d21fd1/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Day One: Daily Journal & Diary, id 1044867788)",
+  "note": ""
+ },
+ "dazn": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d3/6d/66/d36d6605-ba95-e9fd-f769-07fbe8d11bf1/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: DAZN: Stream Live Sports, id 1129523589)",
+  "note": ""
+ },
+ "dc-universe-infinite": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/72/e6/63/72e66316-3c3a-6c4e-3ecc-7c6288f350a6/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: DC UNIVERSE INFINITE, id 1329018000)",
+  "note": ""
+ },
+ "deepseek": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3a/19/7f/3a197fed-56dd-ef73-b89f-5454c77cf7b3/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: DeepSeek - AI Assistant, id 6737597349)",
+  "note": ""
+ },
+ "deezer": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a5/80/8f/a5808f91-e80e-3eb5-4dff-5f1cadea57dd/AppIcon-0-0-1x_U007epad-0-11-0-0-85-220.png/256x256bb.png  (App Store: Deezer: Music Player, Podcast, id 292738169)",
+  "note": ""
+ },
+ "deleteme": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=joindeleteme.com&sz=256",
+  "note": ""
+ },
+ "deliveroo-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/cd/7d/59cd7d77-a5b5-f35b-e3af-6af64ceb9a84/DeliverooDefault-0-0-1x_U007epad-0-1-0-P3-85-220.png/256x256bb.png  (App Store: Deliveroo: Food & Shopping, id 1001501844)",
+  "note": ""
+ },
+ "descript": {
+  "kind": "website",
+  "url": "https://static-cdn.descript.com/web/icons/apple-touch-icon.png",
+  "note": ""
+ },
+ "digitalocean": {
+  "kind": "website",
+  "url": "https://www.digitalocean.com/_do-www-marketing/25325f8e/_next/static/media/apple-touch-icon.9537f22a.png",
+  "note": ""
+ },
+ "directv-stream": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d3/af/96/d3af96bd-5059-c767-77f0-820ec5436ed0/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: DIRECTV: TV & Movie Streaming, id 1136238277)",
+  "note": ""
+ },
+ "discord-nitro": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/08/c2/e9/08c2e9b8-5a7a-aad2-fbd5-f58e7810ff0b/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Discord - Talk, Play, Hang Out, id 985746746)",
+  "note": ""
+ },
+ "discovery-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/75/4c/0d/754c0d48-ac87-b631-3f17-7fc1414a4d69/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: discovery+ | Stream TV Shows, id 1498327873)",
+  "note": ""
+ },
+ "disney-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3f/7f/cb/3f7fcb64-82d5-7f5d-e453-6532b9e497d4/AppIcon-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/256x256bb.png  (App Store: Disney+, id 1446075923)",
+  "note": ""
+ },
+ "distrokid": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0c/76/a3/0c76a3c0-1bb3-6d25-5c5d-cd3e3b193a1e/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: DistroKid, id 1548832265)",
+  "note": ""
+ },
+ "docusign": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ae/96/7e/ae967e97-d0f0-d1e6-a66f-255a3d4175bb/dsIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Docusign - Upload & Sign Docs, id 474990205)",
+  "note": ""
+ },
+ "dollar-shave-club": {
+  "kind": "missing",
+  "url": "",
+  "note": ""
+ },
+ "doordash-dashpass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/21/ef/85/21ef85f7-03be-1849-b610-3cd6c1df11cd/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: DoorDash: Food, Grocery, More, id 719972451)",
+  "note": ""
+ },
+ "down-dog": {
+  "kind": "website",
+  "url": "https://www.downdogapp.com/favicon_large.png",
+  "note": ""
+ },
+ "dropbox": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/09/5d/c5095d14-8710-55ec-a422-4ecbab969324/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Dropbox: Cloud Storage Backup, id 327630330)",
+  "note": ""
+ },
+ "dropbox-sign": {
+  "kind": "website",
+  "url": "https://cdn.prod.website-files.com/64412cfef2e5476af2f044bd/6441320df020d65e5a8250be_webclip.png",
+  "note": ""
+ },
+ "dropout": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a7/1d/d1/a71dd101-55be-2a5b-93ef-692bd16f760b/AppIcon-Branded-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: Dropout, id 1380833056)",
+  "note": ""
+ },
+ "drops": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cf/97/de/cf97dec2-27ad-d4a1-48dc-1ff305553432/AppIconInternational-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Drops: Language Learning Games, id 939540371)",
+  "note": ""
+ },
+ "duolingo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f0/14/d8/f014d8ad-5a07-c9d3-f12a-03acde9e6776/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Duolingo: Learn Languages, id 570060128)",
+  "note": ""
+ },
+ "ea-play": {
+  "kind": "website",
+  "url": "https://www.ea.com/_next/static/media/favicon.3156aee2.ico",
+  "note": ""
+ },
+ "economist": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5d/43/ca/5d43ca3f-953a-776b-e7a9-1d0361abdf63/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: The Economist: News & Analysis, id 1239397626)",
+  "note": ""
+ },
+ "eharmony": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8d/ea/0c/8dea0ca6-5f05-d6a3-2841-6d5531f1d93a/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: eharmony: dating & real love, id 458272450)",
+  "note": ""
+ },
+ "elder-scrolls-online": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "elevate": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/71/57/7f/71577f88-0ff0-0fd1-3c2f-2f91059f1c8a/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Elevate - Brain Training Games, id 875063456)",
+  "note": ""
+ },
+ "elevenlabs": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ea/ec/f5/eaecf52c-b7ad-c52f-2867-43bf1969817e/AppIcon-Prod-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: ElevenLabs: AI Voice Generator, id 6743162587)",
+  "note": ""
+ },
+ "elsa-speak": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/72/90/86/7290868b-1ba1-e054-394c-e4fdb4257d9f/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: ELSA Speak - English Learning, id 1083804886)",
+  "note": ""
+ },
+ "epic-games": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/44/f2/1744f285-1b8d-7e0b-30e1-66ab74e06c5b/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Fortnite, id 6483539426)",
+  "note": ""
+ },
+ "epic-kids": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/11/96/60/119660a8-05dc-0084-8e63-ba3e57e01cca/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Epic - Kids' Books & Reading, id 719219382)",
+  "note": ""
+ },
+ "espn": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/37/d8/18/37d818f2-190f-649f-7992-574bf009d223/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: ESPN: Live Sports & Scores, id 317469184)",
+  "note": ""
+ },
+ "eve-online": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "everand": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4b/b8/60/4bb860f3-a681-4782-6ce7-5882e0e46f8a/Everand-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Everand: Audiobooks & Ebooks, id 542557212)",
+  "note": ""
+ },
+ "evernote": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/84/7b/46/847b4691-7f86-051c-ee8c-09f87edf59d7/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Evernote: AI Notes & Notebook, id 281796108)",
+  "note": ""
+ },
+ "expressvpn": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/75/99/4e/75994e06-9f7f-dd32-1be5-9553b8928fce/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: ExpressVPN · Secure & Fast VPN, id 886492891)",
+  "note": ""
+ },
+ "f1-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/bb/2e/c5bb2e3d-c18a-f0ce-c93d-f44ddf7b4136/AppIcon-0-0-1x_U007epad-0-9-0-85-220.png/256x256bb.png  (App Store: F1 TV: Stream F1® Live, id 1315007279)",
+  "note": ""
+ },
+ "fabfitfun": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2c/c2/f7/2cc2f74b-bbb6-a1f3-9d7b-e97ffd862422/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: FabFitFun - Beauty, Fashion, id 1228807202)",
+  "note": ""
+ },
+ "facebook-verified": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=meta.com&sz=256",
+  "note": ""
+ },
+ "facetune": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1d/3b/91/1d3b9162-ac0a-3b9a-efd0-9184aad74166/AppIconLiquidGlass-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Facetune: Photo & Video Editor, id 1149994032)",
+  "note": ""
+ },
+ "factor": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/13/74/87/13748762-22f9-ffe3-f14d-990b10e3abe9/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Factor_ Prepared Meal Delivery, id 1015997735)",
+  "note": ""
+ },
+ "fallout-1st": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "fantastical": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/25/48/9d/25489d17-651c-298b-bc6e-891084b59f6d/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Fantastical Calendar, id 718043190)",
+  "note": ""
+ },
+ "fastmail": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5e/14/d7/5e14d734-4e06-c852-d623-87b6939188c2/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Fastmail – Email & Calendar, id 931370077)",
+  "note": ""
+ },
+ "fathom": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/62/2c/fb/622cfbe3-a701-7ee0-cde3-25d39f99ba3a/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Fathom AI Notetaker, id 6751613402)",
+  "note": ""
+ },
+ "feedly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/05/8b/a7/058ba714-0832-732a-1c9f-30d76a63d23f/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Feedly - Smart News Reader, id 396069556)",
+  "note": ""
+ },
+ "feeld": {
+  "kind": "website",
+  "url": "https://feeld.co/favicons/favicon.png",
+  "note": ""
+ },
+ "fender-play": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c1/19/e8/c119e830-490b-851c-f8a0-b28af1ab84da/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Fender Play: Learn Guitar, id 1226057939)",
+  "note": ""
+ },
+ "figma": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b0/ea/59/b0ea5982-8709-64aa-fd0a-500e211441f5/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Figma, id 1152747299)",
+  "note": ""
+ },
+ "filen": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b4/16/4a/b4164ac9-1d92-d479-982a-4547f8dc4dd7/ios-0-0-1x_U007epad-0-1-P3-85-220.png/256x256bb.png  (App Store: Filen - Cloud Storage, id 1549224518)",
+  "note": ""
+ },
+ "filmora": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ae/50/79/ae507921-8de5-9943-dff5-25e38a2bfefe/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Filmora: AI Video Editor&Maker, id 1019382747)",
+  "note": ""
+ },
+ "final-fantasy-xiv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a8/24/39/a82439dc-cc52-60b7-5720-deb9115b8df7/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: FINAL FANTASY XIV Companion, id 1293636320)",
+  "note": ""
+ },
+ "financial-times": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7c/b8/01/7cb80126-019f-1617-f540-5ab395645215/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Financial Times: Business News, id 1200842933)",
+  "note": ""
+ },
+ "fireflies": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9c/f8/a6/9cf8a6d8-e782-75a0-40b5-6a7e24e49f88/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Fireflies: AI notetaker, id 6463164203)",
+  "note": ""
+ },
+ "fitbit-premium": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/11/44/db/1144db62-b881-0ec9-4e9d-c5e470f72304/google_health_ios-0-0-1x_U007ephone-0-0-0-1-0-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Google Health (Fitbit), id 462638897)",
+  "note": ""
+ },
+ "fitbod": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b6/dc/84/b6dc8438-76d8-8c83-22bf-6e72b52719a1/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Fitbod: Gym & Fitness Planner, id 1041517543)",
+  "note": ""
+ },
+ "flickr-pro": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/86/81/97/86819789-ae49-2e0e-c425-88b3ed8c9857/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Flickr, id 328407587)",
+  "note": ""
+ },
+ "flo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8f/8f/06/8f8f0603-2009-42d8-e838-3a3472a973e8/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Flo Cycle & Period Tracker, id 1038369065)",
+  "note": ""
+ },
+ "fonos": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f3/6e/98/f36e98b1-931d-bf5f-02c0-81c7256f9085/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Fonos: Sách nói & Ebook, id 1491002000)",
+  "note": ""
+ },
+ "fox-one": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/01/8c/4e/018c4ed0-7207-38fb-a6fd-c45a72a5edd3/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: FOX One: Live News, Sports, TV, id 6746049430)",
+  "note": ""
+ },
+ "fpt-internet": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fb/78/d5/fb78d5a3-cae8-a3be-e0c9-d728a7988d15/AppIcon_default-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Hi FPT, id 1144417173)",
+  "note": ""
+ },
+ "fpt-play": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/32/9a/16/329a1674-ecd0-8909-565e-47b54604eb9d/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: FPT Play: Phim, Anime, Bóng Đá, id 646297996)",
+  "note": ""
+ },
+ "framer": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3c/60/49/3c6049bb-79cd-411d-a5d7-01bfd9226627/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Framer: расчет и заказ окон, id 1583159966)",
+  "note": ""
+ },
+ "free-fire": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ef/16/6b/ef166bba-1d69-85f5-ed84-6b7c6e73b55c/AppIcon-1788350393-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Free Fire x NARUTO SHIPPUDEN, id 1300146617)",
+  "note": ""
+ },
+ "frndly-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/23/e2/69/23e26906-f906-2496-c19b-a9f14c464060/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Frndly TV, id 1473398077)",
+  "note": ""
+ },
+ "frontend-masters": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/98/5e/53/985e536e-e521-5f37-df72-9e39ee6c95d5/AppIcon-0-1x_U007epad-0-1-0-0-85-220-0.png/256x256bb.png  (App Store: Frontend Masters, id 1383780486)",
+  "note": ""
+ },
+ "fubo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/39/e0/a7/39e0a727-2e93-a6a4-c4e5-3abc963dbe66/Fubo-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Fubo: Watch Live TV & Sports, id 905401434)",
+  "note": ""
+ },
+ "gaana": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/aa/02/b2/aa02b259-f2a6-280d-dfb0-b2514df73ffc/AppIconProd-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Gaana Music - Songs & Podcasts, id 585270521)",
+  "note": ""
+ },
+ "galaxy-play": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/88/67/37/8867372d-6678-24f5-a009-69453c566fe3/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.jpeg/256x256bb.png  (App Store: Galaxy Play - Digital Cinema, id 1064825671)",
+  "note": ""
+ },
+ "gamma": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f0/13/45/f01345c3-c782-a861-ac9b-d5f996f7d246/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Gamma: AI Slides & Design, id 6768404578)",
+  "note": ""
+ },
+ "garmin-connect-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/65/24/cc/6524cc12-606f-371c-e33e-02513bff21f3/AppIcon-0-0-1x_U007ephone-0-1-0-0-85-220.png/256x256bb.png  (App Store: Garmin Connect™, id 583446403)",
+  "note": ""
+ },
+ "geforce-now": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "gemini": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c3/96/f2/c396f2cb-1981-3845-5b59-7cffb0565921/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220.png/256x256bb.png  (App Store: Google Gemini, id 6477489729)",
+  "note": ""
+ },
+ "genshin-impact": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/15/9e/b1/159eb1a7-fc58-2b43-b330-c5e619a77e2d/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Genshin Impact, id 1517783697)",
+  "note": ""
+ },
+ "github": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/bd/13/55bd133e-c249-2c58-5473-ffccbfa0ebb7/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: GitHub, id 1477376905)",
+  "note": ""
+ },
+ "github-copilot": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/bd/13/55bd133e-c249-2c58-5473-ffccbfa0ebb7/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: GitHub, id 1477376905)",
+  "note": ""
+ },
+ "gitlab": {
+  "kind": "website",
+  "url": "https://about.gitlab.com/images/ico/favicon-192x192.png",
+  "note": ""
+ },
+ "glo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/49/c6/c7/49c6c7b3-97b5-d51b-2575-2cd4ef03ae53/AppIcon-production-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Glo | Yoga and Meditation App, id 1023475268)",
+  "note": ""
+ },
+ "godaddy": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/71/70/4f/71704f77-7c26-d166-ec77-ebcf5235e269/GoDaddy-App-Icon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: GoDaddy: Websites & Marketing, id 535811906)",
+  "note": ""
+ },
+ "goodnotes": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/57/fc/35/57fc357a-8192-3ecf-efcd-acb51aeb0554/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Goodnotes: AI Notes, Docs, PDF, id 1444383602)",
+  "note": ""
+ },
+ "goodrx-gold": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0f/34/21/0f3421bb-d327-fd85-3112-9ff1b791789e/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: GoodRx: Prescription Savings, id 485357017)",
+  "note": ""
+ },
+ "google-cloud": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a8/a5/3f/a8a53f9f-1ef9-7feb-cf74-28c08b5c221b/logo_google_cloud_color-0-0-1x_U007emarketing-0-0-0-7-0-0-0-85-220.png/256x256bb.png  (App Store: Google Cloud, id 1005120814)",
+  "note": ""
+ },
+ "google-fi": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/50/cd/94/50cd94c6-13c7-e26e-87aa-e573287c68f3/fi-icon-ios26_prod-0-0-1x_U007ephone-0-0-0-1-0-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Google Fi Wireless, id 1413936031)",
+  "note": ""
+ },
+ "google-one": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/dc/2e/e5/dc2ee5ef-a9fe-5e46-c268-08152216c862/logo_one_color-0-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220.png/256x256bb.png  (App Store: Google One, id 1451784328)",
+  "note": ""
+ },
+ "google-play-pass": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "google-workspace": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "gopuff-fam": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=gopuff.com&sz=256",
+  "note": ""
+ },
+ "grab-unlimited": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/30/40/7e/30407e9d-7202-86b0-533c-38f2c03f892f/GrabIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/256x256bb.png  (App Store: Grab: Food Delivery, Taxi Ride, id 647268330)",
+  "note": ""
+ },
+ "grammarly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/bf/ce/6f/bfce6f30-e665-183a-b278-2d58696d84c0/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Grammarly: AI Keyboard & Voice, id 1158877342)",
+  "note": ""
+ },
+ "grindr": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/07/1a/a2/071aa278-2562-9132-9548-efb54089d686/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Grindr - Gay Dating & Chat, id 319881193)",
+  "note": ""
+ },
+ "grok": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=grok.com&sz=256",
+  "note": ""
+ },
+ "grubhub-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/bc/d5/f8/bcd5f852-9ab8-d755-2ad6-c352624521ea/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Grubhub: Food Delivery, id 302920553)",
+  "note": ""
+ },
+ "guardian": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4c/ce/d2/4cced2c2-bb1e-72ae-abd7-0134f8386bbc/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: The Guardian - US & World News, id 409128287)",
+  "note": ""
+ },
+ "hallmark-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/33/32/c3/3332c36b-0529-b0c4-1f10-354a662cad0d/AppIcon-1x_U007epad-0-1-0-85-220-0.png/256x256bb.png  (App Store: Hallmark+, id 472567577)",
+  "note": ""
+ },
+ "hbo-max": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4c/4a/9d/4c4a9dd8-66c9-4735-b6d3-b50d414a221f/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: HBO Max: Stream Movies & TV, id 1666653815)",
+  "note": ""
+ },
+ "headspace": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/83/26/61/832661b8-66e9-e7d5-84ba-a191605ba8b8/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Headspace: Sleep & Meditation, id 493145008)",
+  "note": ""
+ },
+ "headway": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3d/54/8d/3d548d70-7598-020b-eb81-ad121bb62f5b/AppIcon-0-0-1x_U007epad-0-11-0-sRGB-85-220.png/256x256bb.png  (App Store: Headway - Daily Micro Learning, id 1457185832)",
+  "note": ""
+ },
+ "hellofresh": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2a/4a/e8/2a4ae8fe-8ced-b110-9ac6-a2dd61c25455/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: HelloFresh: Meal Kit & Recipes, id 970107419)",
+  "note": ""
+ },
+ "heroku": {
+  "kind": "website",
+  "url": "https://www.heroku.com/wp-content/uploads/2025/01/apple-touch-icon-180x180-1.png?w=180",
+  "note": ""
+ },
+ "hers": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b9/2d/1d/b92d1d04-15ef-cf30-7230-32cfd9ca13a4/HersIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/256x256bb.png  (App Store: Hers: Women’s Healthcare, id 1623878709)",
+  "note": ""
+ },
+ "hey-email": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ab/92/48/ab924899-6f91-3ae7-02c6-87be56b4efeb/AppIcon-0-0-1x_U007epad-0-11-0-85-220.png/256x256bb.png  (App Store: HEY Email, id 1506603805)",
+  "note": ""
+ },
+ "heygen": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/56/e4/ac/56e4ac0f-de38-545d-99ce-0f47decb43aa/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: HeyGen: Translate Video, id 6758733806)",
+  "note": ""
+ },
+ "hidive": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d8/e0/65/d8e065a4-b7be-e826-a589-7426f7672888/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: HIDIVE, id 1233367570)",
+  "note": ""
+ },
+ "hims": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7d/1f/67/7d1f67df-4644-b985-15a5-0fe2770b8cf5/HimsIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/256x256bb.png  (App Store: Hims: Telehealth for Men, id 1455690574)",
+  "note": ""
+ },
+ "hinge": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4c/24/0e/4c240e34-bdf0-22d1-00cd-42c1292bdc5d/AppIcon-0-0-1x_U007emarketing-0-6-0-0-85-220.png/256x256bb.png  (App Store: Hinge Dating App: Match & Date, id 595287172)",
+  "note": ""
+ },
+ "hocmai": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/73/c6/78/73c67841-f662-945e-a846-f0ec7eb92a83/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/256x256bb.png  (App Store: HOCMAI: Học online từ lớp 1-12, id 1476075532)",
+  "note": ""
+ },
+ "honkai-star-rail": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fd/65/dc/fd65dc18-c4b6-7b64-8266-a423f3f113e0/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Honkai: Star Rail, id 1599719154)",
+  "note": ""
+ },
+ "hotspot-shield": {
+  "kind": "website",
+  "url": "https://www.hotspotshield.com/android-icon-192x192.png",
+  "note": ""
+ },
+ "hugging-face": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=huggingface.co&sz=256",
+  "note": ""
+ },
+ "hulu": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/03/c9/99/03c99983-a169-a097-d6a7-f8cad63e2acb/HuluAppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Hulu: Stream TV shows & movies, id 376510438)",
+  "note": ""
+ },
+ "humble-choice": {
+  "kind": "website",
+  "url": "https://cdn.humblebundle.com/static/hashed/03df0490a53d595fd930f9fff52038366d60a05d.png",
+  "note": ""
+ },
+ "icedrive": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/22/62/0e/22620e29-e22c-b0fb-2423-b12684f20fa7/AppIcon-1x_U007epad-0-1-85-220-0.png/256x256bb.png  (App Store: Icedrive – Cloud Storage, id 6739429121)",
+  "note": ""
+ },
+ "icloud": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=icloud.com&sz=256",
+  "note": ""
+ },
+ "idagio": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9b/7b/45/9b7b4561-8573-d206-a407-e516a98e3072/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: IDAGIO Stream Classical Music, id 1014917700)",
+  "note": ""
+ },
+ "ideogram": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/62/d8/2d/62d82dc9-afcf-53bb-5341-2246a6779f9b/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Ideogram AI - Image Generator, id 6476790495)",
+  "note": ""
+ },
+ "idrive": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d1/c6/f5/d1c6f572-fdb3-bd0c-0c29-3716e11c7fb4/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: IDrive Online Backup, id 427956708)",
+  "note": ""
+ },
+ "iheartradio": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/55/0b/8d/550b8dd5-72aa-38fe-e336-b929cf124db1/AppIcon-0-0-1x_U007emarketing-0-7-0-sRGB-0-85-220.png/256x256bb.png  (App Store: iHeart: Radio, Music, Podcasts, id 290638154)",
+  "note": ""
+ },
+ "ilovepdf": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3c/38/f8/3c38f886-002b-ffb4-1ad0-967f6ba9ff9d/logo-ilovepdf-glass-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: iLovePDF - PDF Editor & Scan, id 1207332399)",
+  "note": ""
+ },
+ "incogni": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/21/fa/97/21fa97d7-feda-ca99-a0cf-68a490ab332a/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Incogni - Private Data Removal, id 6747801342)",
+  "note": ""
+ },
+ "inoreader": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/27/d7/b3/27d7b3f4-9378-3775-df6c-b14e0dc14e86/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/256x256bb.png  (App Store: Inoreader: News & RSS reader, id 892355414)",
+  "note": ""
+ },
+ "inshot": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e6/ca/b8/e6cab8f1-cb45-37de-7096-e5f09bc0c031/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: InShot - Video Editor, id 997362197)",
+  "note": ""
+ },
+ "insight-timer": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/20/2a/47/202a4706-a8fc-d6ad-4a73-df0a0e3cb55f/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Insight Timer: Meditate, Sleep, id 337472899)",
+  "note": ""
+ },
+ "instacart-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/24/c8/24/24c82467-a2dc-5386-2fbd-1abe1d33a3fb/AppIcon-0-0-1x_U007emarketing-0-8-0-0-P3-85-220.png/256x256bb.png  (App Store: Instacart: Groceries & Food, id 545599256)",
+  "note": ""
+ },
+ "instapaper": {
+  "kind": "website",
+  "url": "https://instapaper.com/static/img/apple-icon-144x144.png",
+  "note": ""
+ },
+ "ipsy": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e9/2f/80/e92f8084-01a6-8adb-6dd7-e14d69063eef/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: IPSY: Personalized Beauty, id 1016673544)",
+  "note": ""
+ },
+ "ipvanish": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/2a/68/6b/2a686bbc-7037-b83b-43ec-e75cd9e9ceac/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: IPVanish VPN: Fast & Secure, id 763638165)",
+  "note": ""
+ },
+ "iqiyi": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ab/65/62/ab656281-15e8-b149-9390-92807ecca132/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: iQIYI - Dramas, Anime, Shows, id 1461999674)",
+  "note": ""
+ },
+ "jasper": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3b/77/4f/3b774f25-856b-c5ac-e6b7-503f407b842e/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Jasper, id 6767938252)",
+  "note": ""
+ },
+ "jetbrains": {
+  "kind": "website",
+  "url": "https://www.jetbrains.com/icon-512.png?r=1234",
+  "note": ""
+ },
+ "jiohotstar": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/40/f5/10/40f51019-c21f-7b42-9ba0-b97acb661a82/AppIcon-IN-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: JioHotstar, id 934459219)",
+  "note": ""
+ },
+ "jiosaavn": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/dc/35/39/dc35398f-bb96-a447-7c60-621769bad005/appiconfree-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: JioSaavn – Music & Podcasts, id 441813332)",
+  "note": ""
+ },
+ "jira": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/41/38/ef/4138ef7d-0ec9-9782-6029-04b69aa60f26/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Jira Cloud by Atlassian, id 1006972087)",
+  "note": ""
+ },
+ "k-plus": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "kaspersky": {
+  "kind": "website",
+  "url": "https://www.kaspersky.com.vn/icons/icon-512x512.png",
+  "note": ""
+ },
+ "keeper": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5e/b7/66/5eb7664c-98bf-4d74-79f1-54c61dd5428e/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Keeper Password Manager, id 287170072)",
+  "note": ""
+ },
+ "kimi": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/75/9f/46/759f46d7-556a-4137-b8b1-d17d43e9dda0/AppIcon26-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Kimi - Your Personal AI Agent, id 6474233312)",
+  "note": ""
+ },
+ "kindle-unlimited": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/b3/e0/d5b3e03e-e16e-3c36-02bf-2417e0ef4181/AppIcon-0-0-1x_U007emarketing-0-7-0-sRGB-0-0-85-220.png/256x256bb.png  (App Store: Amazon Kindle: Reading App, id 302584613)",
+  "note": ""
+ },
+ "kobo-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/33/f0/fb33f0c2-05bd-dd2e-cf9e-0a03cf47751e/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Kobo Books & Audiobooks, id 301259483)",
+  "note": ""
+ },
+ "kocowa": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/09/0d/6d/090d6d51-8890-d9c0-a74b-8268ea8a9f00/AppIcon-0-0-1x_U007epad-0-11-0-85-220.png/256x256bb.png  (App Store: KOCOWA+: K-Dramas, Movies & TV, id 1222389576)",
+  "note": ""
+ },
+ "komoot": {
+  "kind": "website",
+  "url": "https://www.komoot.com/assets/db7e4cc80e9c7149.png",
+  "note": ""
+ },
+ "koofr": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c6/31/4a/c6314af3-9de5-180a-836a-a6391c470177/AppIconProd-0-0-1x_U007epad-0-7-0-85-220.png/256x256bb.png  (App Store: Koofr, id 714802401)",
+  "note": ""
+ },
+ "krea": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0f/62/80/0f628016-a200-e03c-402c-90b3f712891a/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Krea: AI Images and Videos, id 6742134132)",
+  "note": ""
+ },
+ "la-times": {
+  "kind": "website",
+  "url": "https://www.latimes.com:443/apple-touch-icon.png",
+  "note": ""
+ },
+ "ladder": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a5/ca/d0/a5cad0db-d821-f32b-9915-30b716f98df4/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: LADDER Strength Training Plans, id 1502936453)",
+  "note": ""
+ },
+ "landr": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/aa/5f/d0/aa5fd03f-8ed5-f660-7011-3ec05a63a383/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: LANDR - For Music Makers, id 6443542020)",
+  "note": ""
+ },
+ "lastpass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0a/75/25/0a75253f-59ae-63f5-bbab-c2cf2d307994/AppIcon_distribution-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: LastPass Password Manager, id 324613447)",
+  "note": ""
+ },
+ "leonardo-ai": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/10/eb/32/10eb32d7-b210-cfd7-e550-fbb02fc0b041/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Leonardo.Ai - Image Generator, id 1662773014)",
+  "note": ""
+ },
+ "les-mills": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/77/f8/1f/77f81f68-704e-c5ec-fa17-634c149d3d35/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: LES MILLS+: home workout app, id 1483001711)",
+  "note": ""
+ },
+ "libro-fm": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/86/09/c58609d6-d161-b95e-55ce-d60e78360c1c/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Libro.fm Audiobooks, id 1057776523)",
+  "note": ""
+ },
+ "life360": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9f/be/74/9fbe7420-5f35-9124-d57f-6247c3858d4b/AppIcon-0-0-1x_U007ephone-0-1-0-0-85-220.png/256x256bb.png  (App Store: Life360: Family Safety & GPS, id 384830320)",
+  "note": ""
+ },
+ "lifelock": {
+  "kind": "website",
+  "url": "https://lifelock.norton.com/content/dam/lifelock/cb/norton-touch-icon_teal.png",
+  "note": ""
+ },
+ "lightricks-videoleap": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/35/e6/9a/35e69a4f-81e1-1a02-4abb-a72b2b211620/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Videoleap: AI Video Editor, id 1255135442)",
+  "note": ""
+ },
+ "lightroom": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/84/11/fb/8411fbee-f068-1351-3917-708646eb310f/AppIconSpark-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/256x256bb.png  (App Store: Adobe Express: Create Anything, id 1051937863)",
+  "note": ""
+ },
+ "linear": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/95/d2/53/95d253a3-498a-40e9-eeca-ec73f6ac6fcc/Linear-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Linear Mobile, id 1645587184)",
+  "note": ""
+ },
+ "lingokids": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/81/0d/e0/810de013-1e82-b1ff-0d74-37b1da883d38/AppIconMain-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Lingokids: Games & Shows, id 1002043426)",
+  "note": ""
+ },
+ "linkedin-learning": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/52/0f/32/520f32f9-bfb3-6230-08db-5c0fa615930f/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: LinkedIn Learning, id 1084807225)",
+  "note": ""
+ },
+ "linkedin-premium": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d3/cc/dc/d3ccdc71-56dd-3d91-4ff1-461e91a8633b/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: LinkedIn: Community & Network, id 288429040)",
+  "note": ""
+ },
+ "linode": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=linode.com&sz=256",
+  "note": ""
+ },
+ "loom": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9f/64/39/9f6439b7-20b1-362f-bd3e-fcdbab1e80a0/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Loom: Screen Recorder, id 1474480829)",
+  "note": ""
+ },
+ "lose-it": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9f/14/99/9f1499d8-d525-da9f-6a6d-74f18fd1b04a/AppIcon-0-0-1x_U007epad-0-0-0-8-0-0-85-220.png/256x256bb.png  (App Store: Lose It! – Calorie Counter, id 297368629)",
+  "note": ""
+ },
+ "lovable": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a7/07/33/a707336e-9828-a75d-44a6-927076691dfd/app-icon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/256x256bb.png  (App Store: Lovable: Build Apps With AI, id 6757471107)",
+  "note": ""
+ },
+ "lumosity": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5f/2f/2f/5f2f2f62-31bb-9a1c-4ba6-4720c32f2661/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Lumosity: Brain Training Games, id 577232024)",
+  "note": ""
+ },
+ "lyft-pink": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b1/b9/1a/b1b91a77-06d1-1557-69d7-acf8503dee23/PassengerRelease-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Lyft, id 529379082)",
+  "note": ""
+ },
+ "mailchimp": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ad/7f/fa/ad7ffa08-e3a9-8474-54bd-dfa75eaf7e60/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Mailchimp Email Marketing, id 366794783)",
+  "note": ""
+ },
+ "malwarebytes": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b0/d8/75/b0d8752a-23e4-4d7c-02e3-94033bd2433f/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Malwarebytes - Mobile Security, id 1327105431)",
+  "note": ""
+ },
+ "manus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/22/cc/75/22cc75fc-3173-432d-e11f-dc69532d4ddb/IconManus-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Manus - AI Agent & Automation, id 6740909540)",
+  "note": ""
+ },
+ "marvel-unlimited": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fd/f3/29/fdf329ad-a8ed-fae8-9569-aeb07129e28d/AppIcon-0-0-1x_U007emarketing-0-0-0-8-0-0-85-220.png/256x256bb.png  (App Store: Marvel Unlimited, id 607205403)",
+  "note": ""
+ },
+ "masterclass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fb/2e/c1/fb2ec192-df9e-4efa-3bed-311882f42346/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: MasterClass: Online Classes, id 1273867416)",
+  "note": ""
+ },
+ "match": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/19/51/ad/1951ad65-f356-2419-383f-b72ad61ad697/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Match Dating App: Chat & Meet, id 305939712)",
+  "note": ""
+ },
+ "mcafee": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4c/99/ac/4c99acc6-c3b3-7dd4-b122-d1dde98c50fc/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: McAfee: Stay Secure & Private, id 724596345)",
+  "note": ""
+ },
+ "medium": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2b/7a/7b/2b7a7bbe-9bb1-a205-436a-8a03d3a579f7/MediumWordmarkBlack-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Medium: Read & Write Stories, id 828256236)",
+  "note": ""
+ },
+ "mega": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/99/e9/a9/99e9a910-0a49-c01c-c41b-f8e3aab569fd/AppIcon-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: MEGA: Encrypted Cloud Storage, id 706857885)",
+  "note": ""
+ },
+ "memrise": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/db/12/44/db12442e-cb36-868e-77f0-6a468ff18f7d/AppIcon-0-0-1x_U007emarketing-0-8-0-P3-0-85-220.png/256x256bb.png  (App Store: Memrise: Language Learning App, id 635966718)",
+  "note": ""
+ },
+ "meta-horizon-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/77/44/53/77445314-b2a7-6b7d-2067-50c92c941293/AppIcon-MetaHorizon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Meta Horizon, id 1366478176)",
+  "note": ""
+ },
+ "mgm-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f0/72/a3/f072a35a-1b1d-9900-462d-eb0fe1fb87b7/AppIcon-EPIX-NOW-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: MGM+, id 1387514950)",
+  "note": ""
+ },
+ "microsoft-365": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/37/f0/80/37f08024-9e09-9b28-ad94-3ce4c29f2a95/AppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Microsoft Copilot, id 541164041)",
+  "note": ""
+ },
+ "microsoft-copilot-pro": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/37/f0/80/37f08024-9e09-9b28-ad94-3ce4c29f2a95/AppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Microsoft Copilot, id 541164041)",
+  "note": ""
+ },
+ "microsoft-teams": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5b/25/a9/5b25a98e-bd5c-d624-d383-f069f891be9d/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Microsoft Teams, id 1113153706)",
+  "note": ""
+ },
+ "midjourney": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=midjourney.com&sz=256",
+  "note": ""
+ },
+ "minecraft-realms": {
+  "kind": "website",
+  "url": "https://www.minecraft.net/etc.clientlibs/minecraftnet/clientlibs/clientlib-site/resources/android-icon-192x192.png",
+  "note": ""
+ },
+ "mint-mobile": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cc/ee/4e/ccee4e35-1ec5-bcc4-58f9-14f0a3a0fd9c/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Mint Mobile, id 1295303441)",
+  "note": ""
+ },
+ "miro": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/6f/ff/7e6fffe9-6f62-3b5d-01e9-efaff282a267/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Miro: your visual workspace, id 1180074773)",
+  "note": ""
+ },
+ "mistral-le-chat": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=mistral.ai&sz=256",
+  "note": ""
+ },
+ "mlb-tv": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=mlb.com&sz=256",
+  "note": ""
+ },
+ "mobifone": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/97/07/a5/9707a58a-8914-93ac-51a0-44567fa7ddc4/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: MobiFone Money, id 6448983826)",
+  "note": ""
+ },
+ "moises": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3c/fe/bc/3cfebc2d-29fd-cb2d-fb7d-76fefbed5320/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Moises: The Musician's App, id 1515796612)",
+  "note": ""
+ },
+ "monday": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c0/23/62/c02362a9-325f-2590-8544-ec855caecf78/AppIcon-Monday-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: monday.com - AI Work Platform, id 1290128888)",
+  "note": ""
+ },
+ "mondly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b6/74/48/b67448b6-fdcb-21bc-f60d-f9f234c3e464/AppIcon_mondly-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Mondly: Learn 41 Languages, id 987873536)",
+  "note": ""
+ },
+ "monkey-junior": {
+  "kind": "website",
+  "url": "https://monkey.edu.vn/favicon.ico",
+  "note": ""
+ },
+ "mubi": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5d/66/a4/5d66a4ca-ee8e-274c-19dd-45eb06d34d68/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: MUBI: Stream Great Cinema, id 626148774)",
+  "note": ""
+ },
+ "mullvad": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/23/88/3d/23883d39-03ab-6b8a-8afc-cdd40c6031f4/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Mullvad VPN, id 1488466513)",
+  "note": ""
+ },
+ "murf": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/69/da/cc/69daccf7-1903-8679-d83e-22d43f3127cd/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Murf AI: Sound Raw Voice Maker, id 6755953474)",
+  "note": ""
+ },
+ "musixmatch": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6a/05/24/6a0524e8-1f1e-249a-22ca-5fa6e04eafc5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Musixmatch Dynamic Lyrics, id 448278467)",
+  "note": ""
+ },
+ "my-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4d/ed/47/4ded47ed-7d13-0b6f-e93a-1999589b6133/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: MyTV: Bóng Đá, Xem Phim, Tivi, id 1505256562)",
+  "note": ""
+ },
+ "myfitnesspal": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b0/d4/fa/b0d4fa06-11ba-5565-5ea0-a6b0a7366f28/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: MyFitnessPal: Calorie Counter, id 341232718)",
+  "note": ""
+ },
+ "namecheap": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/65/b0/ca/65b0ca84-9547-f700-a721-57749ea85873/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Namecheap, id 482604032)",
+  "note": ""
+ },
+ "napster": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f6/a6/77/f6a677a7-aeb2-3078-5d3b-b17aa75c1869/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Napster: Everyday AI Experts, id 584557117)",
+  "note": ""
+ },
+ "natural-cycles": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d8/a7/46/d8a746f0-1e5a-989f-9432-76b5f6705edd/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Natural Cycles: Fertility App, id 765535549)",
+  "note": ""
+ },
+ "nba-league-pass": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=nba.com&sz=256",
+  "note": ""
+ },
+ "nebula": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9a/62/9d/9a629dd1-b1b6-29e6-3dd4-36b9da1c24f9/AppIcon-0-0-1x_U007ephone-0-1-0-0-85-220.png/256x256bb.png  (App Store: Nebula: Spiritual Guidance, id 1459969523)",
+  "note": ""
+ },
+ "nest-aware": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/00/19/36/0019361c-6d10-feb4-3cba-42aa6a4eef28/logo_home_app_color-0-0-1x_U007epad-0-0-0-1-0-0-0-85-220.png/256x256bb.png  (App Store: Google Home, id 680819774)",
+  "note": ""
+ },
+ "netflix": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/32/c6/6a/32c66aca-fb60-4d0e-46fb-8e861d280d6a/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Netflix, id 363590051)",
+  "note": ""
+ },
+ "netlify": {
+  "kind": "website",
+  "url": "https://www.netlify.com/favicon/icon-512.png",
+  "note": ""
+ },
+ "new-yorker": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/43/83/5943839b-3cb2-6b99-255b-405bf06e75b9/AppIcon-0-0-1x_U007emarketing-0-10-0-85-220.png/256x256bb.png  (App Store: The New Yorker, id 1081530898)",
+  "note": ""
+ },
+ "nfl-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bb/37/88/bb378804-211e-c7d1-00fb-043132e63a73/AppIcon-release-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: NFL, id 389781154)",
+  "note": ""
+ },
+ "nhaccuatui": {
+  "kind": "website",
+  "url": "https://www.nhaccuatui.com/favicon.ico",
+  "note": ""
+ },
+ "nintendo-switch-online": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=nintendo.com&sz=256",
+  "note": ""
+ },
+ "noom": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9d/b8/b1/9db8b171-d8c0-d191-516b-f4b82bed9fdc/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Noom Weight Loss, Food Tracker, id 634598719)",
+  "note": ""
+ },
+ "nordpass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/be/98/a9/be98a95f-8285-d0fc-03cb-c3c86abf90cf/NordPass-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: NordPass: Password Manager, id 1486322860)",
+  "note": ""
+ },
+ "nordvpn": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b1/28/64/b1286427-ec8b-81b0-26d8-9c0523cf1efc/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: NordVPN: VPN Fast & Secure, id 905953485)",
+  "note": ""
+ },
+ "norton-360": {
+  "kind": "website",
+  "url": "https://asia.norton.com/content/dam/norton/cb/norton-touch-icon.png",
+  "note": ""
+ },
+ "notability": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ff/2f/cd/ff2fcd7e-276c-cd17-c932-cfbcd75bb72a/AppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Notability: AI Notes & PDF, id 360593530)",
+  "note": ""
+ },
+ "notion": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4a/fa/7a/4afa7a74-b27e-17db-4293-50450fc8423c/AppIconProd-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Notion: Notes, Tasks, AI, id 1232780281)",
+  "note": ""
+ },
+ "notion-ai": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4a/fa/7a/4afa7a74-b27e-17db-4293-50450fc8423c/AppIconProd-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Notion: Notes, Tasks, AI, id 1232780281)",
+  "note": ""
+ },
+ "now-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/37/3c/d1/373cd1f9-9cca-48b7-2597-c4d7229be5ee/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: NOW Türkiye, id 6476784081)",
+  "note": ""
+ },
+ "nytimes": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=nytimes.com&sz=256",
+  "note": ""
+ },
+ "obsidian": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/80/7f/be/807fbe07-a39e-9941-e396-1886fabfc999/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Obsidian - Connected Notes, id 1557175442)",
+  "note": ""
+ },
+ "okcupid": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6d/c0/7d/6dc07d12-69b8-6cc7-47ab-d8358547aca1/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: OkCupid Dating: Date Singles, id 338701294)",
+  "note": ""
+ },
+ "ondemandkorea": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/b6/60/ac/b660ac08-a1bd-dbad-fa22-a334c65b0e20/AppIcon-0-0-1x_U007epad-0-1-0-0-0-85-220.png/256x256bb.png  (App Store: OnDemandKorea: Korean Dramas, id 917796578)",
+  "note": ""
+ },
+ "one-medical": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4a/7a/4c/4a7a4cc2-0250-6c28-fda1-34b1c9bfa80a/AppIcon-0-0-1x_U007ephone-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: One Medical, id 393507802)",
+  "note": ""
+ },
+ "onedrive": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3b/01/fe/3b01fe63-5660-9423-76fa-43380bd2b6b3/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Microsoft OneDrive, id 477537958)",
+  "note": ""
+ },
+ "openai-api": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=platform.openai.com&sz=256",
+  "note": ""
+ },
+ "openrouter": {
+  "kind": "website",
+  "url": "https://openrouter.ai/icon-pwa-512.png",
+  "note": ""
+ },
+ "opus-clip": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/65/c8/97/65c8974e-cf30-c4ca-6039-3e96855d0c35/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: OpusClip - AI video clipping, id 6743615403)",
+  "note": ""
+ },
+ "otter-ai": {
+  "kind": "website",
+  "url": "https://cdn.prod.website-files.com/618e9316785b3582a5178502/618e943a80919a98b5e9bf69_apple-icon.png",
+  "note": ""
+ },
+ "oura": {
+  "kind": "website",
+  "url": "https://ouraring.com/assets/icons/apple-touch-icon.png",
+  "note": ""
+ },
+ "pandora": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/06/13/15/0613151d-52c0-6569-5ed8-10a04f6c9cde/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Pandora: Personalized Music, id 284035177)",
+  "note": ""
+ },
+ "parallels": {
+  "kind": "website",
+  "url": "https://www.parallels.com/static/pl/typo3conf/ext/prls_theme/Resources/Public/theme/res/img/favicon/apple-touch-icon.png",
+  "note": ""
+ },
+ "paramount-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/69/05/ed/6905ed93-841f-8ed3-0fb7-de72e6f977fa/P_U002bAppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Paramount+, id 530168168)",
+  "note": ""
+ },
+ "patreon": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e6/f8/30/e6f83074-049d-1f64-71aa-12f598574cf3/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Patreon, id 1044456188)",
+  "note": ""
+ },
+ "pcloud": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/92/4e/c7/924ec7f7-b4b1-ea87-2d5f-b8d170450be5/app_icon_classic-0-0-1x_U007epad-0-1-P3-85-220.png/256x256bb.png  (App Store: pCloud - Cloud Storage, id 692002098)",
+  "note": ""
+ },
+ "pdf-expert": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ba/7c/6d/ba7c6d16-e67f-5bf4-3096-02200237cb6c/AppIcon-Production-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/256x256bb.png  (App Store: PDF Expert: Editor & Reader, id 743974925)",
+  "note": ""
+ },
+ "peacock": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d7/3c/c9/d73cc9ba-f18d-1962-f8a3-3faefc877230/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Peacock TV: Stream TV & Movies, id 1508186374)",
+  "note": ""
+ },
+ "peloton-app": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fe/ae/ff/feaeff40-a158-5d12-d2a5-3a5e11a92f1a/peloton-white-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/256x256bb.png  (App Store: Peloton: Fitness & Workouts, id 792750948)",
+  "note": ""
+ },
+ "perplexity": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f6/9c/f8/f69cf8b0-95fb-1a4c-0053-1302d8479a69/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/256x256bb.png  (App Store: Perplexity: AI Agent & Search, id 1668000334)",
+  "note": ""
+ },
+ "philo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5a/9c/8b/5a9c8b7f-09b9-4d8a-8f5d-2a1c9f32de9a/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Philo: Shows, Movies & Live TV, id 1248646044)",
+  "note": ""
+ },
+ "phind": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4b/93/8f/4b938f97-7d25-494e-7215-b38a2f72cc16/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Phind - Work & Resources, id 6757638549)",
+  "note": ""
+ },
+ "photomath": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2f/5a/0a/2f5a0adc-38d1-b267-3097-b70da62099f0/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Photomath, id 919087726)",
+  "note": ""
+ },
+ "picsart": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/29/70/0f/29700f73-1932-2d9a-d03d-971142f9ea57/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/256x256bb.png  (App Store: Picsart AI Photo Editor, Video, id 587366035)",
+  "note": ""
+ },
+ "pika": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/b6/92/74b692e5-22b7-ecd4-7a12-37e5202965fe/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Pika - AI Video, id 6680155400)",
+  "note": ""
+ },
+ "pimsleur": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2a/c8/9e/2ac89eb2-b1ab-ba19-fe65-91c7d63cf799/AppIcon-0-0-1x_U007epad-0-11-0-85-220.png/256x256bb.png  (App Store: Pimsleur | Language Learning, id 1405735469)",
+  "note": ""
+ },
+ "planet-fitness": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1e/e9/ec/1ee9ecb0-775b-f421-4cf8-65ad21157341/LogoIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Planet Fitness, id 399857015)",
+  "note": ""
+ },
+ "playstation-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/bc/85/e3/bc85e37d-01ec-41c8-1b91-8e445b4f5479/PlayStation-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: PlayStation App, id 410896080)",
+  "note": ""
+ },
+ "plex-pass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a4/38/db/a438db28-fd3b-4e8a-f24c-c6f97e17fc59/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Plex: Find Movies and TV Shows, id 383457673)",
+  "note": ""
+ },
+ "pluralsight": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/77/dd/55/77dd55b8-955e-9c44-25fd-8e04539d79c1/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Pluralsight, id 6737839588)",
+  "note": ""
+ },
+ "pocket-casts": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d5/90/13/d59013d5-4fe1-1551-184e-f3b5f292b093/AppIcon-0-0-1x_U007epad-0-1-0-0-0-85-220.png/256x256bb.png  (App Store: Pocket Casts: Podcast Player, id 414834813)",
+  "note": ""
+ },
+ "poe": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/24/f3/38/24f33848-882b-aa89-8367-5a9317abadc5/AppIcon_Poe-0-0-1x_U007emarketing-0-0-0-8-0-0-85-220.png/256x256bb.png  (App Store: Poe – Fast AI Chat, id 1640745955)",
+  "note": ""
+ },
+ "pokemon-go": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1b/f1/01/1bf101d5-4429-5f54-fc50-95e0b4b2e34b/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Pokémon GO, id 1094591345)",
+  "note": ""
+ },
+ "popsapp": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cb/c5/99/cbc5995c-32a3-ae17-6c18-e97b4ee107a6/POPS-Production-1x_U007emarketing-0-8-0-85-220-0.png/256x256bb.png  (App Store: POPS - Your Comic Destination, id 1478994434)",
+  "note": ""
+ },
+ "prep": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cd/4d/d1/cd4dd166-d0d4-9875-477c-a2093ddd073d/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Prep-Smart learning& test prep, id 1513736434)",
+  "note": ""
+ },
+ "pressreader": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/46/0f/85/460f858d-14d0-9afa-50c6-159126cb27ba/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: PressReader: News & Magazines, id 313904711)",
+  "note": ""
+ },
+ "prime-video": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=primevideo.com&sz=256",
+  "note": ""
+ },
+ "private-internet-access": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/52/fb/e3/52fbe3e1-a2f5-95b6-03e2-62930720b38c/AppIcon-Production-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: VPN by Private Internet Access, id 955626407)",
+  "note": ""
+ },
+ "proton": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1a/96/44/1a96446b-b5f7-c3e0-89de-dfeab714d160/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Proton VPN: Fast & Secure, id 1437005085)",
+  "note": ""
+ },
+ "proton-drive": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/96/dc/c5/96dcc574-c625-d8ff-381f-749fa3f6955c/AppIcon-Release-External-0-1x_U007epad-0-1-0-85-220-0.png/256x256bb.png  (App Store: Proton Drive: Cloud Storage, id 1509667851)",
+  "note": ""
+ },
+ "proton-vpn": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1a/96/44/1a96446b-b5f7-c3e0-89de-dfeab714d160/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Proton VPN: Fast & Secure, id 1437005085)",
+  "note": ""
+ },
+ "pubg-mobile": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6d/98/24/6d9824dd-f75f-9bd6-221e-33324fedecb2/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: PUBG MOBILE, id 1330123889)",
+  "note": ""
+ },
+ "qobuz": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/20/4b/74/204b7462-54b9-263a-1c71-860b11dc8a26/AppIcon-Release-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Qobuz: Music & Editorial, id 946429340)",
+  "note": ""
+ },
+ "quillbot": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/65/01/28/65012871-edb3-14bd-51db-4d0e966fd040/qb_app_icon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Quillbot-AI Writing & Keyboard, id 6463116243)",
+  "note": ""
+ },
+ "quizlet": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/89/63/1a/89631ab3-341a-541e-f7d9-cb8fdff31b60/AppIcon-production-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Quizlet: More than Flashcards, id 546473125)",
+  "note": ""
+ },
+ "readly": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/23/66/b6/2366b655-738e-67b3-a4d9-bec0259431c6/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Readly: Newspapers & Magazines, id 6759562498)",
+  "note": ""
+ },
+ "readwise": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/3b/6e/08/3b6e08ba-c7ff-9a37-6c08-520fb605cdbf/BookwiseMVP3-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Readwise Books, id 6502848368)",
+  "note": ""
+ },
+ "remove-bg": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/48/37/ca/4837cab8-b9f3-78d5-3644-6da99bbfa4f2/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: Remove.bg, id 6748509597)",
+  "note": ""
+ },
+ "rent-the-runway": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/60/7a/17607ae8-2f22-2245-a046-eabf6cfb345d/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Rent the Runway (RTR), id 672853806)",
+  "note": ""
+ },
+ "replika": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/72/03/94/720394b9-ad9c-fe75-6fee-2bb15c667871/AppIcon-0-0-1x_U007ephone-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Replika - AI Companion Chat, id 1158555867)",
+  "note": ""
+ },
+ "replit": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a7/58/97/a75897a8-0a36-ab85-e903-749600bdbcb3/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/256x256bb.png  (App Store: Replit: Vibe Code with AI Fast, id 1614022293)",
+  "note": ""
+ },
+ "reuters": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e1/b8/e3/e1b8e387-dc71-28e5-1484-b3606d72abdf/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Reuters - Breaking World News, id 602660809)",
+  "note": ""
+ },
+ "ring-protect": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/db/04/16/db04160a-dc59-8283-7559-d7abaa8140c3/AppIcon-NH-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Ring - Always Home, id 926252661)",
+  "note": ""
+ },
+ "ro": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/96/b6/9e/96b69ebc-5a26-1e74-5d46-937e3384b910/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Ro: Online Healthcare, id 1585858911)",
+  "note": ""
+ },
+ "roblox-premium": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=roblox.com&sz=256",
+  "note": ""
+ },
+ "rosetta-stone": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/85/15/fb85159a-3250-20b0-046a-3c64539a90b1/RosettaStoneClassic-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Rosetta Stone Classic (2024), id 435588892)",
+  "note": ""
+ },
+ "runescape": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/12/d8/d3/12d8d3f1-9228-f3a8-1160-0e66a6ed6ef9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: RuneScape, id 1332022656)",
+  "note": ""
+ },
+ "runway": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4e/8a/4e/4e8a4e1a-d202-b827-23b5-fd9133e51187/runway-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Runway: AI Image & Video, id 1665024375)",
+  "note": ""
+ },
+ "sams-club": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/86/3c/79/863c79fb-4919-e050-863b-cb04d8a7cec9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Sam's Club Shopping & Delivery, id 382497397)",
+  "note": ""
+ },
+ "scribd": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c1/2c/03/c12c03d6-3cce-1c42-790e-1b7f1696673a/Scribd-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Scribd: 170M+ documents, id 6448807714)",
+  "note": ""
+ },
+ "setapp": {
+  "kind": "website",
+  "url": "https://setapp.com/apple-touch-icon.png",
+  "note": ""
+ },
+ "shadow-pc": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/2d/2c/1a/2d2c1ab6-16bf-5316-2988-64040a123943/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Shadow PC, id 1446621967)",
+  "note": ""
+ },
+ "shahid": {
+  "kind": "website",
+  "url": "https://shahid.mbc.net/staticFiles/production/favicon-coast.png",
+  "note": ""
+ },
+ "shonen-jump": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/40/76/06/40760638-2ce8-582c-8339-75968587f0da/AppIcon_Weekly_Shonen_Jump-0-0-1x_U007emarketing-0-0-0-11-0-0-85-220.png/256x256bb.png  (App Store: Shonen Jump Manga & Comics, id 594237344)",
+  "note": ""
+ },
+ "shopee-vip": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f9/a9/ca/f9a9ca7f-4662-6ec9-dd90-422d13541c97/AppIcon-0-0-1x_U007emarketing-0-6-0-0-85-220.png/256x256bb.png  (App Store: Shopee 11.11 Đại Tiệc Ưu Đãi, id 959841449)",
+  "note": ""
+ },
+ "shopify": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/05/43/a7/0543a755-4811-8f58-5cc1-a08541bb287b/AppIcon-com.jadedpixel.shopify-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Shopify: Sell. Run a business., id 371294472)",
+  "note": ""
+ },
+ "shortform": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/99/8b/57/998b576a-7961-64e7-4178-2ab8c034e293/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Shortform Daily Book Summaries, id 1489472007)",
+  "note": ""
+ },
+ "shudder": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1f/a2/18/1fa218f3-e24c-6eed-4a63-e41104c87bd8/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Shudder: Horror & Thrillers, id 919790315)",
+  "note": ""
+ },
+ "simplisafe": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e2/27/a9/e227a934-e459-21b9-24e2-7f5908dc4ab7/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: SimpliSafe Home Security App, id 555798051)",
+  "note": ""
+ },
+ "simply-piano": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3b/67/1f/3b671fd4-a09b-3438-e457-71a11e9a739b/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Simply Piano: Learn Piano Fast, id 1019442026)",
+  "note": ""
+ },
+ "siriusxm": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3f/64/e3/3f64e3bf-5466-3167-3d06-33ae853ef377/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: SiriusXM: Music, Sports & News, id 317951436)",
+  "note": ""
+ },
+ "sketch": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/2a/5e/bd/2a5ebd4e-66e8-b932-c7b3-79e49630abf3/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Sketchbook®, id 883738213)",
+  "note": ""
+ },
+ "skillshare": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/84/0a/a5/840aa54c-fb2f-49b3-c8da-4faf6a4c57d2/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Skillshare: Creativity Classes, id 916819843)",
+  "note": ""
+ },
+ "slack": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8e/a6/9e/8ea69e16-151a-811a-75a7-bce97339b000/slack_icon_prod-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Slack, id 618783545)",
+  "note": ""
+ },
+ "sleep-cycle": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8c/7b/bf/8c7bbf5c-bbfe-bb34-7ec8-a7297cc17d83/AppIconSleepCycle-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Sleep Cycle - Tracker & Sounds, id 320606217)",
+  "note": ""
+ },
+ "sling-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/7e/3a/a4/7e3aa450-d256-283f-40db-14c92938962e/AppIcon-Liquid-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: Sling: Live TV, Sports & News, id 945077360)",
+  "note": ""
+ },
+ "smallpdf": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4a/62/81/4a628170-36c6-3c95-1394-7c056c60c57f/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/256x256bb.png  (App Store: Smallpdf: Scanner & PDF Editor, id 1485259500)",
+  "note": ""
+ },
+ "smugmug": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/93/e5/7d/93e57d15-dc3a-63e5-ee22-480a3b8eb1d8/Smuggy_Refresh-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: SmugMug - Store & Share Photos, id 364894061)",
+  "note": ""
+ },
+ "snapchat-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/30/cc/d2/30ccd285-16f5-c44b-1b20-35ba6f52e26f/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Snapchat, id 447188370)",
+  "note": ""
+ },
+ "sonyliv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/80/c7/e2/80c7e2f7-8fe0-6d89-98b1-a86e807a59b9/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Sony LIV, id 587794258)",
+  "note": ""
+ },
+ "soundcloud": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d0/05/1c/d0051c08-f1d3-b566-d5f0-033ef8a07640/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: SoundCloud: Discover New Music, id 336353151)",
+  "note": ""
+ },
+ "spark-mail": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fe/ca/a9/fecaa999-18aa-c08d-57f5-5384d20d4e14/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Spark Mail: AI Email Assistant, id 997102246)",
+  "note": ""
+ },
+ "speak": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/38/e4/d7/38e4d719-b271-73ba-4aca-d5b355e7a9aa/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Speak: Language Learning, id 1286609883)",
+  "note": ""
+ },
+ "spectrum": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/dd/67/24/dd672485-0753-d466-23a9-af47d0fd34a0/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: My Spectrum, id 942608209)",
+  "note": ""
+ },
+ "speechify": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/46/1c/07/461c074d-c0af-831e-a3c3-defe35e4a795/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: Speechify – Text to Speech PDF, id 1209815023)",
+  "note": ""
+ },
+ "splice": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8e/ee/6d/8eee6dd8-997b-3909-a04e-38aa98d8bb71/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Splice - Video Editor & Maker, id 409838725)",
+  "note": ""
+ },
+ "spotify": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/ca/fa/d5cafa8a-079b-f708-4704-6cc55a8fb160/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Spotify: Music and Podcasts, id 324684580)",
+  "note": ""
+ },
+ "spotify-audiobooks": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/ca/fa/d5cafa8a-079b-f708-4704-6cc55a8fb160/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Spotify: Music and Podcasts, id 324684580)",
+  "note": ""
+ },
+ "squarespace": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/34/09/14/3409145f-9808-c4e8-5fd6-5f50a87d606a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Squarespace: Run your business, id 1361797894)",
+  "note": ""
+ },
+ "stan": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/19/d0/74/19d07496-b9f9-07dc-2e22-04d96cf8024e/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Stan., id 948095331)",
+  "note": ""
+ },
+ "starlink": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ba/02/ca/ba02caf3-27f9-2832-9235-e422bf51eebb/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Starlink, id 1537177988)",
+  "note": ""
+ },
+ "starz": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ef/e6/09/efe609f6-b367-9788-49d2-11e8af0ef608/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: STARZ, id 550221096)",
+  "note": ""
+ },
+ "steam": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a2/b1/14/a2b1147b-bb53-2c78-264e-301efc614949/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Steam Mobile, id 495369748)",
+  "note": ""
+ },
+ "storytel": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e4/e1/05/e4e1058c-fa7c-af72-c5b8-cebba7a44baa/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Storytel - Audiobooks Library, id 348177651)",
+  "note": ""
+ },
+ "strava": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/78/8a/d5/788ad5e6-abdb-ce3b-404d-e7bcb9f6407d/AppIcon-Primary-0-0-1x_U007ephone-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Strava: Run, Bike, Walk, id 426826309)",
+  "note": ""
+ },
+ "studocu": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c6/82/13/c68213ab-b3a0-2eb1-8e31-78b0eac1c86f/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Studocu: Notes & Practice, id 1460235511)",
+  "note": ""
+ },
+ "substack": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/22/7f/a2/227fa29d-bc1f-29c5-f9c1-038e72855824/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-P3-85-220.png/256x256bb.png  (App Store: Substack, id 1581650857)",
+  "note": ""
+ },
+ "sundance-now": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a0/6a/43/a06a4350-6650-af58-5c70-73475ec99fea/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.png  (App Store: Sundance Now, id 879902807)",
+  "note": ""
+ },
+ "suno": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/de/ee/cb/deeecbdf-b0fa-8caa-e439-1b378b113b77/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Suno - AI Songs, Music, Lyrics, id 6480136315)",
+  "note": ""
+ },
+ "superhuman": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/60/0c/32/600c3277-0fae-d6c8-f0cf-bb2e69416765/AppIcon-Default-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Superhuman Mail, id 1120837655)",
+  "note": ""
+ },
+ "surfshark": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/80/43/85/8043855b-a5ea-c893-c1aa-fc07ceb91707/iOS_AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/256x256bb.png  (App Store: Surfshark VPN: Fast & Private, id 1391782046)",
+  "note": ""
+ },
+ "sweat": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/82/aa/45/82aa45ac-44bb-310c-c980-2c91e3ea0eb5/AppIcon-Sweat-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Sweat: Fitness App For Women, id 1049234587)",
+  "note": ""
+ },
+ "sync-com": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/2a/a8/b2/2aa8b27c-bafc-436e-7bdf-4d642ea79597/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Sync - Secure cloud storage, id 917410266)",
+  "note": ""
+ },
+ "synthesia": {
+  "kind": "website",
+  "url": "https://cdn.prod.website-files.com/65e89895c5a4b8d764c0d710/6618fd69d436784c0bba5e9e_webclip.png",
+  "note": ""
+ },
+ "t-mobile": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/7b/57/14/7b5714ad-f00e-e023-eba7-33213b871d09/AppIcon-0-0-1x_U007emarketing-0-6-0-sRGB-85-220.png/256x256bb.png  (App Store: T-Mobile Prepaid eSIM, id 1437014693)",
+  "note": ""
+ },
+ "tabnine": {
+  "kind": "website",
+  "url": "https://www.tricentis.com/favicon.ico?v=2",
+  "note": ""
+ },
+ "talkspace": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/09/b5/bf/09b5bf02-e612-bd27-acdd-c97735518bf3/AppIcon-Production-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Talkspace: Virtual Therapy App, id 661829386)",
+  "note": ""
+ },
+ "target-circle-360": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/0e/36/51/0e365168-537a-6c36-29fc-f5faed8b810b/2026_Holiday_AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Target: Shop. Style. Save., id 297430070)",
+  "note": ""
+ },
+ "telegram-premium": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/bf/0b/bc/bf0bbc9b-79b5-07c5-f803-048d7cad9b2f/Telegram-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Telegram Messenger, id 686449807)",
+  "note": ""
+ },
+ "ten-percent-happier": {
+  "kind": "website",
+  "url": "https://cdn.prod.website-files.com/6611724b5b44cc23c5935b60/665e47aa0582e7d98bae7b88_Happier%20Favicon-1.png",
+  "note": ""
+ },
+ "the-athletic": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c3/f4/82/c3f4829c-1630-9ed2-8673-ac123369115a/AthleticRelease-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: The Athletic: All Sports News, id 1135216317)",
+  "note": ""
+ },
+ "the-atlantic": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f3/f8/fa/f3f8fa9c-eacf-9bc0-27df-a104eaee6aee/AppIcon-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: The Atlantic Magazine, id 397599894)",
+  "note": ""
+ },
+ "ticktick": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/de/5d/64/de5d6426-bf7f-84af-389e-a0280e6359f1/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/256x256bb.png  (App Store: TickTick:To-Do List & Calendar, id 626144601)",
+  "note": ""
+ },
+ "tidal": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/28/0e/81/280e817b-8a39-ef86-b916-81ebfd80b795/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: TIDAL Music: HiFi Sound, id 913943275)",
+  "note": ""
+ },
+ "tile": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/99/7a/e5/997ae524-7868-e45b-cd3a-bbe9883af9e1/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Tile - Find lost keys & phone, id 664939913)",
+  "note": ""
+ },
+ "tinder": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fd/c3/77/fdc37782-c1c1-9174-fa8e-2eb53e9f39eb/AppIcon-BrandFlame-0-0-1x_U007ephone-0-1-0-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Tinder Dating App: Date & Chat, id 547702041)",
+  "note": ""
+ },
+ "todoist": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/28/db/77/28db7718-8ed9-e73d-cce4-88879b0e87ae/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Todoist: To Do List & Calendar, id 572688855)",
+  "note": ""
+ },
+ "trello": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/25/d3/57/25d35766-72cb-8047-7c42-cbc913ae6019/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Trello: Daily Task Tracker, id 461504587)",
+  "note": ""
+ },
+ "truecaller": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/79/a6/ee/79a6eec2-1060-31d6-aeaf-4bf9bd78f512/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/256x256bb.png  (App Store: Truecaller: Premium Caller ID, id 448142450)",
+  "note": ""
+ },
+ "tunnelbear": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d1/54/cb/d154cb53-2e72-dcfb-36cf-85b7642b28d4/app-icon-regular-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: TunnelBear: Safe and Fast VPN, id 564842283)",
+  "note": ""
+ },
+ "tuta": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e5/c6/a3/e5c6a3e4-5025-85c4-2c48-c90921486cec/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Tuta Mail: Secure Email, id 922429609)",
+  "note": ""
+ },
+ "tv360": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4c/6c/bb/4c6cbb15-d038-e114-9eb8-896a2857a4c2/AppIcon-0-0-1x_U007emarketing-0-11-0-sRGB-85-220.png/256x256bb.png  (App Store: TV360: Phim, Thể Thao, Show, id 1536071266)",
+  "note": ""
+ },
+ "twitch-sub": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5d/f3/b3/5df3b369-b7d0-9b52-2182-7dde25a88285/TwitchAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-0-0-0-85-220.png/256x256bb.png  (App Store: Twitch: Live Streaming, id 460177396)",
+  "note": ""
+ },
+ "twitch-turbo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5d/f3/b3/5df3b369-b7d0-9b52-2182-7dde25a88285/TwitchAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-0-0-0-85-220.png/256x256bb.png  (App Store: Twitch: Live Streaming, id 460177396)",
+  "note": ""
+ },
+ "uber-one": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/18/76/68/18766816-29b5-28e1-7af2-942b20189dbd/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Uber - Rides, Eats, Hotels, id 368677368)",
+  "note": ""
+ },
+ "ubisoft-plus": {
+  "kind": "website",
+  "url": "https://www.ubisoft.com/favicon.ico?favicon.2o5xx_22l-eve.ico",
+  "note": ""
+ },
+ "udemy": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/89/9c/c3/899cc3a8-7536-f386-b83f-db20b440d466/MainApp-0-0-1x_U007emarketing-0-0-0-8-0-0-85-220.png/256x256bb.png  (App Store: Udemy: Build Career Skills, id 562413829)",
+  "note": ""
+ },
+ "udio": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ab/be/a5/abbea584-b357-e2ff-5af7-a42f65fc91c6/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Udio: AI Music Maker & Studio, id 6511211165)",
+  "note": ""
+ },
+ "ufc-fight-pass": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=ufcfightpass.com&sz=256",
+  "note": ""
+ },
+ "ultimate-guitar": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/0b/a0/70/0ba07060-2a86-4e92-19e9-1a024b058d6c/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Ultimate Guitar: Chords & Tabs, id 357828853)",
+  "note": ""
+ },
+ "v0": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/73/d0/e2/73d0e2f9-40fb-bd72-4fdc-4d051b74ce5f/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: v0, id 6745097949)",
+  "note": ""
+ },
+ "vercel": {
+  "kind": "website",
+  "url": "https://py8fhxnkzwtsqdo9.public.blob.vercel-storage.com/front/favicon/vercel/android-chrome-512x512.png",
+  "note": ""
+ },
+ "verizon": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/92/a8/38/92a838bd-ed51-5e04-1f0b-f24e232889ba/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: My Verizon, id 416023011)",
+  "note": ""
+ },
+ "vieon": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/a9/68/c4/a968c4b6-c848-4e32-1d91-412a42ae67df/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: VieON - Dramas,Show,TV, id 1357819721)",
+  "note": ""
+ },
+ "viettel-internet": {
+  "kind": "missing",
+  "url": "",
+  "note": ""
+ },
+ "viettel-mobile": {
+  "kind": "missing",
+  "url": "",
+  "note": ""
+ },
+ "viki": {
+  "kind": "website",
+  "url": "https://1.viki.io/a/vwk8s-svelte/_app/immutable/assets/apple-touch-icon-192x192.DaKB6Rfm.png",
+  "note": ""
+ },
+ "vimeo": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/40/24/be/4024be25-1bfa-ac31-eff8-1c9ff20ac64e/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Vimeo, id 425194759)",
+  "note": ""
+ },
+ "vinaphone": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=vinaphone.com.vn&sz=256",
+  "note": ""
+ },
+ "visible": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/61/4b/97/614b9765-602a-1644-4c77-b3307030e0b3/AppIcon-0-0-1x_U007emarketing-0-6-0-sRGB-0-85-220.png/256x256bb.png  (App Store: Visible mobile, id 1367950045)",
+  "note": ""
+ },
+ "viu": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/56/56/bc/5656bc47-2be6-62d4-da45-9410bd42f790/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: VIU, id 1436162683)",
+  "note": ""
+ },
+ "vnpt-internet": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=vnpt.vn&sz=256",
+  "note": ""
+ },
+ "voiz-fm": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cd/73/bc/cd73bcf5-be7b-c26f-5899-8666658a75b5/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/256x256bb.png  (App Store: Voiz FM - Sách nói & eBook, id 1447395824)",
+  "note": ""
+ },
+ "vrchat-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1e/45/26/1e45268e-e3a7-24a8-bd17-ffd83a9e6f99/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: VRChat, id 6448578770)",
+  "note": ""
+ },
+ "vsco": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/31/ad/02/31ad021b-e654-4463-4d19-d4c020c56ae5/app-icon-production-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: VSCO: Photo & Video Editor, id 588013838)",
+  "note": ""
+ },
+ "vtvgo": {
+  "kind": "website",
+  "url": "https://vtvgo.vn/icon.png?icon.0n5x87eey0jzd.png",
+  "note": ""
+ },
+ "waka": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c7/bc/c0/c7bcc0a7-a4ac-47dd-24ef-05544b207db5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Waka - Sách Nói, Ebook, Truyện, id 929027521)",
+  "note": ""
+ },
+ "waking-up": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/15/b6/b215b6f7-716c-5684-5c93-38d216927bb9/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Waking Up: Meditation & Wisdom, id 1307736395)",
+  "note": ""
+ },
+ "wall-street-journal": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/16/a1/44/16a1443e-a34c-3755-1e5d-0628735b719b/AppIconWSJ-0-0-1x_U007epad-0-9-0-85-220.png/256x256bb.png  (App Store: The Wall Street Journal News, id 364387007)",
+  "note": ""
+ },
+ "walmart-plus": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/58/f5/b3/58f5b39a-43d7-a867-29dc-1a97c5c9bfa9/AppIconHolidays-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Walmart: Shopping & Savings, id 338137227)",
+  "note": ""
+ },
+ "washington-post": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=washingtonpost.com&sz=256",
+  "note": ""
+ },
+ "wattpad": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d2/4d/16/d24d1669-f072-a50e-ec83-7806f5f3d5db/WattpadAppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/256x256bb.png  (App Store: Wattpad - Read & Write Stories, id 306310789)",
+  "note": ""
+ },
+ "webflow": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/aa/b0/bc/aab0bc09-03ca-a353-0663-124ba2145891/AppIcon-0-0-1x_U007epad-0-1-85-220.png/256x256bb.png  (App Store: Webflow Events, id 6794137840)",
+  "note": ""
+ },
+ "weightwatchers": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ac/b0/24/acb024fd-8edd-820c-f813-df6634b64b18/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/256x256bb.png  (App Store: WeightWatchers Program, id 331308914)",
+  "note": ""
+ },
+ "wetv": {
+  "kind": "website",
+  "url": "https://wetv.vip/icons/logo512.png",
+  "note": ""
+ },
+ "whoop": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/aa/17/f5/aa17f5a4-edb6-2b2c-1065-907dd4033630/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-85-220.png/256x256bb.png  (App Store: WHOOP, id 933944389)",
+  "note": ""
+ },
+ "windscribe": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/a5/c6/45/a5c64598-2a0b-15a7-b557-7538447df636/AppIcon-0-0-1x_U007epad-0-11-0-0-85-220.png/256x256bb.png  (App Store: Private VPN Proxy – Windscribe, id 1129435228)",
+  "note": ""
+ },
+ "windsurf": {
+  "kind": "website",
+  "url": "https://devin.ai/icon.png",
+  "note": ""
+ },
+ "wired": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6a/37/d3/6a37d314-1bce-b0b7-78be-20133a046598/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: WIRED, id 6760543647)",
+  "note": ""
+ },
+ "wix": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/78/de/62/78de626b-2bb4-8438-7b95-6c8c4f4b2c39/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/256x256bb.png  (App Store: Wix - Website Builder, id 1545924344)",
+  "note": ""
+ },
+ "wondery-plus": {
+  "kind": "missing",
+  "url": "",
+  "note": ""
+ },
+ "wordpress-com": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/dc/b1/f7/dcb1f795-9d4c-2100-42ab-205cf86d07b2/AppIconLegacy-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: WordPress – Website Builder, id 335703880)",
+  "note": ""
+ },
+ "world-of-warcraft": {
+  "kind": "none",
+  "url": "",
+  "note": "manual: no suitable logo"
+ },
+ "writesonic": {
+  "kind": "website",
+  "url": "https://writesonic.com/apple-icon.png?apple-icon.0.210mtbpi.lj.png",
+  "note": ""
+ },
+ "x-premium": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c3/08/85/c3088526-2555-55f7-6f06-8ca8dd8d0dde/ProductionAppIcon-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/256x256bb.png  (App Store: X, id 333903271)",
+  "note": ""
+ },
+ "xbox-game-pass": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/24/1a/ff/241aff74-0cc5-2d6f-a55c-5475a4eb9960/AppIcon-1x_U007epad-0-1-85-220-0.png/256x256bb.png  (App Store: XBOX, id 736179781)",
+  "note": ""
+ },
+ "xfinity": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2d/14/56/2d14560a-c0cc-b102-6fc2-e39f4581e244/AppIcon-0-0-1x_U007ephone-0-1-0-0-sRGB-85-220.png/256x256bb.png  (App Store: Xfinity, id 1178765645)",
+  "note": ""
+ },
+ "yazio": {
+  "kind": "website",
+  "url": "https://images.yazio-cdn.com/process/plain/frontend/web-funnels/icons/apple-touch-icon-v2.png",
+  "note": ""
+ },
+ "you-com": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0c/10/e5/0c10e5ae-0fe7-5c94-9783-df1f7dc70f24/AppIcon-0-0-1x_U007epad-0-1-0-85-220.jpeg/256x256bb.png  (App Store: You.com - Enterprise grade AI, id 1600782099)",
+  "note": ""
+ },
+ "yousician": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/78/e3/fb/78e3fb23-1cc0-4d56-47a7-93d80c772f52/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Yousician: Learn & Play Guitar, id 959883039)",
+  "note": ""
+ },
+ "youtube-music": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5d/d0/43/5dd04320-7868-efbb-ca69-aef86e28b6a2/logo_youtube_music_2024_q4_color-0-0-1x_U007emarketing-0-0-0-7-0-0-0-85-220.png/256x256bb.png  (App Store: YouTube Music, id 1017492454)",
+  "note": ""
+ },
+ "youtube-premium": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/84/80/65/84806526-8b53-6e37-8e01-8369c879d30a/logo_youtube_2024_q4_color-0-0-1x_U007emarketing-0-0-0-7-0-0-0-85-220.png/256x256bb.png  (App Store: YouTube, id 544007664)",
+  "note": ""
+ },
+ "youtube-premium-lite": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/84/80/65/84806526-8b53-6e37-8e01-8369c879d30a/logo_youtube_2024_q4_color-0-0-1x_U007emarketing-0-0-0-7-0-0-0-85-220.png/256x256bb.png  (App Store: YouTube, id 544007664)",
+  "note": ""
+ },
+ "youtube-tv": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/ef/2f/59ef2f7f-5256-7a14-4e53-33ba3c4758a9/logo_youtube_television_2024_q4_color-0-0-1x_U007emarketing-0-0-0-7-0-0-0-85-220.png/256x256bb.png  (App Store: YouTube TV, id 1193350206)",
+  "note": ""
+ },
+ "zcloud": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4f/ef/b2/4fefb21e-4e44-fd35-1d8f-ac807900361a/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/256x256bb.png  (App Store: Zalo, id 579523206)",
+  "note": ""
+ },
+ "zee5": {
+  "kind": "google-favicon",
+  "url": "https://www.google.com/s2/favicons?domain=zee5.com&sz=256",
+  "note": ""
+ },
+ "zero-fasting": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/7f/ee/52/7fee528d-a3ea-89d8-fc59-77b30c143a3d/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/256x256bb.png  (App Store: Zero: Fasting & Food Tracker, id 1168348542)",
+  "note": ""
+ },
+ "zing-mp3": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/20/be/ba/20beba6e-2065-23e3-17de-027c536e93ee/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/256x256bb.png  (App Store: Zing MP3 - Đỉnh Cao Âm Nhạc, id 992357547)",
+  "note": ""
+ },
+ "zoho-mail": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9b/d0/c4/9bd0c4c3-c05f-07d8-4944-5c1344808d78/AppIcon-0-0-1x_U007epad-0-1-sRGB-85-220.png/256x256bb.png  (App Store: Zoho Mail - Email and Calendar, id 909262651)",
+  "note": ""
+ },
+ "zoom": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fc/d0/96/fcd09664-56c3-f856-4311-da9dcbae1fd2/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Zoom Workplace, id 546505307)",
+  "note": ""
+ },
+ "zoom-workplace": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fc/d0/96/fcd09664-56c3-f856-4311-da9dcbae1fd2/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/256x256bb.png  (App Store: Zoom Workplace, id 546505307)",
+  "note": ""
+ },
+ "zwift": {
+  "kind": "appstore",
+  "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5d/a8/64/5da86443-189c-e6ad-f55a-8460982a1d9d/AppIcon-0-0-1x_U007emarketing-0-5-sRGB-85-220.png/256x256bb.png  (App Store: Zwift: Indoor Cycling Fitness, id 1134655040)",
+  "note": ""
+ }
+}
