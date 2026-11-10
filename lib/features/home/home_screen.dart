@@ -655,7 +655,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       state: state,
       meta: rowMeta(l, s, today, categories: ref.watch(categoryByIdProvider)),
       serviceId: s.serviceId,
-      subscriptionId: s.id,
+      customLogoFile: s.customLogoFile,
       progress: progress,
       highlight: _flashIds.contains(s.id),
       nameBadge: s.isAutoDetected ? const AutoBadge() : null,

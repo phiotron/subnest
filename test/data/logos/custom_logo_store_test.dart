@@ -20,75 +20,76 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late Directory tmp;
   late CustomLogoStore store;
+  var t = 1000;
 
   setUp(() {
     tmp = Directory.systemTemp.createTempSync('custom_logos');
-    store = CustomLogoStore(() async => Directory('${tmp.path}/custom_logos'));
+    store = CustomLogoStore(
+      () async => Directory('${tmp.path}/custom_logos'),
+      clock: () => DateTime.fromMillisecondsSinceEpoch(t),
+    );
   });
   tearDown(() => tmp.deleteSync(recursive: true));
 
-  File fileOf(String id) => File('${tmp.path}/custom_logos/$id.png');
+  File fileOf(String name) => File('${tmp.path}/custom_logos/$name');
 
   group('CustomLogoStore', () {
-    test('save / has / fileOf / replace / remove, notifying each change', () async {
+    test('save gives a new name each time; fileOf / delete', () async {
+      expect(store.fileOf('a.png'), isNull, reason: 'folder not resolved yet');
+      final a = await store.save('sub-1', png1);
+      expect(a, 'sub-1-1000.png');
+      final b = await store.save('sub-1', png2); // same millisecond → next free name
+      expect(b, 'sub-1-1001.png');
+      expect(store.fileOf(a)!.readAsBytesSync(), png1);
+      expect(store.fileOf(b)!.readAsBytesSync(), png2);
+      await store.delete(a);
+      expect(fileOf(a).existsSync(), isFalse);
+      await store.delete(null);
+      await store.delete('../escape.png');
+      expect(await store.names(), {b});
+    });
+
+    test('load drops half-written files and notifies (tiles redraw)', () async {
+      Directory('${tmp.path}/custom_logos').createSync();
+      fileOf('x-1.png').writeAsBytesSync(png1);
+      File('${tmp.path}/custom_logos/y-2.png.part').writeAsBytesSync([1]);
       var notified = 0;
       store.addListener(() => notified++);
       await store.load();
-      expect(store.has('a'), isFalse);
-      expect(store.fileOf('a'), isNull);
-
-      await store.save('a', png1);
-      expect(store.has('a'), isTrue);
-      expect(store.fileOf('a')!.readAsBytesSync(), png1);
-      await store.save('a', png2);
-      expect(fileOf('a').readAsBytesSync(), png2);
-      expect(notified, 2);
-
-      await store.remove('a');
-      expect(store.has('a'), isFalse);
-      expect(fileOf('a').existsSync(), isFalse);
-      expect(notified, 3);
-      await store.remove('a'); // nothing to remove → no notification
-      expect(notified, 3);
+      expect(notified, 1);
+      expect(await store.names(), {'x-1.png'});
     });
 
-    test('load finds files from an earlier run and drops half-written ones', () async {
-      Directory('${tmp.path}/custom_logos').createSync();
-      fileOf('x').writeAsBytesSync(png1);
-      File('${tmp.path}/custom_logos/y.png.part').writeAsBytesSync([1]);
-      await store.load();
-      expect(store.ids, {'x'});
-      expect(File('${tmp.path}/custom_logos/y.png.part').existsSync(), isFalse);
-    });
-
-    test('refuses bad ids (path tricks) and non-images', () async {
-      expect(() => store.save('../evil', png1), throwsArgumentError);
+    test('refuses non-images and odd names', () async {
       expect(() => store.save('a', Uint8List.fromList(utf8.encode('<svg>hello world</svg>'))), throwsArgumentError);
       expect(() => store.save('a', Uint8List(CustomLogoStore.maxBytes + 1)), throwsArgumentError);
+      expect(await store.save('../../evil', png1), 'evil-1000.png', reason: 'id cleaned, stays in the folder');
+      expect(CustomLogoStore.validName('a/b.png'), isFalse);
+      expect(CustomLogoStore.validName('..png'), isFalse);
       expect(CustomLogoStore.looksLikeImage(Uint8List.fromList([0xFF, 0xD8, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])), isTrue);
     });
 
-    test('keepOnly prunes logos of deleted subscriptions; clear removes all', () async {
-      await store.save('a', png1);
-      await store.save('b', png1);
-      await store.save('c', png1);
-      await store.keepOnly({'a', 'c', 'zzz'});
-      expect(store.ids, {'a', 'c'});
-      expect(fileOf('b').existsSync(), isFalse);
+    test('keepOnly removes pictures nobody points at; clear removes all', () async {
+      final a = await store.save('a', png1);
+      t++;
+      final b = await store.save('b', png1);
+      t++;
+      final c = await store.save('c', png1);
+      await store.keepOnly({a, c, 'zzz.png'});
+      expect(await store.names(), {a, c});
+      expect(fileOf(b).existsSync(), isFalse);
       await store.clear();
-      expect(store.ids, isEmpty);
-      expect(Directory('${tmp.path}/custom_logos').listSync(), isEmpty);
+      expect(await store.names(), isEmpty);
     });
 
     test('readAll / replaceAll round trip; invalid entries skipped', () async {
-      await store.save('a', png1);
-      await store.save('b', png2);
-      expect((await store.readAll()).keys, ['a', 'b']);
-      expect((await store.readAll(only: {'b'})).keys, ['b']);
-      final n = await store.replaceAll({'c': png1, '../x': png1, 'd': Uint8List.fromList([1, 2, 3])});
+      final a = await store.save('a', png1);
+      t++;
+      final b = await store.save('b', png2);
+      expect((await store.readAll({a, b, 'missing.png'})).keys, [a, b]);
+      final n = await store.replaceAll({'c-1.png': png1, '../x.png': png1, 'd-1.png': Uint8List.fromList([1, 2, 3])});
       expect(n, 1);
-      expect(store.ids, {'c'});
-      expect(fileOf('a').existsSync(), isFalse);
+      expect(await store.names(), {'c-1.png'});
     });
   });
 
@@ -110,55 +111,65 @@ void main() {
     });
     tearDown(() => world.close());
 
-    test('no logos → no customLogos key (file unchanged from before)', () async {
+    Future<String> withLogo(String id, Uint8List bytes) async {
+      final name = await store.save(id, bytes);
+      t++;
+      final s = (await world.subs.get(id))!;
+      await world.subs.save(s.copyWith(customLogoFile: name));
+      return name;
+    }
+
+    test('no logos → no customLogos key', () async {
       await world.addSub('s1');
       final json = jsonDecode(await backup.exportJsonText()) as Map<String, Object?>;
       expect(json.containsKey(BackupLogos.key), isFalse);
     });
 
-    test('logo survives backup → delete all → restore; orphan logos are not exported', () async {
+    test('logo survives backup → delete all → restore; pictures nobody uses are not exported', () async {
       await world.addSub('s1', name: 'My gym');
       await world.addSub('s2', name: 'Other');
-      await store.save('s1', png1);
-      await store.save('deleted-sub', png2);
+      final name = await withLogo('s1', png1);
+      await store.save('deleted-sub', png2); // orphan
       final text = await backup.exportJsonText();
       final json = jsonDecode(text) as Map<String, Object?>;
-      expect((json[BackupLogos.key]! as Map).keys, ['s1']);
+      expect((json[BackupLogos.key]! as Map).keys, [name]);
+      expect(((json['subscriptions']! as List).first as Map)['customLogoFile'], name);
 
       // "Delete all data", then restore the file.
       await world.db.wipeEverything();
       await store.clear();
-      expect(store.has('s1'), isFalse);
 
       final result = await backup.importJson(text);
       expect(result.subscriptions, 2);
-      expect(store.ids, {'s1'});
-      expect(fileOf('s1').readAsBytesSync(), png1);
+      expect((await world.subs.get('s1'))!.customLogoFile, name);
+      expect((await world.subs.get('s2'))!.customLogoFile, isNull);
+      expect(await store.names(), {name});
+      expect(fileOf(name).readAsBytesSync(), png1);
     });
 
-    test('restoring a file without logos removes the current ones (restore replaces everything)', () async {
+    test('restoring a file without logos removes the current pictures (restore replaces everything)', () async {
       await world.addSub('s1');
       final text = await backup.exportJsonText();
-      await store.save('s1', png1);
+      await withLogo('s1', png1);
       await backup.importJson(text);
-      expect(store.ids, isEmpty);
+      expect(await store.names(), isEmpty);
+      expect((await world.subs.get('s1'))!.customLogoFile, isNull);
     });
 
-    test('a corrupt logo entry is skipped; the rest of the restore works; checksum still checked', () async {
+    test('a corrupt picture entry is skipped; the rest restores; editing without re-signing is refused', () async {
       await world.addSub('s1');
       await world.addSub('s2');
-      await store.save('s1', png1);
-      await store.save('s2', png2);
+      final n1 = await withLogo('s1', png1);
+      final n2 = await withLogo('s2', png2);
       final json = jsonDecode(await backup.exportJsonText()) as Map<String, Object?>;
-      // Re-sign after editing, as a hand-made file would have to.
-      (json[BackupLogos.key]! as Map)['s2'] = '%%% not base64';
+      (json[BackupLogos.key]! as Map)[n2] = '%%% not base64';
       final data = {...json}..removeWhere((k, _) => const {'format', 'version', 'exportedAt', 'checksum'}.contains(k));
       json['checksum'] = BackupService.checksumOf(data);
       await store.clear();
       await backup.importJson(jsonEncode(json));
-      expect(store.ids, {'s1'});
+      expect(await store.names(), {n1});
 
-      (json[BackupLogos.key]! as Map)['s1'] = base64Encode(png2); // edited without re-signing
+      (json[BackupLogos.key]! as Map)[n1] = base64Encode(png2); // edited without re-signing
       expect(() => backup.parse(jsonEncode(json)), throwsA(isA<BackupFormatException>()));
     });
   });

@@ -42,7 +42,7 @@ enum SubscriptionRowState {
 /// with a haptic tick at the threshold. Both are also exposed as accessibility actions.
 ///
 /// Optional extras (off by default — rows without them look exactly as before):
-/// * [serviceId] / [subscriptionId] → bundled or custom logo on the tile, see [ServiceTile.logo].
+/// * [serviceId] / [customLogoFile] → bundled or custom logo on the tile, see [ServiceTile.logo].
 /// * [progress] → a [CycleProgressBar] under the second line (how much of the billing period
 ///   has passed). Its colour follows [state] (trial / awaiting / cancelled = off) unless
 ///   [progressTone] is given (e.g. `off` for a paused subscription).
@@ -69,7 +69,7 @@ class SubscriptionRow extends StatelessWidget {
     this.highlight = false,
     this.queued = false,
     this.serviceId,
-    this.subscriptionId,
+    this.customLogoFile,
     this.progress,
     this.progressTone,
     this.nameBadge,
@@ -113,8 +113,8 @@ class SubscriptionRow extends StatelessWidget {
   /// `Subscription.serviceId` → bundled logo on the tile ([ServiceTile.serviceId]).
   final String? serviceId;
 
-  /// `Subscription.id` → the user's Custom logo on the tile ([ServiceTile.subscriptionId]).
-  final String? subscriptionId;
+  /// `Subscription.customLogoFile` → the user's Custom logo on the tile ([ServiceTile.customLogoFile]).
+  final String? customLogoFile;
 
   /// Current billing period → [CycleProgressBar] under the second line; `null` = no bar.
   /// Build it with `CycleProgress.forSubscription(sub, today: today)`.
@@ -210,7 +210,7 @@ class SubscriptionRow extends StatelessWidget {
               off: off,
               faded: queued,
               serviceId: serviceId,
-              subscriptionId: subscriptionId,
+              customLogoFile: customLogoFile,
             ),
             const SizedBox(width: AppSpace.s3),
             Expanded(

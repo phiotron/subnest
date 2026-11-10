@@ -237,8 +237,9 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     if (!_canUsePhoto(context)) return null;
     if (_newPhoto != null) return MemoryImage(_newPhoto!);
     final o = _original;
-    if (_photoRemoved || o == null) return null;
-    return ServiceLogoScope.of(context).customLogo(o.id);
+    final file = o?.customLogoFile;
+    if (_photoRemoved || file == null) return null;
+    return ServiceLogoScope.of(context).customLogo(file);
   }
 
   Future<void> _pickTile() async {
@@ -271,18 +272,28 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     });
   }
 
-  /// Writes the Custom logo change for [subscriptionId]. A failure never blocks saving the
-  /// subscription (the tile just keeps its letters).
-  Future<void> _saveLogo(String subscriptionId) async {
-    final logos = ref.read(customLogoStoreProvider);
-    try {
-      if (_newPhoto != null && _canUsePhoto(context)) {
-        await logos.save(subscriptionId, _newPhoto!);
-      } else if (_photoRemoved) {
-        await logos.remove(subscriptionId);
+  /// [s] with the Custom logo change applied: a picked picture is written first (so the saved
+  /// `customLogoFile` never names a missing file), a removed one clears the name. A write failure
+  /// never blocks saving the subscription (it just keeps its previous logo).
+  Future<Subscription> _withLogo(Subscription s, {required bool canUsePhoto}) async {
+    if (_newPhoto != null && canUsePhoto) {
+      try {
+        return s.copyWith(customLogoFile: await ref.read(customLogoStoreProvider).save(s.id, _newPhoto!));
+      } catch (_) {
+        return s; // disk full / file system error
       }
+    }
+    if (_photoRemoved || !canUsePhoto) return s.copyWith(customLogoFile: null);
+    return s;
+  }
+
+  /// Deletes the previous picture once the subscription no longer points at it.
+  Future<void> _dropOldLogo(String? previous, String? now) async {
+    if (previous == null || previous == now) return;
+    try {
+      await ref.read(customLogoStoreProvider).delete(previous);
     } catch (_) {
-      // Disk full / file system error — ignore.
+      // Left over → removed by the start-up clean-up (app.dart).
     }
   }
 
@@ -359,13 +370,16 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
         }
       }
     }
-    final toSave = o != null ? d.applyTo(o, now: now) : d.toNew(id: repo.newId(), today: today, now: now);
+    final canUsePhoto = _canUsePhoto(context);
     // The spinner only runs while writing (not behind the price dialog).
     setState(() => _saving = true);
     try {
+      final toSave = await _withLogo(
+        o != null ? d.applyTo(o, now: now) : d.toNew(id: repo.newId(), today: today, now: now),
+        canUsePhoto: canUsePhoto,
+      );
       await repo.save(toSave);
-      if (!mounted) return;
-      await _saveLogo(toSave.id);
+      await _dropOldLogo(o?.customLogoFile, toSave.customLogoFile);
       if (!mounted) return;
       if (o != null) {
         context.pop();
@@ -1029,7 +1043,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     if (ok != true || !mounted) return;
     await ref.read(subscriptionRepositoryProvider).delete(o.id);
     try {
-      await ref.read(customLogoStoreProvider).remove(o.id);
+      await ref.read(customLogoStoreProvider).delete(o.customLogoFile);
     } catch (_) {
       // Left over → removed by the start-up clean-up (app.dart).
     }

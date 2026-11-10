@@ -198,7 +198,7 @@ class TopExpensiveCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 24, serviceId: s.serviceId, subscriptionId: s.id),
+                      ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 24, serviceId: s.serviceId, customLogoFile: s.customLogoFile),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(
@@ -372,7 +372,7 @@ class OverlapHintCard extends StatelessWidget {
                             color: c.surface,
                             borderRadius: BorderRadius.circular(AppRadius.tile24 + 2),
                           ),
-                          child: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 24, serviceId: s.serviceId, subscriptionId: s.id),
+                          child: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 24, serviceId: s.serviceId, customLogoFile: s.customLogoFile),
                         ),
                       ),
                   ],

@@ -35,9 +35,9 @@ class FakeLogoSource extends ChangeNotifier implements ServiceLogoSource {
   }
 
   @override
-  ImageProvider? customLogo(String subscriptionId) {
-    asked.add('custom:$subscriptionId');
-    final b = custom[subscriptionId];
+  ImageProvider? customLogo(String fileName) {
+    asked.add('custom:$fileName');
+    final b = custom[fileName];
     return b == null ? null : MemoryImage(b);
   }
 
@@ -75,7 +75,7 @@ void main() {
     expect(tester.getSize(find.byType(ServiceTile)), const Size(40, 40));
   });
 
-  testWidgets('no serviceId / subscriptionId → never asks', (tester) async {
+  testWidgets('no serviceId / customLogoFile → never asks', (tester) async {
     final source = FakeLogoSource();
     await pumpUi(
       tester,
@@ -119,22 +119,22 @@ void main() {
 
   testWidgets('priority: explicit logo → bundled → custom → monogram', (tester) async {
     final bundled = Uint8List.fromList(fakePng), custom = Uint8List.fromList(fakePng), picked = Uint8List.fromList(fakePng);
-    final source = FakeLogoSource(services: {'netflix': bundled}, custom: {'sub-1': custom, 'sub-2': custom});
+    final source = FakeLogoSource(services: {'netflix': bundled}, custom: {'a.png': custom, 'b.png': custom});
     Future<void> show(Widget tile) => pumpUi(tester, ServiceLogoScope(source: source, child: tile), settle: false);
 
-    await show(const ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', subscriptionId: 'sub-1'));
+    await show(const ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', customLogoFile: 'a.png'));
     expect((drawn(tester)! as MemoryImage).bytes, same(bundled));
 
-    await show(const ServiceTile(name: 'Old', colorValue: netflix, serviceId: 'gone-from-catalog', subscriptionId: 'sub-2'));
+    await show(const ServiceTile(name: 'Old', colorValue: netflix, serviceId: 'gone-from-catalog', customLogoFile: 'b.png'));
     expect((drawn(tester)! as MemoryImage).bytes, same(custom));
 
-    await show(const ServiceTile(name: 'Gym', colorValue: netflix, subscriptionId: 'sub-1'));
+    await show(const ServiceTile(name: 'Gym', colorValue: netflix, customLogoFile: 'a.png'));
     expect((drawn(tester)! as MemoryImage).bytes, same(custom));
 
-    await show(ServiceTile(name: 'Gym', colorValue: netflix, subscriptionId: 'sub-1', logo: MemoryImage(picked)));
+    await show(ServiceTile(name: 'Gym', colorValue: netflix, customLogoFile: 'a.png', logo: MemoryImage(picked)));
     expect((drawn(tester)! as MemoryImage).bytes, same(picked));
 
-    await show(const ServiceTile(name: 'Gym', colorValue: netflix, subscriptionId: 'sub-9'));
+    await show(const ServiceTile(name: 'Gym', colorValue: netflix, customLogoFile: 'missing.png'));
     expect(drawn(tester), isNull);
     expect(find.text('G'), findsOneWidget);
   });
@@ -145,16 +145,16 @@ void main() {
       tester,
       ServiceLogoScope(
         source: source,
-        child: const ServiceTile(name: 'Gym', colorValue: 0xFF0F8B8D, subscriptionId: 'sub-1'),
+        child: const ServiceTile(name: 'Gym', colorValue: 0xFF0F8B8D, customLogoFile: 'a.png'),
       ),
       settle: false,
     );
     expect(drawn(tester), isNull);
-    source.custom['sub-1'] = fakePng;
+    source.custom['a.png'] = fakePng;
     source.changed();
     await tester.pump();
     expect(drawn(tester), isNotNull);
-    source.custom.remove('sub-1');
+    source.custom.remove('a.png');
     source.changed();
     await tester.pump();
     expect(drawn(tester), isNull);
@@ -195,16 +195,17 @@ void main() {
       expect(source.serviceLogo('netflix'), isA<AssetImage>(), reason: 'bundled wins over remote');
     });
 
-    test('custom logo file → FileImage; store changes notify the source', () async {
+    test('custom logo file → FileImage once the folder is known (store load notifies)', () async {
       final store = CustomLogoStore(() async => tmp);
       final source = AppLogoSource(custom: store, bundled: const {});
-      await store.load();
-      expect(source.customLogo('sub-1'), isNull);
+      expect(source.customLogo('a.png'), isNull, reason: 'folder not resolved yet');
       var notified = 0;
       source.addListener(() => notified++);
-      await store.save('sub-1', fakePng);
+      await store.load();
       expect(notified, 1);
-      expect((source.customLogo('sub-1')! as FileImage).file.path, endsWith('sub-1.png'));
+      final name = await store.save('sub-1', fakePng);
+      expect((source.customLogo(name)! as FileImage).file.path, endsWith(name));
+      expect(source.customLogo('../x.png'), isNull);
     });
 
     test('every bundled id is a Catalog service with a PNG; bundle stays small', () {

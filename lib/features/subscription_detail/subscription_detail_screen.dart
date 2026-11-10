@@ -217,7 +217,7 @@ class _SubscriptionDetailScreenState extends ConsumerState<SubscriptionDetailScr
             size: 80,
             off: cancelled,
             serviceId: s.serviceId,
-            subscriptionId: s.id,
+            customLogoFile: s.customLogoFile,
           ),
           const SizedBox(height: AppSpace.s4),
           Semantics(

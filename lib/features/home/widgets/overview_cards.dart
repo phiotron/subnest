@@ -117,7 +117,7 @@ class TrialEndingCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, trial: true, serviceId: s.serviceId, subscriptionId: s.id),
+              ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, trial: true, serviceId: s.serviceId, customLogoFile: s.customLogoFile),
               const SizedBox(width: AppSpace.s3),
               Expanded(
                 child: Column(

@@ -18,7 +18,7 @@ export 'service_tile_logo.dart' show ServiceLogoScope, ServiceLogoSource;
 ///   (bottom-right); [off] greys the tile out (cancelled); [faded] dims it (queued period).
 /// * Never grows with system text size (layout grid stays fixed).
 /// * Logo, first that exists: [logo] (explicit, e.g. a photo being picked in the form) → the
-///   bundled logo of the Catalog service [serviceId] → the user's Custom logo of [subscriptionId]
+///   bundled logo of the Catalog service [serviceId] → the user's Custom logo [customLogoFile]
 ///   → the monogram. The image is drawn over the monogram ([ServiceTileLogo]) by the
 ///   [ServiceLogoScope] source; no network. Badges/ring/size unchanged.
 class ServiceTile extends StatelessWidget {
@@ -34,7 +34,7 @@ class ServiceTile extends StatelessWidget {
     this.faded = false,
     this.badgeRingColor,
     this.serviceId,
-    this.subscriptionId,
+    this.customLogoFile,
     this.logo,
   });
 
@@ -66,9 +66,9 @@ class ServiceTile extends StatelessWidget {
   /// Catalog `Service.id` (`Subscription.serviceId`) → its bundled logo; `null` for custom services.
   final String? serviceId;
 
-  /// `Subscription.id` → the image the user picked for it (Custom logo), when the service has no
-  /// bundled logo. `null` (library rows, previews) → not looked up.
-  final String? subscriptionId;
+  /// `Subscription.customLogoFile` → the picture the user picked (Custom logo), used when the service
+  /// has no bundled logo. `null` (none, library rows) → not looked up.
+  final String? customLogoFile;
 
   /// Explicit image that wins over both (form preview of a photo not saved yet).
   final ImageProvider? logo;
@@ -77,14 +77,14 @@ class ServiceTile extends StatelessWidget {
   static ImageProvider? resolveLogo(
     BuildContext context, {
     String? serviceId,
-    String? subscriptionId,
+    String? customLogoFile,
     ImageProvider? logo,
   }) {
     if (logo != null) return logo;
-    if (serviceId == null && subscriptionId == null) return null;
+    if (serviceId == null && customLogoFile == null) return null;
     final source = ServiceLogoScope.of(context);
     return (serviceId == null ? null : source.serviceLogo(serviceId)) ??
-        (subscriptionId == null ? null : source.customLogo(subscriptionId));
+        (customLogoFile == null ? null : source.customLogo(customLogoFile));
   }
 
   static String initials(String name) {
@@ -134,7 +134,7 @@ class ServiceTile extends StatelessWidget {
     final radius = radiusFor(size);
     final ring = badgeRingColor ?? c.surface;
 
-    final image = resolveLogo(context, serviceId: serviceId, subscriptionId: subscriptionId, logo: logo);
+    final image = resolveLogo(context, serviceId: serviceId, customLogoFile: customLogoFile, logo: logo);
     final withLogo = image != null;
     final monogram = Text(
       text,

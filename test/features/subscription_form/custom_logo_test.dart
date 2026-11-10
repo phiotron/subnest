@@ -27,21 +27,17 @@ class MemoryLogoStore extends CustomLogoStore {
   final saved = <String, Uint8List>{};
 
   @override
-  bool has(String subscriptionId) => saved.containsKey(subscriptionId);
+  File? fileOf(String name) => null;
 
   @override
-  File? fileOf(String subscriptionId) => null;
-
-  @override
-  Future<void> save(String subscriptionId, Uint8List bytes) async {
-    saved[subscriptionId] = bytes;
-    notifyListeners();
+  Future<String> save(String subscriptionId, Uint8List bytes) async {
+    final name = '$subscriptionId-${saved.length}.png';
+    saved[name] = bytes;
+    return name;
   }
 
   @override
-  Future<void> remove(String subscriptionId) async {
-    if (saved.remove(subscriptionId) != null) notifyListeners();
-  }
+  Future<void> delete(String? name) async => saved.remove(name);
 }
 
 /// Tile logo source that shows the in-memory store's pictures.
@@ -56,8 +52,8 @@ class _Source extends ChangeNotifier implements ServiceLogoSource {
   ImageProvider? serviceLogo(String serviceId) => null;
 
   @override
-  ImageProvider? customLogo(String subscriptionId) {
-    final b = store.saved[subscriptionId];
+  ImageProvider? customLogo(String fileName) {
+    final b = store.saved[fileName];
     return b == null ? null : MemoryImage(b);
   }
 }
@@ -104,14 +100,15 @@ void main() {
     await tester.tap(find.text('Add subscription'));
     await settle(tester);
     final s = (await f.subs.all()).single;
-    expect(store.saved.keys, [s.id]);
-    expect(store.saved[s.id], png);
+    expect(s.customLogoFile, '${s.id}-0.png');
+    expect(store.saved[s.customLogoFile], png);
   });
 
   addTest('S4 edit: deleting the subscription deletes its photo', (tester) async {
     final f = await AddFixture.create();
     await f.addNetflix();
-    final store = MemoryLogoStore()..saved['netflix'] = png;
+    final store = MemoryLogoStore()..saved['netflix-0.png'] = png;
+    await f.subs.save((await f.subs.get('netflix'))!.copyWith(customLogoFile: 'netflix-0.png'));
     await pumpAdd(
       tester,
       f,
@@ -131,14 +128,14 @@ void main() {
   });
 
   testWidgets('tile sheet with a saved photo: Remove photo → choice says remove', (tester) async {
-    final store = MemoryLogoStore()..saved['s1'] = png;
+    final store = MemoryLogoStore()..saved['s1.png'] = png;
     TileChoiceProbe.result = null;
     await pumpUi(
       tester,
       ServiceLogoScope(
         source: _Source(store),
         child: Builder(
-          builder: (context) => TileChoiceProbe(photo: ServiceLogoScope.of(context).customLogo('s1')),
+          builder: (context) => TileChoiceProbe(photo: ServiceLogoScope.of(context).customLogo('s1.png')),
         ),
       ),
     );

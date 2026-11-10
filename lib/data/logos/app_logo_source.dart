@@ -51,8 +51,8 @@ class AppLogoSource extends ChangeNotifier implements ServiceLogoSource {
       bundled.contains(serviceId) ? AssetImage(assetPath(serviceId)) : _remote?.call(serviceId);
 
   @override
-  ImageProvider? customLogo(String subscriptionId) {
-    final file = custom.fileOf(subscriptionId);
+  ImageProvider? customLogo(String fileName) {
+    final file = custom.fileOf(fileName);
     return file == null ? null : FileImage(file);
   }
 

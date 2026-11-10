@@ -14,8 +14,9 @@ abstract interface class ServiceLogoSource implements Listenable {
   /// Logo of a Catalog service (`Service.id`): the bundled image, `null` = none (monogram).
   ImageProvider? serviceLogo(String serviceId);
 
-  /// Image the user picked for one subscription (Custom logo), `null` = none.
-  ImageProvider? customLogo(String subscriptionId);
+  /// Picture the user picked for a subscription (Custom logo) by its `Subscription.customLogoFile`
+  /// name; `null` = none.
+  ImageProvider? customLogo(String fileName);
 }
 
 class _NoLogos implements ServiceLogoSource {
@@ -25,7 +26,7 @@ class _NoLogos implements ServiceLogoSource {
   ImageProvider? serviceLogo(String serviceId) => null;
 
   @override
-  ImageProvider? customLogo(String subscriptionId) => null;
+  ImageProvider? customLogo(String fileName) => null;
 
   @override
   void addListener(VoidCallback listener) {}

@@ -84,7 +84,7 @@ class BackupService {
     final raw = await _settings.raw();
     final rates = await _rates.load();
     final subs = await _subs.all();
-    final logos = await BackupLogos.export(_logos, {for (final s in subs) s.id});
+    final logos = await BackupLogos.export(_logos, {for (final s in subs) ?s.customLogoFile});
     final data = {
       'settings': {
         for (final k in SettingsRepository.backupKeys)
@@ -250,7 +250,7 @@ class BackupService {
       await _fixCategories();
     });
     // Custom logo files, after the database committed (a bad file above changed nothing).
-    await BackupLogos.restore(_logos, json[BackupLogos.key], {for (final s in parsed.subscriptions) s.id});
+    await BackupLogos.restore(_logos, json[BackupLogos.key], {for (final s in parsed.subscriptions) ?s.customLogoFile});
     return ImportResult(parsed.subscriptions.length, parsed.periods.length);
   }
 

@@ -249,7 +249,7 @@ class WeekCard extends StatelessWidget {
                               size: 24,
                               awaiting: d.awaitingIds.contains(s.id),
                               serviceId: s.serviceId,
-                              subscriptionId: s.id,
+                              customLogoFile: s.customLogoFile,
                             ),
                           ],
                         ],

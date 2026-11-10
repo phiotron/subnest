@@ -72,10 +72,10 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
   Future<void> _housekeeping() async {
     await ref.read(subscriptionRepositoryProvider).normalizeAll();
     await ref.read(exchangeRateRepositoryProvider).refreshIfStale();
-    // Custom logos: read which exist, drop files of subscriptions deleted meanwhile.
+    // Custom logos: find the folder, delete pictures no subscription points at any more.
     final logos = AppLogoSource.instance.custom;
     await logos.load();
-    await logos.keepOnly({for (final s in await ref.read(subscriptionRepositoryProvider).all()) s.id});
+    await logos.keepOnly({for (final s in await ref.read(subscriptionRepositoryProvider).all()) ?s.customLogoFile});
   }
 
   void _openDeepLink(String location) => widget.router.push(location);

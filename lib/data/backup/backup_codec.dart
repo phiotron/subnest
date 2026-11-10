@@ -23,6 +23,7 @@ abstract final class BackupCodec {
     'category': s.category.key,
     'categoryId': s.categoryId,
     'priceMinor': s.priceMinor,
+    'customLogoFile': s.customLogoFile,
     'currency': s.currency,
     'cycleEvery': s.cycle.every,
     'cycleUnit': s.cycle.unit.name,
@@ -67,6 +68,7 @@ abstract final class BackupCodec {
       categoryId: (j['categoryId'] as String?) ?? SubscriptionCategory.fromKey(j['category'] as String?).key,
       priceMinor: req<int>('priceMinor'),
       currency: req<String>('currency').toUpperCase(),
+      customLogoFile: j['customLogoFile'] as String?,
       cycle: BillingCycle(
         every,
         CycleUnit.values.firstWhere((u) => u.name == j['cycleUnit'], orElse: () => CycleUnit.month),

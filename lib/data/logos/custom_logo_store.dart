@@ -5,15 +5,15 @@ import 'package:flutter/painting.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-/// Custom logos: images the user picked for a subscription (CONTEXT "Custom logo").
+/// Custom logos: pictures the user picked for a subscription (CONTEXT "Custom logo").
 ///
-/// One square PNG per subscription in `<app support>/custom_logos/<subscriptionId>.png` — the file
-/// name is the subscription id, so no database column is needed and "has a custom logo" is "the
-/// file exists". Kept in memory as a set of ids (loaded once by [load]) so tiles can ask
-/// synchronously. User data: part of the backup ([readAll] / [replaceAll]), wiped by "Delete all
-/// data" ([clear]), and pruned when the subscription is gone ([keepOnly]).
+/// Square PNG files in `<app support>/custom_logos/`. The subscription keeps the file NAME in
+/// `Subscription.customLogoFile`; every new picture gets a new name ([save] →
+/// `<subscriptionId>-<millis>.png`), so a decoded image in the image cache is never stale.
+/// User data: part of the backup ([readAll] / [replaceAll]), wiped by "Delete all data" ([clear]),
+/// and files no subscription points at are removed ([keepOnly], at start-up).
 class CustomLogoStore extends ChangeNotifier {
-  CustomLogoStore(this._directory);
+  CustomLogoStore(this._directory, {DateTime Function()? clock}) : _clock = clock ?? DateTime.now;
 
   /// The app's store: `<application support>/custom_logos` (not the cache: the OS must not clear it).
   static final CustomLogoStore instance = CustomLogoStore(
@@ -27,12 +27,13 @@ class CustomLogoStore extends ChangeNotifier {
   static const maxBytes = 1024 * 1024;
 
   final Future<Directory> Function() _directory;
+  final DateTime Function() _clock;
   Directory? _dir;
-  final _ids = <String>{};
   Future<void>? _loading;
 
-  /// Subscription ids are UUIDs; anything else (path tricks in a hand-edited backup) is refused.
-  static bool validId(String id) => RegExp(r'^[A-Za-z0-9_-]{1,64}$').hasMatch(id);
+  /// File names this store writes: `<id>-<digits>.png` (no folders, no `..` — a hand-edited backup
+  /// cannot write outside the folder).
+  static bool validName(String name) => RegExp(r'^[A-Za-z0-9_-]{1,80}\.png$').hasMatch(name);
 
   /// PNG, JPEG or WebP signature — the only formats written or restored.
   static bool looksLikeImage(Uint8List b) =>
@@ -43,24 +44,18 @@ class CustomLogoStore extends ChangeNotifier {
 
   bool get loaded => _dir != null;
 
-  /// Reads which subscriptions have a logo. Safe to call many times; tiles show monograms until done.
+  /// Resolves the folder (tiles show letters until then) and drops half-written files.
+  /// Safe to call many times.
   Future<void> load() => _loading ??= _load();
 
   Future<void> _load() async {
     final dir = await _directory();
     if (!dir.existsSync()) await dir.create(recursive: true);
-    _ids.clear();
     await for (final e in dir.list()) {
-      final name = p.basename(e.path);
-      if (e is! File) continue;
-      if (name.endsWith('.part')) {
-        await _delete(e);
-      } else if (name.endsWith('.png')) {
-        _ids.add(p.basenameWithoutExtension(name));
-      }
+      if (e is File && e.path.endsWith('.part')) await _delete(e);
     }
     _dir = dir;
-    if (_ids.isNotEmpty) notifyListeners();
+    notifyListeners();
   }
 
   Future<Directory> _ready() async {
@@ -68,100 +63,101 @@ class CustomLogoStore extends ChangeNotifier {
     return _dir!;
   }
 
-  bool has(String subscriptionId) => _ids.contains(subscriptionId);
-
-  /// Ids with a logo (loaded ones only).
-  Set<String> get ids => Set.unmodifiable(_ids);
-
-  /// The file of [subscriptionId]'s logo, or `null` when it has none (or [load] has not finished).
-  File? fileOf(String subscriptionId) {
+  /// The file for a `customLogoFile` name, or `null` (not loaded yet / invalid name). The file may
+  /// be missing (e.g. a backup restored without its pictures) — the tile then keeps its letters.
+  File? fileOf(String name) {
     final dir = _dir;
-    if (dir == null || !_ids.contains(subscriptionId)) return null;
-    return File(p.join(dir.path, '$subscriptionId.png'));
+    if (dir == null || !validName(name)) return null;
+    return File(p.join(dir.path, name));
   }
 
-  /// Saves (or replaces) the logo of [subscriptionId].
-  Future<void> save(String subscriptionId, Uint8List bytes) async {
-    if (!validId(subscriptionId)) throw ArgumentError.value(subscriptionId, 'subscriptionId');
+  /// Saves a new picture for [subscriptionId]; returns its file name (store it in
+  /// `Subscription.customLogoFile`, then [delete] the previous one).
+  Future<String> save(String subscriptionId, Uint8List bytes) async {
     if (bytes.length > maxBytes || !looksLikeImage(bytes)) throw ArgumentError('Not a logo image');
-    await _write(await _ready(), subscriptionId, bytes);
-    notifyListeners();
+    final safeId = subscriptionId.replaceAll(RegExp(r'[^A-Za-z0-9_-]'), '');
+    final base = safeId.isEmpty ? 'logo' : (safeId.length > 60 ? safeId.substring(0, 60) : safeId);
+    final dir = await _ready();
+    var stamp = _clock().millisecondsSinceEpoch;
+    while (File(p.join(dir.path, '$base-$stamp.png')).existsSync()) {
+      stamp++;
+    }
+    final name = '$base-$stamp.png';
+    await _write(dir, name, bytes);
+    return name;
   }
 
-  Future<void> _write(Directory dir, String id, Uint8List bytes) async {
-    final file = File(p.join(dir.path, '$id.png'));
+  Future<void> _write(Directory dir, String name, Uint8List bytes) async {
+    final file = File(p.join(dir.path, name));
     final tmp = File('${file.path}.part'); // write next to it, then rename: never a half file
     await tmp.writeAsBytes(bytes, flush: true);
     await tmp.rename(file.path);
     _evict(file);
-    _ids.add(id);
   }
 
-  /// Removes the logo of [subscriptionId] (no-op when it has none).
-  Future<void> remove(String subscriptionId) async {
-    final dir = await _ready();
-    if (!validId(subscriptionId)) return;
-    final file = File(p.join(dir.path, '$subscriptionId.png'));
-    final had = _ids.remove(subscriptionId);
+  /// Deletes one picture (no-op for `null`, invalid or missing names).
+  Future<void> delete(String? name) async {
+    if (name == null || !validName(name)) return;
+    final file = File(p.join((await _ready()).path, name));
     await _delete(file);
     _evict(file);
-    if (had) notifyListeners();
   }
 
-  /// Deletes every custom logo ("Delete all data").
+  Future<List<File>> _files() async {
+    final dir = await _ready();
+    return [
+      await for (final e in dir.list())
+        if (e is File && validName(p.basename(e.path))) e,
+    ];
+  }
+
+  /// Every picture's name.
+  Future<Set<String>> names() async => {for (final f in await _files()) p.basename(f.path)};
+
+  /// Deletes every picture ("Delete all data").
   Future<void> clear() async {
-    final dir = await _ready();
-    for (final id in _ids.toList()) {
-      final file = File(p.join(dir.path, '$id.png'));
-      await _delete(file);
-      _evict(file);
+    for (final f in await _files()) {
+      await _delete(f);
+      _evict(f);
     }
-    final had = _ids.isNotEmpty;
-    _ids.clear();
-    if (had) notifyListeners();
+    notifyListeners();
   }
 
-  /// Deletes logos of subscriptions not in [subscriptionIds] (deleted elsewhere).
-  Future<void> keepOnly(Set<String> subscriptionIds) async {
-    final dir = await _ready();
-    final gone = _ids.difference(subscriptionIds);
-    for (final id in gone) {
-      final file = File(p.join(dir.path, '$id.png'));
-      await _delete(file);
-      _evict(file);
+  /// Deletes pictures no subscription points at ([used] = every `customLogoFile`).
+  Future<void> keepOnly(Set<String> used) async {
+    for (final f in await _files()) {
+      if (used.contains(p.basename(f.path))) continue;
+      await _delete(f);
+      _evict(f);
     }
-    _ids.removeAll(gone);
-    if (gone.isNotEmpty) notifyListeners();
   }
 
-  /// Every logo's bytes, keyed by subscription id (for the backup file).
-  Future<Map<String, Uint8List>> readAll({Set<String>? only}) async {
+  /// The bytes of [only] (names; missing files skipped), for the backup file.
+  Future<Map<String, Uint8List>> readAll(Set<String> only) async {
     final dir = await _ready();
     final out = <String, Uint8List>{};
-    for (final id in _ids.toList()..sort()) {
-      if (only != null && !only.contains(id)) continue;
+    for (final name in only.toList()..sort()) {
+      if (!validName(name)) continue;
       try {
-        out[id] = await File(p.join(dir.path, '$id.png')).readAsBytes();
+        out[name] = await File(p.join(dir.path, name)).readAsBytes();
       } on FileSystemException {
-        // Vanished meanwhile — skip.
+        // Missing — skip.
       }
     }
     return out;
   }
 
-  /// Restore: deletes every logo, then writes [logos] (invalid ids/images are skipped).
-  /// Returns how many were written.
+  /// Restore: deletes every picture, then writes [logos] (name → bytes; invalid names/images are
+  /// skipped). Returns how many were written.
   Future<int> replaceAll(Map<String, Uint8List> logos) async {
     final dir = await _ready();
-    for (final id in _ids.toList()) {
-      final file = File(p.join(dir.path, '$id.png'));
-      await _delete(file);
-      _evict(file);
+    for (final f in await _files()) {
+      await _delete(f);
+      _evict(f);
     }
-    _ids.clear();
     var n = 0;
     for (final e in logos.entries) {
-      if (!validId(e.key) || e.value.length > maxBytes || !looksLikeImage(e.value)) continue;
+      if (!validName(e.key) || e.value.length > maxBytes || !looksLikeImage(e.value)) continue;
       await _write(dir, e.key, e.value);
       n++;
     }
@@ -169,7 +165,7 @@ class CustomLogoStore extends ChangeNotifier {
     return n;
   }
 
-  /// Drops the decoded image so a replaced file is read again (same path → same cache key).
+  /// Drops a decoded image of [file] (same path → same cache key).
   static void _evict(File file) {
     try {
       FileImage(file).evict();

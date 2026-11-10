@@ -160,7 +160,7 @@ class CategorySheet extends StatelessWidget {
                           colorValue: s.colorValue,
                           iconText: s.iconText,
                           serviceId: s.serviceId,
-                          subscriptionId: s.id,
+                          customLogoFile: s.customLogoFile,
                           state: BillingRules.isAwaitingConfirmation(s, today)
                               ? SubscriptionRowState.awaiting
                               : SubscriptionRowState.normal,

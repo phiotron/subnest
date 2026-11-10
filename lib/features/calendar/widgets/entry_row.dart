@@ -157,7 +157,7 @@ class CalendarEntryRow extends StatelessWidget {
                       iconText: s.iconText,
                       awaiting: kind == CalendarEntryKind.awaiting,
                       serviceId: s.serviceId,
-                      subscriptionId: s.id,
+                      customLogoFile: s.customLogoFile,
                     ),
                     const SizedBox(width: AppSpace.s3),
                     Expanded(child: main),
