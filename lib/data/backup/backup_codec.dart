@@ -10,6 +10,9 @@ import '../../domain/domain.dart';
 ///
 /// v3 (auto backup): same fields; the top-level `checksum` (SHA-256 of the data part) is added by
 /// [BackupService]. v1/v2 files without a checksum still restore unchanged.
+///
+/// Optional top-level `priceChanges` (Price history, DB v3) — no version bump: a file without it
+/// restores and its Price history is backfilled from its Payments.
 abstract final class BackupCodec {
   static const format = 'subnest-backup';
   static const version = 3;
@@ -179,5 +182,29 @@ abstract final class BackupCodec {
     categoryId: j['categoryId'] as String?,
     amountMinor: j['amountMinor'] as int,
     currency: (j['currency'] as String).toUpperCase(),
+  );
+
+  static Map<String, Object?> priceChangeToJson(PriceChange c) => {
+    'id': c.id,
+    'subscriptionId': c.subscriptionId,
+    'oldPriceMinor': c.oldPriceMinor,
+    'newPriceMinor': c.newPriceMinor,
+    'currency': c.currency,
+    'oldCurrency': c.oldCurrency,
+    'effectiveFrom': c.effectiveFrom.toString(),
+    'source': c.source.name,
+    'createdAt': c.createdAt.toUtc().toIso8601String(),
+  };
+
+  static PriceChange priceChangeFromJson(Map<String, Object?> j) => PriceChange(
+    id: j['id'] as String,
+    subscriptionId: j['subscriptionId'] as String,
+    oldPriceMinor: j['oldPriceMinor'] as int,
+    newPriceMinor: j['newPriceMinor'] as int,
+    currency: (j['currency'] as String).toUpperCase(),
+    oldCurrency: (j['oldCurrency'] as String?)?.toUpperCase(),
+    effectiveFrom: LocalDate.parse(j['effectiveFrom'] as String),
+    source: PriceChangeSource.fromName(j['source'] as String?),
+    createdAt: DateTime.parse(j['createdAt'] as String).toLocal(),
   );
 }

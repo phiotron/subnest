@@ -93,6 +93,7 @@ class BackupService {
       'rateOverrides': rates.overrides,
       'subscriptions': [for (final s in subs) BackupCodec.subscriptionToJson(s)],
       'periods': [for (final p in await _subs.allPeriods()) BackupCodec.periodToJson(p)],
+      'priceChanges': [for (final c in await _subs.allPriceChanges()) BackupCodec.priceChangeToJson(c)],
       'categories': [for (final c in await _db.select(_db.categories).get()) BackupCodec.categoryToJson(c.toDomain())],
       'labels': [for (final l in await _db.select(_db.labels).get()) BackupCodec.labelToJson(l.toDomain())],
       'paymentMethods': [
@@ -149,9 +150,20 @@ class BackupService {
           money(p.amountMinor, p.currency), p.currency, p.confirmedAt.toIso8601String(), p.source?.name ?? 'manual',
         ],
     ];
+    final changes = await _subs.allPriceChanges();
+    final priceRows = <List<Object?>>[
+      ['subscription', 'effective_from', 'old_price', 'old_currency', 'new_price', 'currency', 'source'],
+      for (final c in changes)
+        [
+          byId[c.subscriptionId]?.name ?? c.subscriptionId, c.effectiveFrom, money(c.oldPriceMinor, c.fromCurrency),
+          c.fromCurrency, money(c.newPriceMinor, c.currency), c.currency, c.source.name,
+        ],
+    ];
     return [
       ExportFile('subnest-subscriptions-${_stamp()}.csv', toCsv(subRows), 'text/csv'),
       ExportFile('subnest-payments-${_stamp()}.csv', toCsv(payRows), 'text/csv'),
+      // Price history (DB v3) — only when there is any, so files without it stay two.
+      if (changes.isNotEmpty) ExportFile('subnest-price-history-${_stamp()}.csv', toCsv(priceRows), 'text/csv'),
     ];
   }
 
@@ -205,6 +217,10 @@ class BackupService {
         for (final j in (decoded['periods'] as List? ?? const []))
           BackupCodec.periodFromJson(j as Map<String, Object?>),
       ].where((p) => ids.contains(p.subscriptionId)).toList();
+      // Checked here so a bad Price history fails before anything is replaced.
+      for (final j in (decoded['priceChanges'] as List? ?? const [])) {
+        BackupCodec.priceChangeFromJson(j as Map<String, Object?>);
+      }
       return (subscriptions: subs, periods: periods, json: decoded);
     } on Object catch (e) {
       if (e is BackupFormatException) rethrow;
@@ -236,6 +252,17 @@ class BackupService {
       }
       for (final p in parsed.periods) {
         await _db.into(_db.confirmedPeriods).insert(p.toCompanion(), mode: InsertMode.insertOrIgnore);
+      }
+      // Price history: from the file; a file made before price history existed → backfill from its Payments.
+      final changes = json['priceChanges'];
+      if (changes is List) {
+        final ids = {for (final s in parsed.subscriptions) s.id};
+        for (final j in changes) {
+          final c = BackupCodec.priceChangeFromJson(j as Map<String, Object?>);
+          if (ids.contains(c.subscriptionId)) await _subs.insertPriceChange(c);
+        }
+      } else {
+        await _subs.backfillPriceHistory();
       }
       final overrides = json['rateOverrides'];
       if (overrides is Map) {

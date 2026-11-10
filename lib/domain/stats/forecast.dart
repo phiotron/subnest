@@ -2,12 +2,13 @@ import '../billing_rules.dart';
 import '../labels.dart';
 import '../local_date.dart';
 import '../money.dart';
+import '../price_history.dart';
 import '../spending.dart';
 import '../subscription.dart';
 
 /// One expected charge on a real Due date.
 class ForecastItem {
-  const ForecastItem(this.subscription, this.date, this.amountMinor, this.currency);
+  const ForecastItem(this.subscription, this.date, this.amountMinor, this.currency, {this.rateMissing = false});
   final Subscription subscription;
   final LocalDate date;
 
@@ -16,6 +17,12 @@ class ForecastItem {
 
   /// Primary currency.
   final String currency;
+
+  /// The subscription's currency has no rate to the Primary currency ([amountMinor] is 0).
+  final bool rateMissing;
+
+  /// Due on or before [today] and not confirmed yet (Awaiting confirmation).
+  bool isAwaiting(LocalDate today) => !date.isAfter(today);
 
   double get amount => toMajorUnits(amountMinor, currency);
 }
@@ -64,17 +71,28 @@ class BudgetUsage {
 
 /// Forecast, cost rates, week strip, budgets and "drop Not worth" savings. Pure; Primary currency.
 class ForecastCalculator {
-  const ForecastCalculator(this.calc);
+  const ForecastCalculator(this.calc, {this.history = PriceHistory.empty});
   final SpendingCalculator calc;
 
+  /// Prices each period at the price in effect on its Due date (empty = current price).
+  final PriceHistory history;
+
+  /// My share of one period of [s] due on [date] (price in effect then), converted; `null` when the
+  /// rate is unknown.
+  int? periodCostAtMinor(Subscription s, LocalDate date) {
+    final p = history.myShareAt(s, date);
+    return calc.rates.convertMinor(p.priceMinor, p.currency, calc.primaryCurrency);
+  }
+
   /// Expected charges with Due date in [[from], [to]] (pending ones included when ≥ [from]),
-  /// Paused/Cancelled excluded, oldest first.
+  /// Paused/Cancelled excluded, oldest first. Pass a [from] far in the past to include every period
+  /// still awaiting confirmation.
   List<ForecastItem> items(Iterable<Subscription> subs, LocalDate from, LocalDate to) {
     final out = <ForecastItem>[];
     for (final s in subs) {
-      final cost = calc.periodCostMinor(s) ?? 0;
       for (final d in BillingRules.dueDatesBetween(s, from, to)) {
-        out.add(ForecastItem(s, d, cost, calc.primaryCurrency));
+        final cost = periodCostAtMinor(s, d);
+        out.add(ForecastItem(s, d, cost ?? 0, calc.primaryCurrency, rateMissing: cost == null));
       }
     }
     out.sort((a, b) => a.date.compareTo(b.date));

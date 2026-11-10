@@ -20,5 +20,8 @@ export 'ratio.dart';
 export 'reminder_planner.dart';
 export 'spending.dart';
 export 'stats/forecast.dart';
+export 'stats/month_stats.dart';
+export 'stats/price_increases.dart';
+export 'stats/year_forecast.dart';
 export 'subscription.dart';
 export 'subscription_draft.dart';
