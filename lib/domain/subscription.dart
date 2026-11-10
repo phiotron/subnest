@@ -82,6 +82,7 @@ class Subscription {
     this.serviceId,
     this.colorValue = 0xFF607D8B,
     this.iconText,
+    this.customLogoFile,
     String? categoryId,
     SubscriptionCategory? category,
     this.trialEndDate,
@@ -116,6 +117,10 @@ class Subscription {
 
   /// Monogram or emoji override for the tile; `null` = initials of [name].
   final String? iconText;
+
+  /// File name (inside the app's logo folder) of the picture the user chose as logo
+  /// (glossary: Custom logo); `null` = none. The file itself is managed by the logo layer.
+  final String? customLogoFile;
 
   /// Id of the user's [Category]. Built-in categories use their key as id (`video`, `music`…).
   final String categoryId;
@@ -194,6 +199,7 @@ class Subscription {
     Object? serviceId = _keep,
     int? colorValue,
     Object? iconText = _keep,
+    Object? customLogoFile = _keep,
     String? categoryId,
     SubscriptionCategory? category,
     int? priceMinor,
@@ -231,6 +237,7 @@ class Subscription {
       serviceId: identical(serviceId, _keep) ? this.serviceId : serviceId as String?,
       colorValue: colorValue ?? this.colorValue,
       iconText: identical(iconText, _keep) ? this.iconText : iconText as String?,
+      customLogoFile: identical(customLogoFile, _keep) ? this.customLogoFile : customLogoFile as String?,
       categoryId: categoryId ?? category?.key ?? this.categoryId,
       priceMinor: priceMinor ?? this.priceMinor,
       currency: currency ?? this.currency,

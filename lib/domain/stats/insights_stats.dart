@@ -187,7 +187,7 @@ class InsightsStats {
   }) {
     final groups = <SubscriptionCategory, List<(Subscription, int)>>{};
     for (final s in subs) {
-      if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
+      if (BillingRules.statusForTotals(s, today) != SubscriptionStatus.active) continue;
       final cost = calc.monthlyCostMinor(s);
       if (cost == null || cost <= 0) continue;
       final key = hasOwnSlot(s.category) ? s.category : SubscriptionCategory.other;
@@ -219,7 +219,7 @@ class InsightsStats {
     return [
       for (final cat in watched)
         if (subs
-                .where((s) => s.category == cat && BillingRules.effectiveStatus(s, today) == SubscriptionStatus.active)
+                .where((s) => s.category == cat && BillingRules.statusForTotals(s, today) == SubscriptionStatus.active)
                 .sorted((a, b) => (calc.monthlyCostMinor(b) ?? 0).compareTo(calc.monthlyCostMinor(a) ?? 0))
                 .toList()
             case final list when list.length >= 2)

@@ -31,6 +31,20 @@ abstract final class BillingRules {
     return s.status;
   }
 
+  /// Status that decides whether [s] counts in totals, budgets and per-category sums on [today].
+  ///
+  /// Like [effectiveStatus], except a Paused subscription whose pause has not started yet
+  /// ([Subscription.pausedFrom] after [today]) still counts as it did before pausing: the period
+  /// already paid runs until the pause date (glossary: Paused — "still counted until the pause date").
+  static SubscriptionStatus statusForTotals(Subscription s, LocalDate today) {
+    final from = s.pausedFrom;
+    if (s.status == SubscriptionStatus.paused && from != null && today.isBefore(from)) {
+      final trialEnd = s.trialEndDate;
+      return trialEnd != null && today.isBefore(trialEnd) ? SubscriptionStatus.trial : SubscriptionStatus.active;
+    }
+    return effectiveStatus(s, today);
+  }
+
   /// Whether a status has Due dates at all (Paused and Cancelled have none).
   static bool hasSchedule(SubscriptionStatus status) =>
       status != SubscriptionStatus.cancelled && status != SubscriptionStatus.paused;

@@ -60,6 +60,17 @@ class $SubscriptionsTable extends Subscriptions
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _customLogoFileMeta = const VerificationMeta(
+    'customLogoFile',
+  );
+  @override
+  late final GeneratedColumn<String> customLogoFile = GeneratedColumn<String>(
+    'custom_logo_file',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _categoryIdMeta = const VerificationMeta(
     'categoryId',
   );
@@ -308,6 +319,7 @@ class $SubscriptionsTable extends Subscriptions
     serviceId,
     colorValue,
     iconText,
+    customLogoFile,
     categoryId,
     priceMinor,
     currency,
@@ -374,6 +386,15 @@ class $SubscriptionsTable extends Subscriptions
       context.handle(
         _iconTextMeta,
         iconText.isAcceptableOrUnknown(data['icon_text']!, _iconTextMeta),
+      );
+    }
+    if (data.containsKey('custom_logo_file')) {
+      context.handle(
+        _customLogoFileMeta,
+        customLogoFile.isAcceptableOrUnknown(
+          data['custom_logo_file']!,
+          _customLogoFileMeta,
+        ),
       );
     }
     if (data.containsKey('category_id')) {
@@ -573,6 +594,10 @@ class $SubscriptionsTable extends Subscriptions
         DriftSqlType.string,
         data['${effectivePrefix}icon_text'],
       ),
+      customLogoFile: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}custom_logo_file'],
+      ),
       categoryId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}category_id'],
@@ -676,6 +701,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
   final String? serviceId;
   final int colorValue;
   final String? iconText;
+  final String? customLogoFile;
   final String categoryId;
   final int priceMinor;
   final String currency;
@@ -704,6 +730,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     this.serviceId,
     required this.colorValue,
     this.iconText,
+    this.customLogoFile,
     required this.categoryId,
     required this.priceMinor,
     required this.currency,
@@ -738,6 +765,9 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     map['color_value'] = Variable<int>(colorValue);
     if (!nullToAbsent || iconText != null) {
       map['icon_text'] = Variable<String>(iconText);
+    }
+    if (!nullToAbsent || customLogoFile != null) {
+      map['custom_logo_file'] = Variable<String>(customLogoFile);
     }
     map['category_id'] = Variable<String>(categoryId);
     map['price_minor'] = Variable<int>(priceMinor);
@@ -795,6 +825,9 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
       iconText: iconText == null && nullToAbsent
           ? const Value.absent()
           : Value(iconText),
+      customLogoFile: customLogoFile == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customLogoFile),
       categoryId: Value(categoryId),
       priceMinor: Value(priceMinor),
       currency: Value(currency),
@@ -851,6 +884,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
       serviceId: serializer.fromJson<String?>(json['serviceId']),
       colorValue: serializer.fromJson<int>(json['colorValue']),
       iconText: serializer.fromJson<String?>(json['iconText']),
+      customLogoFile: serializer.fromJson<String?>(json['customLogoFile']),
       categoryId: serializer.fromJson<String>(json['categoryId']),
       priceMinor: serializer.fromJson<int>(json['priceMinor']),
       currency: serializer.fromJson<String>(json['currency']),
@@ -884,6 +918,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
       'serviceId': serializer.toJson<String?>(serviceId),
       'colorValue': serializer.toJson<int>(colorValue),
       'iconText': serializer.toJson<String?>(iconText),
+      'customLogoFile': serializer.toJson<String?>(customLogoFile),
       'categoryId': serializer.toJson<String>(categoryId),
       'priceMinor': serializer.toJson<int>(priceMinor),
       'currency': serializer.toJson<String>(currency),
@@ -915,6 +950,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     Value<String?> serviceId = const Value.absent(),
     int? colorValue,
     Value<String?> iconText = const Value.absent(),
+    Value<String?> customLogoFile = const Value.absent(),
     String? categoryId,
     int? priceMinor,
     String? currency,
@@ -943,6 +979,9 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     serviceId: serviceId.present ? serviceId.value : this.serviceId,
     colorValue: colorValue ?? this.colorValue,
     iconText: iconText.present ? iconText.value : this.iconText,
+    customLogoFile: customLogoFile.present
+        ? customLogoFile.value
+        : this.customLogoFile,
     categoryId: categoryId ?? this.categoryId,
     priceMinor: priceMinor ?? this.priceMinor,
     currency: currency ?? this.currency,
@@ -981,6 +1020,9 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
           ? data.colorValue.value
           : this.colorValue,
       iconText: data.iconText.present ? data.iconText.value : this.iconText,
+      customLogoFile: data.customLogoFile.present
+          ? data.customLogoFile.value
+          : this.customLogoFile,
       categoryId: data.categoryId.present
           ? data.categoryId.value
           : this.categoryId,
@@ -1040,6 +1082,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
           ..write('serviceId: $serviceId, ')
           ..write('colorValue: $colorValue, ')
           ..write('iconText: $iconText, ')
+          ..write('customLogoFile: $customLogoFile, ')
           ..write('categoryId: $categoryId, ')
           ..write('priceMinor: $priceMinor, ')
           ..write('currency: $currency, ')
@@ -1073,6 +1116,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
     serviceId,
     colorValue,
     iconText,
+    customLogoFile,
     categoryId,
     priceMinor,
     currency,
@@ -1105,6 +1149,7 @@ class SubscriptionRow extends DataClass implements Insertable<SubscriptionRow> {
           other.serviceId == this.serviceId &&
           other.colorValue == this.colorValue &&
           other.iconText == this.iconText &&
+          other.customLogoFile == this.customLogoFile &&
           other.categoryId == this.categoryId &&
           other.priceMinor == this.priceMinor &&
           other.currency == this.currency &&
@@ -1135,6 +1180,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
   final Value<String?> serviceId;
   final Value<int> colorValue;
   final Value<String?> iconText;
+  final Value<String?> customLogoFile;
   final Value<String> categoryId;
   final Value<int> priceMinor;
   final Value<String> currency;
@@ -1164,6 +1210,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     this.serviceId = const Value.absent(),
     this.colorValue = const Value.absent(),
     this.iconText = const Value.absent(),
+    this.customLogoFile = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.priceMinor = const Value.absent(),
     this.currency = const Value.absent(),
@@ -1194,6 +1241,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     this.serviceId = const Value.absent(),
     required int colorValue,
     this.iconText = const Value.absent(),
+    this.customLogoFile = const Value.absent(),
     this.categoryId = const Value.absent(),
     required int priceMinor,
     required String currency,
@@ -1235,6 +1283,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     Expression<String>? serviceId,
     Expression<int>? colorValue,
     Expression<String>? iconText,
+    Expression<String>? customLogoFile,
     Expression<String>? categoryId,
     Expression<int>? priceMinor,
     Expression<String>? currency,
@@ -1265,6 +1314,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
       if (serviceId != null) 'service_id': serviceId,
       if (colorValue != null) 'color_value': colorValue,
       if (iconText != null) 'icon_text': iconText,
+      if (customLogoFile != null) 'custom_logo_file': customLogoFile,
       if (categoryId != null) 'category_id': categoryId,
       if (priceMinor != null) 'price_minor': priceMinor,
       if (currency != null) 'currency': currency,
@@ -1297,6 +1347,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     Value<String?>? serviceId,
     Value<int>? colorValue,
     Value<String?>? iconText,
+    Value<String?>? customLogoFile,
     Value<String>? categoryId,
     Value<int>? priceMinor,
     Value<String>? currency,
@@ -1327,6 +1378,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
       serviceId: serviceId ?? this.serviceId,
       colorValue: colorValue ?? this.colorValue,
       iconText: iconText ?? this.iconText,
+      customLogoFile: customLogoFile ?? this.customLogoFile,
       categoryId: categoryId ?? this.categoryId,
       priceMinor: priceMinor ?? this.priceMinor,
       currency: currency ?? this.currency,
@@ -1370,6 +1422,9 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
     }
     if (iconText.present) {
       map['icon_text'] = Variable<String>(iconText.value);
+    }
+    if (customLogoFile.present) {
+      map['custom_logo_file'] = Variable<String>(customLogoFile.value);
     }
     if (categoryId.present) {
       map['category_id'] = Variable<String>(categoryId.value);
@@ -1451,6 +1506,7 @@ class SubscriptionsCompanion extends UpdateCompanion<SubscriptionRow> {
           ..write('serviceId: $serviceId, ')
           ..write('colorValue: $colorValue, ')
           ..write('iconText: $iconText, ')
+          ..write('customLogoFile: $customLogoFile, ')
           ..write('categoryId: $categoryId, ')
           ..write('priceMinor: $priceMinor, ')
           ..write('currency: $currency, ')
@@ -5003,6 +5059,599 @@ class DismissedDetectionsCompanion
   }
 }
 
+class $PriceChangesTable extends PriceChanges
+    with TableInfo<$PriceChangesTable, PriceChangeRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PriceChangesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _subscriptionIdMeta = const VerificationMeta(
+    'subscriptionId',
+  );
+  @override
+  late final GeneratedColumn<String> subscriptionId = GeneratedColumn<String>(
+    'subscription_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES subscriptions (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _oldPriceMinorMeta = const VerificationMeta(
+    'oldPriceMinor',
+  );
+  @override
+  late final GeneratedColumn<int> oldPriceMinor = GeneratedColumn<int>(
+    'old_price_minor',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _newPriceMinorMeta = const VerificationMeta(
+    'newPriceMinor',
+  );
+  @override
+  late final GeneratedColumn<int> newPriceMinor = GeneratedColumn<int>(
+    'new_price_minor',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<String> currency = GeneratedColumn<String>(
+    'currency',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _oldCurrencyMeta = const VerificationMeta(
+    'oldCurrency',
+  );
+  @override
+  late final GeneratedColumn<String> oldCurrency = GeneratedColumn<String>(
+    'old_currency',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _effectiveFromMeta = const VerificationMeta(
+    'effectiveFrom',
+  );
+  @override
+  late final GeneratedColumn<String> effectiveFrom = GeneratedColumn<String>(
+    'effective_from',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    subscriptionId,
+    oldPriceMinor,
+    newPriceMinor,
+    currency,
+    oldCurrency,
+    effectiveFrom,
+    source,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'price_changes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PriceChangeRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('subscription_id')) {
+      context.handle(
+        _subscriptionIdMeta,
+        subscriptionId.isAcceptableOrUnknown(
+          data['subscription_id']!,
+          _subscriptionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_subscriptionIdMeta);
+    }
+    if (data.containsKey('old_price_minor')) {
+      context.handle(
+        _oldPriceMinorMeta,
+        oldPriceMinor.isAcceptableOrUnknown(
+          data['old_price_minor']!,
+          _oldPriceMinorMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_oldPriceMinorMeta);
+    }
+    if (data.containsKey('new_price_minor')) {
+      context.handle(
+        _newPriceMinorMeta,
+        newPriceMinor.isAcceptableOrUnknown(
+          data['new_price_minor']!,
+          _newPriceMinorMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_newPriceMinorMeta);
+    }
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_currencyMeta);
+    }
+    if (data.containsKey('old_currency')) {
+      context.handle(
+        _oldCurrencyMeta,
+        oldCurrency.isAcceptableOrUnknown(
+          data['old_currency']!,
+          _oldCurrencyMeta,
+        ),
+      );
+    }
+    if (data.containsKey('effective_from')) {
+      context.handle(
+        _effectiveFromMeta,
+        effectiveFrom.isAcceptableOrUnknown(
+          data['effective_from']!,
+          _effectiveFromMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_effectiveFromMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PriceChangeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PriceChangeRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      subscriptionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}subscription_id'],
+      )!,
+      oldPriceMinor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}old_price_minor'],
+      )!,
+      newPriceMinor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}new_price_minor'],
+      )!,
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency'],
+      )!,
+      oldCurrency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}old_currency'],
+      ),
+      effectiveFrom: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}effective_from'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PriceChangesTable createAlias(String alias) {
+    return $PriceChangesTable(attachedDatabase, alias);
+  }
+}
+
+class PriceChangeRow extends DataClass implements Insertable<PriceChangeRow> {
+  final String id;
+  final String subscriptionId;
+  final int oldPriceMinor;
+  final int newPriceMinor;
+
+  /// Currency of the new price.
+  final String currency;
+
+  /// Currency of the old price when it changed too; NULL = same as [currency].
+  final String? oldCurrency;
+  final String effectiveFrom;
+
+  /// `manual` · `catalog` · `backfill` (PriceChangeSource).
+  final String source;
+  final DateTime createdAt;
+  const PriceChangeRow({
+    required this.id,
+    required this.subscriptionId,
+    required this.oldPriceMinor,
+    required this.newPriceMinor,
+    required this.currency,
+    this.oldCurrency,
+    required this.effectiveFrom,
+    required this.source,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['subscription_id'] = Variable<String>(subscriptionId);
+    map['old_price_minor'] = Variable<int>(oldPriceMinor);
+    map['new_price_minor'] = Variable<int>(newPriceMinor);
+    map['currency'] = Variable<String>(currency);
+    if (!nullToAbsent || oldCurrency != null) {
+      map['old_currency'] = Variable<String>(oldCurrency);
+    }
+    map['effective_from'] = Variable<String>(effectiveFrom);
+    map['source'] = Variable<String>(source);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  PriceChangesCompanion toCompanion(bool nullToAbsent) {
+    return PriceChangesCompanion(
+      id: Value(id),
+      subscriptionId: Value(subscriptionId),
+      oldPriceMinor: Value(oldPriceMinor),
+      newPriceMinor: Value(newPriceMinor),
+      currency: Value(currency),
+      oldCurrency: oldCurrency == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oldCurrency),
+      effectiveFrom: Value(effectiveFrom),
+      source: Value(source),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PriceChangeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PriceChangeRow(
+      id: serializer.fromJson<String>(json['id']),
+      subscriptionId: serializer.fromJson<String>(json['subscriptionId']),
+      oldPriceMinor: serializer.fromJson<int>(json['oldPriceMinor']),
+      newPriceMinor: serializer.fromJson<int>(json['newPriceMinor']),
+      currency: serializer.fromJson<String>(json['currency']),
+      oldCurrency: serializer.fromJson<String?>(json['oldCurrency']),
+      effectiveFrom: serializer.fromJson<String>(json['effectiveFrom']),
+      source: serializer.fromJson<String>(json['source']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'subscriptionId': serializer.toJson<String>(subscriptionId),
+      'oldPriceMinor': serializer.toJson<int>(oldPriceMinor),
+      'newPriceMinor': serializer.toJson<int>(newPriceMinor),
+      'currency': serializer.toJson<String>(currency),
+      'oldCurrency': serializer.toJson<String?>(oldCurrency),
+      'effectiveFrom': serializer.toJson<String>(effectiveFrom),
+      'source': serializer.toJson<String>(source),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  PriceChangeRow copyWith({
+    String? id,
+    String? subscriptionId,
+    int? oldPriceMinor,
+    int? newPriceMinor,
+    String? currency,
+    Value<String?> oldCurrency = const Value.absent(),
+    String? effectiveFrom,
+    String? source,
+    DateTime? createdAt,
+  }) => PriceChangeRow(
+    id: id ?? this.id,
+    subscriptionId: subscriptionId ?? this.subscriptionId,
+    oldPriceMinor: oldPriceMinor ?? this.oldPriceMinor,
+    newPriceMinor: newPriceMinor ?? this.newPriceMinor,
+    currency: currency ?? this.currency,
+    oldCurrency: oldCurrency.present ? oldCurrency.value : this.oldCurrency,
+    effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+    source: source ?? this.source,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  PriceChangeRow copyWithCompanion(PriceChangesCompanion data) {
+    return PriceChangeRow(
+      id: data.id.present ? data.id.value : this.id,
+      subscriptionId: data.subscriptionId.present
+          ? data.subscriptionId.value
+          : this.subscriptionId,
+      oldPriceMinor: data.oldPriceMinor.present
+          ? data.oldPriceMinor.value
+          : this.oldPriceMinor,
+      newPriceMinor: data.newPriceMinor.present
+          ? data.newPriceMinor.value
+          : this.newPriceMinor,
+      currency: data.currency.present ? data.currency.value : this.currency,
+      oldCurrency: data.oldCurrency.present
+          ? data.oldCurrency.value
+          : this.oldCurrency,
+      effectiveFrom: data.effectiveFrom.present
+          ? data.effectiveFrom.value
+          : this.effectiveFrom,
+      source: data.source.present ? data.source.value : this.source,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PriceChangeRow(')
+          ..write('id: $id, ')
+          ..write('subscriptionId: $subscriptionId, ')
+          ..write('oldPriceMinor: $oldPriceMinor, ')
+          ..write('newPriceMinor: $newPriceMinor, ')
+          ..write('currency: $currency, ')
+          ..write('oldCurrency: $oldCurrency, ')
+          ..write('effectiveFrom: $effectiveFrom, ')
+          ..write('source: $source, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    subscriptionId,
+    oldPriceMinor,
+    newPriceMinor,
+    currency,
+    oldCurrency,
+    effectiveFrom,
+    source,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PriceChangeRow &&
+          other.id == this.id &&
+          other.subscriptionId == this.subscriptionId &&
+          other.oldPriceMinor == this.oldPriceMinor &&
+          other.newPriceMinor == this.newPriceMinor &&
+          other.currency == this.currency &&
+          other.oldCurrency == this.oldCurrency &&
+          other.effectiveFrom == this.effectiveFrom &&
+          other.source == this.source &&
+          other.createdAt == this.createdAt);
+}
+
+class PriceChangesCompanion extends UpdateCompanion<PriceChangeRow> {
+  final Value<String> id;
+  final Value<String> subscriptionId;
+  final Value<int> oldPriceMinor;
+  final Value<int> newPriceMinor;
+  final Value<String> currency;
+  final Value<String?> oldCurrency;
+  final Value<String> effectiveFrom;
+  final Value<String> source;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const PriceChangesCompanion({
+    this.id = const Value.absent(),
+    this.subscriptionId = const Value.absent(),
+    this.oldPriceMinor = const Value.absent(),
+    this.newPriceMinor = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.oldCurrency = const Value.absent(),
+    this.effectiveFrom = const Value.absent(),
+    this.source = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PriceChangesCompanion.insert({
+    required String id,
+    required String subscriptionId,
+    required int oldPriceMinor,
+    required int newPriceMinor,
+    required String currency,
+    this.oldCurrency = const Value.absent(),
+    required String effectiveFrom,
+    required String source,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       subscriptionId = Value(subscriptionId),
+       oldPriceMinor = Value(oldPriceMinor),
+       newPriceMinor = Value(newPriceMinor),
+       currency = Value(currency),
+       effectiveFrom = Value(effectiveFrom),
+       source = Value(source),
+       createdAt = Value(createdAt);
+  static Insertable<PriceChangeRow> custom({
+    Expression<String>? id,
+    Expression<String>? subscriptionId,
+    Expression<int>? oldPriceMinor,
+    Expression<int>? newPriceMinor,
+    Expression<String>? currency,
+    Expression<String>? oldCurrency,
+    Expression<String>? effectiveFrom,
+    Expression<String>? source,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (subscriptionId != null) 'subscription_id': subscriptionId,
+      if (oldPriceMinor != null) 'old_price_minor': oldPriceMinor,
+      if (newPriceMinor != null) 'new_price_minor': newPriceMinor,
+      if (currency != null) 'currency': currency,
+      if (oldCurrency != null) 'old_currency': oldCurrency,
+      if (effectiveFrom != null) 'effective_from': effectiveFrom,
+      if (source != null) 'source': source,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PriceChangesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? subscriptionId,
+    Value<int>? oldPriceMinor,
+    Value<int>? newPriceMinor,
+    Value<String>? currency,
+    Value<String?>? oldCurrency,
+    Value<String>? effectiveFrom,
+    Value<String>? source,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return PriceChangesCompanion(
+      id: id ?? this.id,
+      subscriptionId: subscriptionId ?? this.subscriptionId,
+      oldPriceMinor: oldPriceMinor ?? this.oldPriceMinor,
+      newPriceMinor: newPriceMinor ?? this.newPriceMinor,
+      currency: currency ?? this.currency,
+      oldCurrency: oldCurrency ?? this.oldCurrency,
+      effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+      source: source ?? this.source,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (subscriptionId.present) {
+      map['subscription_id'] = Variable<String>(subscriptionId.value);
+    }
+    if (oldPriceMinor.present) {
+      map['old_price_minor'] = Variable<int>(oldPriceMinor.value);
+    }
+    if (newPriceMinor.present) {
+      map['new_price_minor'] = Variable<int>(newPriceMinor.value);
+    }
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
+    if (oldCurrency.present) {
+      map['old_currency'] = Variable<String>(oldCurrency.value);
+    }
+    if (effectiveFrom.present) {
+      map['effective_from'] = Variable<String>(effectiveFrom.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PriceChangesCompanion(')
+          ..write('id: $id, ')
+          ..write('subscriptionId: $subscriptionId, ')
+          ..write('oldPriceMinor: $oldPriceMinor, ')
+          ..write('newPriceMinor: $newPriceMinor, ')
+          ..write('currency: $currency, ')
+          ..write('oldCurrency: $oldCurrency, ')
+          ..write('effectiveFrom: $effectiveFrom, ')
+          ..write('source: $source, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -5024,6 +5673,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $DismissedDetectionsTable dismissedDetections =
       $DismissedDetectionsTable(this);
+  late final $PriceChangesTable priceChanges = $PriceChangesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5041,6 +5691,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     budgets,
     detectedCharges,
     dismissedDetections,
+    priceChanges,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -5065,6 +5716,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       ),
       result: [TableUpdate('subscription_labels', kind: UpdateKind.delete)],
     ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'subscriptions',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('price_changes', kind: UpdateKind.delete)],
+    ),
   ]);
 }
 
@@ -5075,6 +5733,7 @@ typedef $$SubscriptionsTableCreateCompanionBuilder =
       Value<String?> serviceId,
       required int colorValue,
       Value<String?> iconText,
+      Value<String?> customLogoFile,
       Value<String> categoryId,
       required int priceMinor,
       required String currency,
@@ -5106,6 +5765,7 @@ typedef $$SubscriptionsTableUpdateCompanionBuilder =
       Value<String?> serviceId,
       Value<int> colorValue,
       Value<String?> iconText,
+      Value<String?> customLogoFile,
       Value<String> categoryId,
       Value<int> priceMinor,
       Value<String> currency,
@@ -5183,6 +5843,24 @@ final class $$SubscriptionsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$PriceChangesTable, List<PriceChangeRow>>
+  _priceChangesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.priceChanges,
+    aliasName: 'subscriptions__id__price_changes__subscription_id',
+  );
+
+  $$PriceChangesTableProcessedTableManager get priceChangesRefs {
+    final manager = $$PriceChangesTableTableManager(
+      $_db,
+      $_db.priceChanges,
+    ).filter((f) => f.subscriptionId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_priceChangesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$SubscriptionsTableFilterComposer
@@ -5216,6 +5894,11 @@ class $$SubscriptionsTableFilterComposer
 
   ColumnFilters<String> get iconText => $composableBuilder(
     column: $table.iconText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customLogoFile => $composableBuilder(
+    column: $table.customLogoFile,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5378,6 +6061,31 @@ class $$SubscriptionsTableFilterComposer
     );
     return f(composer);
   }
+
+  Expression<bool> priceChangesRefs(
+    Expression<bool> Function($$PriceChangesTableFilterComposer f) f,
+  ) {
+    final $$PriceChangesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.priceChanges,
+      getReferencedColumn: (t) => t.subscriptionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PriceChangesTableFilterComposer(
+            $db: $db,
+            $table: $db.priceChanges,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SubscriptionsTableOrderingComposer
@@ -5411,6 +6119,11 @@ class $$SubscriptionsTableOrderingComposer
 
   ColumnOrderings<String> get iconText => $composableBuilder(
     column: $table.iconText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customLogoFile => $composableBuilder(
+    column: $table.customLogoFile,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5550,6 +6263,11 @@ class $$SubscriptionsTableAnnotationComposer
 
   GeneratedColumn<String> get iconText =>
       $composableBuilder(column: $table.iconText, builder: (column) => column);
+
+  GeneratedColumn<String> get customLogoFile => $composableBuilder(
+    column: $table.customLogoFile,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get categoryId => $composableBuilder(
     column: $table.categoryId,
@@ -5693,6 +6411,31 @@ class $$SubscriptionsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> priceChangesRefs<T extends Object>(
+    Expression<T> Function($$PriceChangesTableAnnotationComposer a) f,
+  ) {
+    final $$PriceChangesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.priceChanges,
+      getReferencedColumn: (t) => t.subscriptionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PriceChangesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.priceChanges,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SubscriptionsTableTableManager
@@ -5711,6 +6454,7 @@ class $$SubscriptionsTableTableManager
           PrefetchHooks Function({
             bool confirmedPeriodsRefs,
             bool subscriptionLabelsRefs,
+            bool priceChangesRefs,
           })
         > {
   $$SubscriptionsTableTableManager(_$AppDatabase db, $SubscriptionsTable table)
@@ -5731,6 +6475,7 @@ class $$SubscriptionsTableTableManager
                 Value<String?> serviceId = const Value.absent(),
                 Value<int> colorValue = const Value.absent(),
                 Value<String?> iconText = const Value.absent(),
+                Value<String?> customLogoFile = const Value.absent(),
                 Value<String> categoryId = const Value.absent(),
                 Value<int> priceMinor = const Value.absent(),
                 Value<String> currency = const Value.absent(),
@@ -5760,6 +6505,7 @@ class $$SubscriptionsTableTableManager
                 serviceId: serviceId,
                 colorValue: colorValue,
                 iconText: iconText,
+                customLogoFile: customLogoFile,
                 categoryId: categoryId,
                 priceMinor: priceMinor,
                 currency: currency,
@@ -5791,6 +6537,7 @@ class $$SubscriptionsTableTableManager
                 Value<String?> serviceId = const Value.absent(),
                 required int colorValue,
                 Value<String?> iconText = const Value.absent(),
+                Value<String?> customLogoFile = const Value.absent(),
                 Value<String> categoryId = const Value.absent(),
                 required int priceMinor,
                 required String currency,
@@ -5820,6 +6567,7 @@ class $$SubscriptionsTableTableManager
                 serviceId: serviceId,
                 colorValue: colorValue,
                 iconText: iconText,
+                customLogoFile: customLogoFile,
                 categoryId: categoryId,
                 priceMinor: priceMinor,
                 currency: currency,
@@ -5853,12 +6601,17 @@ class $$SubscriptionsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({confirmedPeriodsRefs = false, subscriptionLabelsRefs = false}) {
+              ({
+                confirmedPeriodsRefs = false,
+                subscriptionLabelsRefs = false,
+                priceChangesRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (confirmedPeriodsRefs) db.confirmedPeriods,
                     if (subscriptionLabelsRefs) db.subscriptionLabels,
+                    if (priceChangesRefs) db.priceChanges,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -5903,6 +6656,26 @@ class $$SubscriptionsTableTableManager
                           referencedColumn: 'subscription_id',
                           typedResults: items,
                         ),
+                      if (priceChangesRefs)
+                        await $_getPrefetchedDataByColumns<
+                          SubscriptionRow,
+                          $SubscriptionsTable,
+                          PriceChangeRow,
+                          $PriceChangesTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SubscriptionsTableReferences
+                              ._priceChangesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SubscriptionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).priceChangesRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'subscription_id',
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -5926,6 +6699,7 @@ typedef $$SubscriptionsTableProcessedTableManager =
       PrefetchHooks Function({
         bool confirmedPeriodsRefs,
         bool subscriptionLabelsRefs,
+        bool priceChangesRefs,
       })
     >;
 typedef $$ConfirmedPeriodsTableCreateCompanionBuilder =
@@ -8476,6 +9250,406 @@ typedef $$DismissedDetectionsTableProcessedTableManager =
       DismissedDetectionRow,
       PrefetchHooks Function()
     >;
+typedef $$PriceChangesTableCreateCompanionBuilder =
+    PriceChangesCompanion Function({
+      required String id,
+      required String subscriptionId,
+      required int oldPriceMinor,
+      required int newPriceMinor,
+      required String currency,
+      Value<String?> oldCurrency,
+      required String effectiveFrom,
+      required String source,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$PriceChangesTableUpdateCompanionBuilder =
+    PriceChangesCompanion Function({
+      Value<String> id,
+      Value<String> subscriptionId,
+      Value<int> oldPriceMinor,
+      Value<int> newPriceMinor,
+      Value<String> currency,
+      Value<String?> oldCurrency,
+      Value<String> effectiveFrom,
+      Value<String> source,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$PriceChangesTableReferences
+    extends BaseReferences<_$AppDatabase, $PriceChangesTable, PriceChangeRow> {
+  $$PriceChangesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $SubscriptionsTable _subscriptionIdTable(_$AppDatabase db) => db
+      .subscriptions
+      .createAlias('price_changes__subscription_id__subscriptions__id');
+
+  $$SubscriptionsTableProcessedTableManager get subscriptionId {
+    final $_column = $_itemColumn<String>('subscription_id')!;
+
+    final manager = $$SubscriptionsTableTableManager(
+      $_db,
+      $_db.subscriptions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_subscriptionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PriceChangesTableFilterComposer
+    extends Composer<_$AppDatabase, $PriceChangesTable> {
+  $$PriceChangesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get oldPriceMinor => $composableBuilder(
+    column: $table.oldPriceMinor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get newPriceMinor => $composableBuilder(
+    column: $table.newPriceMinor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get oldCurrency => $composableBuilder(
+    column: $table.oldCurrency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SubscriptionsTableFilterComposer get subscriptionId {
+    final $$SubscriptionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.subscriptionId,
+      referencedTable: $db.subscriptions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SubscriptionsTableFilterComposer(
+            $db: $db,
+            $table: $db.subscriptions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PriceChangesTableOrderingComposer
+    extends Composer<_$AppDatabase, $PriceChangesTable> {
+  $$PriceChangesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get oldPriceMinor => $composableBuilder(
+    column: $table.oldPriceMinor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get newPriceMinor => $composableBuilder(
+    column: $table.newPriceMinor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get oldCurrency => $composableBuilder(
+    column: $table.oldCurrency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SubscriptionsTableOrderingComposer get subscriptionId {
+    final $$SubscriptionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.subscriptionId,
+      referencedTable: $db.subscriptions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SubscriptionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.subscriptions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PriceChangesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PriceChangesTable> {
+  $$PriceChangesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get oldPriceMinor => $composableBuilder(
+    column: $table.oldPriceMinor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get newPriceMinor => $composableBuilder(
+    column: $table.newPriceMinor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumn<String> get oldCurrency => $composableBuilder(
+    column: $table.oldCurrency,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get effectiveFrom => $composableBuilder(
+    column: $table.effectiveFrom,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$SubscriptionsTableAnnotationComposer get subscriptionId {
+    final $$SubscriptionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.subscriptionId,
+      referencedTable: $db.subscriptions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SubscriptionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.subscriptions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PriceChangesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PriceChangesTable,
+          PriceChangeRow,
+          $$PriceChangesTableFilterComposer,
+          $$PriceChangesTableOrderingComposer,
+          $$PriceChangesTableAnnotationComposer,
+          $$PriceChangesTableCreateCompanionBuilder,
+          $$PriceChangesTableUpdateCompanionBuilder,
+          (PriceChangeRow, $$PriceChangesTableReferences),
+          PriceChangeRow,
+          PrefetchHooks Function({bool subscriptionId})
+        > {
+  $$PriceChangesTableTableManager(_$AppDatabase db, $PriceChangesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PriceChangesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PriceChangesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PriceChangesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> subscriptionId = const Value.absent(),
+                Value<int> oldPriceMinor = const Value.absent(),
+                Value<int> newPriceMinor = const Value.absent(),
+                Value<String> currency = const Value.absent(),
+                Value<String?> oldCurrency = const Value.absent(),
+                Value<String> effectiveFrom = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PriceChangesCompanion(
+                id: id,
+                subscriptionId: subscriptionId,
+                oldPriceMinor: oldPriceMinor,
+                newPriceMinor: newPriceMinor,
+                currency: currency,
+                oldCurrency: oldCurrency,
+                effectiveFrom: effectiveFrom,
+                source: source,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String subscriptionId,
+                required int oldPriceMinor,
+                required int newPriceMinor,
+                required String currency,
+                Value<String?> oldCurrency = const Value.absent(),
+                required String effectiveFrom,
+                required String source,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => PriceChangesCompanion.insert(
+                id: id,
+                subscriptionId: subscriptionId,
+                oldPriceMinor: oldPriceMinor,
+                newPriceMinor: newPriceMinor,
+                currency: currency,
+                oldCurrency: oldCurrency,
+                effectiveFrom: effectiveFrom,
+                source: source,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PriceChangesTable, PriceChangeRow>(table),
+                  $$PriceChangesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({subscriptionId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (subscriptionId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.subscriptionId,
+                        referencedTable: $$PriceChangesTableReferences
+                            ._subscriptionIdTable(db),
+                        referencedColumn: $$PriceChangesTableReferences
+                            ._subscriptionIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$PriceChangesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PriceChangesTable,
+      PriceChangeRow,
+      $$PriceChangesTableFilterComposer,
+      $$PriceChangesTableOrderingComposer,
+      $$PriceChangesTableAnnotationComposer,
+      $$PriceChangesTableCreateCompanionBuilder,
+      $$PriceChangesTableUpdateCompanionBuilder,
+      (PriceChangeRow, $$PriceChangesTableReferences),
+      PriceChangeRow,
+      PrefetchHooks Function({bool subscriptionId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -8504,4 +9678,6 @@ class $AppDatabaseManager {
       $$DetectedChargesTableTableManager(_db, _db.detectedCharges);
   $$DismissedDetectionsTableTableManager get dismissedDetections =>
       $$DismissedDetectionsTableTableManager(_db, _db.dismissedDetections);
+  $$PriceChangesTableTableManager get priceChanges =>
+      $$PriceChangesTableTableManager(_db, _db.priceChanges);
 }

@@ -126,7 +126,7 @@ class SpendingCalculator {
     var active = 0, trial = 0, cancelled = 0, paused = 0, awaiting = 0;
     final missing = <String>{};
     for (final s in subs) {
-      final status = BillingRules.effectiveStatus(s, today);
+      final status = BillingRules.statusForTotals(s, today);
       final cost = monthlyCostMinor(s);
       if (cost == null) missing.add(s.currency);
       switch (status) {
@@ -169,7 +169,7 @@ class SpendingCalculator {
   List<MapEntry<K, int>> _byKeyMinor<K>(Iterable<Subscription> subs, LocalDate today, K Function(Subscription) keyOf) {
     final totals = <K, int>{};
     for (final s in subs) {
-      if (BillingRules.effectiveStatus(s, today) != SubscriptionStatus.active) continue;
+      if (BillingRules.statusForTotals(s, today) != SubscriptionStatus.active) continue;
       final cost = monthlyCostMinor(s) ?? 0;
       totals.update(keyOf(s), (v) => v + cost, ifAbsent: () => cost);
     }
@@ -193,7 +193,7 @@ class SpendingCalculator {
   /// Most expensive Active subscriptions by Monthly cost.
   List<(Subscription, double)> top(Iterable<Subscription> subs, LocalDate today, {int count = 5}) {
     return subs
-        .where((s) => BillingRules.effectiveStatus(s, today) == SubscriptionStatus.active)
+        .where((s) => BillingRules.statusForTotals(s, today) == SubscriptionStatus.active)
         .map((s) => (s, monthlyCostMinor(s) ?? 0))
         .sorted((a, b) => b.$2.compareTo(a.$2))
         .take(count)

@@ -15,6 +15,7 @@ export 'exchange_rates.dart';
 export 'labels.dart';
 export 'local_date.dart';
 export 'money.dart';
+export 'price_history.dart';
 export 'ratio.dart';
 export 'reminder_planner.dart';
 export 'spending.dart';

@@ -144,7 +144,7 @@ class ForecastCalculator {
     var sum = 0;
     for (final s in subs) {
       if (s.worthIt != WorthIt.notWorth) continue;
-      if (!BillingRules.hasSchedule(BillingRules.effectiveStatus(s, today))) continue;
+      if (!BillingRules.hasSchedule(BillingRules.statusForTotals(s, today))) continue;
       sum += calc.yearlyCostMinor(s) ?? 0;
     }
     return toMajorUnits(sum, calc.primaryCurrency);

@@ -17,6 +17,7 @@ extension SubscriptionRowMapper on SubscriptionRow {
     serviceId: serviceId,
     colorValue: colorValue,
     iconText: iconText,
+    customLogoFile: customLogoFile,
     categoryId: categoryId,
     priceMinor: priceMinor,
     currency: currency,
@@ -50,6 +51,7 @@ extension SubscriptionToRow on Subscription {
     serviceId: Value(serviceId),
     colorValue: colorValue,
     iconText: Value(iconText),
+    customLogoFile: Value(customLogoFile),
     categoryId: Value(categoryId),
     priceMinor: priceMinor,
     currency: currency,
@@ -170,5 +172,33 @@ extension DetectedChargeToRow on DetectedCharge {
     cycleUnit: Value(cycle?.unit.name),
     isRenewal: Value(isRenewal),
     createdAt: now,
+  );
+}
+
+extension PriceChangeRowMapper on PriceChangeRow {
+  PriceChange toDomain() => PriceChange(
+    id: id,
+    subscriptionId: subscriptionId,
+    oldPriceMinor: oldPriceMinor,
+    newPriceMinor: newPriceMinor,
+    currency: currency,
+    oldCurrency: oldCurrency,
+    effectiveFrom: LocalDate.parse(effectiveFrom),
+    source: PriceChangeSource.fromName(source),
+    createdAt: createdAt,
+  );
+}
+
+extension PriceChangeToRow on PriceChange {
+  PriceChangesCompanion toCompanion() => PriceChangesCompanion.insert(
+    id: id,
+    subscriptionId: subscriptionId,
+    oldPriceMinor: oldPriceMinor,
+    newPriceMinor: newPriceMinor,
+    currency: currency.toUpperCase(),
+    oldCurrency: Value(oldCurrency?.toUpperCase()),
+    effectiveFrom: effectiveFrom.toString(),
+    source: source.name,
+    createdAt: createdAt,
   );
 }

@@ -11,17 +11,23 @@ const _vnd = SpendingCalculator(rates: ExchangeRates(usdRates: {'USD': 1, 'VND':
 void main() {
   group('Paused', () {
     final today = d(2026, 11, 10);
-    test('pause takes effect from the next Due date; nothing due, no totals, no reminders', () {
+    test('pause takes effect from the next Due date; nothing due, no reminders; totals until the pause date', () {
       final s = BillingRules.pause(sub(anchor: d(2026, 11, 15)), today, fixedNow);
       expect(s.status, SubscriptionStatus.paused);
       expect(s.pausedFrom, d(2026, 11, 15));
       expect(BillingRules.isAwaitingConfirmation(s, d(2026, 12, 1)), isFalse);
       expect(BillingRules.pendingDueDates(s, d(2027, 1, 1)), isEmpty);
       expect(BillingRules.dueDatesBetween(s, today, d(2027, 1, 1)), isEmpty);
-      final sum = _vnd.summary([s], today);
-      expect(sum.monthly, 0);
-      expect(sum.pausedCount, 1);
       expect(ReminderPlanner.plan([s], now: fixedNow, hour: 9, minute: 0), isEmpty);
+      // Fix (APP.md "Việc dở đợt 2"): the period already paid still counts until the pause date.
+      expect(BillingRules.statusForTotals(s, today), SubscriptionStatus.active);
+      final before = _vnd.summary([s], today);
+      expect(before.monthlyMinor, 260000);
+      expect(before.activeCount, 1);
+      expect(before.pausedCount, 0);
+      final from = _vnd.summary([s], d(2026, 11, 15));
+      expect(from.monthly, 0);
+      expect(from.pausedCount, 1);
     });
 
     test('resume re-anchors on the picked Due date', () {

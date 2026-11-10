@@ -95,12 +95,116 @@ class SubscriptionRepository {
   Future<List<ConfirmedPeriod>> allPeriods() async =>
       (await _db.select(_db.confirmedPeriods).get()).map((r) => r.toDomain()).toList();
 
+  // ---- Price history (glossary: Price history) ----------------------------------------------
+
+  SimpleSelectStatement<$PriceChangesTable, PriceChangeRow> _priceChanges(String? subscriptionId) {
+    final q = _db.select(_db.priceChanges)
+      ..orderBy([(t) => OrderingTerm.asc(t.effectiveFrom), (t) => OrderingTerm.asc(t.createdAt)]);
+    if (subscriptionId != null) q.where((t) => t.subscriptionId.equals(subscriptionId));
+    return q;
+  }
+
+  /// Price changes, oldest first. Pass [subscriptionId] for one subscription's history.
+  Stream<List<PriceChange>> watchPriceChanges({String? subscriptionId}) =>
+      _priceChanges(subscriptionId).watch().map((rows) => rows.map((r) => r.toDomain()).toList());
+
+  Future<List<PriceChange>> allPriceChanges({String? subscriptionId}) async =>
+      (await _priceChanges(subscriptionId).get()).map((r) => r.toDomain()).toList();
+
+  /// Records that the plan price of [before] became [after]'s price, effective [effectiveFrom]
+  /// (default: [after]'s current Due date when it has a schedule — the form applies a new price "from
+  /// the next period" — else today). Does nothing when price and currency are unchanged. A second
+  /// change of the same subscription with the same date and source (a typo fixed right after) updates
+  /// that row instead of adding one; it is removed when the price is back to where it started.
+  Future<void> _recordPriceChange(
+    Subscription before,
+    Subscription after, {
+    required PriceChangeSource source,
+    LocalDate? effectiveFrom,
+  }) async {
+    if (before.priceMinor == after.priceMinor && before.currency == after.currency) return;
+    final at = effectiveFrom ?? (BillingRules.hasSchedule(after.status) ? after.dueDate : _today);
+    final same = await (_db.select(_db.priceChanges)
+          ..where(
+            (t) =>
+                t.subscriptionId.equals(after.id) & t.effectiveFrom.equals(at.toString()) & t.source.equals(source.name),
+          ))
+        .getSingleOrNull();
+    if (same != null) {
+      final first = same.toDomain();
+      if (first.oldPriceMinor == after.priceMinor && first.fromCurrency == after.currency) {
+        await (_db.delete(_db.priceChanges)..where((t) => t.id.equals(same.id))).go();
+        return;
+      }
+      await _db.into(_db.priceChanges).insertOnConflictUpdate(
+        first
+            .copyWith(
+              newPriceMinor: after.priceMinor,
+              currency: after.currency,
+              oldCurrency: first.fromCurrency == after.currency ? null : first.fromCurrency,
+              createdAt: _clock(),
+            )
+            .toCompanion(),
+      );
+      return;
+    }
+    await _db.into(_db.priceChanges).insert(
+      PriceChange(
+        id: _newId(),
+        subscriptionId: after.id,
+        oldPriceMinor: before.priceMinor,
+        newPriceMinor: after.priceMinor,
+        currency: after.currency,
+        oldCurrency: before.currency == after.currency ? null : before.currency,
+        effectiveFrom: at,
+        source: source,
+        createdAt: _clock(),
+      ).toCompanion(),
+    );
+  }
+
+  /// Changes the plan price of [id] and records it in Price history — for the Catalog Price change
+  /// notice ("Update", [PriceChangeSource.catalog], applied from the next period) and any other
+  /// caller that changes only the price. [currency] defaults to the current one.
+  Future<void> changePrice(
+    String id,
+    int newPriceMinor, {
+    String? currency,
+    PriceChangeSource source = PriceChangeSource.manual,
+    LocalDate? effectiveFrom,
+  }) => _db.transaction(() async {
+    final s = await _require(id);
+    final next = s.copyWith(priceMinor: newPriceMinor, currency: currency ?? s.currency, updatedAt: _clock());
+    await _recordPriceChange(s, next, source: source, effectiveFrom: effectiveFrom);
+    await _saveRow(next);
+  });
+
+  /// Adds a Price history row as is (backup restore, tests).
+  Future<void> insertPriceChange(PriceChange c) =>
+      _db.into(_db.priceChanges).insert(c.toCompanion(), mode: InsertMode.insertOrReplace);
+
+  /// Price history inferred from past Payments for subscriptions without any (see
+  /// [PriceHistory.backfill]); returns the number of changes written.
+  Future<int> backfillPriceHistory() => _db.backfillPriceHistory(now: _clock());
+
   // ---- Commands ------------------------------------------------------------------------------
 
   /// Inserts or updates. Uses an UPSERT (not REPLACE) so the period history is not cascaded away.
   /// A Payment method given only by name ([Subscription.paymentMethod], id `null`) is found or created.
   /// Label links are replaced by [Subscription.labelIds].
-  Future<void> save(Subscription s) => _db.transaction(() async {
+  ///
+  /// When an existing subscription's price or currency changes, the change is recorded in Price
+  /// history with [priceSource] (default: the user edited it), effective [priceEffectiveFrom] (default:
+  /// the next Due date — see [changePrice]).
+  Future<void> save(
+    Subscription s, {
+    PriceChangeSource priceSource = PriceChangeSource.manual,
+    LocalDate? priceEffectiveFrom,
+  }) => _db.transaction(() async {
+    final before = await (_db.select(_db.subscriptions)..where((t) => t.id.equals(s.id))).getSingleOrNull();
+    if (before != null) {
+      await _recordPriceChange(before.toDomain(), s, source: priceSource, effectiveFrom: priceEffectiveFrom);
+    }
     var row = s;
     final pmName = s.paymentMethod?.trim();
     if (s.paymentMethodId == null && pmName != null && pmName.isNotEmpty) {

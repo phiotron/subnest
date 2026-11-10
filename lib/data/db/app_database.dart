@@ -1,7 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
-import '../../domain/category.dart';
+import '../../domain/domain.dart';
+import 'app_database.steps.dart';
+import 'mappers.dart';
 
 part 'app_database.g.dart';
 
@@ -17,6 +19,8 @@ class Subscriptions extends Table {
   TextColumn get serviceId => text().nullable()();
   IntColumn get colorValue => integer()();
   TextColumn get iconText => text().nullable()();
+  // v3: Custom logo file name (glossary: Custom logo); NULL = none.
+  TextColumn get customLogoFile => text().nullable()();
   // v2: was `category` (built-in key); built-in categories keep their key as id.
   TextColumn get categoryId => text().withDefault(const Constant('other'))();
   IntColumn get priceMinor => integer()();
@@ -68,6 +72,29 @@ class ConfirmedPeriods extends Table {
   List<Set<Column>> get uniqueKeys => [
     {subscriptionId, dueDate},
   ];
+}
+
+/// v3: Price history (glossary) — one row per change of a subscription's plan price.
+@DataClassName('PriceChangeRow')
+class PriceChanges extends Table {
+  TextColumn get id => text()();
+  TextColumn get subscriptionId => text().references(Subscriptions, #id, onDelete: KeyAction.cascade)();
+  IntColumn get oldPriceMinor => integer()();
+  IntColumn get newPriceMinor => integer()();
+
+  /// Currency of the new price.
+  TextColumn get currency => text()();
+
+  /// Currency of the old price when it changed too; NULL = same as [currency].
+  TextColumn get oldCurrency => text().nullable()();
+  TextColumn get effectiveFrom => text()();
+
+  /// `manual` · `catalog` · `backfill` (PriceChangeSource).
+  TextColumn get source => text()();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }
 
 /// Provider rates, "units per 1 USD" (cache for offline use).
@@ -197,6 +224,7 @@ class DismissedDetections extends Table {
     Budgets,
     DetectedCharges,
     DismissedDetections,
+    PriceChanges,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -208,7 +236,7 @@ class AppDatabase extends _$AppDatabase {
   /// Bump when changing tables, then run `dart run drift_dev make-migrations`
   /// (see docs/dev.md → Database migrations) and add a step in [migration].
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -220,7 +248,11 @@ class AppDatabase extends _$AppDatabase {
       // Table rebuilds must not cascade-delete history (drift docs: migrations + foreign keys).
       await customStatement('PRAGMA foreign_keys = OFF');
       await transaction(() async {
-        if (from < 2) await _from1To2(m);
+        // Each step works on the generated shape of ITS target version (app_database.steps.dart), so
+        // a table rebuild never touches columns added by later versions.
+        await stepByStep(from1To2: _from1To2, from2To3: _from2To3)(m, from, to);
+        // Data fixes that read through the current table classes run once every step is done.
+        if (from < 3 && to >= 3) await backfillPriceHistory();
       });
     },
     beforeOpen: (details) async {
@@ -236,19 +268,19 @@ class AppDatabase extends _$AppDatabase {
   /// v1 → v2 (1.0 expansion): categories, labels, payment methods, budgets, multi-point reminders,
   /// Paused / Worth-it, detection. Old data is kept: category key → category id (seeded with the same
   /// ids), payment method text → payment_methods rows (duplicates merged), reminder_days → offsets.
-  Future<void> _from1To2(Migrator m) async {
+  Future<void> _from1To2(Migrator m, Schema2 v2) async {
     for (final t in <TableInfo>[
-      categories,
-      labels,
-      subscriptionLabels,
-      paymentMethods,
-      budgets,
-      detectedCharges,
-      dismissedDetections,
+      v2.categories,
+      v2.labels,
+      v2.subscriptionLabels,
+      v2.paymentMethods,
+      v2.budgets,
+      v2.detectedCharges,
+      v2.dismissedDetections,
     ]) {
       await m.createTable(t);
     }
-    await m.addColumn(confirmedPeriods, confirmedPeriods.source);
+    await m.addColumn(v2.confirmedPeriods, v2.confirmedPeriods.source);
     await seedCategories();
 
     // Payment method strings → rows, merged case/space-insensitively; first spelling (oldest subscription) wins.
@@ -281,27 +313,26 @@ class AppDatabase extends _$AppDatabase {
               'ELSE NULL END';
     final keys = SubscriptionCategory.values.map((c) => _sql(c.key)).join(', ');
 
+    final subs = v2.subscriptions;
     await m.alterTable(
       TableMigration(
-        subscriptions,
+        subs,
         columnTransformer: {
-          subscriptions.categoryId: CustomExpression<String>(
-            "CASE WHEN category IN ($keys) THEN category ELSE 'other' END",
-          ),
-          subscriptions.reminderOffsets: const CustomExpression<String>(
+          subs.categoryId: CustomExpression<String>("CASE WHEN category IN ($keys) THEN category ELSE 'other' END"),
+          subs.reminderOffsets: const CustomExpression<String>(
             "CASE WHEN reminder_days IS NULL THEN NULL WHEN reminder_days < 0 THEN '' "
             "WHEN reminder_days = 0 THEN '0' ELSE '0,' || reminder_days END",
           ),
-          subscriptions.paymentMethodId: CustomExpression<String>(pmCase),
+          subs.paymentMethodId: CustomExpression<String>(pmCase),
         },
         newColumns: [
-          subscriptions.categoryId,
-          subscriptions.reminderOffsets,
-          subscriptions.paymentMethodId,
-          subscriptions.pausedFrom,
-          subscriptions.worthIt,
-          subscriptions.detectionSource,
-          subscriptions.detectedAt,
+          subs.categoryId,
+          subs.reminderOffsets,
+          subs.paymentMethodId,
+          subs.pausedFrom,
+          subs.worthIt,
+          subs.detectionSource,
+          subs.detectedAt,
         ],
       ),
     );
@@ -316,6 +347,40 @@ class AppDatabase extends _$AppDatabase {
       );
     }
   }
+
+  /// v2 → v3: Custom logo column and the price history table (backfilled from past Payments in
+  /// [migration] once all steps ran).
+  Future<void> _from2To3(Migrator m, Schema3 v3) async {
+    await m.addColumn(v3.subscriptions, v3.subscriptions.customLogoFile);
+    await m.createTable(v3.priceChanges);
+  }
+
+  /// Infers Price history from past Payments ([PriceHistory.backfill]) for every subscription that
+  /// has no price change yet (migration, restoring a backup made before price history). Returns the
+  /// number of changes written.
+  Future<int> backfillPriceHistory({DateTime? now}) => transaction(() async {
+    final at = now ?? DateTime.now();
+    final known = {
+      for (final r in await (selectOnly(priceChanges, distinct: true)..addColumns([priceChanges.subscriptionId])).get())
+        r.read(priceChanges.subscriptionId)!,
+    };
+    final periods = [for (final r in await select(confirmedPeriods).get()) r.toDomain()];
+    var n = 0;
+    for (final row in await select(subscriptions).get()) {
+      if (known.contains(row.id)) continue;
+      final s = row.toDomain();
+      final changes = PriceHistory.backfill(
+        s,
+        periods.where((p) => p.subscriptionId == s.id),
+        now: at,
+        newId: () => 'backfill-${s.id}-${n++}',
+      );
+      for (final c in changes) {
+        await into(priceChanges).insert(c.toCompanion(), mode: InsertMode.insertOrReplace);
+      }
+    }
+    return n;
+  });
 
   /// Inserts the 11 built-in categories when missing (install, migration, restore).
   Future<void> seedCategories() async {
@@ -345,6 +410,7 @@ class AppDatabase extends _$AppDatabase {
   /// seeded again.
   Future<void> wipeUserData() => transaction(() async {
     await delete(subscriptionLabels).go();
+    await delete(priceChanges).go();
     await delete(confirmedPeriods).go();
     await delete(subscriptions).go();
     await delete(rateOverrides).go();
