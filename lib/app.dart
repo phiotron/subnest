@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'core/router/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/service_tile_logo.dart';
-import 'data/logos/logo_repository.dart';
+import 'data/logos/app_logo_source.dart';
 import 'data/providers.dart';
 import 'data/settings_repository.dart';
 import 'features/lock/lock_screen.dart';
@@ -72,6 +72,10 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
   Future<void> _housekeeping() async {
     await ref.read(subscriptionRepositoryProvider).normalizeAll();
     await ref.read(exchangeRateRepositoryProvider).refreshIfStale();
+    // Custom logos: read which exist, drop files of subscriptions deleted meanwhile.
+    final logos = AppLogoSource.instance.custom;
+    await logos.load();
+    await logos.keepOnly({for (final s in await ref.read(subscriptionRepositoryProvider).all()) s.id});
   }
 
   void _openDeepLink(String location) => widget.router.push(location);
@@ -104,9 +108,9 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
     final settings = ref.watch(settingsProvider).value;
     // English is the default for every new install; only English and Vietnamese are offered (S-90).
     final code = settings?.localeCode ?? 'en';
-    // Service logos (Logo.dev) for every ServiceTile; off — monogram only — in builds without a key.
+    // Service logos for every ServiceTile: bundled Catalog logos + the user's Custom logos (offline).
     return ServiceLogoScope(
-      source: LogoRepository.instance,
+      source: AppLogoSource.instance,
       child: MaterialApp.router(
         onGenerateTitle: (context) => AppLocalizations.of(context).commonAppName,
         debugShowCheckedModeBanner: false,

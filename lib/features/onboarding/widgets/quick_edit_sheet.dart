@@ -88,7 +88,7 @@ class _QuickEditSheetState extends State<_QuickEditSheet> {
               children: [
                 Row(
                   children: [
-                    ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram),
+                    ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, serviceId: s.id),
                     const SizedBox(width: AppSpace.s3),
                     Expanded(
                       child: Semantics(

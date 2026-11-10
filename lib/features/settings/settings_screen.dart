@@ -182,10 +182,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 SettingRow(
                   icon: LucideIcons.image,
-                  label: l.settingsLogosAttribution,
+                  label: l.settingsLogosTitle,
                   subtitle: l.settingsLogosOwnership,
-                  external: true,
-                  onTap: () => SettingsActions.openLogoAttribution(context, ref),
+                  chevron: false,
                 ),
                 if (SettingsActions.canRate(platform))
                   SettingRow(

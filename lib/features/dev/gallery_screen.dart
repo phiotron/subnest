@@ -296,22 +296,22 @@ class _GalleryScreenState extends State<GalleryScreen> {
           GhostTile(),
         ],
       ),
-      // Real logos need a build with --dart-define=LOGO_DEV_KEY (docs/dev.md §7); without it these
-      // stay monograms. Same states as above, with `logoDomain` as the remote Catalog will pass it.
-      _h(context, 'With logo (Logo.dev; monogram without key / offline)'),
+      // Bundled Catalog logos (assets/logos/png, tool/fetch_logos.py) by `serviceId`; an id without
+      // a bundled logo stays a monogram. Same states as above.
+      _h(context, 'With logo (bundled by serviceId; monogram when none)'),
       const Wrap(
         spacing: AppSpace.s5,
         runSpacing: AppSpace.s4,
         crossAxisAlignment: WrapCrossAlignment.end,
         children: [
-          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 24),
-          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com'),
-          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 56),
-          ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 80),
-          ServiceTile(name: 'Spotify', colorValue: spotify, logoDomain: 'spotify.com', trial: true),
-          ServiceTile(name: 'ChatGPT', colorValue: chatgpt, logoDomain: 'openai.com', awaiting: true),
-          ServiceTile(name: 'Canva', colorValue: 0xFF7D2AE8, logoDomain: 'canva.com', off: true),
-          ServiceTile(name: 'No logo', colorValue: 0xFF0F8B8D, logoDomain: 'example.invalid'),
+          ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', size: 24),
+          ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix'),
+          ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', size: 56),
+          ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', size: 80),
+          ServiceTile(name: 'Spotify', colorValue: spotify, serviceId: 'spotify', trial: true),
+          ServiceTile(name: 'ChatGPT', colorValue: chatgpt, serviceId: 'chatgpt', awaiting: true),
+          ServiceTile(name: 'Canva', colorValue: 0xFF7D2AE8, serviceId: 'canva', off: true),
+          ServiceTile(name: 'No logo', colorValue: 0xFF0F8B8D, serviceId: 'no-such-service'),
         ],
       ),
       _h(context, 'Custom tile palette (letter picks the higher-contrast ink)'),
@@ -623,7 +623,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           ),
         ],
       ),
-      // Billing-period bar (product.md §10.2) + real logo — opt-in: `progress:` / `logoDomain:`.
+      // Billing-period bar (product.md §10.2) + real logo — opt-in: `progress:` / `serviceId:`.
       SectionHeader(label: t('Cycle progress + logo', 'Tiến độ kỳ + logo')),
       AppGroup(
         dividerIndent: 68,
@@ -631,7 +631,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           SubscriptionRow(
             name: 'Netflix Premium',
             colorValue: 0xFFE50914,
-            logoDomain: 'netflix.com',
+            serviceId: 'netflix',
             meta:
                 '${AppDates.relative(l, const LocalDate(2026, 11, 27), today: _today)} · '
                 '${l.category(SubscriptionCategory.video)}',
@@ -649,7 +649,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           SubscriptionRow(
             name: 'Spotify',
             colorValue: 0xFF1DB954,
-            logoDomain: 'spotify.com',
+            serviceId: 'spotify',
             state: SubscriptionRowState.trial,
             badgeLabel: t('Trial', 'Dùng thử'),
             meta: '${t('ends', 'hết')} ${AppDates.relative(l, const LocalDate(2026, 11, 6), today: _today)}',
@@ -660,7 +660,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           SubscriptionRow(
             name: 'ChatGPT Plus',
             colorValue: 0xFF202123,
-            logoDomain: 'openai.com',
+            serviceId: 'chatgpt',
             state: SubscriptionRowState.awaiting,
             progress: const CycleProgress(from: LocalDate(2026, 10, 2), due: LocalDate(2026, 11, 2), today: _today),
             amount: _money(context, 20, 'USD'),
@@ -670,7 +670,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           SubscriptionRow(
             name: 'Canva Pro',
             colorValue: 0xFF7D2AE8,
-            logoDomain: 'canva.com',
+            serviceId: 'canva',
             meta: t('Paused', 'Tạm dừng'),
             progress: const CycleProgress(from: LocalDate(2026, 2, 2), due: LocalDate(2027, 2, 2), today: _today),
             progressTone: CycleProgressTone.off,

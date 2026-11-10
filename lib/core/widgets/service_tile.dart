@@ -17,9 +17,10 @@ export 'service_tile_logo.dart' show ServiceLogoScope, ServiceLogoSource;
 /// * [awaiting] adds the 12px `warning` dot (top-right); [trial] the hourglass badge
 ///   (bottom-right); [off] greys the tile out (cancelled); [faded] dims it (queued period).
 /// * Never grows with system text size (layout grid stays fixed).
-/// * [logoDomain] (from the Catalog only — never derived from a typed name): the real logo from
-///   Logo.dev is drawn over the monogram once loaded ([ServiceTileLogo]); missing, offline,
-///   not yet loaded or no key in the build → the monogram stays. Badges/ring/size unchanged.
+/// * Logo, first that exists: [logo] (explicit, e.g. a photo being picked in the form) → the
+///   bundled logo of the Catalog service [serviceId] → the user's Custom logo of [subscriptionId]
+///   → the monogram. The image is drawn over the monogram ([ServiceTileLogo]) by the
+///   [ServiceLogoScope] source; no network. Badges/ring/size unchanged.
 class ServiceTile extends StatelessWidget {
   const ServiceTile({
     super.key,
@@ -32,7 +33,9 @@ class ServiceTile extends StatelessWidget {
     this.off = false,
     this.faded = false,
     this.badgeRingColor,
-    this.logoDomain,
+    this.serviceId,
+    this.subscriptionId,
+    this.logo,
   });
 
   final String name;
@@ -60,8 +63,29 @@ class ServiceTile extends StatelessWidget {
   /// Ring around the dot/badge so it separates from what is behind the tile; defaults to `surface`.
   final Color? badgeRingColor;
 
-  /// Catalog `service.logoDomain` (e.g. `netflix.com`); `null` for custom services → monogram.
-  final String? logoDomain;
+  /// Catalog `Service.id` (`Subscription.serviceId`) → its bundled logo; `null` for custom services.
+  final String? serviceId;
+
+  /// `Subscription.id` → the image the user picked for it (Custom logo), when the service has no
+  /// bundled logo. `null` (library rows, previews) → not looked up.
+  final String? subscriptionId;
+
+  /// Explicit image that wins over both (form preview of a photo not saved yet).
+  final ImageProvider? logo;
+
+  /// The image this tile draws, or `null` for the monogram.
+  static ImageProvider? resolveLogo(
+    BuildContext context, {
+    String? serviceId,
+    String? subscriptionId,
+    ImageProvider? logo,
+  }) {
+    if (logo != null) return logo;
+    if (serviceId == null && subscriptionId == null) return null;
+    final source = ServiceLogoScope.of(context);
+    return (serviceId == null ? null : source.serviceLogo(serviceId)) ??
+        (subscriptionId == null ? null : source.customLogo(subscriptionId));
+  }
 
   static String initials(String name) {
     final words = name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
@@ -110,8 +134,8 @@ class ServiceTile extends StatelessWidget {
     final radius = radiusFor(size);
     final ring = badgeRingColor ?? c.surface;
 
-    final domain = logoDomain?.trim();
-    final withLogo = domain != null && domain.isNotEmpty;
+    final image = resolveLogo(context, serviceId: serviceId, subscriptionId: subscriptionId, logo: logo);
+    final withLogo = image != null;
     final monogram = Text(
       text,
       maxLines: 1,
@@ -143,7 +167,7 @@ class ServiceTile extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 Center(child: monogram),
-                ServiceTileLogo(logoDomain: domain),
+                ServiceTileLogo(image: image),
               ],
             )
           : monogram,

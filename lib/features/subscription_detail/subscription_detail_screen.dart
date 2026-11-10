@@ -210,7 +210,15 @@ class _SubscriptionDetailScreenState extends ConsumerState<SubscriptionDetailScr
       ),
       child: Column(
         children: [
-          ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 80, off: cancelled),
+          ServiceTile(
+            name: s.name,
+            colorValue: s.colorValue,
+            iconText: s.iconText,
+            size: 80,
+            off: cancelled,
+            serviceId: s.serviceId,
+            subscriptionId: s.id,
+          ),
           const SizedBox(height: AppSpace.s4),
           Semantics(
             header: true,

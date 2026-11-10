@@ -7,6 +7,7 @@ import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/backup/backup_crypto.dart';
 import '../../data/backup/backup_service.dart';
+import '../../data/logos/logo_providers.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
 import '../lock/app_lock.dart';
@@ -167,7 +168,8 @@ abstract final class BackupActions {
   /// Everything "Delete all data" removes, without asking (the caller confirmed) — like a new
   /// install: data AND every setting (onboarding, language, currency…); automatic backup turned
   /// off (password and folder permission forgotten; files already in the folder stay, and an empty
-  /// backup can never push good copies out of the folder); pending reminders cancelled. Each step
+  /// backup can never push good copies out of the folder); pending reminders cancelled; Custom logo
+  /// pictures deleted. Each step
   /// outside the database runs even if an earlier one failed.
   static Future<void> eraseEverything(WidgetRef ref) async {
     await ref.read(databaseProvider).wipeEverything();
@@ -178,6 +180,8 @@ abstract final class BackupActions {
       // ---- Hooks for later sessions: add the step to this list ----------------------------------
       // [S · App lock] turn the PIN off (hash, salt and install id leave secure storage).
       () => ref.read(pinServiceProvider).disable(),
+      // [L · Custom logo] the pictures the user picked for subscriptions.
+      () => ref.read(customLogoStoreProvider).clear(),
       // [W · Widget] clear the home-screen widget data (e.g. `WidgetSync.clear()`), so the widget
       //   shows its empty state instead of old amounts.
     ];

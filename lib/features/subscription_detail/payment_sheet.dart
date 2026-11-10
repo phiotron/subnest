@@ -88,7 +88,7 @@ class _PaymentSheetState extends ConsumerState<_PaymentSheet> {
         children: [
           Row(
             children: [
-              ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 56),
+              ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 56, serviceId: s.serviceId, subscriptionId: s.id),
               const SizedBox(width: AppSpace.s3),
               Expanded(
                 child: Column(

@@ -1,32 +1,35 @@
-import 'dart:typed_data';
+import 'package:flutter/widgets.dart';
 
-/// Where [ServiceTile] gets logo bytes from. The app provides `LogoRepository.instance`
+/// Where [ServiceTile] gets logo images from. The app provides `AppLogoSource.instance`
 /// (data/logos) through `ServiceLogoScope` in `app.dart`; tests and the gallery inject their own.
-/// Without a scope tiles use [ServiceLogoSource.none] (monogram only, no network).
-abstract interface class ServiceLogoSource {
+/// Without a scope tiles use [ServiceLogoSource.none] (monogram only).
+///
+/// Never touches the network: Catalog logos are bundled assets, custom logos are files the user
+/// picked. A later remote-Catalog logo plugs in behind [serviceLogo] (data/logos `AppLogoSource.remote`).
+/// Notifies its listeners when a custom logo is added, replaced or removed, so tiles redraw.
+abstract interface class ServiceLogoSource implements Listenable {
   /// Never has a logo — the default when no `ServiceLogoScope` is above a tile.
   static const ServiceLogoSource none = _NoLogos();
 
-  /// `false` → tiles never ask (no key in this build): monogram only, no network.
-  bool get enabled;
+  /// Logo of a Catalog service (`Service.id`): the bundled image, `null` = none (monogram).
+  ImageProvider? serviceLogo(String serviceId);
 
-  /// Bytes already in memory — lets a tile that scrolls back into view draw its logo in the
-  /// first frame (no monogram → logo flash).
-  Uint8List? peek(String logoDomain);
-
-  /// Memory → disk → Logo.dev. `null` = no logo (missing, offline, error, invalid domain). Never throws.
-  Future<Uint8List?> load(String logoDomain);
+  /// Image the user picked for one subscription (Custom logo), `null` = none.
+  ImageProvider? customLogo(String subscriptionId);
 }
 
 class _NoLogos implements ServiceLogoSource {
   const _NoLogos();
 
   @override
-  bool get enabled => false;
+  ImageProvider? serviceLogo(String serviceId) => null;
 
   @override
-  Uint8List? peek(String logoDomain) => null;
+  ImageProvider? customLogo(String subscriptionId) => null;
 
   @override
-  Future<Uint8List?> load(String logoDomain) => Future.value();
+  void addListener(VoidCallback listener) {}
+
+  @override
+  void removeListener(VoidCallback listener) {}
 }

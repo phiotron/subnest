@@ -6,10 +6,12 @@ import 'package:drift/drift.dart';
 import '../../domain/domain.dart';
 import '../db/app_database.dart';
 import '../db/mappers.dart';
+import '../logos/custom_logo_store.dart';
 import '../rates/exchange_rate_repository.dart';
 import '../settings_repository.dart';
 import '../subscription_repository.dart';
 import 'backup_codec.dart';
+import 'backup_logos.dart';
 
 class ImportResult {
   const ImportResult(this.subscriptions, this.periods);
@@ -36,14 +38,25 @@ class ExportFile {
 /// Full JSON backup / restore and CSV export (F7). No platform code here —
 /// sharing and file picking live in `backup_files.dart`.
 class BackupService {
-  BackupService(this._db, this._subs, this._settings, this._rates, {DateTime Function()? clock})
-    : _clock = clock ?? DateTime.now;
+  BackupService(
+    this._db,
+    this._subs,
+    this._settings,
+    this._rates, {
+    DateTime Function()? clock,
+    CustomLogoStore? logos,
+  }) : _clock = clock ?? DateTime.now,
+       _logosOverride = logos;
 
   final AppDatabase _db;
   final SubscriptionRepository _subs;
   final SettingsRepository _settings;
   final ExchangeRateRepository _rates;
   final DateTime Function() _clock;
+  final CustomLogoStore? _logosOverride;
+
+  /// Custom logo files (part of the backup); the app's store unless one was passed (tests).
+  CustomLogoStore get _logos => _logosOverride ?? CustomLogoStore.instance;
 
   String _stamp() {
     final d = LocalDate.fromDateTime(_clock());
@@ -70,13 +83,15 @@ class BackupService {
   Future<String> exportJsonText() async {
     final raw = await _settings.raw();
     final rates = await _rates.load();
+    final subs = await _subs.all();
+    final logos = await BackupLogos.export(_logos, {for (final s in subs) s.id});
     final data = {
       'settings': {
         for (final k in SettingsRepository.backupKeys)
           if (raw[k] != null) k: raw[k],
       },
       'rateOverrides': rates.overrides,
-      'subscriptions': [for (final s in await _subs.all()) BackupCodec.subscriptionToJson(s)],
+      'subscriptions': [for (final s in subs) BackupCodec.subscriptionToJson(s)],
       'periods': [for (final p in await _subs.allPeriods()) BackupCodec.periodToJson(p)],
       'categories': [for (final c in await _db.select(_db.categories).get()) BackupCodec.categoryToJson(c.toDomain())],
       'labels': [for (final l in await _db.select(_db.labels).get()) BackupCodec.labelToJson(l.toDomain())],
@@ -85,6 +100,7 @@ class BackupService {
       ],
       'budgets': [for (final b in await _db.select(_db.budgets).get()) BackupCodec.budgetToJson(b.toDomain())],
       'dismissedDetections': (await _subs.dismissedKeys()).toList()..sort(),
+      BackupLogos.key: ?logos,
     };
     return const JsonEncoder.withIndent('  ').convert({
       'format': BackupCodec.format,
@@ -200,7 +216,8 @@ class BackupService {
   /// list and rate override is deleted, then the file's content is loaded, and every setting in
   /// [SettingsRepository.backupKeys] takes the file's value (a key the file lacks goes back to its
   /// default). Device-only state stays: onboarding, the rates cache, "last backup", and the
-  /// automatic-backup configuration (kept in secure storage, never in the database). The file is
+  /// automatic-backup configuration (kept in secure storage, never in the database). Custom logo
+  /// files are replaced by the file's `customLogos` (none if it has none). The file is
   /// parsed and checked first, and everything runs in one transaction, so a bad file changes nothing.
   Future<ImportResult> importJson(String text) async {
     final parsed = parse(text);
@@ -232,6 +249,8 @@ class BackupService {
       }
       await _fixCategories();
     });
+    // Custom logo files, after the database committed (a bad file above changed nothing).
+    await BackupLogos.restore(_logos, json[BackupLogos.key], {for (final s in parsed.subscriptions) s.id});
     return ImportResult(parsed.subscriptions.length, parsed.periods.length);
   }
 

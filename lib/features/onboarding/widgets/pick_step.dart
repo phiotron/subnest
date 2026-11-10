@@ -185,7 +185,7 @@ class _PickCell extends StatelessWidget {
                       Positioned(
                         left: 4,
                         top: 4,
-                        child: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 56),
+                        child: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 56, serviceId: s.id),
                       ),
                       if (selected)
                         Positioned(
@@ -247,7 +247,7 @@ class _QuickCard extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(AppSpace.s3, AppSpace.s2, AppSpace.s2, AppSpace.s2),
         child: Row(
           children: [
-            ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 24),
+            ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 24, serviceId: s.id),
             const SizedBox(width: AppSpace.s3),
             Expanded(
               child: Column(

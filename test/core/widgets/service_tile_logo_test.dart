@@ -1,4 +1,5 @@
-import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -6,30 +7,41 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/service_tile_logo.dart';
 import 'package:subnest/core/widgets/widgets.dart';
+import 'package:subnest/data/logos/app_logo_source.dart';
+import 'package:subnest/data/logos/bundled_logos.g.dart';
 
-import '../../data/logos/logo_repository_test.dart' show fakePng;
 import '../design_system_test.dart' show loadAppFonts, pumpUi;
 
-/// In-memory logo source — no network, no files.
-class FakeLogoSource implements ServiceLogoSource {
-  FakeLogoSource({this.memory = const {}, this.enabled = true});
+/// A valid 8×8 PNG.
+final Uint8List fakePng = base64Decode(
+  'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGMQVHqHFTEMLQkABCxIQSPERjoAAAAASUVORK5CYII=',
+);
 
-  @override
-  final bool enabled;
-  final Map<String, Uint8List> memory;
-  final pending = <String, Completer<Uint8List?>>{};
+/// In-memory logo source — no assets, no files. Records what tiles asked for.
+class FakeLogoSource extends ChangeNotifier implements ServiceLogoSource {
+  FakeLogoSource({Map<String, Uint8List>? services, Map<String, Uint8List>? custom})
+    : services = services ?? {},
+      custom = custom ?? {};
+
+  final Map<String, Uint8List> services;
+  final Map<String, Uint8List> custom;
   final asked = <String>[];
 
   @override
-  Uint8List? peek(String logoDomain) => memory[logoDomain];
+  ImageProvider? serviceLogo(String serviceId) {
+    asked.add('service:$serviceId');
+    final b = services[serviceId];
+    return b == null ? null : MemoryImage(b);
+  }
 
   @override
-  Future<Uint8List?> load(String logoDomain) {
-    asked.add(logoDomain);
-    final hit = memory[logoDomain];
-    if (hit != null) return Future.value(hit);
-    return (pending[logoDomain] ??= Completer<Uint8List?>()).future;
+  ImageProvider? customLogo(String subscriptionId) {
+    asked.add('custom:$subscriptionId');
+    final b = custom[subscriptionId];
+    return b == null ? null : MemoryImage(b);
   }
+
+  void changed() => notifyListeners();
 }
 
 const netflix = 0xFFE50914;
@@ -45,20 +57,25 @@ double logoOpacity(WidgetTester tester) => tester
     .widget<AnimatedOpacity>(find.descendant(of: find.byType(ServiceTileLogo), matching: find.byType(AnimatedOpacity)).first)
     .opacity;
 
+ImageProvider? drawn(WidgetTester tester) {
+  final f = find.byType(ServiceTileLogo);
+  return f.evaluate().isEmpty ? null : tester.widget<ServiceTileLogo>(f.first).image;
+}
+
 void main() {
   setUpAll(() async {
     await initializeDateFormatting();
     await loadAppFonts();
   });
 
-  testWidgets('no key in the build (default source) → monogram, nothing loaded', (tester) async {
-    await pumpUi(tester, const ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com'));
+  testWidgets('no scope (default source) → monogram, no image', (tester) async {
+    await pumpUi(tester, const ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix'));
     expect(find.text('N'), findsOneWidget);
     expect(find.byType(Image), findsNothing);
     expect(tester.getSize(find.byType(ServiceTile)), const Size(40, 40));
   });
 
-  testWidgets('custom service (no logoDomain) never asks for a logo', (tester) async {
+  testWidgets('no serviceId / subscriptionId → never asks', (tester) async {
     final source = FakeLogoSource();
     await pumpUi(
       tester,
@@ -72,17 +89,17 @@ void main() {
     expect(find.text('MG'), findsOneWidget);
   });
 
-  testWidgets('logo in memory → drawn on the first frame, no fade; badges, size, semantics kept', (tester) async {
-    final source = FakeLogoSource(memory: {'netflix.com': fakePng});
+  testWidgets('bundled logo by serviceId → drawn; badges, size, semantics kept', (tester) async {
+    final source = FakeLogoSource(services: {'netflix': fakePng});
     await pumpUi(
       tester,
       ServiceLogoScope(
         source: source,
         child: const Row(
           children: [
-            ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', awaiting: true),
+            ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', awaiting: true),
             SizedBox(width: 16),
-            ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', trial: true, size: 80),
+            ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', trial: true, size: 80),
           ],
         ),
       ),
@@ -96,74 +113,60 @@ void main() {
     expect(tester.getSize(find.byType(ServiceTile).last), const Size(80, 80));
     expect(find.byIcon(AppIcons.trial), findsOneWidget);
     expect(find.bySemanticsLabel('Netflix'), findsNWidgets(2));
-    // Logo image adds no semantics of its own.
-    final node = tester.getSemantics(find.byType(ServiceTile).first);
-    expect(node.label, 'Netflix');
+    expect(tester.getSemantics(find.byType(ServiceTile).first).label, 'Netflix');
+    expect(find.text('N'), findsNWidgets(2), reason: 'monogram stays underneath (no blank frame)');
   });
 
-  testWidgets('while loading the monogram shows; then the logo fades in over it', (tester) async {
+  testWidgets('priority: explicit logo → bundled → custom → monogram', (tester) async {
+    final bundled = Uint8List.fromList(fakePng), custom = Uint8List.fromList(fakePng), picked = Uint8List.fromList(fakePng);
+    final source = FakeLogoSource(services: {'netflix': bundled}, custom: {'sub-1': custom, 'sub-2': custom});
+    Future<void> show(Widget tile) => pumpUi(tester, ServiceLogoScope(source: source, child: tile), settle: false);
+
+    await show(const ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', subscriptionId: 'sub-1'));
+    expect((drawn(tester)! as MemoryImage).bytes, same(bundled));
+
+    await show(const ServiceTile(name: 'Old', colorValue: netflix, serviceId: 'gone-from-catalog', subscriptionId: 'sub-2'));
+    expect((drawn(tester)! as MemoryImage).bytes, same(custom));
+
+    await show(const ServiceTile(name: 'Gym', colorValue: netflix, subscriptionId: 'sub-1'));
+    expect((drawn(tester)! as MemoryImage).bytes, same(custom));
+
+    await show(ServiceTile(name: 'Gym', colorValue: netflix, subscriptionId: 'sub-1', logo: MemoryImage(picked)));
+    expect((drawn(tester)! as MemoryImage).bytes, same(picked));
+
+    await show(const ServiceTile(name: 'Gym', colorValue: netflix, subscriptionId: 'sub-9'));
+    expect(drawn(tester), isNull);
+    expect(find.text('G'), findsOneWidget);
+  });
+
+  testWidgets('source notifies (custom logo added / removed) → tile redraws', (tester) async {
     final source = FakeLogoSource();
     await pumpUi(
       tester,
       ServiceLogoScope(
         source: source,
-        child: const ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, logoDomain: 'spotify.com', size: 56),
+        child: const ServiceTile(name: 'Gym', colorValue: 0xFF0F8B8D, subscriptionId: 'sub-1'),
       ),
       settle: false,
     );
-    expect(source.asked, ['spotify.com']);
-    expect(find.text('S'), findsOneWidget);
-    expect(find.byType(Image), findsNothing);
-
-    source.pending['spotify.com']!.complete(fakePng);
-    await tester.pump(); // completes the load
-    await tester.pump(); // rebuilds with the bytes
-    expect(find.byType(Image), findsOneWidget);
-    await decode(tester);
-    expect(logoOpacity(tester), 1);
-    expect(find.text('S'), findsOneWidget, reason: 'monogram stays underneath (no blank frame)');
-  });
-
-  testWidgets('no logo / offline → monogram stays', (tester) async {
-    final source = FakeLogoSource();
-    await pumpUi(
-      tester,
-      ServiceLogoScope(
-        source: source,
-        child: const ServiceTile(name: 'Viettel', colorValue: 0xFFD21F3C, logoDomain: 'viettel.vn', iconText: 'V'),
-      ),
-      settle: false,
-    );
-    source.pending['viettel.vn']!.complete(null);
-    await tester.pumpAndSettle();
-    expect(find.byType(Image), findsNothing);
-    expect(find.text('V'), findsOneWidget);
-  });
-
-  testWidgets('a disabled source is never asked', (tester) async {
-    final source = FakeLogoSource(memory: {'netflix.com': fakePng}, enabled: false);
-    await pumpUi(
-      tester,
-      ServiceLogoScope(
-        source: source,
-        child: const ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com'),
-      ),
-    );
-    expect(source.asked, isEmpty);
-    expect(find.byType(Image), findsNothing);
+    expect(drawn(tester), isNull);
+    source.custom['sub-1'] = fakePng;
+    source.changed();
+    await tester.pump();
+    expect(drawn(tester), isNotNull);
+    source.custom.remove('sub-1');
+    source.changed();
+    await tester.pump();
+    expect(drawn(tester), isNull);
   });
 
   testWidgets('undecodable bytes → monogram (no white plate)', (tester) async {
-    final source = FakeLogoSource(
-      memory: {
-        'bad.com': Uint8List.fromList([1, 2, 3]),
-      },
-    );
+    final source = FakeLogoSource(services: {'bad': Uint8List.fromList([1, 2, 3])});
     await pumpUi(
       tester,
       ServiceLogoScope(
         source: source,
-        child: const ServiceTile(name: 'Bad', colorValue: netflix, logoDomain: 'bad.com'),
+        child: const ServiceTile(name: 'Bad', colorValue: netflix, serviceId: 'bad'),
       ),
       settle: false,
     );
@@ -173,11 +176,80 @@ void main() {
     expect(find.text('B'), findsOneWidget);
   });
 
+  group('AppLogoSource (bundled assets)', () {
+    late Directory tmp;
+    setUp(() => tmp = Directory.systemTemp.createTempSync('logos'));
+    tearDown(() => tmp.deleteSync(recursive: true));
+
+    test('bundled ids → AssetImage under assets/logos/png; others → remote hook → null', () {
+      final source = AppLogoSource(custom: CustomLogoStore(() async => tmp), bundled: {'netflix'});
+      expect((source.serviceLogo('netflix')! as AssetImage).assetName, 'assets/logos/png/netflix.png');
+      expect(source.serviceLogo('nope'), isNull);
+      expect(source.hasBundled('netflix'), isTrue);
+      var notified = 0;
+      source.addListener(() => notified++);
+      final remote = MemoryImage(fakePng);
+      source.remote = (id) => id == 'nope' ? remote : null;
+      expect(notified, 1);
+      expect(source.serviceLogo('nope'), same(remote));
+      expect(source.serviceLogo('netflix'), isA<AssetImage>(), reason: 'bundled wins over remote');
+    });
+
+    test('custom logo file → FileImage; store changes notify the source', () async {
+      final store = CustomLogoStore(() async => tmp);
+      final source = AppLogoSource(custom: store, bundled: const {});
+      await store.load();
+      expect(source.customLogo('sub-1'), isNull);
+      var notified = 0;
+      source.addListener(() => notified++);
+      await store.save('sub-1', fakePng);
+      expect(notified, 1);
+      expect((source.customLogo('sub-1')! as FileImage).file.path, endsWith('sub-1.png'));
+    });
+
+    test('every bundled id is a Catalog service with a PNG; bundle stays small', () {
+      final catalog = jsonDecode(File('assets/catalog/services.json').readAsStringSync()) as Map<String, Object?>;
+      final ids = {for (final s in catalog['services']! as List) (s as Map)['id'] as String};
+      expect(bundledLogoIds, isNotEmpty);
+      var total = 0;
+      for (final id in bundledLogoIds) {
+        expect(ids, contains(id));
+        final f = File('assets/logos/png/$id.png');
+        expect(f.existsSync(), isTrue, reason: id);
+        final b = f.readAsBytesSync();
+        expect(b.sublist(1, 4), utf8.encode('PNG'), reason: id);
+        total += b.length;
+      }
+      expect(total, lessThan(4 * 1024 * 1024));
+      final extra = Directory('assets/logos/png').listSync().map((e) => e.uri.pathSegments.last.replaceAll('.png', ''));
+      expect(extra.toSet().difference(bundledLogoIds), isEmpty, reason: 'PNG without an index entry');
+    });
+
+    testWidgets('real bundled asset decodes in a tile (no network)', (tester) async {
+      final id = bundledLogoIds.first;
+      final source = AppLogoSource(custom: CustomLogoStore(() async => tmp));
+      await pumpUi(
+        tester,
+        ServiceLogoScope(
+          source: source,
+          child: ServiceTile(name: id, colorValue: netflix, serviceId: id, size: 80),
+        ),
+        settle: false,
+      );
+      await tester.runAsync(() async {
+        await precacheImage(source.serviceLogo(id)!, tester.element(find.byType(ServiceTile)));
+      });
+      await decode(tester);
+      expect(tester.takeException(), isNull);
+      expect(logoOpacity(tester), 1);
+    });
+  });
+
   // Images for the notes: flutter test test/core/widgets/service_tile_logo_test.dart
-  //   --dart-define=SHOTS=true --update-goldens  → notes/img/2026-11-06-p3-logos/
+  //   --dart-define=SHOTS=true --update-goldens  → notes/img/2026-11-10-l-logo/
   for (final dark in [false, true]) {
     testWidgets('golden: sizes and states with a logo (${dark ? 'dark' : 'light'})', (tester) async {
-      final source = FakeLogoSource(memory: {'netflix.com': fakePng, 'spotify.com': fakePng});
+      final source = FakeLogoSource(services: {'netflix': fakePng, 'spotify': fakePng});
       await pumpUi(
         tester,
         ServiceLogoScope(
@@ -189,14 +261,14 @@ void main() {
               runSpacing: 16,
               crossAxisAlignment: WrapCrossAlignment.end,
               children: [
-                ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 24),
-                ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com'),
-                ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 56),
-                ServiceTile(name: 'Netflix', colorValue: netflix, logoDomain: 'netflix.com', size: 80),
-                ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, logoDomain: 'spotify.com', trial: true),
-                ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, logoDomain: 'spotify.com', awaiting: true),
-                ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, logoDomain: 'spotify.com', off: true),
-                ServiceTile(name: 'Viettel', colorValue: 0xFFD21F3C, logoDomain: 'viettel.vn', iconText: 'V'),
+                ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', size: 24),
+                ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix'),
+                ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', size: 56),
+                ServiceTile(name: 'Netflix', colorValue: netflix, serviceId: 'netflix', size: 80),
+                ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, serviceId: 'spotify', trial: true),
+                ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, serviceId: 'spotify', awaiting: true),
+                ServiceTile(name: 'Spotify', colorValue: 0xFF1DB954, serviceId: 'spotify', off: true),
+                ServiceTile(name: 'Viettel', colorValue: 0xFFD21F3C, serviceId: 'no-logo', iconText: 'V'),
               ],
             ),
           ),
@@ -210,7 +282,7 @@ void main() {
       if (const bool.fromEnvironment('SHOTS')) {
         await expectLater(
           find.byType(MaterialApp),
-          matchesGoldenFile('../../../notes/img/2026-11-06-p3-logos/tiles-${dark ? 'dark' : 'light'}.png'),
+          matchesGoldenFile('../../../notes/img/2026-11-10-l-logo/tiles-${dark ? 'dark' : 'light'}.png'),
         );
       }
     });

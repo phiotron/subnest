@@ -108,5 +108,14 @@
   "subscriptionFormDeleteTitle": "Delete {name}?",
   "@subscriptionFormDeleteTitle": {"placeholders": {"name": {"type": "String"}}},
   "subscriptionFormDeleteBody": "Its payment history goes too. This can't be undone.",
-  "subscriptionFormDeleteAction": "Delete"
+  "subscriptionFormDeleteAction": "Delete",
+  "subscriptionFormTilePhoto": "Photo",
+  "subscriptionFormTilePhotoPick": "Choose photo",
+  "subscriptionFormTilePhotoChange": "Change photo",
+  "subscriptionFormTilePhotoRemove": "Remove photo",
+  "subscriptionFormTilePhotoNote": "Shown instead of the letters. It stays on this phone and in your backups.",
+  "subscriptionFormTilePhotoFailed": "Couldn’t open that photo.",
+  "subscriptionFormCropTitle": "Move and zoom",
+  "subscriptionFormCropHint": "Pinch to zoom, drag to move. The square is your logo.",
+  "subscriptionFormCropUse": "Use photo"
 }

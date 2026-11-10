@@ -64,6 +64,10 @@ dependencies:
   google_mlkit_text_recognition: 0.17.1
   # Pick screenshots / take a receipt photo (Android photo picker: no storage permission).
   image_picker: ^1.2.4
+  # Custom logo (session L, 2026-11-10): turn on the Android Photo Picker (no storage permission).
+  # Same versions the lock file already resolves through image_picker.
+  image_picker_android: ^0.8.13+25
+  image_picker_platform_interface: ^2.11.2
   # Home-screen widgets (S11, session W).
   home_widget: ^0.10.0
 
@@ -126,3 +130,6 @@ flutter:
   assets:
     # Service catalog — owned by the Catalog session (B). Format: assets/catalog/README.md.
     - assets/catalog/
+    # Real logos of Catalog services, bundled (no network): tool/fetch_logos.py; sources in
+    # assets/logos/SOURCES.md (that folder itself is not bundled — only png/).
+    - assets/logos/png/

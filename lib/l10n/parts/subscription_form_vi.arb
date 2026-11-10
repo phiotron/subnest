@@ -86,5 +86,14 @@
   "subscriptionFormDelete": "Xoá subscription",
   "subscriptionFormDeleteTitle": "Xoá {name}?",
   "subscriptionFormDeleteBody": "Lịch sử thanh toán cũng bị xoá. Không thể hoàn tác.",
-  "subscriptionFormDeleteAction": "Xoá"
+  "subscriptionFormDeleteAction": "Xoá",
+  "subscriptionFormTilePhoto": "Ảnh",
+  "subscriptionFormTilePhotoPick": "Chọn ảnh",
+  "subscriptionFormTilePhotoChange": "Đổi ảnh",
+  "subscriptionFormTilePhotoRemove": "Gỡ ảnh",
+  "subscriptionFormTilePhotoNote": "Hiện thay cho chữ. Ảnh chỉ nằm trên máy này và trong bản sao lưu.",
+  "subscriptionFormTilePhotoFailed": "Không mở được ảnh này.",
+  "subscriptionFormCropTitle": "Kéo và phóng to",
+  "subscriptionFormCropHint": "Chụm hai ngón để phóng to, kéo để di chuyển. Ô vuông là logo.",
+  "subscriptionFormCropUse": "Dùng ảnh"
 }

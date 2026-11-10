@@ -54,7 +54,7 @@ class _PlanSheetState extends State<PlanSheet> {
               children: [
                 Row(
                   children: [
-                    ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 56),
+                    ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 56, serviceId: s.id),
                     const SizedBox(width: AppSpace.s4),
                     Expanded(
                       child: Column(

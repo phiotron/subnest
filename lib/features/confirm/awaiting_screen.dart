@@ -293,6 +293,8 @@ class _PendingRow extends StatelessWidget {
                 iconText: s.iconText,
                 awaiting: !queued,
                 faded: queued,
+                serviceId: s.serviceId,
+                subscriptionId: s.id,
               ),
               const SizedBox(width: AppSpace.s3),
               Expanded(

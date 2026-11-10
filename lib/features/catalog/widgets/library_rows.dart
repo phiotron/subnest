@@ -38,7 +38,7 @@ class LibraryRow extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: AppSpace.s3),
             child: Row(
               children: [
-                ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, logoDomain: s.logoDomain),
+                ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, serviceId: s.id),
                 const SizedBox(width: AppSpace.s4),
                 Expanded(
                   child: Column(

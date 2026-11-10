@@ -4,9 +4,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/core/widgets/widgets.dart';
 import 'package:subnest/domain/domain.dart';
 
-import '../../data/logos/logo_repository_test.dart' show fakePng;
 import '../design_system_test.dart' show loadAppFonts, pumpUi;
-import 'service_tile_logo_test.dart' show FakeLogoSource, decode;
+import 'service_tile_logo_test.dart' show FakeLogoSource, decode, fakePng;
 
 const today = LocalDate(2026, 11, 4);
 const shot = Key('shot');
@@ -31,7 +30,7 @@ Widget row(
   builder: (context) => SubscriptionRow(
     name: name,
     colorValue: 0xFFE50914,
-    logoDomain: 'netflix.com',
+    serviceId: 'netflix',
     state: state,
     meta: meta ?? (state == SubscriptionRowState.cancelled ? 'Cancelled 04/11/2026' : 'Video'),
     badgeLabel: state == SubscriptionRowState.trial ? 'Free trial' : null,
@@ -47,7 +46,7 @@ Widget row(
 
 /// Every state the bar has (normal with logo, trial, awaiting, paused, cancelled) in one group.
 Widget allStates() => ServiceLogoScope(
-  source: FakeLogoSource(memory: {'netflix.com': fakePng}),
+  source: FakeLogoSource(services: {'netflix': fakePng}),
   child: AppGroup(
     children: [
       row(SubscriptionRowState.normal, name: 'Netflix Premium Family Plan (4K)'),
@@ -152,20 +151,20 @@ void main() {
   });
 
   group('SubscriptionRow', () {
-    testWidgets('without progress / logoDomain nothing changes', (tester) async {
+    testWidgets('without progress / serviceId nothing changes', (tester) async {
       await pumpUi(
         tester,
         SubscriptionRow(name: 'Netflix', colorValue: 0xFFE50914, meta: 'Video', amount: '₫260,000', onTap: () {}),
       );
       expect(find.byType(CycleProgressBar), findsNothing);
-      expect(tester.widget<ServiceTile>(find.byType(ServiceTile)).logoDomain, isNull);
+      expect(tester.widget<ServiceTile>(find.byType(ServiceTile)).serviceId, isNull);
       expect(tester.getSize(find.byType(SubscriptionRow)).height, AppSize.rowH);
     });
 
-    testWidgets('logoDomain reaches the tile; logo drawn from the scope', (tester) async {
+    testWidgets('serviceId reaches the tile; logo drawn from the scope', (tester) async {
       await pumpUi(tester, allStates(), settle: false);
       await decode(tester);
-      expect(tester.widget<ServiceTile>(find.byType(ServiceTile).first).logoDomain, 'netflix.com');
+      expect(tester.widget<ServiceTile>(find.byType(ServiceTile).first).serviceId, 'netflix');
       expect(find.byType(Image), findsNWidgets(5));
     });
 

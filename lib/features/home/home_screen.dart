@@ -629,7 +629,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final l = context.l10n;
     final state = rowState(s, today);
     final (amount, amountMeta) = rowAmounts(l, s, primary: primary, calc: calc);
-    final catalog = ref.watch(catalogByIdProvider);
     final labels = ref.watch(labelsProvider).value ?? const <Label>[];
     final mine = [
       for (final x in labels)
@@ -655,7 +654,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       iconText: s.iconText,
       state: state,
       meta: rowMeta(l, s, today, categories: ref.watch(categoryByIdProvider)),
-      logoDomain: s.serviceId == null ? null : catalog[s.serviceId]?.logoDomain,
+      serviceId: s.serviceId,
+      subscriptionId: s.id,
       progress: progress,
       highlight: _flashIds.contains(s.id),
       nameBadge: s.isAutoDetected ? const AutoBadge() : null,

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
+import '../../data/logos/logo_providers.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
 import '../catalog/catalog_helpers.dart';
@@ -62,6 +65,11 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   bool _validated = false;
   bool _more = false;
   bool _saving = false;
+
+  /// Custom logo picked in the tile sheet, saved with the subscription; [_photoRemoved] = remove
+  /// the saved one on save.
+  Uint8List? _newPhoto;
+  bool _photoRemoved = false;
 
   final _name = TextEditingController();
   final _every = TextEditingController();
@@ -216,6 +224,22 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     });
   }
 
+  /// A photo can be the tile only when the service has no bundled logo (custom services, and
+  /// Catalog services the app has no logo for).
+  bool _canUsePhoto(BuildContext context) {
+    final id = _draft?.serviceId;
+    return id == null || ServiceLogoScope.of(context).serviceLogo(id) == null;
+  }
+
+  /// The Custom logo the tile shows now: picked in this form, else the saved one (unless removed).
+  ImageProvider? _photoImage(BuildContext context) {
+    if (!_canUsePhoto(context)) return null;
+    if (_newPhoto != null) return MemoryImage(_newPhoto!);
+    final o = _original;
+    if (_photoRemoved || o == null) return null;
+    return ServiceLogoScope.of(context).customLogo(o.id);
+  }
+
   Future<void> _pickTile() async {
     final l = context.l10n;
     final d = _draft!;
@@ -228,12 +252,36 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
       previewMeta: '${l.money(Money(d.myShareMinor, d.currency))}${perCycle(l, d.cycle)}',
       libraryColor: _service?.colorValue,
       libraryName: _service?.name,
+      canUsePhoto: _canUsePhoto(context),
+      photo: _photoImage(context),
     );
     if (choice == null || !mounted) return;
     _update(() {
       d.colorValue = choice.colorValue;
       d.iconText = choice.iconText;
+      if (choice.photo != null) {
+        _newPhoto = choice.photo;
+        _photoRemoved = false;
+      } else if (choice.removePhoto) {
+        _newPhoto = null;
+        _photoRemoved = true;
+      }
     });
+  }
+
+  /// Writes the Custom logo change for [subscriptionId]. A failure never blocks saving the
+  /// subscription (the tile just keeps its letters).
+  Future<void> _saveLogo(String subscriptionId) async {
+    final logos = ref.read(customLogoStoreProvider);
+    try {
+      if (_newPhoto != null && _canUsePhoto(context)) {
+        await logos.save(subscriptionId, _newPhoto!);
+      } else if (_photoRemoved) {
+        await logos.remove(subscriptionId);
+      }
+    } catch (_) {
+      // Disk full / file system error — ignore.
+    }
   }
 
   Future<void> _pickCurrency() async {
@@ -314,6 +362,8 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     setState(() => _saving = true);
     try {
       await repo.save(toSave);
+      if (!mounted) return;
+      await _saveLogo(toSave.id);
       if (!mounted) return;
       if (o != null) {
         context.pop();
@@ -449,6 +499,8 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                     colorValue: d.colorValue,
                     iconText: d.iconText ?? (display.isEmpty ? '?' : null),
                     size: 56,
+                    serviceId: d.serviceId,
+                    logo: _photoImage(context),
                   ),
                   Positioned(
                     right: 0,
@@ -974,6 +1026,11 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     );
     if (ok != true || !mounted) return;
     await ref.read(subscriptionRepositoryProvider).delete(o.id);
+    try {
+      await ref.read(customLogoStoreProvider).remove(o.id);
+    } catch (_) {
+      // Left over → removed by the start-up clean-up (app.dart).
+    }
     if (mounted) context.go(AppRoutes.home);
   }
 

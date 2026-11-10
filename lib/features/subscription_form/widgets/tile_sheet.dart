@@ -1,13 +1,19 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/l10n/l10n.dart';
 import '../../../core/widgets/widgets.dart';
+import 'custom_logo_picker.dart';
 
-/// What the tile sheet returns: colour + letters/emoji (`null` = initials of the name).
+/// What the tile sheet returns: colour + letters/emoji (`null` = initials of the name), and the
+/// Custom logo change: [photo] = new PNG picked, [removePhoto] = the saved one is to be removed.
 class TileChoice {
-  const TileChoice(this.colorValue, this.iconText);
+  const TileChoice(this.colorValue, this.iconText, {this.photo, this.removePhoto = false});
   final int colorValue;
   final String? iconText;
+  final Uint8List? photo;
+  final bool removePhoto;
 }
 
 /// Emoji offered instead of letters (mockup order).
@@ -18,6 +24,8 @@ bool isMonogram(String? text) => text == null || RegExp(r'^[\p{L}\p{N}+]{0,2}$',
 
 /// S4 tile sheet (png 24): big preview + list-row preview, Letters | Emoji, letters field (1–2),
 /// colour swatches (library colour first, then the 12 `tile-*` tokens), emoji row, Done.
+/// With [canUsePhoto] (no bundled logo for this service) a Photo section offers Choose / Change /
+/// Remove photo (Custom logo); [photo] is the current one shown in the previews.
 Future<TileChoice?> showTileSheet(
   BuildContext context, {
   required String name,
@@ -26,6 +34,9 @@ Future<TileChoice?> showTileSheet(
   required String previewMeta,
   int? libraryColor,
   String? libraryName,
+  bool canUsePhoto = false,
+  ImageProvider? photo,
+  Future<Uint8List?> Function(BuildContext context)? pickPhoto,
 }) {
   return showAppSheet<TileChoice>(
     context,
@@ -36,6 +47,9 @@ Future<TileChoice?> showTileSheet(
       previewMeta: previewMeta,
       libraryColor: libraryColor,
       libraryName: libraryName,
+      canUsePhoto: canUsePhoto,
+      photo: photo,
+      pickPhoto: pickPhoto,
     ),
   );
 }
@@ -49,6 +63,9 @@ class TileSheet extends StatefulWidget {
     required this.previewMeta,
     this.libraryColor,
     this.libraryName,
+    this.canUsePhoto = false,
+    this.photo,
+    this.pickPhoto,
   });
 
   final String name;
@@ -57,6 +74,11 @@ class TileSheet extends StatefulWidget {
   final String previewMeta;
   final int? libraryColor;
   final String? libraryName;
+  final bool canUsePhoto;
+  final ImageProvider? photo;
+
+  /// Gallery + crop ([pickCustomLogo]) unless replaced (tests).
+  final Future<Uint8List?> Function(BuildContext context)? pickPhoto;
 
   @override
   State<TileSheet> createState() => _TileSheetState();
@@ -67,6 +89,25 @@ class _TileSheetState extends State<TileSheet> {
   late bool _emojiMode = !isMonogram(widget.iconText);
   late final _letters = TextEditingController(text: _emojiMode ? '' : (widget.iconText ?? ''));
   late String? _emoji = _emojiMode ? widget.iconText : null;
+  late ImageProvider? _photo = widget.canUsePhoto ? widget.photo : null;
+  Uint8List? _newPhoto;
+  bool _removed = false;
+
+  Future<void> _pickPhoto() async {
+    final png = await (widget.pickPhoto ?? pickCustomLogo)(context);
+    if (png == null || !mounted) return;
+    setState(() {
+      _newPhoto = png;
+      _photo = MemoryImage(png);
+      _removed = false;
+    });
+  }
+
+  void _removePhoto() => setState(() {
+    _newPhoto = null;
+    _photo = null;
+    _removed = widget.photo != null;
+  });
 
   @override
   void dispose() {
@@ -108,7 +149,7 @@ class _TileSheetState extends State<TileSheet> {
                 const SizedBox(height: AppSpace.s4),
                 Row(
                   children: [
-                    ServiceTile(name: name, colorValue: _color, iconText: shown, size: 80),
+                    ServiceTile(name: name, colorValue: _color, iconText: shown, size: 80, logo: _photo),
                     const SizedBox(width: AppSpace.s4),
                     Expanded(
                       child: Column(
@@ -124,7 +165,7 @@ class _TileSheetState extends State<TileSheet> {
                             ),
                             child: Row(
                               children: [
-                                ServiceTile(name: name, colorValue: _color, iconText: shown),
+                                ServiceTile(name: name, colorValue: _color, iconText: shown, logo: _photo),
                                 const SizedBox(width: AppSpace.s3),
                                 Expanded(
                                   child: Column(
@@ -153,6 +194,33 @@ class _TileSheetState extends State<TileSheet> {
                     ),
                   ],
                 ),
+                if (widget.canUsePhoto) ...[
+                  SectionHeader(
+                    label: l.subscriptionFormTilePhoto,
+                    padding: const EdgeInsets.only(top: AppSpace.s5, bottom: AppSpace.s2),
+                  ),
+                  Wrap(
+                    spacing: AppSpace.s2,
+                    runSpacing: AppSpace.s2,
+                    children: [
+                      AppButton.tonal(
+                        label: _photo == null ? l.subscriptionFormTilePhotoPick : l.subscriptionFormTilePhotoChange,
+                        icon: LucideIcons.image,
+                        small: true,
+                        onPressed: _pickPhoto,
+                      ),
+                      if (_photo != null)
+                        AppButton.text(
+                          label: l.subscriptionFormTilePhotoRemove,
+                          icon: AppIcons.delete,
+                          small: true,
+                          onPressed: _removePhoto,
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpace.s2),
+                  Text(l.subscriptionFormTilePhotoNote, style: AppType.meta.copyWith(color: c.inkMuted)),
+                ],
                 const SizedBox(height: AppSpace.s4),
                 AppSegmentedControl<bool>(
                   segments: [
@@ -249,7 +317,10 @@ class _TileSheetState extends State<TileSheet> {
         AppButton.primary(
           label: l.commonDone,
           expand: true,
-          onPressed: () => Navigator.pop(context, TileChoice(_color, _iconText)),
+          onPressed: () => Navigator.pop(
+            context,
+            TileChoice(_color, _iconText, photo: _newPhoto, removePhoto: _removed && _newPhoto == null),
+          ),
         ),
       ],
     );
