@@ -23,7 +23,7 @@ void main() {
     db = AppDatabase(NativeDatabase.memory());
     repo = SubscriptionRepository(db, clock: () => now, newId: idGen());
     org = OrganizeRepository(db, clock: () => now);
-    settings = SettingsRepository(db, deviceLocale: 'vi_VN');
+    settings = SettingsRepository(db);
   });
   tearDown(() => db.close());
 

@@ -22,7 +22,7 @@ Subnest: Quản lý gói đăng ký
 Quản lý subscription, nhắc gia hạn & hết dùng thử. Riêng tư, không tài khoản.
 ```
 
-### Full description (≤ 4000) — 2597
+### Full description (≤ 4000) — 2610
 ```text
 Subnest giúp bạn quản lý mọi gói đăng ký (subscription) một cách đơn giản và riêng tư. Biết chính xác mỗi tháng tốn bao nhiêu, được nhắc trước mỗi lần gia hạn, và không bao giờ bị trừ tiền vì quên huỷ dùng thử.
 
@@ -61,7 +61,7 @@ RIÊNG TƯ NGAY TỪ THIẾT KẾ
 
 THÊM NỮA
 • Giao diện sáng và tối
-• Tiếng Việt và tiếng Anh, hỗ trợ VND
+• Tiếng Anh + tiếng Việt, mặc định USD, hỗ trợ VND
 • Dùng được khi không có mạng
 • Có trên Android và iPhone
 
@@ -96,7 +96,7 @@ Theo dõi mọi subscription, được nhắc trước khi gia hạn và hết d
 subscription,tracker,manager,bill,reminder,chi tieu,hoa don,thanh toan,tiet kiem,dinh ky,ngan sach
 ```
 
-### Description (≤ 4000) — 2502
+### Description (≤ 4000) — 2515
 ```text
 Subnest giúp bạn quản lý mọi gói đăng ký (subscription) một cách đơn giản và riêng tư. Biết chính xác mỗi tháng tốn bao nhiêu, được nhắc trước mỗi lần gia hạn, và không bao giờ bị trừ tiền vì quên huỷ dùng thử.
 
@@ -135,7 +135,7 @@ RIÊNG TƯ NGAY TỪ THIẾT KẾ
 
 THÊM NỮA
 • Giao diện sáng và tối
-• Tiếng Việt và tiếng Anh, hỗ trợ VND
+• Tiếng Anh + tiếng Việt, mặc định USD, hỗ trợ VND
 • Dùng được khi không có mạng
 
 Subnest hoàn toàn miễn phí: không quảng cáo, không mua trong ứng dụng, không gói trả phí.
@@ -151,6 +151,8 @@ Chào mừng đến với Subnest! Theo dõi gói đăng ký, nhận nhắc nh�
 ---
 
 ## Ghi chú
+- **Thứ tự ngôn ngữ (S-90, 2026-11-10):** bản EN là bản chính, app mở ra bằng **English + USD**; bản VI và ảnh VI
+  đứng sau. Ảnh VI dùng **VND** (đổi Tiền tệ chính + tab Việt Nam). **Không chụp lại ảnh** trong lượt này.
 - **"Có trên Android và iPhone"** (chỉ Play): xoá dòng này nếu lúc đăng listing Play mà bản iOS chưa lên store.
   Không bao giờ ghi "Android" trong metadata App Store.
 - **Keywords App Store viết không dấu** (`chi tieu`, `hoa don`…): mỗi chữ có dấu tốn 2–3 byte UTF-8, mà ô Keywords

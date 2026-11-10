@@ -14,8 +14,7 @@ import 'subscription_repository.dart';
 
 // =============================================================================================
 // App-wide providers. Feature UIs only *read* these; they never construct repositories.
-// `databaseProvider`, `notificationServiceProvider` and `deviceLocaleProvider` are overridden
-// in main.dart (and in tests).
+// `databaseProvider` and `notificationServiceProvider` are overridden in main.dart (and in tests).
 // =============================================================================================
 
 // ---- Infrastructure ------------------------------------------------------------------------
@@ -26,15 +25,9 @@ final notificationServiceProvider = Provider<NotificationService>(
   (ref) => throw UnimplementedError('override in main'),
 );
 
-/// Device locale name, e.g. `vi_VN` (default Primary currency).
-final deviceLocaleProvider = Provider<String>((ref) => 'en_US');
-
-/// Region for Catalog prices: only `US` and `VN` exist (ADR 0002 / product.md §10.1). Devices in VN
-/// use `VN` (plans without a VN price fall back to `US`), every other device `US`.
-final catalogRegionProvider = Provider<String>((ref) => catalogRegionForLocale(ref.watch(deviceLocaleProvider)));
-
-/// Whether the device is in Vietnam → show the "Vietnam" Catalog section.
-final showVietnamSectionProvider = Provider<bool>((ref) => ref.watch(catalogRegionProvider) == 'VN');
+/// Region for Catalog prices: only `US` and `VN` exist (ADR 0002 / product.md §10.1). Prices open on
+/// the global section (`US`) and the Vietnam tab is never inferred from the device (S-90).
+final catalogRegionProvider = Provider<String>((ref) => 'US');
 
 /// Injectable clock for tests.
 final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
@@ -46,7 +39,7 @@ final subscriptionRepositoryProvider = Provider<SubscriptionRepository>(
 );
 
 final settingsRepositoryProvider = Provider<SettingsRepository>(
-  (ref) => SettingsRepository(ref.watch(databaseProvider), deviceLocale: ref.watch(deviceLocaleProvider)),
+  (ref) => SettingsRepository(ref.watch(databaseProvider)),
 );
 
 final exchangeRateRepositoryProvider = Provider<ExchangeRateRepository>(
@@ -149,10 +142,10 @@ class TodayNotifier extends Notifier<LocalDate> {
   }
 }
 
-/// Primary currency (falls back to the device default while settings load).
+/// Primary currency (USD — the global default, S-90 — while settings load).
 final primaryCurrencyProvider = Provider<String>((ref) {
   final s = ref.watch(settingsProvider).value;
-  return s?.primaryCurrency ?? defaultCurrencyForLocale(ref.watch(deviceLocaleProvider));
+  return s?.primaryCurrency ?? SettingsRepository.defaultPrimaryCurrency;
 });
 
 final spendingCalculatorProvider = Provider<SpendingCalculator>(

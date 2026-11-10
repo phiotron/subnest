@@ -43,7 +43,7 @@ void main() {
     expect(find.text('New subscription'), findsOneWidget);
     expect(find.widgetWithText(TextField, 'Netflix'), findsOneWidget);
     expect(find.text('Premium'), findsOneWidget);
-    expect(_amountText(tester), '273,000');
+    expect(_amountText(tester), '26.99');
     expect(find.text('Next renewal'), findsOneWidget);
     expect(find.text('Fri, 4 Dec 2026'), findsOneWidget);
     expect(find.text('Then 4 Jan 2027 · 4 Feb 2027 · 4 Mar 2027…'), findsOneWidget);
@@ -56,8 +56,8 @@ void main() {
     await settle(tester);
     await tester.tap(find.bySemanticsLabel('More'));
     await settle(tester);
-    await _scrollTo(tester, find.text('₫273,000 ÷ 4'));
-    expect(find.text('₫68,250 /month'), findsOneWidget);
+    await _scrollTo(tester, find.text('\$26.99 ÷ 4'));
+    expect(find.text('\$6.75 /month'), findsOneWidget);
     await shot(tester, 's4-add-split-390-en-light-100');
 
     await tester.tap(find.text('Add subscription'));
@@ -65,8 +65,8 @@ void main() {
     expect(visited.last, '/home');
     final saved = (await f.subs.all()).single;
     expect(saved.name, 'Netflix Premium');
-    expect(saved.priceMinor, 273000);
-    expect(saved.currency, 'VND');
+    expect(saved.priceMinor, 2699);
+    expect(saved.currency, 'USD');
     expect(saved.sharedWith, 4);
     expect(saved.serviceId, 'netflix');
     expect(saved.category, SubscriptionCategory.video);
@@ -104,7 +104,7 @@ void main() {
 
     // Fix everything → saves as a Trial.
     await tester.enterText(find.byType(TextField).first, 'Gym club');
-    await tester.enterText(_amount, '150000');
+    await tester.enterText(_amount, '15');
     await settle(tester);
     await _scrollTo(tester, find.text('Mon, 2 Nov 2026').last);
     await tester.tap(find.text('Mon, 2 Nov 2026').last);
@@ -117,7 +117,7 @@ void main() {
     await settle(tester);
     final saved = (await f.subs.all()).single;
     expect(saved.name, 'Gym club');
-    expect(saved.priceMinor, 150000);
+    expect(saved.priceMinor, 1500);
     expect(saved.status, SubscriptionStatus.trial);
     expect(saved.trialEndDate, const LocalDate(2026, 11, 20));
   });
@@ -213,7 +213,7 @@ void main() {
   addTest('S4 currency sheet (png 25): USD shows ≈ conversion', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/home', push: '/subscription/new?name=Claude');
-    await tester.tap(find.text('VND'));
+    await tester.tap(find.text('USD').first);
     await settle(tester);
     expect(find.text('Currency for this subscription'), findsOneWidget);
     expect(find.text('USED BY YOUR SUBSCRIPTIONS'), findsOneWidget);
@@ -423,7 +423,7 @@ void main() {
         }
         await tester.tap(find.text(l.commonDone));
         await settle(tester);
-        await tester.tap(find.text('VND').first);
+        await tester.tap(find.text('USD').first);
         await settle(tester);
         expectNoLayoutErrors(tester, 'currency sheet');
         await tester.tapAt(const Offset(20, 60));

@@ -82,8 +82,6 @@
   "settingsSystemShort": "System",
   "settingsThemeLight": "Light",
   "settingsThemeDark": "Dark",
-  "settingsLanguageFromPhone": "{language} (from your phone)",
-  "@settingsLanguageFromPhone": {"placeholders": {"language": {"type": "String"}}},
   "settingsSectionBackup": "Backup",
   "settingsBackupTitle": "Backup & restore",
   "settingsBackupOverdueTitle": "Last backup was {count, plural, =1{1 day} other{{count} days}} ago",

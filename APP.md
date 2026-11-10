@@ -8,7 +8,7 @@
 - **Bundle ID** (không đổi sau khi phát hành): `com.phiotron.subnest`
 - **Một câu mô tả:** Theo dõi mọi subscription, nhắc trước khi bị trừ tiền/hết dùng thử, tổng chi đa tiền tệ — offline, không thu thập dữ liệu.
 - **Người dùng mục tiêu:** 18–40 tuổi, nhiều dịch vụ số, hay quên huỷ dùng thử, chia gói Family. Toàn cầu, EN + VI.
-- **App gốc để cạnh tranh:** Bobby (chỉ iOS), Tilla (chỉ Android). Lợi thế: cross-platform, VI/VND, gói chia sẻ, xác nhận từng kỳ, Tiết kiệm.
+- **App gốc để cạnh tranh:** Bobby (chỉ iOS), Tilla (chỉ Android). Lợi thế: cross-platform, **English + Tiếng Việt, USD mặc định, hỗ trợ VND**, gói chia sẻ, xác nhận từng kỳ, Tiết kiệm.
 - **Kiếm tiền:** miễn phí hoàn toàn ở bản 1 (không ads, không IAP). Pro/IAP xét ở bản sau.
 - **Nền tảng:** Android + iOS · **Stack:** Flutter (3.47 có sẵn trên máy) · iOS build trên macOS runner của GitHub Actions.
 - **Quyền riêng tư:** không tài khoản, không analytics/crash SDK → store khai "No data collected". Mạng chỉ dùng để lấy tỷ giá.
@@ -32,7 +32,8 @@
 > **Kiếm tiền:** nhập tay miễn phí, phần tự động thu phí; giá + dùng thử người dùng chốt sau khi chức năng xong (chặn nộp store).
 
 ## Màn hình & luồng chính
-Chi tiết ở `product.md` §4–§6: S1 Onboarding (3 bước + thêm nhanh) · S2 Tổng quan · S3 Thư viện · S4 Form · S5 Chi tiết ·
+Chi tiết ở `product.md` §4–§6: S1 Onboarding (5 bước: Ngôn ngữ → Chào mừng → Tiền tệ → Chọn dịch vụ → Nhắc, + thêm nhanh) ·
+S2 Tổng quan · S3 Thư viện · S4 Form · S5 Chi tiết ·
 S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S10 Cài đặt · S11 Widget.
 
 ## Quyết định kỹ thuật riêng của app
@@ -46,6 +47,19 @@ S6 Tấm xác nhận · S7 Chờ xác nhận · S8 Lịch · S9 Thống kê · S
     → mỗi phiên chỉ sửa ARB của feature mình.
   - Chỉ phiên A (và F ở #2) được sửa `pubspec.yaml`; phiên khác cần package thì ghi vào notes để phiên điều phối giao.
 - Không dùng logo thương hiệu thật: tile monogram màu (product.md §7.4).
+
+### Quyết định 2026-11-10 — Mặc định toàn cầu: English + USD (S-90)
+Grill với người dùng, chốt bỏ mọi suy luận từ ngôn ngữ/vùng máy cho bản cài mới (A002 đã theo cùng hướng D-036):
+- **Ngôn ngữ:** luôn **English** lần đầu; chỉ English + Tiếng Việt; bỏ lựa chọn "Theo hệ thống" trong Cài đặt.
+- **Tiền tệ chính:** **USD** (danh sách xếp USD đầu); Form mới lấy theo Tiền tệ chính.
+- **Catalog/Thư viện:** Region cố định mở ở **US**; hai tab Chung/Việt Nam luôn hiện, mở sẵn Chung. Đổi ngôn ngữ
+  không đổi giá. Bỏ `deviceLocaleProvider`, `showVietnamSectionProvider`, `catalogRegionForLocale`.
+- **Onboarding:** thêm **S1.0 Ngôn ngữ** trước Welcome (không có trong mockup v13 — dựng từ design system); chữ trên màn
+  này chỉ tiếng Anh, tên ngôn ngữ giữ bản ngữ; bước tiền tệ chọn sẵn USD, có USD/VND + "Chọn tiền tệ khác…"; ví dụ nhắc luôn USD.
+- **Máy đã cài:** giữ nguyên giá trị đã lưu; locale `null` (đang "Theo hệ thống") thành English; backup/restore giữ nguyên.
+- **Không** viết ADR riêng cho A001 (người dùng chốt); luật xưởng ghi ở `playbook/STANDARDS.md` **S-90**.
+- **Version:** `1.0.0` (không kèm số build — người dùng chốt dù Android dùng versionCode 1, không cài đè được bản +2).
+- Ảnh store: EN = USD, VI = VND — **chưa chụp lại** trong phiên này.
 
 ## Kế hoạch 3 phiên điều phối
 
@@ -135,6 +149,7 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
+| #5 Mặc định English + USD (S-90) | 2026-11-10 | không (làm trực tiếp) | English lần đầu + USD mặc định + Thư viện mở tab Chung (giá US) + Settings chỉ EN/VI; thêm S1.0 Language trước Welcome (chữ tiếng Anh, không dịch); version `1.0.0`; analyze sạch, **823 test xanh**; APK release `build/app/outputs/flutter-apk/app-release.apk` cài Galaxy A13 (máy `vi-VN`) mở English + USD |
 | #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan ✅ · U2a Thư viện + Form ✅ (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 `775901b`; U1 `4075597`…`058cf34`, U2a `522df46` `ed06826` `09faefd`, U1 `3cb500c`; điều phối chạy lại ở `09faefd`: analyze sạch, merge_arb OK, **823 test xanh** (97 golden bỏ qua khi không bật cờ) |
 
 **Việc dở đợt 2 (từ U1/U2a, 2026-11-06):**
@@ -152,6 +167,11 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 | #1 Khởi động | 2026-11-04 | A Core ✅ · B Catalog ✅ · D Store & legal ✅ · E CI ✅ | Brief, product.md, CONTEXT, ADR 0001; lõi Flutter; catalog 99 dịch vụ; store/legal EN+VI; CI AAB ký + iOS không ký |
 
 **Việc dở / bước tiếp:**
+- **Phiên #5 (2026-11-10) — mặc định toàn cầu:** code + test + docs xong. Máy ảo/tests xác nhận; **máy thật Galaxy A13
+  (`vi-VN`)**: cài mới mở **English**, onboarding 5 bước, màn Language chỉ chữ Anh; chưa chụp lại ảnh store (EN=USD,
+  VI=VND) — để lượt sau. Release APK build lỗi R8 vì ML Kit tham chiếu recognizer không đóng gói → đã thêm
+  `android/app/proguard-rules.pro` + `proguardFiles` (giữ cho lần build sau). Version `1.0.0` = versionCode 1:
+  **không cài đè được** bản `1.0.0+2` đang có trên máy nào; máy test hiện chưa cài bản cũ.
 - **QA máy thật ✅ (2026-11-05, Galaxy A13)**: 6 luồng §6 chạy trọn; 16 lỗi tìm thấy, 11 đã sửa (S6 số tiền cũ, 12 vùng chạm thiếu
   hành động TalkBack, nút "Bật lại" chết, bàn phím che nút sau date picker, sao lưu huỷ vẫn ghi, gãy chữ ở 320dp×200%, thông báo xấu →
   icon đơn sắc + teal + body). Khởi động nguội release ~0,9–1,1 s. Phiên điều phối chạy lại: analyze sạch, **622 test xanh**, merge_arb OK.

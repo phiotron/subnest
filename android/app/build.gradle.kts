@@ -68,6 +68,10 @@ android {
                     logger.warn("key.properties not found: release build is signed with the DEBUG key (not uploadable).")
                     signingConfigs.getByName("debug")
                 }
+            // ML Kit ships optional script recognizers (Chinese/Japanese/Korean/Devanagari) that are not
+            // bundled; R8 in full mode treats the missing references as errors. Keep the bundled Latin
+            // recognizer and silence only the optional ones.
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }

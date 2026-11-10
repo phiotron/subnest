@@ -86,7 +86,7 @@ class SettingsFixture {
   /// JSON of the sample data (exported once, for the restore flow).
   late final String backupJson;
 
-  late final SettingsRepository settings = SettingsRepository(db, deviceLocale: 'en_US');
+  late final SettingsRepository settings = SettingsRepository(db);
   late final ExchangeRateRepository rates = ExchangeRateRepository(
     db,
     settings,
@@ -153,7 +153,6 @@ class SettingsFixture {
   List<Override> overrides({bool? notificationsOn = true}) => [
     databaseProvider.overrideWithValue(db),
     notificationServiceProvider.overrideWithValue(NotificationService()),
-    deviceLocaleProvider.overrideWithValue('en_US'),
     clockProvider.overrideWithValue(() => kNow),
     exchangeRateRepositoryProvider.overrideWithValue(rates),
     settingsPlatformProvider.overrideWithValue(platform),

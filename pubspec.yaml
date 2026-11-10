@@ -3,7 +3,7 @@ description: "Subnest: Subscription Tracker — offline-first, no account, EN + 
 publish_to: 'none'
 
 # versionName+versionCode. Bump on every store upload; tag releases as vX.Y.Z.
-version: 1.0.0+2
+version: 1.0.0
 
 environment:
   sdk: ^3.13.7

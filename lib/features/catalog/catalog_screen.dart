@@ -12,10 +12,11 @@ import 'widgets/library_rows.dart';
 import 'widgets/plan_sheet.dart';
 
 /// S3 Choose a service (mockup v13 png 22–25, 34–35): search (focused on open, name + aliases,
-/// accent-insensitive), General / Vietnam tabs (Vietnam only on devices in VN), category chips,
-/// "+ Create a custom service", services with "from" prices (General: US prices ≈ Primary currency;
-/// Vietnam: VND), a "Reference price" chip on unverified prices, and a plan sheet (plans on sale only)
-/// for services with several plans. Picking opens S4 pre-filled with the price the row showed.
+/// accent-insensitive), General / Vietnam tabs (General opens first, on every device — S-90),
+/// category chips, "+ Create a custom service", services with "from" prices (General: US prices ≈
+/// Primary currency; Vietnam: VND), a "Reference price" chip on unverified prices, and a plan sheet
+/// (plans on sale only) for services with several plans. Picking opens S4 pre-filled with the price
+/// the row showed.
 class CatalogScreen extends ConsumerStatefulWidget {
   const CatalogScreen({super.key});
 
@@ -28,7 +29,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   String _query = '';
   SubscriptionCategory? _category;
 
-  /// `null` until the first build: Vietnam on devices in VN (local prices first), else General.
+  /// `null` until the first build: General (global prices) on every device; Vietnam is a tab.
   LibraryTab? _tab;
 
   @override
@@ -42,8 +43,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final showVietnam = ref.watch(showVietnamSectionProvider);
-    final tab = showVietnam ? (_tab ??= LibraryTab.vietnam) : LibraryTab.general;
+    final tab = _tab ??= LibraryTab.general;
     final region = CatalogView.regionFor(tab);
     final catalog = ref.watch(catalogProvider).value ?? const <CatalogService>[];
     final ordered = CatalogView.forTab(catalog, tab);
@@ -61,18 +61,17 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s3),
               child: _SearchField(controller: _search, hint: l.catalogSearchHint, onChanged: _setQuery),
             ),
-            if (showVietnam)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s2),
-                child: AppSegmentedControl<LibraryTab>(
-                  segments: [
-                    AppSegment(value: LibraryTab.general, label: l.catalogTabGeneral),
-                    AppSegment(value: LibraryTab.vietnam, label: l.catalogTabVietnam),
-                  ],
-                  selected: tab,
-                  onChanged: (t) => setState(() => _tab = t),
-                ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s2),
+              child: AppSegmentedControl<LibraryTab>(
+                segments: [
+                  AppSegment(value: LibraryTab.general, label: l.catalogTabGeneral),
+                  AppSegment(value: LibraryTab.vietnam, label: l.catalogTabVietnam),
+                ],
+                selected: tab,
+                onChanged: (t) => setState(() => _tab = t),
               ),
+            ),
             if (!searching) _chips(context),
             Expanded(
               child: ListView(

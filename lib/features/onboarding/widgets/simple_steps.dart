@@ -5,6 +5,49 @@ import '../../../core/widgets/widgets.dart';
 import '../../subscription_form/widgets/currency_sheet.dart';
 import 'onboarding_parts.dart';
 
+/// S1.0 Language (S-90): the very first screen. Its own text is English only (no translation —
+/// the choice is made here); the language names stay native. Only English and Tiếng Việt exist;
+/// the choice applies at once.
+class LanguageStep extends StatelessWidget {
+  const LanguageStep({super.key, required this.code, required this.onChanged, required this.onNext});
+
+  /// `en` or `vi` (defaults to `en` for a new install).
+  final String code;
+  final ValueChanged<String> onChanged;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    return OnboardingStepScaffold(
+      step: 1,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppSpace.s8),
+          OnboardingTitle(l.onboardingLanguageTitle),
+          const SizedBox(height: AppSpace.s2),
+          Text(l.onboardingLanguageHint, style: AppType.body.copyWith(color: c.inkMuted)),
+          const SizedBox(height: AppSpace.s5),
+          RadioRowGroup<String>(
+            style: RadioRowStyle.flat,
+            value: code,
+            onChanged: (v) => onChanged(v),
+            options: [
+              RadioOption(value: 'en', title: l.commonLanguageEnglish),
+              RadioOption(value: 'vi', title: l.commonLanguageVietnamese),
+            ],
+          ),
+        ],
+      ),
+      footer: OnboardingFooter(
+        children: [AppButton.primary(label: l.commonContinue, expand: true, onPressed: onNext)],
+      ),
+    );
+  }
+}
+
 /// S1.1 Welcome (png 02): nest art with tiles, title, three benefits, "Get started".
 class WelcomeStep extends StatelessWidget {
   const WelcomeStep({super.key, required this.onNext, required this.onSkip});
@@ -16,7 +59,7 @@ class WelcomeStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     return OnboardingStepScaffold(
-      step: 1,
+      step: 2,
       onSkip: onSkip,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,25 +125,23 @@ class _Benefit extends StatelessWidget {
   }
 }
 
-/// S1.2 Main currency (png 03–04): suggested currency card with a check, "Choose another
-/// currency" (searchable sheet), rates note, Continue.
+/// S1.2 Main currency (png 03–04): USD (the global default) or VND in one tap, "Choose another
+/// currency" (searchable sheet), rates note, Continue. Never suggested from the device region
+/// (S-90).
 class CurrencyStep extends StatelessWidget {
   const CurrencyStep({
     super.key,
     required this.currency,
-    required this.suggested,
-    required this.region,
     required this.knownCodes,
     required this.onChanged,
     required this.onNext,
     required this.onSkip,
   });
 
-  final String currency;
+  /// One tap for the two currencies this app is built around; anything else via the sheet.
+  static const _quick = ['USD', 'VND'];
 
-  /// Currency of the device region (`defaultCurrencyForLocale`).
-  final String suggested;
-  final String region;
+  final String currency;
   final Iterable<String> knownCodes;
   final ValueChanged<String> onChanged;
   final VoidCallback onNext;
@@ -118,18 +159,18 @@ class CurrencyStep extends StatelessWidget {
     if (code != null) onChanged(code);
   }
 
+  String _label(AppLocalizations l, String code) {
+    final name = currencyName(l, code);
+    return name == null ? code : '$code — $name';
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
-    final name = currencyName(l, currency);
-    final sub = currency != suggested
-        ? l.onboardingCurrencyChosen
-        : region == 'VN'
-        ? l.onboardingCurrencySuggestedVn
-        : l.onboardingCurrencySuggested;
+    final codes = [..._quick, if (!_quick.contains(currency)) currency];
     return OnboardingStepScaffold(
-      step: 2,
+      step: 3,
       onSkip: onSkip,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,47 +180,22 @@ class CurrencyStep extends StatelessWidget {
           const SizedBox(height: AppSpace.s2),
           Text(l.onboardingCurrencyHint, style: AppType.body.copyWith(color: c.inkMuted)),
           const SizedBox(height: AppSpace.s5),
-          Semantics(
-            selected: true,
-            child: AppCard(
-              child: Row(
-                children: [
-                  ExcludeSemantics(
-                    child: Container(
-                      width: 36,
-                      height: 36,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(color: c.surface2, borderRadius: BorderRadius.circular(AppRadius.sm)),
-                      child: Text(
-                        currencySymbol(currency),
-                        style: AppType.label.copyWith(color: c.ink),
-                        textScaler: TextScaler.noScaling,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpace.s3),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name == null ? currency : '$currency — $name',
-                          style: AppType.titleSm.copyWith(color: c.ink, fontWeight: FontWeight.w500),
-                        ),
-                        Text(sub, style: AppType.meta.copyWith(color: c.inkMuted)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: AppSpace.s3),
-                  Container(
-                    width: 28,
-                    height: 28,
-                    decoration: BoxDecoration(color: c.brand, shape: BoxShape.circle),
-                    child: Icon(AppIcons.check, size: 16, color: c.onBrand),
-                  ),
-                ],
-              ),
-            ),
+          RadioRowGroup<String>(
+            style: RadioRowStyle.flat,
+            value: currency,
+            onChanged: (v) => onChanged(v),
+            options: [
+              for (final code in codes)
+                RadioOption(
+                  value: code,
+                  title: _label(l, code),
+                  subtitle: code == 'USD'
+                      ? l.onboardingCurrencyDefault
+                      : code == currency
+                      ? l.onboardingCurrencyChosen
+                      : null,
+                ),
+            ],
           ),
           const SizedBox(height: AppSpace.s4),
           Center(
@@ -245,7 +261,7 @@ class RemindersStep extends StatelessWidget {
     final l = context.l10n;
     final c = context.colors;
     return OnboardingStepScaffold(
-      step: 4,
+      step: 5,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

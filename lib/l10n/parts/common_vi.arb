@@ -11,6 +11,8 @@
   "commonClose": "Đóng",
   "commonContinue": "Tiếp tục",
   "commonDone": "Xong",
+  "commonLanguageEnglish": "English",
+  "commonLanguageVietnamese": "Tiếng Việt",
   "commonPerMonth": "mỗi tháng",
   "commonPerYear": "mỗi năm",
   "commonCycleDays": "{count, plural, =1{Hằng ngày} other{Mỗi {count} ngày}}",

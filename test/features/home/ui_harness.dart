@@ -374,7 +374,6 @@ Future<TestApp> pumpApp(
     overrides: [
       databaseProvider.overrideWithValue(db),
       notificationServiceProvider.overrideWithValue(notifications),
-      deviceLocaleProvider.overrideWithValue('vi_VN'),
       clockProvider.overrideWithValue(() => now),
       todayProvider.overrideWith(() => FixedToday(today)),
       ratesProvider.overrideWith((ref) => Stream.value(rates ?? Mock.rates)),

@@ -68,15 +68,8 @@ class CatalogPlan {
   CatalogPrice? priceFor(String region) => prices[region] ?? prices['US'];
 }
 
-/// Catalog section (glossary): global services for everyone, Vietnamese ones only on devices in VN.
+/// Catalog section (glossary): global services for everyone, Vietnamese ones in the Vietnam tab.
 enum CatalogSection { global, vn }
-
-/// Catalog price region from a device locale: only `VN` and `US` have prices; VN devices use VN
-/// (falling back to US per plan), everyone else US (converted "≈" to the Primary currency).
-String catalogRegionForLocale(String localeName) {
-  final parts = localeName.split(RegExp('[_-]'));
-  return parts.length > 1 && parts[1].toUpperCase() == 'VN' ? 'VN' : 'US';
-}
 
 /// A Service from the bundled Catalog (assets/catalog/services.json, schema in its README).
 class CatalogService {

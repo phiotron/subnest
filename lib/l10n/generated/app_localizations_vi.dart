@@ -46,6 +46,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get commonDone => 'Xong';
 
   @override
+  String get commonLanguageEnglish => 'English';
+
+  @override
+  String get commonLanguageVietnamese => 'Tiếng Việt';
+
+  @override
   String get commonPerMonth => 'mỗi tháng';
 
   @override
@@ -1311,6 +1317,13 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get onboardingLanguageTitle => 'Language';
+
+  @override
+  String get onboardingLanguageHint =>
+      'Subnest speaks English and Vietnamese. You can change this any time in Settings.';
+
+  @override
   String get onboardingWelcomeTitle => 'Mọi subscription, một tổ';
 
   @override
@@ -1345,10 +1358,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Dùng để cộng tổng chi. Mỗi subscription vẫn có tiền tệ riêng.';
 
   @override
-  String get onboardingCurrencySuggestedVn => 'Gợi ý theo vùng: Việt Nam';
-
-  @override
-  String get onboardingCurrencySuggested => 'Gợi ý theo vùng của máy';
+  String get onboardingCurrencyDefault => 'Mặc định — đổi bất cứ lúc nào';
 
   @override
   String get onboardingCurrencyChosen => 'Bạn đã chọn';
@@ -1722,11 +1732,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Tối';
-
-  @override
-  String settingsLanguageFromPhone(String language) {
-    return '$language (theo máy)';
-  }
 
   @override
   String get settingsSectionBackup => 'Sao lưu';

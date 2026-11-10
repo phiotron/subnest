@@ -74,7 +74,7 @@ void main() {
     });
   });
 
-  addTest('S3 library: focused search, chips, custom row, popular list (png 16)', (tester) async {
+  addTest('S3 library opens on General (US prices) on every device (S-90)', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/catalog');
     expect(find.text('Add subscription'), findsOneWidget);
@@ -82,8 +82,10 @@ void main() {
     expect(field.autofocus, isTrue);
     expect(find.text('All'), findsOneWidget);
     expect(find.text('Create a custom service'), findsOneWidget);
-    expect(find.text('POPULAR IN VIETNAM'), findsOneWidget);
-    expect(find.text('from ₫74,000/month · 4 plans'), findsOneWidget);
+    expect(find.text('General'), findsOneWidget);
+    expect(find.text('Vietnam'), findsOneWidget, reason: 'both tabs, always');
+    expect(find.text('POPULAR'), findsOneWidget);
+    expect(find.text('from \$8.99/month · ≈ ₫228,346 · 3 plans'), findsOneWidget);
     await shot(tester, 's3-library-390-en-light-100');
 
     // Category chip filters.
@@ -107,7 +109,7 @@ void main() {
     // Clear button.
     await tester.tap(find.byTooltip('Clear search'));
     await settle(tester);
-    expect(find.text('POPULAR IN VIETNAM'), findsOneWidget);
+    expect(find.text('POPULAR'), findsOneWidget);
   });
 
   addTest('S3 no results → Create “abc” opens S4 with the name (png 18)', (tester) async {
@@ -124,17 +126,18 @@ void main() {
     expect(find.widgetWithText(TextField, 'qzxw'), findsOneWidget);
   });
 
-  addTest('S3 plan sheet: 4 plans with VN prices, Continue with Premium (png 19)', (tester) async {
+  addTest('S3 plan sheet: US plans and prices, Continue with Premium (png 19)', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/catalog');
     await tester.enterText(find.byType(TextField), 'netf');
     await settle(tester);
     await tester.tap(find.text('Netflix'));
     await settle(tester);
-    expect(find.text('Choose a plan · suggested prices for Vietnam'), findsOneWidget);
-    for (final p in ['Mobile', 'Basic', 'Standard', 'Premium']) {
+    expect(find.text('Choose a plan · suggested prices'), findsOneWidget);
+    for (final p in ['Standard with ads', 'Standard', 'Premium']) {
       expect(find.text(p), findsOneWidget);
     }
+    expect(find.text('Mobile'), findsNothing, reason: 'no VN-only plan in the US region');
     await tester.tap(find.text('Premium'));
     await settle(tester);
     expect(find.text('Continue with Premium'), findsOneWidget);
@@ -143,21 +146,29 @@ void main() {
     await settle(tester);
     expect(find.text('New subscription'), findsOneWidget);
     expect(find.text('Premium'), findsOneWidget, reason: 'plan chip');
+    expect(find.text('USD'), findsOneWidget, reason: 'US price pre-filled');
   });
 
-  addTest('S3 v13 tabs (png 34, 35): Vietnam first on a VN phone; General shows US prices ≈ VND', (tester) async {
+  addTest('S3 v13 tabs (png 34, 35): General opens first; Vietnam shows VND prices', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/catalog');
     expect(find.text('General'), findsOneWidget);
     expect(find.text('Vietnam'), findsOneWidget);
     expect(find.text('Search 500+ services'), findsOneWidget);
+    expect(find.text('POPULAR'), findsOneWidget, reason: 'General opens by default (S-90)');
+    await shot(tester, 's3-general-390-en-light-100');
+
+    await tester.tap(find.text('Vietnam'));
+    await settle(tester);
+    expect(find.text('POPULAR IN VIETNAM'), findsOneWidget);
+    expect(find.text('from ₫74,000/month · 4 plans'), findsOneWidget);
     await shot(tester, 's3-vietnam-390-en-light-100');
+
     await tester.tap(find.text('General'));
     await settle(tester);
     expect(find.text('POPULAR'), findsOneWidget);
     expect(find.text('from \$8.99/month · ≈ ₫228,346 · 3 plans'), findsOneWidget);
     expect(find.bySemanticsLabel(RegExp('≈')), findsNothing, reason: '"≈" is spoken as a word');
-    await shot(tester, 's3-general-390-en-light-100');
 
     // Picking from General pre-fills the US price the row showed.
     await tester.enterText(find.byType(TextField), 'netf');
@@ -172,11 +183,11 @@ void main() {
     expect(find.textContaining('≈ ₫'), findsOneWidget);
   });
 
-  addTest('S3 v13: no tabs outside VN; Reference price chip on unverified prices', (tester) async {
+  addTest('S3 v13: both tabs on every device; Reference price chip on unverified prices', (tester) async {
     final f = await AddFixture.create(primary: 'USD');
-    await pumpAdd(tester, f, location: '/catalog', deviceLocale: 'en_US');
-    expect(find.text('General'), findsNothing);
-    expect(find.text('Vietnam'), findsNothing);
+    await pumpAdd(tester, f, location: '/catalog');
+    expect(find.text('General'), findsOneWidget);
+    expect(find.text('Vietnam'), findsOneWidget);
     final catalog = CatalogRepository.parse(File('assets/catalog/services.json').readAsStringSync());
     final ref = CatalogView.forTab(catalog, LibraryTab.general).firstWhere((s) => CatalogView.rowIsReference(s, 'US'));
     await tester.enterText(find.byType(TextField), ref.name);

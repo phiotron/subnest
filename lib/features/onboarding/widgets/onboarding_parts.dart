@@ -50,7 +50,7 @@ class OnboardingStepScaffold extends StatelessWidget {
 class OnboardingProgress extends StatelessWidget {
   const OnboardingProgress({super.key, required this.step, this.onSkip});
 
-  static const total = 4;
+  static const total = 5;
 
   final int step;
   final VoidCallback? onSkip;

@@ -4,12 +4,13 @@ import '../../core/l10n/l10n.dart';
 import '../../core/widgets/formatters.dart';
 import '../../domain/domain.dart';
 
-/// S3 library tab (glossary: Catalog section). The Vietnam tab exists only on devices in VN
-/// (`showVietnamSectionProvider`).
+/// S3 library tab (glossary: Catalog section). Both tabs are always shown; General opens first
+/// (S-90 — never inferred from the device language or region).
 enum LibraryTab { general, vietnam }
 
 /// Price region the library used for the service just picked (General → `US`, Vietnam → `VN`), so
-/// S4 pre-fills the price the row showed. S4 reads it once on open and clears it; `null` = device region.
+/// S4 pre-fills the price the row showed. S4 reads it once on open and clears it; `null` = default
+/// region (General / `US`).
 final libraryPickRegionProvider = NotifierProvider<LibraryPickRegion, String?>(LibraryPickRegion.new);
 
 class LibraryPickRegion extends Notifier<String?> {

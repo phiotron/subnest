@@ -170,6 +170,18 @@ abstract class AppLocalizations {
   /// **'Done'**
   String get commonDone;
 
+  /// No description provided for @commonLanguageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get commonLanguageEnglish;
+
+  /// No description provided for @commonLanguageVietnamese.
+  ///
+  /// In en, this message translates to:
+  /// **'Tiếng Việt'**
+  String get commonLanguageVietnamese;
+
   /// No description provided for @commonPerMonth.
   ///
   /// In en, this message translates to:
@@ -1856,6 +1868,18 @@ abstract class AppLocalizations {
   /// **'Step {step} of {total}'**
   String onboardingStep(int step, int total);
 
+  /// No description provided for @onboardingLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get onboardingLanguageTitle;
+
+  /// No description provided for @onboardingLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest speaks English and Vietnamese. You can change this any time in Settings.'**
+  String get onboardingLanguageHint;
+
   /// No description provided for @onboardingWelcomeTitle.
   ///
   /// In en, this message translates to:
@@ -1916,17 +1940,11 @@ abstract class AppLocalizations {
   /// **'Used to add up your totals. Each subscription still keeps its own currency.'**
   String get onboardingCurrencyHint;
 
-  /// No description provided for @onboardingCurrencySuggestedVn.
+  /// No description provided for @onboardingCurrencyDefault.
   ///
   /// In en, this message translates to:
-  /// **'Suggested for Vietnam'**
-  String get onboardingCurrencySuggestedVn;
-
-  /// No description provided for @onboardingCurrencySuggested.
-  ///
-  /// In en, this message translates to:
-  /// **'Suggested for your region'**
-  String get onboardingCurrencySuggested;
+  /// **'Default — change it any time'**
+  String get onboardingCurrencyDefault;
 
   /// No description provided for @onboardingCurrencyChosen.
   ///
@@ -2491,12 +2509,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get settingsThemeDark;
-
-  /// No description provided for @settingsLanguageFromPhone.
-  ///
-  /// In en, this message translates to:
-  /// **'{language} (from your phone)'**
-  String settingsLanguageFromPhone(String language);
 
   /// No description provided for @settingsSectionBackup.
   ///

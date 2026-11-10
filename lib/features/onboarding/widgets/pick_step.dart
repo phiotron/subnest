@@ -60,7 +60,7 @@ class _PickStepState extends State<PickStep> {
     ];
 
     return OnboardingStepScaffold(
-      step: 3,
+      step: 4,
       scrollBody: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

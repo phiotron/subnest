@@ -73,7 +73,7 @@ class AddFixture {
 
   final AppDatabase db;
   final notifications = FakeNotifications();
-  late final SettingsRepository settings = SettingsRepository(db, deviceLocale: 'vi_VN');
+  late final SettingsRepository settings = SettingsRepository(db);
   late final SubscriptionRepository subs = SubscriptionRepository(db, clock: () => kNow);
 
   static Future<AddFixture> create({bool onboardingDone = true, String? primary = 'VND'}) async {
@@ -107,10 +107,9 @@ class AddFixture {
     return (await subs.get('netflix'))!;
   }
 
-  List<Override> overrides({String deviceLocale = 'vi_VN'}) => [
+  List<Override> overrides() => [
     databaseProvider.overrideWithValue(db),
     notificationServiceProvider.overrideWithValue(notifications),
-    deviceLocaleProvider.overrideWithValue(deviceLocale),
     clockProvider.overrideWithValue(() => kNow),
     todayProvider.overrideWith(FixedToday.new),
     ratesProvider.overrideWith((ref) => Stream.value(kRates)),
@@ -191,7 +190,6 @@ Future<void> pumpAdd(
   required String location,
   String? push,
   Setup setup = const Setup(),
-  String deviceLocale = 'vi_VN',
   double dpr = 2,
 }) async {
   visited.clear();
@@ -206,7 +204,7 @@ Future<void> pumpAdd(
     RepaintBoundary(
       key: shotKey,
       child: ProviderScope(
-        overrides: f.overrides(deviceLocale: deviceLocale),
+        overrides: f.overrides(),
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light(),

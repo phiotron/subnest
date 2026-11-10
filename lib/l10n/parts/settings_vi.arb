@@ -65,7 +65,6 @@
   "settingsSystemShort": "Hệ thống",
   "settingsThemeLight": "Sáng",
   "settingsThemeDark": "Tối",
-  "settingsLanguageFromPhone": "{language} (theo máy)",
   "settingsSectionBackup": "Sao lưu",
   "settingsBackupTitle": "Sao lưu & khôi phục",
   "settingsBackupOverdueTitle": "Lần sao lưu gần nhất cách đây {count, plural, other{{count} ngày}}",

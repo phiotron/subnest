@@ -76,8 +76,8 @@ và thấy rõ đã tiết kiệm được bao nhiêu khi huỷ bớt.
    của nó cộng vào **Tiết kiệm** ("Bạn đang tiết kiệm 3.120.000đ/năm").
 8. **Gói chia sẻ**: bật "Chia với N người" → **Phần của tôi** = giá ÷ N. Mọi tổng chi dùng Phần của tôi.
    Hiển thị cả hai: "Phần của tôi 65.000đ · gói 260.000đ ÷ 4".
-9. **Đa tiền tệ**: mỗi Subscription có tiền tệ riêng. Tổng chi quy về **Tiền tệ chính** (mặc định theo vùng của máy:
-   VN → VND, US → USD…). Tỷ giá tự cập nhật 1 lần/ngày khi có mạng; offline dùng tỷ giá gần nhất; người dùng có
+9. **Đa tiền tệ**: mỗi Subscription có tiền tệ riêng. Tổng chi quy về **Tiền tệ chính**, mặc định **USD** cho
+   mọi máy mới (không suy từ ngôn ngữ/vùng máy — S-90). Tỷ giá tự cập nhật 1 lần/ngày khi có mạng; offline dùng tỷ giá gần nhất; người dùng có
    thể ghi đè tỷ giá từng cặp. Số đã quy đổi hiển thị kèm dấu "≈".
 10. **Chi phí quy tháng**: giá (Phần của tôi) quy về 1 tháng theo chu kỳ (năm ÷ 12, tuần × 52 ÷ 12…).
     Tổng chi tháng = tổng chi phí quy tháng của các Subscription `Active`. Trial hiển thị riêng là "sắp tính phí".
@@ -114,17 +114,21 @@ Nút "+" (nổi trên Tổng quan, có thể cả Lịch) → Chọn dịch vụ
 ### S0. Splash
 Logo Subnest trên nền thương hiệu. Ngắn (< 1s), không chữ thừa.
 
-### S1. Onboarding (3 bước, có thanh tiến độ, nút "Bỏ qua" ở bước 1–2)
+### S1. Onboarding (5 bước, có thanh tiến độ, nút "Bỏ qua" ở bước Chào mừng & Tiền tệ)
+- **S1.0 Ngôn ngữ** — màn đầu tiên, chữ chỉ tiếng Anh (tên ngôn ngữ giữ bản ngữ); chỉ **English / Tiếng Việt**,
+  chọn sẵn English cho máy mới. Chọn là đổi ngay toàn app; không có nút Bỏ qua. (Không có trong mockup v13 — dựng từ
+  design system, S-90.)
 - **S1.1 Chào mừng** — minh hoạ "tổ" gom các thẻ subscription; tiêu đề "All your subscriptions, one nest" /
   "Mọi subscription, một tổ"; 3 lợi ích ngắn kèm icon: *Nhắc trước khi bị trừ tiền* · *Biết chính xác mỗi tháng tốn
   bao nhiêu* · *Riêng tư — dữ liệu chỉ trên máy bạn*. Nút "Bắt đầu".
-- **S1.2 Tiền tệ chính** — gợi ý sẵn theo vùng ("VND — Đồng Việt Nam ✓"), nút đổi mở danh sách tiền tệ có tìm kiếm.
+- **S1.2 Tiền tệ chính** — chọn sẵn **USD** (mặc định toàn cầu), hai lựa chọn một chạm **USD / VND** + nút
+  "Chọn tiền tệ khác…" mở danh sách ISO có tìm kiếm. Không gợi ý theo vùng máy.
   Giải thích 1 dòng: "Dùng để cộng tổng chi. Mỗi subscription vẫn có tiền tệ riêng."
 - **S1.3 Bạn đang dùng gì?** — lưới các dịch vụ phổ biến (tile màu + chữ cái, xem §7.4), **chọn nhiều**, ô tìm kiếm.
-  Mỗi tile đã chọn có dấu ✓ và khi chọn hiện chip nhỏ cho chỉnh nhanh giá/chu kỳ (mặc định giá gợi ý theo vùng).
-  Thanh dưới cùng: "Đã chọn 5 · ≈ 742.000đ/tháng" + nút "Tiếp tục". Cho phép "Để sau".
+  Mỗi tile đã chọn có dấu ✓ và khi chọn hiện chip nhỏ cho chỉnh nhanh giá/chu kỳ (giá mặc định theo vùng **US**).
+  Thanh dưới cùng: "Đã chọn 5 · ≈ $46.96/tháng" + nút "Tiếp tục". Cho phép "Để sau".
 - **S1.4 Bật nhắc nhở** (màn giải thích trước khi bật hộp thoại xin quyền của hệ điều hành) — minh hoạ thông báo mẫu
-  "Netflix gia hạn sau 3 ngày — 260.000đ". Nút "Bật nhắc nhở" / "Không, cảm ơn".
+  **luôn bằng USD**: "Netflix renews in 3 days — $26.99". Nút "Bật nhắc nhở" / "Không, cảm ơn".
 - Kết thúc → vào Tổng quan với dữ liệu vừa chọn (khoảnh khắc "wow": thấy ngay tổng chi).
 
 ### S2. Tổng quan (Home) — màn quan trọng nhất
@@ -148,12 +152,14 @@ Từ trên xuống:
 
 ### S3. Chọn dịch vụ (Thư viện) — bước 1 của "+"
 - Ô tìm kiếm luôn ở trên, focus sẵn.
+- Hai tab **Chung / Việt Nam** luôn hiện trên mọi máy (không suy từ vùng/ngôn ngữ máy); mở ra ở **Chung**
+  (giá US). Tab Việt Nam cho xem giá VND.
 - Hàng chip danh mục: Tất cả · Video · Nhạc · AI · Lưu trữ · Phần mềm · Game · Đọc · Sức khoẻ · Học tập · Viễn thông
   · Khác.
-- Lưới/list dịch vụ (tile + tên + giá gợi ý "từ 260.000đ/tháng").
+- Lưới/list dịch vụ (tile + tên + giá gợi ý "từ $8.99/tháng").
 - Mục đầu danh sách: **"+ Tạo dịch vụ tuỳ chỉnh"** (luôn có, và là gợi ý khi tìm không thấy: "Không thấy 'abc'?
   Tạo 'abc'").
-- Chọn → sang Form với dữ liệu điền sẵn. Một số dịch vụ có nhiều gói (Netflix: Mobile/Basic/Standard/Premium) →
+- Chọn → sang Form với dữ liệu điền sẵn. Một số dịch vụ có nhiều gói (Netflix US: Standard with ads/Standard/Premium) →
   hiện bottom sheet chọn gói trước.
 
 ### S4. Form Subscription (Thêm / Sửa) — dạng trang đầy đủ hoặc sheet cao
@@ -217,7 +223,8 @@ xác nhận: tất cả dùng giá hiện tại). Trạng thái rỗng: "Bạn �
   "Cập nhật ngay", chạm cặp để ghi đè/khôi phục tự động.
 - **Nhắc nhở**: mặc định nhắc trước (Tắt/Đúng ngày/1/3/7), giờ nhắc (9:00), trạng thái quyền thông báo (+ nút mở cài
   đặt hệ thống nếu bị tắt).
-- **Giao diện**: Theo hệ thống / Sáng / Tối. **Ngôn ngữ**: Theo hệ thống / English / Tiếng Việt.
+- **Giao diện**: Theo hệ thống / Sáng / Tối. **Ngôn ngữ**: English / Tiếng Việt (không còn "Theo hệ thống"; mặc định
+  English — S-90).
 - **Sao lưu & khôi phục**: "Xuất bản sao lưu (JSON)" · "Xuất bảng tính (CSV)" (mở share sheet của hệ thống) ·
   "Khôi phục từ file" (cảnh báo: thay thế dữ liệu hiện tại / gộp) · dòng "Lần sao lưu gần nhất: …" + nhắc nhẹ nếu > 30
   ngày chưa sao lưu.
@@ -240,7 +247,8 @@ xác nhận: tất cả dùng giá hiện tại). Trạng thái rỗng: "Bạn �
 
 ## 6. Luồng chính cần prototype
 
-1. **Lần đầu mở app**: S1.1 → S1.2 → S1.3 (chọn 5 dịch vụ) → S1.4 → S2 có dữ liệu.
+1. **Lần đầu mở app**: S1.0 (ngôn ngữ, chọn sẵn English) → S1.1 → S1.2 (USD mặc định) → S1.3 (chọn 5 dịch vụ) →
+   S1.4 → S2 có dữ liệu.
 2. **Thêm subscription**: S2 "+" → S3 tìm "netf" → chọn Netflix → chọn gói Premium → S4 (bật chia 4 người) → lưu → S2
    (hàng mới nổi bật nhẹ).
 3. **Xác nhận kỳ**: chạm thông báo "đến ngày" → S6 → Đã trả → S2 cập nhật.
@@ -288,7 +296,10 @@ khi 10+ tile đứng cạnh nhau.
 
 ---
 
-## 8. Dữ liệu mẫu cho mockup (Tiền tệ chính VND, hôm nay 04/11/2026)
+## 8. Dữ liệu mẫu cho mockup (bộ ảnh VI: Tiền tệ chính VND, hôm nay 04/11/2026)
+
+> Bộ ảnh EN dùng dữ liệu **USD** (giá US — mặc định của app mới); bảng dưới là bộ ảnh VI giữ VND để minh hoạ
+> tính năng Việt Nam, không phải mặc định cài đặt.
 
 | Dịch vụ | Giá | Chu kỳ | Danh mục | Ghi chú trạng thái |
 |---|---|---|---|---|
@@ -322,11 +333,13 @@ khi 10+ tile đứng cạnh nhau.
 ## 10. Phụ lục 2026-11-06 — Bản 1.0 mở rộng: đủ chức năng SubFox + tự phát hiện
 
 > Từ grill 2026-11-06 (kế hoạch trong `APP.md` phiên #3/#4). Thuật ngữ mới ở `CONTEXT.md`; luật tự xác nhận ở ADR 0003.
-> Người dùng chủ yếu ở nước ngoài → mặc định tiếng Anh, giá US; tiếng Việt + mục Việt Nam khi máy ở VN.
+> Mặc định cho **mọi máy mới**: **English + USD, giá US**; không suy ngôn ngữ/vùng giá từ máy (S-90, 2026-11-10).
+> Tiếng Việt + tab giá Việt Nam là lựa chọn trong app.
 
 ### 10.1 Thư viện (S3)
-- 500+ dịch vụ, hai mục **Chung** / **Việt Nam** (mục VN chỉ hiện khi máy ở VN). Logo thật (Logo.dev), lỗi → monogram.
-- Giá: US cho mọi người (quy đổi "≈" sang tiền tệ chính); VND cho dịch vụ bán ở VN khi máy ở VN.
+- 500+ dịch vụ, hai mục **Chung** / **Việt Nam** — luôn có cả hai tab, mở ra ở **Chung** (giá US). Không suy tab
+  từ vùng/ngôn ngữ máy (S-90). Logo thật (Logo.dev), lỗi → monogram.
+- Giá: **US cho mọi người** ở tab Chung (quy đổi "≈" sang tiền tệ chính); **VND** ở tab Việt Nam cho dịch vụ bán ở VN.
 - Giá chưa xác minh: điền sẵn + chip nhỏ **"Giá tham khảo"**.
 
 ### 10.2 Tổng quan (S2)

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -22,7 +20,6 @@ Future<void> main() async {
     overrides: [
       databaseProvider.overrideWithValue(AppDatabase.defaults()),
       notificationServiceProvider.overrideWithValue(notifications),
-      deviceLocaleProvider.overrideWithValue(PlatformDispatcher.instance.locale.toString()),
     ],
   );
 

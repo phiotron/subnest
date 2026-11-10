@@ -40,7 +40,7 @@ void main() {
     now = DateTime(2026, 11, 4, 10);
     var n = 0;
     subs = SubscriptionRepository(db, clock: () => now, newId: () => 'id${++n}');
-    settings = SettingsRepository(db, deviceLocale: 'vi_VN');
+    settings = SettingsRepository(db);
     fetches = 0;
     rates = ratesRepo(apiBody);
   });
@@ -104,9 +104,10 @@ void main() {
   });
 
   group('SettingsRepository', () {
-    test('defaults: primary currency from locale, 3 days at 09:00', () async {
+    test('defaults: USD (S-90), 3 days at 09:00', () async {
       final s = await settings.load();
-      expect(s.primaryCurrency, 'VND');
+      expect(s.primaryCurrency, 'USD');
+      expect(s.localeCode, isNull, reason: 'English until the user picks a language');
       expect(s.defaultReminderDays, 3);
       expect((s.reminderHour, s.reminderMinute), (9, 0));
       expect(s.onboardingDone, isFalse);
@@ -124,13 +125,10 @@ void main() {
       expect(s.onboardingDone, isTrue);
     });
 
-    test('defaultCurrencyForLocale', () {
-      expect(defaultCurrencyForLocale('vi_VN'), 'VND');
-      expect(defaultCurrencyForLocale('en_US'), 'USD');
-      expect(defaultCurrencyForLocale('ja_JP'), 'JPY');
-      expect(defaultCurrencyForLocale('de-DE'), 'EUR');
-      expect(defaultCurrencyForLocale('vi'), 'VND');
-      expect(defaultCurrencyForLocale(null), 'USD');
+    test('defaults to USD for every new install (S-90)', () async {
+      final fresh = SettingsRepository(AppDatabase(NativeDatabase.memory()));
+      expect((await fresh.load()).primaryCurrency, 'USD');
+      expect((await fresh.load()).localeCode, isNull);
     });
   });
 
@@ -197,7 +195,7 @@ void main() {
       final db2 = AppDatabase(NativeDatabase.memory());
       addTearDown(db2.close);
       final subs2 = SubscriptionRepository(db2, clock: () => now);
-      final settings2 = SettingsRepository(db2, deviceLocale: 'en_US');
+      final settings2 = SettingsRepository(db2);
       final r = await backupFor(db2, subs2, settings2).importJson(json, ImportMode.replace);
       expect((r.subscriptions, r.periods), (2, 1));
       final restored = {for (final s in await subs2.all()) s.id: s};

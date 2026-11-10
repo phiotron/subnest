@@ -46,6 +46,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonDone => 'Done';
 
   @override
+  String get commonLanguageEnglish => 'English';
+
+  @override
+  String get commonLanguageVietnamese => 'Tiếng Việt';
+
+  @override
   String get commonPerMonth => 'per month';
 
   @override
@@ -1364,6 +1370,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get onboardingLanguageTitle => 'Language';
+
+  @override
+  String get onboardingLanguageHint =>
+      'Subnest speaks English and Vietnamese. You can change this any time in Settings.';
+
+  @override
   String get onboardingWelcomeTitle => 'All your subscriptions, one nest';
 
   @override
@@ -1398,10 +1411,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Used to add up your totals. Each subscription still keeps its own currency.';
 
   @override
-  String get onboardingCurrencySuggestedVn => 'Suggested for Vietnam';
-
-  @override
-  String get onboardingCurrencySuggested => 'Suggested for your region';
+  String get onboardingCurrencyDefault => 'Default — change it any time';
 
   @override
   String get onboardingCurrencyChosen => 'Your choice';
@@ -1782,11 +1792,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Dark';
-
-  @override
-  String settingsLanguageFromPhone(String language) {
-    return '$language (from your phone)';
-  }
 
   @override
   String get settingsSectionBackup => 'Backup';

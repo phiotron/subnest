@@ -1,6 +1,6 @@
 /// Currencies offered first in pickers (the full list comes from the rate provider).
 const List<String> commonCurrencies = [
-  'VND', 'USD', 'EUR', 'GBP', 'JPY', 'KRW', 'CNY', 'SGD', 'THB', 'AUD', 'CAD', 'HKD', 'TWD', 'MYR',
+  'USD', 'VND', 'EUR', 'GBP', 'JPY', 'KRW', 'CNY', 'SGD', 'THB', 'AUD', 'CAD', 'HKD', 'TWD', 'MYR',
   'IDR', 'PHP', 'INR', 'CHF',
 ];
 

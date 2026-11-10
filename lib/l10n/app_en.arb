@@ -12,6 +12,8 @@
   "commonClose": "Close",
   "commonContinue": "Continue",
   "commonDone": "Done",
+  "commonLanguageEnglish": "English",
+  "commonLanguageVietnamese": "Tiếng Việt",
   "commonPerMonth": "per month",
   "commonPerYear": "per year",
   "commonCycleDays": "{count, plural, =1{Daily} other{Every {count} days}}",
@@ -1178,6 +1180,8 @@
       }
     }
   },
+  "onboardingLanguageTitle": "Language",
+  "onboardingLanguageHint": "Subnest speaks English and Vietnamese. You can change this any time in Settings.",
   "onboardingWelcomeTitle": "All your subscriptions, one nest",
   "onboardingBenefitRemind": "Reminders before you’re charged",
   "onboardingBenefitRemindSub": "3 days ahead, and before trials end.",
@@ -1188,8 +1192,7 @@
   "onboardingStart": "Get started",
   "onboardingCurrencyTitle": "Your main currency",
   "onboardingCurrencyHint": "Used to add up your totals. Each subscription still keeps its own currency.",
-  "onboardingCurrencySuggestedVn": "Suggested for Vietnam",
-  "onboardingCurrencySuggested": "Suggested for your region",
+  "onboardingCurrencyDefault": "Default — change it any time",
   "onboardingCurrencyChosen": "Your choice",
   "onboardingCurrencyChange": "Choose another currency",
   "onboardingCurrencyRatesNote": "Exchange rates update once a day when you’re online. You can set your own in Settings.",
@@ -1470,14 +1473,6 @@
   "settingsSystemShort": "System",
   "settingsThemeLight": "Light",
   "settingsThemeDark": "Dark",
-  "settingsLanguageFromPhone": "{language} (from your phone)",
-  "@settingsLanguageFromPhone": {
-    "placeholders": {
-      "language": {
-        "type": "String"
-      }
-    }
-  },
   "settingsSectionBackup": "Backup",
   "settingsBackupTitle": "Backup & restore",
   "settingsBackupOverdueTitle": "Last backup was {count, plural, =1{1 day} other{{count} days}} ago",

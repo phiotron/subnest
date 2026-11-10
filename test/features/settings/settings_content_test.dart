@@ -33,7 +33,7 @@ void main() {
 
     test('version shown in Settings = pubspec.yaml', () {
       final line = _read('pubspec.yaml').split('\n').firstWhere((l) => l.startsWith('version:'));
-      expect(line.trim(), 'version: $kAppVersion+$kAppBuild');
+      expect(line.trim(), kAppBuild.isEmpty ? 'version: $kAppVersion' : 'version: $kAppVersion+$kAppBuild');
     });
 
     test('privacy URL placeholder is explicit (S-13: in-app copy until it is set)', () {

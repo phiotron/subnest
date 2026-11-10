@@ -67,7 +67,8 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
   Widget build(BuildContext context) {
     ref.watch(reminderSyncProvider);
     final settings = ref.watch(settingsProvider).value;
-    final code = settings?.localeCode;
+    // English is the default for every new install; only English and Vietnamese are offered (S-90).
+    final code = settings?.localeCode ?? 'en';
     // Service logos (Logo.dev) for every ServiceTile; off — monogram only — in builds without a key.
     return ServiceLogoScope(
       source: LogoRepository.instance,
@@ -81,7 +82,7 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
           AppThemeMode.light => ThemeMode.light,
           AppThemeMode.dark => ThemeMode.dark,
         },
-        locale: code == null ? null : Locale(code),
+        locale: Locale(code),
         supportedLocales: AppLocalizations.supportedLocales,
         localizationsDelegates: const [
           AppLocalizations.delegate,

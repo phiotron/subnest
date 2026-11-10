@@ -22,7 +22,7 @@ Subnest: Subscription Tracker
 Subscription manager & bill reminder. Never miss a renewal or free trial again.
 ```
 
-### Full description (≤ 4000) — 2659
+### Full description (≤ 4000) — 2740
 ```text
 Subnest is a simple, private subscription tracker. See exactly what you pay every month, get a reminder before every renewal, and never get charged for a free trial you forgot to cancel.
 
@@ -61,7 +61,7 @@ PRIVATE BY DESIGN
 
 ALSO
 • Light and dark mode
-• English and Vietnamese
+• English and Vietnamese — starts in English with US-dollar prices; switch to Vietnamese and VND any time
 • Works offline
 • Available on Android and iPhone
 
@@ -96,7 +96,7 @@ Track every subscription, get reminded before renewals and free trials end, and 
 manager,renewal,budget,expense,spending,recurring,payment,cancel,money,family,split,cost,saver,due
 ```
 
-### Description (≤ 4000) — 2556
+### Description (≤ 4000) — 2637
 ```text
 Subnest is a simple, private subscription tracker. See exactly what you pay every month, get a reminder before every renewal, and never get charged for a free trial you forgot to cancel.
 
@@ -135,7 +135,7 @@ PRIVATE BY DESIGN
 
 ALSO
 • Light and dark mode
-• English and Vietnamese
+• English and Vietnamese — starts in English with US-dollar prices; switch to Vietnamese and VND any time
 • Works offline
 
 Subnest is completely free: no ads, no in-app purchases, no premium tier.
@@ -151,6 +151,9 @@ Welcome to Subnest! Track subscriptions, get reminders, see your spend.
 ---
 
 ## Notes
+- **Language order (S-90, 2026-11-10):** this English listing is the primary one; the app starts in **English + USD**.
+  The Vietnamese listing and screenshots come second; VI screenshots use **VND** (switch main currency + Vietnam tab).
+  Screenshots are not retaken in this pass.
 - **"Available on Android and iPhone"** (Play only): remove that line if the iOS app is not live yet when
   the Play listing is published. Never add "Android" to App Store metadata.
 - App Store keywords: no spaces after commas; words already in Name/Subtitle (subnest, subscription,

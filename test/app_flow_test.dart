@@ -36,7 +36,6 @@ void main() {
       overrides: [
         databaseProvider.overrideWithValue(db),
         notificationServiceProvider.overrideWithValue(NotificationService()),
-        deviceLocaleProvider.overrideWithValue('en_US'),
       ],
     );
     final today = LocalDate.today();

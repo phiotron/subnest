@@ -32,13 +32,16 @@ void main() {
     await loadFonts();
   });
 
-  addTest('Flow 1 — first launch: welcome → currency → pick 5 → reminders → Overview with data', (tester) async {
+  addTest('Flow 1 — first launch: language → welcome → currency → pick 5 → reminders → Overview with data', (tester) async {
     final f = await AddFixture.create(onboardingDone: false, primary: null);
     await pumpApp(tester, f, AppRoutes.onboarding);
+    expect(find.text('Language'), findsOneWidget);
+    await tester.tap(find.text('Continue'));
+    await settle(tester);
     expect(find.text('All your subscriptions, one nest'), findsOneWidget);
     await tester.tap(find.text('Get started'));
     await settle(tester);
-    expect(find.text('VND — Vietnamese đồng'), findsOneWidget);
+    expect(find.text('USD — US dollar'), findsOneWidget);
     await tester.tap(find.text('Continue'));
     await settle(tester);
     await pickFive(tester);
@@ -51,7 +54,7 @@ void main() {
     expect(f.notifications.permissionRequests, 1);
     expect(find.text('All your subscriptions, one nest'), findsNothing);
     // Overview lists what was just picked.
-    for (final name in ['Netflix Mobile', 'Spotify Individual', 'ChatGPT Go']) {
+    for (final name in ['Netflix Standard with ads', 'Spotify Individual', 'ChatGPT Go']) {
       expect(find.textContaining(name), findsWidgets, reason: name);
     }
     expect((await f.subs.all()), hasLength(5));
@@ -85,7 +88,7 @@ void main() {
     await settle(tester);
     await tester.tap(find.bySemanticsLabel('More'));
     await settle(tester);
-    expect(find.text('₫273,000 ÷ 4'), findsOneWidget);
+    expect(find.text('\$26.99 ÷ 4'), findsOneWidget);
     await tester.tap(find.text('Add subscription').last);
     await settle(tester);
 
@@ -94,6 +97,6 @@ void main() {
     final saved = (await f.subs.all()).single;
     expect(saved.name, 'Netflix Premium');
     expect(saved.sharedWith, 4);
-    expect(saved.myShare.minor, 68250);
+    expect(saved.myShare.minor, 675);
   });
 }

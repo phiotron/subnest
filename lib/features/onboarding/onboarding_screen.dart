@@ -6,7 +6,6 @@ import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
-import '../../data/settings_repository.dart' show defaultCurrencyForLocale;
 import '../../domain/domain.dart';
 import '../catalog/catalog_helpers.dart';
 import '../subscription_form/form_format.dart';
@@ -17,9 +16,9 @@ import 'widgets/simple_steps.dart';
 
 /// S1 Onboarding (png 02–07), shown on first launch only (`main.dart` routes here while
 /// `AppSettings.onboardingDone` is false):
-/// 1 Welcome → 2 Main currency → 3 What do you pay for? → 4 Reminders explainer → OS dialog →
-/// Overview with the picked services already there. "Skip" (steps 1–2) jumps to the reminders
-/// step; system Back goes one step back.
+/// 1 Language → 2 Welcome → 3 Main currency → 4 What do you pay for? → 5 Reminders explainer →
+/// OS dialog → Overview with the picked services already there. "Skip" (Welcome, currency) jumps to
+/// the reminders step; system Back goes one step back.
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -28,9 +27,9 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  static const _welcome = 0, _currencyStep = 1, _pickStep = 2, _remindersStep = 3;
+  static const _languageStep = 0, _welcome = 1, _currencyStep = 2, _pickStep = 3, _remindersStep = 4;
 
-  int _step = _welcome;
+  int _step = _languageStep;
   String? _currency;
   final _picks = <String, QuickPick>{};
   String? _lastPicked;
@@ -128,11 +127,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final today = ref.watch(todayProvider);
 
     final Widget body = switch (_step) {
+      _languageStep => LanguageStep(
+        code: ref.watch(settingsProvider).value?.localeCode ?? 'en',
+        onChanged: (code) => ref.read(settingsRepositoryProvider).setLocale(code),
+        onNext: () => _go(_welcome),
+      ),
       _welcome => WelcomeStep(onNext: () => _go(_currencyStep), onSkip: () => _go(_remindersStep)),
       _currencyStep => CurrencyStep(
         currency: currency,
-        suggested: defaultCurrencyForLocale(ref.watch(deviceLocaleProvider)),
-        region: region,
         knownCodes: ref.watch(ratesProvider).value?.usdRates.keys ?? const [],
         onChanged: (code) => setState(() => _currency = code),
         onNext: () {
@@ -160,7 +162,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     };
 
     return PopScope(
-      canPop: _step == _welcome,
+      canPop: _step == _languageStep,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop && !_finishing) _go(_step - 1);
       },
@@ -180,7 +182,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final first = _picks.values.where((p) => p.hasPrice).firstOrNull;
     final catalog = ref.watch(catalogProvider).value ?? const <CatalogService>[];
     var name = 'Netflix';
-    var price = l.amount(260000, 'VND');
+    // The example is always in USD: it is the default for every new install (S-90).
+    var price = l.amount(15.49, 'USD');
     if (first != null) {
       name = first.service.name;
       price = l.money(Money(first.priceMinor, first.currency));

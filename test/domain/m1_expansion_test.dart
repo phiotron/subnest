@@ -296,12 +296,6 @@ void main() {
       expect(s.plans[1].prices['US']!.isReference, isTrue);
     });
 
-    test('price region: VN devices use VN, everyone else US', () {
-      expect(catalogRegionForLocale('vi_VN'), 'VN');
-      expect(catalogRegionForLocale('en_VN'), 'VN');
-      expect(catalogRegionForLocale('en_GB'), 'US');
-      expect(catalogRegionForLocale('fr'), 'US');
-    });
   });
 
   test('Entitlement 1.0 opens Pro', () {

@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 import '../domain/domain.dart';
 import 'db/app_database.dart';
 
@@ -54,29 +52,14 @@ class AppSettings {
   final bool hideTabBarOnScroll;
 }
 
-/// Picks the Primary currency for a device locale like `vi_VN` → VND, `en_US` → USD.
-String defaultCurrencyForLocale(String? localeName) {
-  if (localeName == null || localeName.isEmpty) return 'USD';
-  final normalized = localeName.replaceAll('-', '_');
-  // A language-only locale has no region → no currency information.
-  if (!normalized.contains('_')) return normalized.startsWith('vi') ? 'VND' : 'USD';
-  try {
-    final code = NumberFormat.simpleCurrency(locale: normalized).currencyName;
-    if (code != null && code.length == 3) return code;
-  } catch (_) {
-    // Unknown locale for intl → fall through.
-  }
-  return 'USD';
-}
-
 /// Key-value settings stored in the `settings` table.
 class SettingsRepository {
-  SettingsRepository(this._db, {required this.deviceLocale});
+  SettingsRepository(this._db);
 
   final AppDatabase _db;
 
-  /// Device locale name (e.g. `vi_VN`), used for the default Primary currency.
-  final String deviceLocale;
+  /// USD for every new install: defaults never come from the device language or region (S-90).
+  static const defaultPrimaryCurrency = 'USD';
 
   static const kPrimaryCurrency = 'primaryCurrency';
   static const kDefaultReminderDays = 'defaultReminderDays'; // legacy (v1), read when offsets are missing
@@ -117,7 +100,7 @@ class SettingsRepository {
     final m = {for (final r in rows) r.key: r.value};
     final time = (m[kReminderTime] ?? '09:00').split(':');
     return AppSettings(
-      primaryCurrency: m[kPrimaryCurrency] ?? defaultCurrencyForLocale(deviceLocale),
+      primaryCurrency: m[kPrimaryCurrency] ?? defaultPrimaryCurrency,
       defaultReminderOffsets: ReminderOffsets.decode(m[kDefaultReminderOffsets]) ??
           ReminderOffsets.fromLegacyDays(int.tryParse(m[kDefaultReminderDays] ?? '')),
       reminderHour: int.tryParse(time.first) ?? 9,

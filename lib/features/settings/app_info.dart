@@ -1,11 +1,14 @@
 /// App facts shown in Settings › About. One place to change them.
 library;
 
-/// Version shown in Settings (`version:` in pubspec.yaml is `1.0.0+1`).
+/// Version shown in Settings (`version:` in pubspec.yaml is `1.0.0`).
 /// `package_info_plus` is not a dependency yet, so this is kept in sync by
-/// `test/features/settings/app_info_test.dart`, which fails when pubspec changes.
+/// `test/features/settings/settings_content_test.dart`, which fails when pubspec changes.
 const String kAppVersion = '1.0.0';
-const String kAppBuild = '2';
+
+/// Build number after `+` in pubspec; empty until the first store upload needs one
+/// (Android then uses versionCode 1).
+const String kAppBuild = '';
 
 /// Public privacy policy (GitHub Pages repo phamphuongphuongnd/legal, source: store/legal/).
 /// The EN page links to the VI page. Set to `null` to open the bundled copy (`legal_content.dart`).
@@ -27,5 +30,5 @@ const String kAndroidPackage = 'com.phiotron.subnest';
 /// "Rate Subnest" row is hidden on iOS (no dead button).
 const String? kAppStoreId = null;
 
-/// "1.0.0 (2)".
-String get appVersionLabel => '$kAppVersion ($kAppBuild)';
+/// "1.0.0" (or "1.0.0 (3)" once a build number is set).
+String get appVersionLabel => kAppBuild.isEmpty ? kAppVersion : '$kAppVersion ($kAppBuild)';

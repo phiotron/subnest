@@ -111,9 +111,7 @@ class SettingsScreen extends ConsumerWidget {
                 ValueRow(
                   icon: AppIcons.language,
                   label: l.settingsLanguage,
-                  value: settings.localeCode == null
-                      ? l.settingsSystem
-                      : SettingsFormat.languageName(settings.localeCode!),
+                  value: SettingsFormat.languageName(settings.localeCode ?? 'en'),
                   onTap: () => showAppearanceSheet(context),
                 ),
               ],

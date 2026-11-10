@@ -11,6 +11,8 @@
   "commonClose": "Close",
   "commonContinue": "Continue",
   "commonDone": "Done",
+  "commonLanguageEnglish": "English",
+  "commonLanguageVietnamese": "Tiếng Việt",
   "commonPerMonth": "per month",
   "commonPerYear": "per year",
   "commonCycleDays": "{count, plural, =1{Daily} other{Every {count} days}}",

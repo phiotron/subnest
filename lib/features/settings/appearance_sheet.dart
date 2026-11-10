@@ -11,7 +11,7 @@ import 'settings_format.dart';
 Future<void> showAppearanceSheet(BuildContext context) =>
     showAppSheet<void>(context, builder: (_) => const AppearanceSheet());
 
-/// Theme (System / Light / Dark) + Language (System / English / Tiếng Việt).
+/// Theme (System / Light / Dark) + Language (English / Tiếng Việt — the only two, S-90).
 class AppearanceSheet extends ConsumerWidget {
   const AppearanceSheet({super.key});
 
@@ -20,8 +20,6 @@ class AppearanceSheet extends ConsumerWidget {
     final l = context.l10n;
     final settings = ref.watch(settingsProvider).value;
     final repo = ref.read(settingsRepositoryProvider);
-    final deviceLang = ref.watch(deviceLocaleProvider).split(RegExp('[_-]')).first;
-    final phoneLanguage = SettingsFormat.languageName(deviceLang == 'vi' ? 'vi' : 'en');
     return AppSheet(
       title: l.settingsAppearanceTitle,
       actions: [AppButton.tonal(label: l.commonDone, expand: true, onPressed: () => Navigator.pop(context))],
@@ -46,10 +44,9 @@ class AppearanceSheet extends ConsumerWidget {
             SectionHeader(label: l.settingsLanguage),
             RadioRowGroup<String>(
               style: RadioRowStyle.flat,
-              value: settings?.localeCode ?? '',
-              onChanged: settings == null ? null : (code) => repo.setLocale(code.isEmpty ? null : code),
+              value: settings?.localeCode ?? 'en',
+              onChanged: settings == null ? null : (code) => repo.setLocale(code),
               options: [
-                RadioOption(value: '', title: l.settingsSystem, subtitle: l.settingsLanguageFromPhone(phoneLanguage)),
                 RadioOption(value: 'en', title: SettingsFormat.languageName('en')),
                 RadioOption(value: 'vi', title: SettingsFormat.languageName('vi')),
               ],

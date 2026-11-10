@@ -7,6 +7,7 @@ import 'package:subnest/data/settings_repository.dart';
 import 'package:subnest/data/subscription_repository.dart';
 import 'package:subnest/domain/domain.dart';
 import 'package:subnest/features/settings/app_info.dart';
+import 'package:subnest/features/settings/appearance_sheet.dart';
 import 'package:subnest/features/settings/legal_screen.dart';
 import 'package:subnest/features/settings/settings_actions.dart';
 import 'package:subnest/features/settings/settings_format.dart';
@@ -31,11 +32,12 @@ void main() {
       expect(find.text('3 days before'), findsOneWidget);
       expect(find.text('9:00 AM'), findsOneWidget);
       expect(find.text('On'), findsOneWidget);
-      expect(find.text('System'), findsNWidgets(2));
+      expect(find.text('System'), findsOneWidget, reason: 'theme only — language has no System (S-90)');
+      expect(find.text('English'), findsOneWidget, reason: 'language row value');
       expect(find.text('Last backup was 42 days ago'), findsOneWidget);
       await tester.scrollUntilVisible(find.text(en.settingsPrivacyNote), 300);
       expect(find.text('Last backup: 24 Sep 2026'), findsOneWidget);
-      expect(find.text('1.0.0 (2)'), findsOneWidget);
+      expect(find.text('1.0.0'), findsOneWidget);
       for (final label in [
         en.settingsPrivacyPolicy,
         en.settingsTerms,
@@ -68,7 +70,10 @@ void main() {
       await tester.tap(find.text(en.settingsTheme));
       await settle(tester);
       expect(find.text(en.settingsAppearanceTitle), findsWidgets);
-      expect(find.text('English (from your phone)'), findsOneWidget);
+      final sheet = find.byType(AppearanceSheet);
+      expect(find.descendant(of: sheet, matching: find.text('English')), findsOneWidget);
+      expect(find.descendant(of: sheet, matching: find.text('Tiếng Việt')), findsOneWidget);
+      expect(find.text('English (from your phone)'), findsNothing, reason: 'no System language (S-90)');
       await tester.tap(find.text('Dark'));
       await settle(tester);
       expect((await f.settings.load()).themeMode, AppThemeMode.dark);
@@ -108,7 +113,7 @@ void main() {
       final uri = f.platform.opened.single;
       expect(uri.scheme, 'mailto');
       expect(uri.path, 'phamphuongphuongnd@gmail.com');
-      expect(Uri.decodeComponent(uri.query), contains('Subnest feedback (1.0.0 (2))'));
+      expect(Uri.decodeComponent(uri.query), contains('Subnest feedback (1.0.0)'));
 
       f.platform.externalOk = false;
       await tester.tap(find.text(en.settingsFeedback));

@@ -33,13 +33,13 @@
 | **Savings** | Tiết kiệm | Số tiền quy năm của các Subscription Cancelled — "bạn đã tiết kiệm X/năm". | |
 | **Shared plan** | Gói chia sẻ | Subscription chia tiền với N người (Family/Duo). | |
 | **My share** | Phần của tôi | Giá gói ÷ số người chia. Mọi tổng chi tính theo My share. | |
-| **Primary currency** | Tiền tệ chính | Tiền tệ để cộng tổng chi; mặc định theo vùng của máy. Mỗi Subscription có tiền tệ riêng. | "base currency" |
+| **Primary currency** | Tiền tệ chính | Tiền tệ để cộng tổng chi; **USD** cho mọi máy mới (không suy từ ngôn ngữ/vùng máy — S-90). Mỗi Subscription có tiền tệ riêng. | "base currency" |
 | **Exchange rate** | Tỷ giá | Tỷ giá quy đổi sang Primary currency, tự cập nhật hằng ngày khi có mạng, người dùng ghi đè được. | |
 | **Monthly cost** | Chi phí quy tháng | Giá của một Subscription (My share) quy về 1 tháng theo Billing cycle và Exchange rate. Tổng chi tháng/năm = tổng Monthly cost của các Subscription `Active`; Trial hiển thị riêng là "sắp tính phí". | "average" |
 | **Reminder** | Nhắc | Thông báo trên máy trước Due date (mặc định 3 ngày, 9:00) và trước khi Trial hết. | "alert", "push" (app không có server push) |
 | **Catalog source** | Nguồn thư viện | Nơi app lấy Catalog: bản **đóng gói** trong app (luôn có, dùng khi offline) và bản **từ xa** của xưởng (cập nhật hằng tuần). App dùng bản mới nhất hợp lệ mà nó có. | "API của hãng" (không hãng nào có) |
-| **Region** | Vùng giá | Giá gợi ý trong Catalog có hai vùng: **US** (giá chung cho mọi người, quy đổi sang Primary currency "≈") và **VN** (giá VND cho dịch vụ bán ở Việt Nam, chỉ dùng khi máy ở VN). | "currency" (tiền tệ khác vùng) |
-| **Catalog section** | Mục thư viện | Thư viện chia *Chung* (dịch vụ toàn cầu, ai cũng thấy) và *Việt Nam* (dịch vụ của VN, chỉ hiện khi máy ở VN). | |
+| **Region** | Vùng giá | Giá gợi ý trong Catalog có hai vùng: **US** (giá chung cho mọi người, quy đổi sang Primary currency "≈") và **VN** (giá VND cho dịch vụ bán ở Việt Nam). Vùng không suy từ máy hay ngôn ngữ; tab Chung mở trước (S-90). | "currency" (tiền tệ khác vùng) |
+| **Catalog section** | Mục thư viện | Thư viện chia *Chung* (dịch vụ toàn cầu) và *Việt Nam* (dịch vụ của VN). Cả hai tab luôn hiện; mở ra ở Chung. | |
 | **Reference price** | Giá tham khảo | Giá gợi ý trong Catalog chưa được xác minh từ trang của hãng; vẫn điền sẵn nhưng ghi "giá tham khảo — kiểm lại". | "approx" |
 | **Catalog link** | Liên kết thư viện | Mối nối giữa một Subscription và Service/Plan trong Catalog khi người dùng thêm từ thư viện. Subscription luôn là **bản sao riêng** của người dùng; Catalog đổi không tự sửa Subscription. | |
 | **Price change notice** | Báo đổi giá | Khi giá Plan trong Catalog đổi và Subscription có Catalog link với giá còn bằng giá Catalog cũ: app **báo**, người dùng chọn *Cập nhật* (áp từ kỳ tới, Payment cũ giữ nguyên) hoặc *Giữ giá cũ*. Giá người dùng tự sửa thì không báo. | "auto-update" |
