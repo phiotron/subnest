@@ -170,6 +170,7 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
+| #6 Sao lưu · Bảo mật · Widget · Làm tròn (grill, theo A002) | 2026-11-10 | B Sao lưu ✅ · R Làm tròn ✅ · W Widget ✅ (đang sửa màu chữ widget trên One UI) · S Bảo mật ✅ | 12 quyết định + 9 thuật ngữ; `dev` `9171a92`…`b0f32fa` (chưa push); analyze sạch, **970 test xanh**; thử A13: S (PIN, che nội dung, Quên mã) đạt, W (3 widget, chạm, khoá) đạt, điều phối (làm tròn, sao lưu tự động + hẹn giờ khi app tắt, giữ 2 file, xoá toàn bộ, khôi phục mã hoá) đạt + sửa lỗi time picker cỡ chữ nhỏ — `notes/2026-11-10-*.md`. Còn: CI iOS tay, App Group, ảnh store |
 | #5 Mặc định English + USD (S-90) | 2026-11-10 | không (làm trực tiếp) | English lần đầu + USD mặc định + Thư viện mở tab Chung (giá US) + Settings chỉ EN/VI; thêm S1.0 Language trước Welcome (chữ tiếng Anh, không dịch); version `1.0.0`; analyze sạch, **823 test xanh**; APK release `build/app/outputs/flutter-apk/app-release.apk` cài Galaxy A13 (máy `vi-VN`) mở English + USD |
 | #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan ✅ · U2a Thư viện + Form ✅ (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 `775901b`; U1 `4075597`…`058cf34`, U2a `522df46` `ed06826` `09faefd`, U1 `3cb500c`; điều phối chạy lại ở `09faefd`: analyze sạch, merge_arb OK, **823 test xanh** (97 golden bỏ qua khi không bật cờ) |
 
