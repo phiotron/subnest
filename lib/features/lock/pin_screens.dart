@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -92,7 +94,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
             Navigator.pop(context, pin);
           } else {
             // Start over from the first step.
-            await HapticFeedback.lightImpact();
+            unawaited(HapticFeedback.lightImpact());
             setState(() {
               _first = null;
               _error = l.securityPinMismatch;
@@ -135,7 +137,7 @@ class _PinCheckScreenState extends ConsumerState<PinCheckScreen> {
             Navigator.pop(this.context, true);
             return;
           }
-          await HapticFeedback.lightImpact();
+          unawaited(HapticFeedback.lightImpact());
           setState(() => _error = l.securityWrongPin);
         },
       ),

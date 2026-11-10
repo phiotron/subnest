@@ -24,11 +24,99 @@ import UserNotifications
 enum SubnestNative {
   /// Strong reference: the registrar does not guarantee it keeps the handler alive.
   private static var folder: BackupFolderChannel?
+  private static var secure: SecureSceneHandler?
 
   static func register(registry: FlutterPluginRegistry) {
     guard let registrar = registry.registrar(forPlugin: "SubnestNative") else { return }
     folder = BackupFolderChannel(messenger: registrar.messenger())
+    // Privacy screen: scene life-cycle events reach the handler through `FlutterSceneDelegate`.
+    let handler = SecureSceneHandler(messenger: registrar.messenger())
+    registrar.addSceneDelegate(handler)
+    secure = handler
   }
+}
+
+// MARK: - Privacy screen
+
+/// Channel `subnest/secure` (same protocol as `MainActivity.kt`): `setSecure(Bool)`. When on, a
+/// cover view hides the app while it is not active — the app switcher takes its snapshot then.
+/// iOS does not let apps block screenshots. Same as A002 `VigonSceneHandler` (F-22).
+final class SecureSceneHandler: NSObject, FlutterSceneLifeCycleDelegate {
+  private let channel: FlutterMethodChannel
+  private var enabled = false
+  private var cover: UIView?
+
+  init(messenger: FlutterBinaryMessenger) {
+    channel = FlutterMethodChannel(name: "subnest/secure", binaryMessenger: messenger)
+    super.init()
+    channel.setMethodCallHandler { [weak self] call, result in
+      guard call.method == "setSecure" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      guard let on = call.arguments as? Bool else {
+        result(FlutterError(code: "bad_args", message: "setSecure needs true/false", details: nil))
+        return
+      }
+      self?.enabled = on
+      if !on { self?.hideCover() }
+      NSLog("SubnestSecure: enabled=%@", on ? "1" : "0")
+      result(nil)
+    }
+  }
+
+  func sceneWillResignActive(_ scene: UIScene) {
+    showCover(in: scene)
+  }
+
+  func sceneDidEnterBackground(_ scene: UIScene) {
+    showCover(in: scene)
+  }
+
+  func sceneDidBecomeActive(_ scene: UIScene) {
+    hideCover()
+  }
+
+  private func showCover(in scene: UIScene) {
+    guard enabled, cover == nil,
+      let window = (scene as? UIWindowScene)?.windows.first(where: { $0.isKeyWindow })
+        ?? (scene as? UIWindowScene)?.windows.first
+    else { return }
+    let view = PrivacyCoverView(frame: window.bounds)
+    window.addSubview(view)
+    cover = view
+  }
+
+  private func hideCover() {
+    cover?.removeFromSuperview()
+    cover = nil
+  }
+}
+
+/// The cover: app background (`bg` token, light/dark) with the splash logo in the middle.
+final class PrivacyCoverView: UIView {
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    backgroundColor = UIColor { traits in
+      traits.userInterfaceStyle == .dark
+        ? UIColor(red: 0x0D / 255, green: 0x11 / 255, blue: 0x13 / 255, alpha: 1)
+        : UIColor(red: 0xF4 / 255, green: 0xF6 / 255, blue: 0xF6 / 255, alpha: 1)
+    }
+    isAccessibilityElement = false
+    let logo = UIImageView(image: UIImage(named: "LaunchImage"))
+    logo.contentMode = .scaleAspectFit
+    logo.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(logo)
+    NSLayoutConstraint.activate([
+      logo.widthAnchor.constraint(equalToConstant: 96),
+      logo.heightAnchor.constraint(equalToConstant: 96),
+      logo.centerXAnchor.constraint(equalTo: centerXAnchor),
+      logo.centerYAnchor.constraint(equalTo: centerYAnchor),
+    ])
+  }
+
+  required init?(coder: NSCoder) { nil }
 }
 
 // MARK: - Backup folder (auto backup)

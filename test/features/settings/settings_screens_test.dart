@@ -39,8 +39,9 @@ void main() {
       expect(find.text('On'), findsOneWidget);
       expect(find.text('System'), findsOneWidget, reason: 'theme only — language has no System (S-90)');
       expect(find.text('English'), findsOneWidget, reason: 'language row value');
-      await tester.scrollUntilVisible(find.text(en.settingsPrivacyNote), 300);
+      await tester.scrollUntilVisible(find.text(en.settingsDataNote), 300);
       expect(find.text(en.settingsDataNote), findsOneWidget);
+      await tester.scrollUntilVisible(find.text(en.settingsPrivacyNote), 300);
       expect(find.text('1.0.0'), findsOneWidget);
       for (final label in [
         en.settingsPrivacyPolicy,
