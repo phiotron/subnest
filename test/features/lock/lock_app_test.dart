@@ -11,6 +11,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:subnest/app.dart';
 import 'package:subnest/core/router/app_router.dart';
 import 'package:subnest/core/router/routes.dart';
+import 'package:subnest/core/widgets/widgets.dart' show AppTabBar;
 import 'package:subnest/data/db/app_database.dart';
 import 'package:subnest/data/notifications/notification_service.dart';
 import 'package:subnest/data/providers.dart';
@@ -20,6 +21,7 @@ import 'package:subnest/data/subscription_repository.dart';
 import 'package:subnest/domain/domain.dart';
 import 'package:subnest/features/home/home_screen.dart';
 import 'package:subnest/features/lock/app_lock.dart';
+import 'package:subnest/features/lock/pin_screens.dart';
 import 'package:subnest/features/lock/pin_service.dart';
 import 'package:subnest/features/onboarding/onboarding_screen.dart';
 import 'package:subnest/features/settings/auto_backup_providers.dart';
@@ -259,6 +261,25 @@ void main() {
     expect(find.text(en.securityEnterPin), findsOneWidget);
     await enterPin(tester, '1234');
     expect(find.byType(SubscriptionDetailScreen), findsOneWidget, reason: 'the hidden route was not popped');
+    await unmount(tester);
+  });
+
+  testWidgets('choosing a PIN from Settings covers the whole app (no tab bar under the keypad)', (tester) async {
+    await pumpApp(tester);
+    await tester.tap(find.text('Settings').last);
+    await settle(tester);
+    expect(find.byType(AppTabBar), findsOneWidget);
+    await tester.scrollUntilVisible(find.text(en.securityPinLock), 300);
+    await settle(tester);
+    await tester.tap(find.text(en.securityPinLock));
+    await settle(tester);
+    expect(find.byType(PinSetupScreen), findsOneWidget);
+    expect(find.byType(AppTabBar), findsNothing);
+    await enterPin(tester, '1234');
+    await enterPin(tester, '1234');
+    expect(find.byType(PinSetupScreen), findsNothing);
+    expect(find.byType(AppTabBar), findsOneWidget);
+    expect(widgetStore.last['state'], 'locked', reason: 'turning the PIN on locks the widget at once');
     await unmount(tester);
   });
 

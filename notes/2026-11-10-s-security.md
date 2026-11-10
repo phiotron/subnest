@@ -47,7 +47,7 @@ Commit trên `dev` (chưa push): `335971f` (WIP lõi) + commit cuối (test, iOS
 
 ## Kiểm tra
 - `flutter analyze` sạch.
-- `test/features/lock/` **38 xanh**:
+- `test/features/lock/` **39 xanh**:
   - `pin_service_test` — khớp/sai, chỉ 4 số, chỉ băm + muối trong SecretStore (không có PIN, DB chỉ có mã cài đặt),
     muối mới mỗi lần, tắt xoá hết, đổi PIN giữ mã cài đặt, **D-017** (DB mới → tắt + dọn; DB cùng → giữ; mã khác →
     dọn), mã cài đặt không vào file sao lưu và khôi phục giữ nguyên.
@@ -71,8 +71,33 @@ Commit trên `dev` (chưa push): `335971f` (WIP lõi) + commit cuối (test, iOS
   ghi chú Dữ liệu ra khỏi màn khi cuộn tới ghi chú quyền riêng tư → test cuộn tới từng ghi chú, đã sửa, xanh) và
   `subscription_detail_screen_test` "S5 Edit" (pumpAndSettle hết giờ khi CPU bận — lỗi treo đã biết trong APP.md; chạy
   lại xanh). Chạy lại 2 file đó: 75 xanh.
-- `flutter build apk --debug` OK (`build/app/outputs/flutter-apk/app-debug.apk`). Đã cài đè lên Galaxy A13
-  (`R58TC12SRZW`, dữ liệu cũ còn); **chưa thử tay** — chờ điều phối báo máy rảnh (Phương đang dùng).
+- `flutter build apk --debug` OK (`build/app/outputs/flutter-apk/app-debug.apk`).
+
+## Thử máy thật — Galaxy A13 (`R58TC12SRZW`, APK debug `a5f5724`, 2026-11-10 15:05–15:21)
+Phương xác nhận máy không có dữ liệu thật (qua điều phối). Lái bằng `adb -s R58TC12SRZW` + `uiautomator dump`; ảnh ở
+`notes/img/2026-11-10-s-security/`. **Tất cả ĐẠT:**
+| Ca | Kết quả | Ảnh |
+|---|---|---|
+| Cài đặt › nhóm "BẢO MẬT" ngay sau Dữ liệu, 2 công tắc tắt | ĐẠT | `01-settings-security.png` |
+| Bật PIN: "Đặt mã PIN 4 số" + cảnh báo; nhập lệch → "Hai lần nhập không khớp. Thử lại." về bước 1; nhập đúng 2 lần → công tắc bật | ĐẠT | `02-pin-setup.png`, `03-pin-mismatch.png`, `04-pin-on.png` |
+| Về nền ~1,5 phút → mở lại thấy màn khoá | ĐẠT | `05-locked-after-1min.png` |
+| Sai mã → "Sai mã PIN"; đúng → về đúng màn Cài đặt đang mở | ĐẠT | `06-wrong-pin.png` |
+| Về nền 20 giây → không khoá; `force-stop` rồi mở → khoá | ĐẠT | — |
+| Back trên màn khoá → rời app (launcher lên trên) | ĐẠT | — |
+| Chạm widget (intent `es.antonborri.home_widget.action.LAUNCH`, `subnest://widget/subscription/<LANDR>`) khi app tắt → màn khoá → PIN → Chi tiết LANDR | ĐẠT | `07-widget-link-after-pin.png` |
+| Dữ liệu widget (`run-as … HomeWidgetPreferences.xml`): PIN bật → chỉ `{"state":"locked","locked":"Đã khoá bằng PIN"}`, không tên/số tiền; tắt PIN → `list`; sau Xoá toàn bộ → `empty`. Máy chưa đặt widget Subnest nên không chụp widget (W thử) | ĐẠT | — |
+| Tắt PIN: sai mã → "Sai mã PIN", đúng → tắt | ĐẠT | — |
+| Che nội dung bật: `screencap` ra **0 byte** (FLAG_SECURE); thẻ app gần đây **trắng**, cả khi mở nguội (áp dụng khi mở app) | ĐẠT | `08-recents-card-privacy-on.png` (chỉ cắt thẻ) |
+| Quên mã → "Quên mã PIN?" → Xóa toàn bộ dữ liệu → Xóa → Xóa hết → onboarding **English**, bước tiền tệ chọn sẵn **USD**; câu xác nhận có "…và khoá mã PIN" | ĐẠT | `09-after-forgot-onboarding.png`, `10-onboarding-usd.png` |
+| Sau Quên mã: `FlutterSecureStorage.xml` rỗng (`<map />`), DB 0 gói, bảng `settings` chỉ còn `ratesFetchedAt` (không `pinInstallId`, không `privacyScreen`), chụp màn hình lại được | ĐẠT | — |
+
+- **Lỗi thấy trên máy, đã sửa:** màn đặt/tắt PIN mở từ Cài đặt vẫn hiện thanh tab dưới bàn phím (push vào navigator của
+  nhánh Cài đặt) → `PinActions` đẩy lên **root navigator**; thêm test trong `lock_app_test.dart` (app thật: không có
+  `AppTabBar` trên màn đặt PIN, bật xong widget `locked` ngay). APK trên A13 là bản trước khi sửa.
+- Thẻ cũ trong danh sách gần đây: task mở từ trước khi bật Che nội dung giữ ảnh chụp cũ cho tới khi task đó bị đóng (hành
+  vi Android). Nhiều task Subnest (#159–#161) là do tôi mở bằng `am start`/`force-stop`, không phải người dùng thường.
+- **Không lưu** ảnh nguyên màn hình chính/app gần đây: hình nền là ảnh cá nhân của Phương → chỉ giữ ảnh cắt riêng thẻ app.
+- Máy trả cho W lúc 15:21: Subnest đang ở onboarding bước 3, PIN + Che nội dung tắt.
 
 ## Lệch so với A002 (và lý do)
 - `isEnabled()` kiểm mã cài đặt trong DB trước Keychain (xem trên). A002 đọc Keychain trước.
@@ -81,10 +106,8 @@ Commit trên `dev` (chưa push): `335971f` (WIP lõi) + commit cuối (test, iOS
 - Lớp phủ iOS dùng ảnh `LaunchImage` có sẵn (A002 có asset riêng `PrivacyLogo`).
 
 ## Việc dở / rủi ro
-- **Chưa thử máy thật.** Không thử Quên mã/Xoá toàn bộ trên Galaxy A13 (có thể có dữ liệu thật). Điều phối hỏi Phương
-  rồi thử: bật PIN → đóng hẳn app → mở lại thấy màn khoá; ra nền 30 s không khoá, > 1 phút khoá; chạm widget/thông báo
-  khi đang khoá → sau PIN vào đúng màn; widget hiện "Đã khoá bằng PIN"; bật Che nội dung → Recents đen/chụp màn hình bị
-  chặn; Back trên màn khoá → rời app.
+- Đã thử máy thật (mục trên). **Chưa thử trên máy thật:** chạm thông báo nhắc khi đang khoá (có test widget qua app thật),
+  widget thật trên màn hình chính khi bật PIN (W thử).
 - **Swift chưa biên dịch** (máy Windows) — `SecureSceneHandler` chép A002 (A002 đã qua CI macOS), cần CI/Mac kiểm.
 - Khi khoá do > 1 phút, ảnh trong Recents vẫn là màn trước khi ra nền nếu Che nội dung tắt (như A002, đúng thiết kế).
 - Đang ở hệ thống chọn file/thư mục (khôi phục, chọn thư mục sao lưu) > 1 phút thì quay lại bị khoá (như A002).

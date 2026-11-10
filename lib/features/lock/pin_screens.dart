@@ -9,12 +9,16 @@ import '../../core/widgets/widgets.dart';
 import 'app_lock.dart';
 import 'pin_pad.dart';
 
-/// Turning App lock on and off from Settings (A002 8.1–8.4).
+/// Turning App lock on and off from Settings (A002 8.1–8.4). The PIN screens cover the whole app
+/// (root navigator: no tab bar under the keypad).
 abstract final class PinActions {
   /// Choose a PIN: full-screen, entered twice; the first step warns that a forgotten PIN means
   /// deleting all data. Back / ‹ cancels and the lock stays off. True when the PIN was set.
   static Future<bool> turnOn(BuildContext context, WidgetRef ref) async {
-    final pin = await Navigator.of(context).push<String>(MaterialPageRoute(builder: (_) => const PinSetupScreen()));
+    final pin = await Navigator.of(
+      context,
+      rootNavigator: true,
+    ).push<String>(MaterialPageRoute(builder: (_) => const PinSetupScreen()));
     if (pin == null) return false;
     await ref.read(pinServiceProvider).setPin(pin);
     ref.invalidate(pinEnabledProvider);
@@ -23,7 +27,10 @@ abstract final class PinActions {
 
   /// Turn the lock off: only with the current PIN. True when it was turned off.
   static Future<bool> turnOff(BuildContext context, WidgetRef ref) async {
-    final ok = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PinCheckScreen()));
+    final ok = await Navigator.of(
+      context,
+      rootNavigator: true,
+    ).push<bool>(MaterialPageRoute(builder: (_) => const PinCheckScreen()));
     if (ok != true) return false;
     await ref.read(pinServiceProvider).disable();
     ref.invalidate(pinEnabledProvider);
