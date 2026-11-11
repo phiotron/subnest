@@ -7,7 +7,7 @@ import '../../catalog/catalog_helpers.dart';
 import '../quick_pick.dart';
 import 'onboarding_parts.dart';
 
-/// S1.3 "What do you pay for?" (png 05): search, multi-select grid of service tiles (✓ when
+/// S1.3 "What do you pay for?" (png 009): search, multi-select grid of service tiles (✓ when
 /// picked), a quick-edit card for the last pick (price · cycle · Edit), and the bottom bar
 /// "5 selected · ≈ ₫965,000/month" with Later / Continue.
 class PickStep extends StatefulWidget {
@@ -185,19 +185,25 @@ class _PickCell extends StatelessWidget {
                       Positioned(
                         left: 4,
                         top: 4,
-                        child: ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 56, serviceId: s.id),
+                        child: ServiceTile(
+                          name: s.name,
+                          colorValue: s.colorValue,
+                          iconText: s.monogram,
+                          size: 56,
+                          serviceId: s.id,
+                        ),
                       ),
                       if (selected)
                         Positioned(
                           right: -4,
                           top: -4,
                           child: Container(
-                            width: 24,
-                            height: 24,
+                            width: 22,
+                            height: 22,
                             decoration: BoxDecoration(
                               color: c.brand,
                               shape: BoxShape.circle,
-                              border: Border.all(color: c.brandSoft, width: 2),
+                              border: Border.all(color: c.bg, width: 2),
                             ),
                             child: Icon(AppIcons.check, size: 14, color: c.onBrand),
                           ),
@@ -205,7 +211,7 @@ class _PickCell extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpace.s2),
+                const SizedBox(height: 6),
                 Text(
                   s.name,
                   maxLines: 2,
@@ -222,8 +228,8 @@ class _PickCell extends StatelessWidget {
   }
 }
 
-/// Floating card for the last pick (design `.quick`): tile 24 · name + "₫59,000/month · Monthly"
-/// · Edit.
+/// Floating card for the last pick (design `.quick`, png 009): logo 32 · plan name + price with
+/// its [CycleChip] · "Price & cycle" pill (`brand-soft`).
 class _QuickCard extends StatelessWidget {
   const _QuickCard({required this.pick, required this.onEdit});
 
@@ -235,20 +241,20 @@ class _QuickCard extends StatelessWidget {
     final l = context.l10n;
     final c = context.colors;
     final s = pick.service;
-    final price = pick.hasPrice ? '${l.money(Money(pick.priceMinor, pick.currency))}${perCycle(l, pick.cycle)}' : '—';
+    final price = pick.hasPrice ? l.money(Money(pick.priceMinor, pick.currency)) : '—';
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        color: c.surfaceSheet,
+        borderRadius: BorderRadius.circular(AppRadius.md),
         boxShadow: context.elevation.float,
         border: Border.all(color: c.line),
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(AppSpace.s3, AppSpace.s2, AppSpace.s2, AppSpace.s2),
+        padding: const EdgeInsets.fromLTRB(AppSpace.s3, 10, AppSpace.s3, 10),
         child: Row(
           children: [
-            ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 24, serviceId: s.id),
-            const SizedBox(width: AppSpace.s3),
+            ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 32, serviceId: s.id),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,11 +266,14 @@ class _QuickCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: AppType.label.copyWith(color: c.ink),
                   ),
-                  Text(
-                    l.onboardingPickMeta(price, l.cycle(pick.cycle)),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppType.meta.copyWith(color: c.inkMuted).tabular,
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 2,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(price, style: AppType.meta.copyWith(color: c.ink).tabular),
+                      if (pick.hasPrice) CycleChip(cycle: pick.cycle),
+                    ],
                   ),
                 ],
               ),
@@ -318,7 +327,12 @@ class _PickBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(l.onboardingPickSelected(count), style: AppType.label.copyWith(color: c.ink)),
-                  if (total != null) Text(total!, semanticsLabel: context.l10n.spokenLabel(total!), style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                  if (total != null)
+                    Text(
+                      total!,
+                      semanticsLabel: context.l10n.spokenLabel(total!),
+                      style: AppType.meta.copyWith(color: c.inkMuted).tabular,
+                    ),
                 ],
               ),
             ),

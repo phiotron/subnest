@@ -16,8 +16,8 @@ void main() {
   addTest('S1.0 language: first screen, only English/Tiếng Việt, applies at once (S-90)', (tester) async {
     final f = await AddFixture.create(onboardingDone: false, primary: null);
     await pumpAdd(tester, f, location: '/onboarding');
-    expect(find.text('Language'), findsOneWidget);
-    expect(find.text('English'), findsOneWidget);
+    expect(find.text('Choose your language'), findsOneWidget);
+    expect(find.text('English'), findsNWidgets(2)); // native name + English name
     expect(find.text('Tiếng Việt'), findsOneWidget);
     expect(find.bySemanticsLabel('Step 1 of 5'), findsOneWidget);
     expect(find.text('Skip'), findsNothing, reason: 'the language choice cannot be skipped');
@@ -35,8 +35,8 @@ void main() {
     await settle(tester);
     expect(find.text('All your subscriptions, one nest'), findsOneWidget);
     expect(find.text('Reminders before you’re charged'), findsOneWidget);
-    expect(find.text('Know exactly what each month costs'), findsOneWidget);
-    expect(find.text('Private — data stays on your phone'), findsOneWidget);
+    expect(find.text('Know what each month really costs'), findsOneWidget);
+    expect(find.text('Your data stays on this phone'), findsOneWidget);
     expect(find.bySemanticsLabel('Step 2 of 5'), findsOneWidget);
     expect(find.text('Skip'), findsOneWidget);
     await shot(tester, 's1-welcome-390-en-light-100');
@@ -50,13 +50,12 @@ void main() {
     await tester.tap(find.text('Get started'));
     await settle(tester);
     expect(find.text('Your main currency'), findsOneWidget);
-    expect(find.text('USD — US dollar'), findsOneWidget);
-    expect(find.text('Default — change it any time'), findsOneWidget);
-    expect(find.text('VND — Vietnamese đồng'), findsOneWidget);
+    expect(find.bySemanticsLabel('USD, US dollar'), findsOneWidget);
+    expect(find.bySemanticsLabel('VND, Vietnamese đồng'), findsOneWidget);
     expect(find.text('Suggested for Vietnam'), findsNothing, reason: 'never suggested from the region');
     await shot(tester, 's1-currency-390-en-light-100');
 
-    await tester.tap(find.text('Choose another currency'));
+    await tester.tap(find.text('Choose another currency…'));
     await settle(tester);
     expect(find.text('Main currency'), findsOneWidget);
     expect(find.text('Search currency or country'), findsOneWidget);
@@ -65,8 +64,8 @@ void main() {
     await settle(tester);
     await tester.tap(find.text('SGD'));
     await settle(tester);
-    expect(find.text('SGD — Singapore dollar'), findsOneWidget);
-    expect(find.text('Your choice'), findsOneWidget);
+    expect(find.text('SGD'), findsOneWidget);
+    expect(find.text('Singapore dollar'), findsOneWidget);
     await tester.tap(find.text('Continue'));
     await settle(tester);
     expect((await f.settings.load()).primaryCurrency, 'SGD');
@@ -99,7 +98,8 @@ void main() {
     await tester.tap(find.text('Done'));
     await settle(tester);
     expect(find.text('iCloud+ 200 GB'), findsOneWidget);
-    expect(find.text('\$2.99/month · Monthly'), findsOneWidget);
+    expect(find.text('\$2.99'), findsOneWidget);
+    expect(find.text('Monthly'), findsWidgets);
     expect(find.text('≈ \$48.96/month'), findsOneWidget);
     await tester.fling(find.byType(ListView).first, const Offset(0, 2000), 4000);
     await settle(tester);
@@ -151,7 +151,7 @@ void main() {
     expect(subs.every((s) => s.dueDate == const LocalDate(2026, 12, 4)), isTrue);
   });
 
-  addTest('S1.4 "Not now" never asks the OS and still finishes (S-40)', (tester) async {
+  addTest('S1.4 "No thanks" never asks the OS and still finishes (S-40)', (tester) async {
     final f = await AddFixture.create(onboardingDone: false, primary: null);
     await pumpAdd(tester, f, location: '/onboarding');
     await tester.tap(find.text('Continue'));
@@ -160,7 +160,7 @@ void main() {
     await settle(tester);
     expect(find.text('A heads-up before every charge'), findsOneWidget, reason: 'Skip jumps to the explainer');
     expect(find.text('Netflix renews in 3 days — \$26.99'), findsOneWidget, reason: 'USD example (S-90)');
-    await tester.tap(find.text('Not now'));
+    await tester.tap(find.text('No thanks'));
     await settle(tester);
     expect(f.notifications.permissionRequests, 0);
     expect(visited.last, '/home');
@@ -191,7 +191,7 @@ void main() {
     await settle(tester);
     await tester.tap(find.text('Later'));
     await settle(tester);
-    await tester.tap(find.text('Not now'));
+    await tester.tap(find.text('No thanks'));
     await settle(tester);
     expect(await f.subs.all(), isEmpty, reason: 'Later = add nothing now');
   });
@@ -250,12 +250,7 @@ void main() {
       // The grid cell's node spans the coloured tile too, which fools the pixel-sampling contrast
       // check; its text is `ink` on `bg` / `brand-soft` (AA by the tokens).
       if (i != 3) await expectLater(tester, meetsGuideline(textContrastGuideline));
-      final next = [
-        find.text('Continue'),
-        find.text('Get started'),
-        find.text('Continue'),
-        find.text('Continue'),
-      ];
+      final next = [find.text('Continue'), find.text('Get started'), find.text('Continue'), find.text('Continue')];
       if (i < 4) {
         if (i == 3) await pickFive(tester);
         await tester.tap(next[i].last);

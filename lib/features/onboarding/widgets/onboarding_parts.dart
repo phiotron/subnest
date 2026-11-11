@@ -145,6 +145,125 @@ class OnboardingTitle extends StatelessWidget {
   );
 }
 
+/// One choice in an onboarding list (design `.srow` in a `.group`, png 005/008): 36px badge
+/// (`surface-2`, bold text) · title + meta · ✓ circle when selected, empty radio otherwise.
+class OnboardingChoiceRow extends StatelessWidget {
+  const OnboardingChoiceRow({
+    super.key,
+    required this.badge,
+    required this.title,
+    required this.subtitle,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String badge;
+  final String title;
+  final String subtitle;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Semantics(
+      inMutuallyExclusiveGroup: true,
+      checked: selected,
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 56),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: 10),
+            child: Row(
+              children: [
+                ExcludeSemantics(child: OnboardingBadge(badge)),
+                const SizedBox(width: AppSpace.s3),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: AppType.body.copyWith(color: c.ink, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(subtitle, style: AppType.meta.copyWith(color: c.inkMuted)),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: AppSpace.s3),
+                selected ? const CheckCircle() : const _EmptyRadio(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 36px square badge with a code or symbol (design `.cur-badge`).
+class OnboardingBadge extends StatelessWidget {
+  const OnboardingBadge(this.text, {super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Container(
+      width: 36,
+      height: 36,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: c.surface2, borderRadius: BorderRadius.circular(AppRadius.md)),
+      child: Text(
+        text,
+        maxLines: 1,
+        textScaler: TextScaler.noScaling,
+        style: AppType.label.copyWith(color: c.ink, fontWeight: FontWeight.w700, fontSize: 15).tabular,
+      ),
+    );
+  }
+}
+
+/// `brand` circle with a check (design `.check-c`).
+class CheckCircle extends StatelessWidget {
+  const CheckCircle({super.key, this.size = 28});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(color: c.brand, shape: BoxShape.circle),
+      child: Icon(AppIcons.check, size: size * .62, color: c.onBrand),
+    );
+  }
+}
+
+class _EmptyRadio extends StatelessWidget {
+  const _EmptyRadio();
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(3),
+    child: Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: context.colors.lineStrong, width: 2),
+      ),
+    ),
+  );
+}
+
 /// The Subnest mark (app icon in miniature: three tiles over a mint nest on the teal field).
 /// Fixed brand colours like the real icon — not theme-dependent.
 class SubnestMark extends StatelessWidget {

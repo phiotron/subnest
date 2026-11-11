@@ -32,16 +32,18 @@ void main() {
     await loadFonts();
   });
 
-  addTest('Flow 1 — first launch: language → welcome → currency → pick 5 → reminders → Overview with data', (tester) async {
+  addTest('Flow 1 — first launch: language → welcome → currency → pick 5 → reminders → Overview with data', (
+    tester,
+  ) async {
     final f = await AddFixture.create(onboardingDone: false, primary: null);
     await pumpApp(tester, f, AppRoutes.onboarding);
-    expect(find.text('Language'), findsOneWidget);
+    expect(find.text('Choose your language'), findsOneWidget);
     await tester.tap(find.text('Continue'));
     await settle(tester);
     expect(find.text('All your subscriptions, one nest'), findsOneWidget);
     await tester.tap(find.text('Get started'));
     await settle(tester);
-    expect(find.text('USD — US dollar'), findsOneWidget);
+    expect(find.bySemanticsLabel('USD, US dollar'), findsOneWidget);
     await tester.tap(find.text('Continue'));
     await settle(tester);
     await pickFive(tester);
