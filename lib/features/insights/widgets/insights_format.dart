@@ -1,75 +1,107 @@
-import 'dart:math' as math;
-
-import 'package:intl/intl.dart';
+import 'package:flutter/painting.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../core/l10n/l10n.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../domain/domain.dart';
-import '../../../domain/stats/insights_stats.dart';
 
-/// Number / list wording for S9 (axis labels, donut centre, sentences).
+/// Wording + colour helpers shared by the S9 cards.
 extension InsightsFormat on AppLocalizations {
   String get _lang => localeName.split(RegExp('[_-]')).first;
+  bool get _vi => _lang == 'vi';
 
-  /// "1.07M" / "1,07tr", "500K" / "500k", "45".
-  String compactNumber(double v) {
-    final a = v.abs();
-    final (unit, div) = a >= 1e9
-        ? ('b', 1e9)
-        : a >= 1e6
-        ? ('m', 1e6)
-        : a >= 1e3
-        ? ('k', 1e3)
-        : ('', 1.0);
-    final n = NumberFormat(div == 1 ? '#,##0' : '#,##0.##', _lang).format(v / div);
-    return insightsCompact(unit.isEmpty ? 'none' : unit, n);
+  /// Minor units in [currency]: "$144.89" / "≈ $144.89".
+  String minor(int minor, String currency, {bool approx = false}) => money(Money(minor, currency), approx: approx);
+
+  /// "+$2.50" / "−$4.00" (U+2212) — the sign is part of the number.
+  String signedMinor(int minor, String currency, {bool approx = false}) {
+    final abs = this.minor(minor.abs(), currency);
+    final sign = minor > 0 ? '+' : (minor < 0 ? '−' : '');
+    return '${approx ? '≈ ' : ''}$sign$abs';
   }
 
-  /// Donut centre: full amount below one million, otherwise compact with the currency sign —
-  /// "≈ ₫1.07M" (EN) · "≈ 1,07tr" (VI, VND).
-  String compactMoney(double v, String currency, {bool approx = false}) {
-    if (v.abs() < 1e6) return amount(v, currency, approx: approx);
-    final n = compactNumber(v);
-    final code = currency.toUpperCase();
-    final out = _lang == 'vi' && code == 'VND'
-        ? n
-        : '${NumberFormat.simpleCurrency(locale: _lang, name: code).currencySymbol}$n';
-    return approx ? '≈ $out' : out;
-  }
+  String _monthName(LocalDate m) => DateFormat('MMMM', _lang).format(DateTime(m.year, m.month));
+  String _monthShortName(LocalDate m) => DateFormat('MMM', _lang).format(DateTime(m.year, m.month));
 
-  /// "A", "A and B", "A, B and C" (VI "và").
+  /// "November 2026" / "Tháng 11, 2026".
+  String statsMonthYear(LocalDate m) => _vi ? 'Tháng ${m.month}, ${m.year}' : '${_monthName(m)} ${m.year}';
+
+  /// Month as a period inside a sentence: "November" / "tháng 11".
+  String statsMonthInline(LocalDate m) => _vi ? 'tháng ${m.month}' : _monthName(m);
+
+  /// Month as a title: "November" / "Tháng 11".
+  String statsMonthTitle(LocalDate m) => _vi ? 'Tháng ${m.month}' : _monthName(m);
+
+  String costOfMonth(LocalDate m) => insightsCostOfMonth(_monthName(m), '${m.month}');
+  String vsMonth(LocalDate m) => insightsVsMonth(_monthShortName(m), '${m.month}');
+  String sameMonth(LocalDate m) => insightsSameMonth(_monthShortName(m), '${m.month}');
+  String nothingInMonth(LocalDate m) => insightsNothingInMonth(_monthName(m), '${m.month}');
+
+  /// Bar label under the 12 columns: "Jan" / "1".
+  String barLabel(LocalDate m) => _vi ? '${m.month}' : _monthShortName(m);
+
+  /// Bar label when "Jan" doesn't fit a column (320dp, large text): "J" / "1".
+  String barLabelNarrow(LocalDate m) =>
+      _vi ? '${m.month}' : DateFormat('MMMMM', _lang).format(DateTime(m.year, m.month));
+
+  /// Coming-up month bar: "Nov" / "T11".
+  String upcomingMonthLabel(LocalDate m) => _vi ? 'T${m.month}' : _monthShortName(m);
+
+  /// Spoken month of a bar: "November 2026" / "Tháng 11, 2026".
+  String spokenMonth(LocalDate m) => statsMonthYear(m);
+
+  /// "A, B and C" (VI "A, B và C").
   String joinNames(List<String> names) {
     if (names.length <= 1) return names.join();
-    return '${names.sublist(0, names.length - 1).join(', ')} $insightsAnd ${names.last}';
+    final and = _vi ? 'và' : 'and';
+    return '${names.sublist(0, names.length - 1).join(', ')} $and ${names.last}';
   }
 
-  /// "February and March" · VI "Tháng 2 và 3".
-  String monthList(List<LocalDate> months) => insightsMonthList(
-    joinNames([for (final m in months) DateFormat('MMMM', _lang).format(DateTime(m.year, m.month))]),
-    joinNames([for (final m in months) '${m.month}']),
-  );
-
-  /// "Nov 2026" / "T11/2026" (chart tooltip).
-  String shortMonth(LocalDate m) =>
-      _lang == 'vi' ? 'T${m.month}/${m.year}' : DateFormat('MMM y', _lang).format(DateTime(m.year, m.month));
-
-  /// Bar label under the chart: "N" / "11".
-  String barLabel(LocalDate m) =>
-      _lang == 'vi' ? '${m.month}' : DateFormat('MMMMM', _lang).format(DateTime(m.year, m.month));
-
-  /// `select` key used by the range strings.
-  static String rangeKey(InsightsRange r) => switch (r) {
-    InsightsRange.thisMonth => 'month',
-    InsightsRange.last12Months => 'months12',
-    InsightsRange.thisYear => 'year',
-  };
+  /// Name of a Category id (built-in or the user's own).
+  String categoryOf(String id, Map<String, Category> byId) {
+    final cat = byId[id];
+    if (cat != null) return categoryName(cat);
+    return category(SubscriptionCategory.fromKey(id));
+  }
 }
 
-/// Grid lines for the bar chart: up to three "nice" steps (1 · 2 · 2.5 · 5 × 10ⁿ) covering [max].
-List<double> niceTicks(double max) {
-  if (max <= 0) return const [];
-  final raw = max / 3;
-  final p = math.pow(10, (math.log(raw) / math.ln10).floor()).toDouble();
-  final step = [1, 2, 2.5, 5, 10].map((f) => f * p).firstWhere((s) => s >= raw);
-  final count = (max / step).ceil().clamp(1, 3);
-  return [for (var i = 1; i <= count; i++) step * i];
+/// Width of [text] in [style] at the current text scale.
+double textWidth(String text, TextStyle style, TextScaler scaler) => (TextPainter(
+  text: TextSpan(text: text, style: style),
+  textDirection: TextDirection.ltr,
+  textScaler: scaler,
+  maxLines: 1,
+)..layout()).width;
+
+/// Column width of [count] bars with [gap] between them inside a S9 card on this screen.
+double statsColumnWidth(double screenWidth, int count, double gap) =>
+    (screenWidth - 4 * 16 - gap * (count - 1)) / count;
+
+/// ISO-8601 week number of [d] (week 1 holds the year's first Thursday).
+int isoWeek(LocalDate d) {
+  final date = DateTime.utc(d.year, d.month, d.day);
+  final thursday = date.add(Duration(days: DateTime.thursday - date.weekday));
+  final firstJan = DateTime.utc(thursday.year, 1, 1);
+  return thursday.difference(firstJan).inDays ~/ 7 + 1;
+}
+
+/// Category colour in charts (design README v2): AI `chart-1`, Storage `chart-2`, Health `chart-3`,
+/// Software `chart-4`, Video `chart-5`, Music `tile-violet`, Telecom `tile-sky`; other built-ins
+/// `chart-other`; a category the user made keeps the colour picked for it in Settings.
+Color statsCategoryColor(AppColors c, String id, Map<String, Category> byId) {
+  final builtIn = SubscriptionCategory.tryKey(id) ?? byId[id]?.builtIn;
+  if (builtIn == null) {
+    final own = byId[id];
+    return own == null ? c.chartOther : Color(own.colorValue);
+  }
+  return switch (builtIn) {
+    SubscriptionCategory.ai => c.chart1,
+    SubscriptionCategory.storage => c.chart2,
+    SubscriptionCategory.health => c.chart3,
+    SubscriptionCategory.software => c.chart4,
+    SubscriptionCategory.video => c.chart5,
+    SubscriptionCategory.music => c.tileViolet,
+    SubscriptionCategory.telecom => c.tileSky,
+    _ => c.chartOther,
+  };
 }

@@ -104,6 +104,7 @@ Future<void> pumpScreen(
 
   await tester.pumpWidget(
     ProviderScope(
+      key: UniqueKey(), // a fresh container per pump: no state carried between screens
       overrides: [
         subscriptionsProvider.overrideWith((ref) => Stream.value(subscriptions ?? Product.subscriptions)),
         periodsProvider.overrideWith((ref) => Stream.value(periods ?? Product.periods)),
@@ -208,10 +209,9 @@ Future<void> scrollThrough(WidgetTester tester) async {
 void expectNoLayoutErrors(WidgetTester tester) {
   final e = tester.takeException();
   if (e is FlutterError) {
-    final creator = e
-        .toStringDeep()
+    final creator = '${e.toStringDeep()}${String.fromCharCode(10)}$e'
         .split(String.fromCharCode(10))
-        .where((d) => d.contains('creator:') || d.contains('file:///'))
+        .where((d) => d.contains('creator:') || d.contains('/lib/'))
         .take(2)
         .join(' | ');
     fail('${e.message.split(String.fromCharCode(10)).first} — $creator');

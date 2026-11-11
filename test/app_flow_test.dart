@@ -121,7 +121,8 @@ void main() {
     // Insights tab shows numbers.
     await tester.tap(find.text('Insights'));
     await settle();
-    expect(find.text('This month'), findsOneWidget);
+    expect(find.text('Month'), findsOneWidget);
+    expect(find.text('Year'), findsOneWidget);
     expect(find.textContaining('Paid'), findsWidgets);
 
     // Tear down: dispose providers (cancels timers) and close the DB.

@@ -1,257 +1,122 @@
 {
-  "insightsRangeMonth": "This month",
-  "insightsRange12": "12 months",
-  "insightsRangeYear": "This year",
-  "insightsTotalLabel": "{range, select, month{Total · this month} year{Total · this year} other{Total · last 12 months}}",
-  "@insightsTotalLabel": {
-    "description": "Big number of the summary card: Payments + periods still expected in the range (= the bars).",
-    "placeholders": {
-      "range": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsTrendMore": "{range, select, month{{percent}% more than last month} year{{percent}% more than last year} other{{percent}% more than the 12 months before}}",
-  "@insightsTrendMore": {
-    "placeholders": {
-      "range": {
-        "type": "String"
-      },
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsTrendLess": "{range, select, month{{percent}% less than last month} year{{percent}% less than last year} other{{percent}% less than the 12 months before}}",
-  "@insightsTrendLess": {
-    "placeholders": {
-      "range": {
-        "type": "String"
-      },
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsTrendSame": "{range, select, month{Same as last month} year{Same as last year} other{Same as the 12 months before}}",
-  "@insightsTrendSame": {
-    "placeholders": {
-      "range": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsTrendNoData": "{range, select, month{Not enough data from last month to compare} year{Not enough data from last year to compare} other{Not enough data from the 12 months before to compare}}",
-  "@insightsTrendNoData": {
-    "description": "Shown instead of a % when the history does not reach back to the start of the span before.",
-    "placeholders": {
-      "range": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsLegendPaid": "Paid",
-  "insightsLegendExpected": "Expected, not yet confirmed",
-  "insightsByMonth": "By month",
+  "insightsModeMonth": "Month",
+  "insightsModeYear": "Year",
+  "insightsPrevious": "{mode, select, year{Previous year} other{Previous month}}",
+  "@insightsPrevious": {"placeholders": {"mode": {"type": "String"}}},
+  "insightsNext": "{mode, select, year{Next year} other{Next month}}",
+  "@insightsNext": {"placeholders": {"mode": {"type": "String"}}},
+  "insightsProjected": "Projected",
+  "insightsCostOfMonth": "Cost of {name}",
+  "@insightsCostOfMonth": {"description": "Cost card title. name = month name (EN), number = month number (VI).", "placeholders": {"name": {"type": "String"}, "number": {"type": "String"}}},
+  "insightsCostOfYear": "Cost in {year}",
+  "@insightsCostOfYear": {"placeholders": {"year": {"type": "String"}}},
+  "insightsVsMonth": "vs {name}",
+  "@insightsVsMonth": {"description": "Change chip. name = short month name (EN), number = month number (VI).", "placeholders": {"name": {"type": "String"}, "number": {"type": "String"}}},
+  "insightsVsYear": "vs {year}",
+  "@insightsVsYear": {"placeholders": {"year": {"type": "String"}}},
+  "insightsSameMonth": "Same as {name}",
+  "@insightsSameMonth": {"placeholders": {"name": {"type": "String"}, "number": {"type": "String"}}},
+  "insightsSameYear": "Same as {year}",
+  "@insightsSameYear": {"placeholders": {"year": {"type": "String"}}},
+  "insightsChangeLabel": "{direction, select, up{Up {amount} {vs}} down{Down {amount} {vs}} other{{vs}}}",
+  "@insightsChangeLabel": {"description": "Screen-reader label of the change chip.", "placeholders": {"direction": {"type": "String"}, "amount": {"type": "String"}, "vs": {"type": "String"}}},
+  "insightsCount": "{count, plural, =1{1 subscription} other{{count} subscriptions}}",
+  "@insightsCount": {"placeholders": {"count": {"type": "int"}}},
+  "insightsPerDay": "{amount} a day",
+  "@insightsPerDay": {"placeholders": {"amount": {"type": "String"}}},
+  "insightsPerMonth": "{amount} a month",
+  "@insightsPerMonth": {"placeholders": {"amount": {"type": "String"}}},
+  "insightsHowCalculated": "How this is calculated",
+  "insightsPaid": "Paid",
+  "insightsStillToPay": "Still to pay",
+  "insightsNotPaid": "Not paid",
+  "insightsCashLabel": "Paid {paid}, still to pay {due}",
+  "@insightsCashLabel": {"placeholders": {"paid": {"type": "String"}, "due": {"type": "String"}}},
+  "insightsCashLabelPast": "Paid {paid}, not paid {due}",
+  "@insightsCashLabelPast": {"placeholders": {"paid": {"type": "String"}, "due": {"type": "String"}}},
+  "insightsNothingInMonth": "No subscription was being paid in {name}.",
+  "@insightsNothingInMonth": {"placeholders": {"name": {"type": "String"}, "number": {"type": "String"}}},
+  "insightsNothingInYear": "No subscription was being paid in {year}.",
+  "@insightsNothingInYear": {"placeholders": {"year": {"type": "String"}}},
+  "insightsMissingRates": "Amounts in {currencies} aren’t included — no exchange rate yet.",
+  "@insightsMissingRates": {"placeholders": {"currencies": {"type": "String"}}},
+  "insightsInfoTitle": "How the numbers work",
+  "insightsInfoMonthlyTitle": "Monthly cost",
+  "insightsInfoMonthlyBody": "Every subscription active this month, spread evenly: a yearly plan counts as 1/12 each month. A trial counts from its first paid month; a pause stops it from the month after.",
+  "insightsInfoCashTitle": "Paid · Still to pay",
+  "insightsInfoCashBody": "The real money leaving this month: payments you confirmed, plus renewals still ahead and periods waiting for you. A yearly plan renewing this month counts in full.",
+  "insightsInfoApproxTitle": "Why ≈",
+  "insightsInfoApproxBody": "Other currencies are converted at today’s rate and rounded per line, so the lines always add up to the total.",
+  "insightsInfoNote": "That’s why Paid + Still to pay can differ from the monthly cost.",
+  "insightsInfoOk": "Got it",
+  "insightsBars12": "12 months",
+  "insightsBarsYear": "Each month of {year}",
+  "@insightsBarsYear": {"placeholders": {"year": {"type": "String"}}},
   "insightsTapBar": "Tap a bar",
-  "insightsTipPaid": "{amount} paid",
-  "@insightsTipPaid": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsTipExpected": "{amount} expected",
-  "@insightsTipExpected": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsChartLabel": "Spending per month, paid and expected, {from} to {to}",
-  "@insightsChartLabel": {
-    "placeholders": {
-      "from": {
-        "type": "String"
-      },
-      "to": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsCompact": "{unit, select, k{{n}K} m{{n}M} b{{n}B} other{{n}}}",
-  "@insightsCompact": {
-    "description": "Short axis/centre number: 1.07M, 500K.",
-    "placeholders": {
-      "unit": {
-        "type": "String"
-      },
-      "n": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsAnd": "and",
-  "insightsMonthList": "{names}",
-  "@insightsMonthList": {
-    "description": "Months in a sentence: EN names ('February and March'), VI numbers ('Tháng 2 và 3').",
-    "placeholders": {
-      "names": {
-        "type": "String"
-      },
-      "numbers": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakYearly": "{months} jump with the yearly {names} renewals.",
-  "@insightsPeakYearly": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeak": "{months} jump with the {names} renewals.",
-  "@insightsPeak": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakPlain": "Spending was higher than usual in {months}.",
-  "@insightsPeakPlain": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakYearlyAhead": "{months} will jump with the yearly {names} renewals.",
-  "@insightsPeakYearlyAhead": {
-    "description": "Peak months still ahead (expected, hatched bars).",
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakAhead": "{months} will jump with the {names} renewals.",
-  "@insightsPeakAhead": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakPlainAhead": "Spending will be higher than usual in {months}.",
-  "@insightsPeakPlainAhead": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      }
-    }
-  },
+  "insightsLegendMonthly": "Monthly cost",
+  "insightsBarLabel": "{month}: {amount}{projected, select, yes{, projected} other{}}",
+  "@insightsBarLabel": {"description": "Screen-reader label of one bar.", "placeholders": {"month": {"type": "String"}, "amount": {"type": "String"}, "projected": {"type": "String"}}},
+  "insightsChartLabel": "Monthly cost, {from} to {to}",
+  "@insightsChartLabel": {"placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}},
   "insightsByCategory": "By category",
-  "insightsMonthlyActive": "monthly equivalent, active plans",
-  "insightsCategoryNote": "Yearly and other non-monthly plans are spread evenly per month here, so this is not what you pay this month.",
-  "@insightsCategoryNote": {
-    "description": "Under the donut when a plan is not billed monthly."
-  },
-  "insightsSliceLabel": "{category}: {amount} per month, {percent}%",
-  "@insightsSliceLabel": {
-    "placeholders": {
-      "category": {
-        "type": "String"
-      },
-      "amount": {
-        "type": "String"
-      },
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsCategoryShare": "{percent}% of your monthly spend",
-  "@insightsCategoryShare": {
-    "placeholders": {
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsPerMonthShort": "/mo",
-  "insightsCycleNoteOne": "{name} is billed {price} — counted here as its monthly share.",
-  "@insightsCycleNoteOne": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "price": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsCycleNoteMany": "Plans not billed monthly are counted here as their monthly share.",
+  "insightsSliceLabel": "{category}: {amount}, {percent}%",
+  "@insightsSliceLabel": {"placeholders": {"category": {"type": "String"}, "amount": {"type": "String"}, "percent": {"type": "int"}}},
   "insightsTop": "Most expensive",
-  "insightsSaving": "You’re saving",
-  "insightsSavingBy": "by cancelling {names}",
-  "@insightsSavingBy": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsSavingByCount": "{count, plural, =1{by cancelling 1 service} other{by cancelling {count} services}}",
-  "@insightsSavingByCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsOverlapTitle": "{category, select, music{You pay for {count} music services} other{You pay for {count} video services}}",
-  "@insightsOverlapTitle": {
-    "placeholders": {
-      "category": {
-        "type": "String"
-      },
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsOverlapBody": "{count, plural, =2{{names} together are {amount}/month. Need both?} other{{names} together are {amount}/month. Need all of them?}}",
-  "@insightsOverlapBody": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "names": {
-        "type": "String"
-      },
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
+  "insightsShareOfMonth": "share of the month",
+  "insightsShareOfYear": "share of the year",
+  "insightsRises": "Price rises",
+  "insightsRisesPerMonth": "more a month than a year ago",
+  "insightsRisesYearly": "That’s {amount} a year · {name} changed the most",
+  "@insightsRisesYearly": {"placeholders": {"amount": {"type": "String"}, "name": {"type": "String"}}},
+  "insightsRisesEmpty": "No subscription got more expensive in the last 12 months.",
+  "insightsRiseLabel": "{name}: {from} to {to}, {delta} a month",
+  "@insightsRiseLabel": {"placeholders": {"name": {"type": "String"}, "from": {"type": "String"}, "to": {"type": "String"}, "delta": {"type": "String"}}},
+  "insightsReview": "Review {name}",
+  "@insightsReview": {"placeholders": {"name": {"type": "String"}}},
+  "insightsNext12": "Next 12 months",
+  "insightsForecastProjected": "Projected",
+  "insightsLast12": "Last 12 months",
+  "insightsForecastChange": "{amount} a year compared with the last 12 months",
+  "@insightsForecastChange": {"placeholders": {"amount": {"type": "String"}}},
+  "insightsForecastPartial": "Your recorded payments don’t cover the whole last 12 months yet, so this comparison is rough.",
+  "insightsForecastNew": "New this year",
+  "insightsForecastRises": "Price rises",
+  "insightsForecastOther": "Other",
+  "insightsViewList": "View as list",
+  "insightsComingUp": "Coming up",
+  "insightsWeeks13": "13 weeks",
+  "insightsWeekShort": "W{week}",
+  "@insightsWeekShort": {"placeholders": {"week": {"type": "int"}}},
+  "insightsWeekLabel": "Week {week}: {amount}",
+  "@insightsWeekLabel": {"placeholders": {"week": {"type": "int"}, "amount": {"type": "String"}}},
+  "insightsBiggest": "Biggest: {when} · {amount}",
+  "@insightsBiggest": {"placeholders": {"when": {"type": "String"}, "amount": {"type": "String"}}},
+  "insightsRenews": "({name} renews)",
+  "@insightsRenews": {"placeholders": {"name": {"type": "String"}}},
+  "insightsNothingAhead": "Nothing expected in this time.",
+  "insightsBudgets": "Budgets",
+  "insightsEdit": "Edit",
+  "insightsBudgetLabel": "{category}: {spent} of {limit}{over, select, yes{, over budget} other{}}",
+  "@insightsBudgetLabel": {"placeholders": {"category": {"type": "String"}, "spent": {"type": "String"}, "limit": {"type": "String"}, "over": {"type": "String"}}},
+  "insightsSavingTitle": "You’re saving {amount} a year",
+  "@insightsSavingTitle": {"placeholders": {"amount": {"type": "String"}}},
+  "insightsSavingBy": "{count, plural, =1{by cancelling 1 subscription} other{by cancelling {count} subscriptions}}",
+  "@insightsSavingBy": {"placeholders": {"count": {"type": "int"}}},
+  "insightsNotWorthHint": "{count, plural, =1{Dropping the one you marked “Not worth it” would save {amount} more a year.} other{Dropping the {count} you marked “Not worth it” would save {amount} more a year.}}",
+  "@insightsNotWorthHint": {"placeholders": {"count": {"type": "int"}, "amount": {"type": "String"}}},
+  "insightsOverlapVideo": "{count, plural, =2{You pay for 2 video services — do you need both?} other{You pay for {count} video services — do you need all of them?}}",
+  "@insightsOverlapVideo": {"placeholders": {"count": {"type": "int"}}},
+  "insightsOverlapMusic": "{count, plural, =2{You pay for 2 music services — do you need both?} other{You pay for {count} music services — do you need all of them?}}",
+  "@insightsOverlapMusic": {"placeholders": {"count": {"type": "int"}}},
+  "insightsCategoryTitle": "{category} · {period}",
+  "@insightsCategoryTitle": {"placeholders": {"category": {"type": "String"}, "period": {"type": "String"}}},
+  "insightsCategoryShare": "{count, plural, =1{1 subscription} other{{count} subscriptions}} · {percent}% of {period}",
+  "@insightsCategoryShare": {"placeholders": {"count": {"type": "int"}, "percent": {"type": "int"}, "period": {"type": "String"}}},
+  "insightsPauseNote": "{name} still counts in {period} — its pause starts on {date}.",
+  "@insightsPauseNote": {"placeholders": {"name": {"type": "String"}, "period": {"type": "String"}, "date": {"type": "String"}}},
+  "insightsForecastCount": "{count, plural, =1{1 expected charge from real due dates} other{{count} expected charges from real due dates}}",
+  "@insightsForecastCount": {"placeholders": {"count": {"type": "int"}}},
   "insightsEmptyTitle": "Add subscriptions to see insights",
-  "insightsEmptyBody": "Your spending by month and category shows up here once you’ve added a few.",
-  "insightsEmptyAction": "Add a subscription"
+  "insightsEmptyBody": "Monthly cost, categories, price rises and the next 12 months show up here.",
+  "insightsEmptyAction": "Browse services"
 }

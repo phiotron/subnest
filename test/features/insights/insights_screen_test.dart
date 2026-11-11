@@ -1,286 +1,290 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:subnest/domain/stats/insights_stats.dart';
+import 'package:subnest/features/insights/category_month_screen.dart';
+import 'package:subnest/features/insights/forecast_list_screen.dart';
 import 'package:subnest/features/insights/insights_screen.dart';
-import 'package:subnest/features/insights/widgets/category_sheet.dart';
-import 'package:subnest/features/insights/widgets/month_bar_chart.dart';
+import 'package:subnest/features/insights/widgets/insights_cards.dart';
+import 'package:subnest/features/insights/widgets/month_bars.dart';
+import 'package:subnest/features/insights/widgets/stats_parts.dart';
 
-import '../../domain/stats/device_sample.dart';
-import '../../domain/stats/sample_data.dart';
 import '../calendar/screen_harness.dart';
+import 'product_sample.dart';
 
-const _tall = ScreenSetup(tab: 2, height: 2600);
+final videoSlice = RegExp(r'^Video: [^,]+(,\d+)?[^,]*, \d+%$');
 
+Finder rich(String text) => find.text(text, findRichText: true);
+
+Future<void> scrollTo(WidgetTester tester, Finder f) async {
+  await tester.scrollUntilVisible(f, 300, scrollable: find.byType(Scrollable).first);
+  await tester.pumpAndSettle();
+}
+
+const insights = ScreenSetup(tab: 2);
+const tall = ScreenSetup(tab: 2, height: 4200);
+
+/// Mockup v14 074–086 with the product.md §6 data (today 10 Nov 2026, USD).
 void main() {
   setUpAll(() async {
     await initializeDateFormatting();
     await loadTestFonts();
   });
 
-  group('S9 with data (png 44, 45)', () {
-    testWidgets('summary: total = paid + expected over the last 12 months', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
+  group('074–078 November', () {
+    testWidgets('074 cost card: ≈ \$144.89, −\$4.00 vs Oct, ≈ \$4.83 a day, Paid / Still to pay, 12 bars', (
+      tester,
+    ) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: insights);
       expect(find.text('Insights'), findsWidgets);
-      expect(find.text('Total · last 12 months'), findsOneWidget);
-      // Paid: 10 × 817,800 + 782,000 + Canva 1,390,000 + Google One 1,690,000 (ChatGPT in USD → ≈);
-      // the big number adds this month's 876,800 still expected.
-      expect(find.text('≈ ₫12,916,800'), findsOneWidget);
-      expect(find.text('≈ ₫12,040,000'), findsOneWidget);
-      expect(find.text('Expected, not yet confirmed'), findsOneWidget);
-      expect(find.text('≈ ₫876,800'), findsOneWidget);
-      expect(find.textContaining('more than'), findsNothing);
-      expect(
-        find.text('Not enough data from the 12 months before to compare'),
-        findsOneWidget,
-        reason: 'history starts Dec 2025',
-      );
+      expect(find.text('Month'), findsOneWidget);
+      expect(find.text('Year'), findsOneWidget);
+      expect(find.text('November 2026'), findsWidgets);
+      expect(find.text('Projected'), findsOneWidget, reason: 'legend only — November is not ahead');
+      expect(find.text('Cost of November'), findsOneWidget);
+      expect(rich(r'≈ $144.89'), findsOneWidget);
+      expect(find.text(r'$4.00 vs Oct'), findsOneWidget);
+      expect(rich(r'10 subscriptions · ≈ $4.83 a day'), findsOneWidget);
+      expect(find.text(r'$41.99'), findsOneWidget);
+      expect(find.text(r'$74.58'), findsOneWidget);
+      expect(find.text('Still to pay'), findsOneWidget);
+      expect(find.bySemanticsLabel(r'Paid $41.99, still to pay $74.58'), findsOneWidget);
+      expect(find.text('12 months'), findsWidgets);
+      expect(find.bySemanticsLabel(r'November 2026: approximately $144.89'), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp(r'^December 2026: approximately \$[\d.,]+, projected$')), findsOneWidget);
     });
 
-    testWidgets('320dp × 200% VI: legend amounts sit under their labels', (tester) async {
-      // Real phone (2026-11-05), largest display + font: "Đã trả" was squeezed to one letter per line.
-      await pumpScreen(
-        tester,
-        const InsightsScreen(),
-        setup: const ScreenSetup(tab: 2, width: 320, height: 2600, locale: 'vi', textScale: 2),
-      );
-      final label = find.text('Đã trả');
-      final value = find.byKey(const ValueKey('legend-value-false'));
-      expect(tester.getTopLeft(value).dy, greaterThanOrEqualTo(tester.getBottomLeft(label).dy));
-      expect(tester.getTopLeft(value).dx, tester.getTopLeft(label).dx);
-      expect(tester.takeException(), isNull);
+    testWidgets('tapping a bar or ‹ › selects the month; every card follows', (tester) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: insights);
+      await tester.tap(find.bySemanticsLabel(RegExp(r'^August 2026')));
+      await tester.pumpAndSettle();
+      expect(find.text('August 2026'), findsWidgets);
+      expect(find.text('Cost of August'), findsOneWidget);
+      expect(find.text('Not paid'), findsOneWidget, reason: '079: a past month shows Paid / Not paid');
+      await tester.tap(find.byTooltip('Next month'));
+      await tester.pumpAndSettle();
+      expect(find.text('September 2026'), findsWidgets);
+      await tester.tap(find.byTooltip('Previous month'));
+      await tester.tap(find.byTooltip('Previous month'));
+      await tester.pumpAndSettle();
+      expect(find.text('July 2026'), findsWidgets);
     });
 
-    testWidgets('range picker: this month compares with last month, this year', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
-      await tester.tap(find.text('This month'));
-      await tester.pumpAndSettle();
-      expect(find.text('Total · this month'), findsOneWidget);
-      // Big number and % are the same quantity: 876,800 this month vs 782,000 in October.
-      expect(find.text('≈ ₫876,800'), findsNWidgets(2));
-      expect(find.text('12% more than last month'), findsOneWidget);
-      await tester.tap(find.text('This year'));
-      await tester.pumpAndSettle();
-      expect(find.text('Total · this year'), findsOneWidget);
-      expect(find.text('Not enough data from last year to compare'), findsOneWidget);
-      expect(find.textContaining('more than last year'), findsNothing);
-    });
-
-    testWidgets('bar chart: tap a bar for its amounts; peaks explained', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
-      expect(find.text('By month'), findsOneWidget);
-      expect(find.text('Tap a bar'), findsOneWidget);
-      expect(
-        find.text('February and March jump with the yearly Canva Pro and Google One 2TB renewals.'),
-        findsOneWidget,
-      );
-      expect(
-        find.bySemanticsLabel(RegExp(r'^Spending per month, paid and expected, Dec 2025 to Nov 2026')),
-        findsOneWidget,
-      );
-      final nov = find.bySemanticsLabel('Nov 2026 · approximately ₫876,800 expected');
-      expect(nov, findsOneWidget);
-      await tester.tap(nov);
-      await tester.pumpAndSettle();
-      expect(find.text('Nov 2026 · ≈ ₫876,800 expected'), findsOneWidget);
-      await tester.tap(find.bySemanticsLabel('Mar 2026 · approximately ₫2,507,800 paid'));
-      await tester.pumpAndSettle();
-      expect(find.text('Mar 2026 · ≈ ₫2,507,800 paid'), findsOneWidget);
-    });
-
-    testWidgets('donut legend lists every category with amount and percent', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
+    testWidgets('075 by category + most expensive of the month', (tester) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: tall);
       expect(find.text('By category'), findsOneWidget);
-      expect(find.text('monthly equivalent, active plans'), findsOneWidget);
-      expect(
-        find.text(
-          'Yearly and other non-monthly plans are spread evenly per month here, so this is not what you pay this month.',
-        ),
-        findsOneWidget,
-        reason: 'Google One and Canva are yearly',
-      );
-      for (final (cat, pct) in [('AI', 47), ('Storage', 19), ('Telecom', 14), ('Software', 11), ('Video', 9)]) {
-        expect(find.bySemanticsLabel(RegExp('^$cat: .* per month, $pct%\$')), findsOneWidget, reason: cat);
+      for (final c in ['Video', 'AI', 'Health', 'Storage', 'Software', 'Music']) {
+        expect(find.text(c), findsWidgets, reason: c);
       }
-      expect(find.text('≈ ₫1.07M'), findsOneWidget);
-      expect(find.text('Music'), findsNothing, reason: 'Spotify is still a Trial');
-    });
-
-    testWidgets('tapping a category opens its sheet (png 47)', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
-      await tester.tap(find.bySemanticsLabel(RegExp('^Storage: ')));
-      await tester.pumpAndSettle();
-      expect(find.byType(CategorySheet), findsOneWidget);
-      expect(find.text('19% of your monthly spend'), findsOneWidget);
-      expect(find.text('Google One 2TB'), findsWidgets);
-      expect(find.text('₫1,690,000'), findsOneWidget);
-      expect(find.text('/year'), findsOneWidget);
-      expect(
-        find.text('Google One 2TB is billed ₫1,690,000/year — counted here as its monthly share.'),
-        findsOneWidget,
-      );
-      await tester.tap(find.text('Close'));
-      await tester.pumpAndSettle();
-      expect(find.byType(CategorySheet), findsNothing);
-    });
-
-    testWidgets('a subscription in the sheet opens its detail', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
-      await tester.tap(find.bySemanticsLabel(RegExp('^Storage: ')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.descendant(of: find.byType(CategorySheet), matching: find.text('iCloud+ 200GB')));
-      await tester.pumpAndSettle();
-      expect(pushed, ['/subscription/icloud']);
-    });
-
-    testWidgets('most expensive, savings and the overlap hint', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
+      expect(find.bySemanticsLabel(r'Health: $39.00, 27%'), findsOneWidget);
       expect(find.text('Most expensive'), findsOneWidget);
-      final names = ['ChatGPT Plus', 'Viettel 5G', 'Google One 2TB', 'Canva Pro', 'Netflix Premium'];
-      final ys = [for (final n in names) tester.getTopLeft(find.text(n).first).dy];
-      expect(ys, orderedEquals([...ys]..sort()));
-      expect(find.text('≈ ₫508,000'), findsWidgets);
-      expect(find.text('You’re saving'), findsOneWidget);
-      expect(find.text('₫1,479,000/year'), findsOneWidget);
-      expect(find.text('by cancelling Duolingo Super and Apple Music'), findsOneWidget);
-      expect(find.text('You pay for 2 video services'), findsOneWidget);
+      expect(find.text('share of the month'), findsOneWidget);
+      final top = find.byType(TopExpensiveCard);
+      expect(find.descendant(of: top, matching: find.text('Gym')), findsOneWidget);
       expect(
-        find.text('Netflix Premium and YouTube Premium Family together are ₫100,800/month. Need both?'),
-        findsOneWidget,
+        find.descendant(of: top, matching: find.text('Yearly')),
+        findsNothing,
+        reason: 'top 5 are monthly plans',
       );
-      await tester.tap(find.text('Canva Pro'));
-      await tester.pumpAndSettle();
-      expect(pushed, ['/subscription/canva']);
     });
 
-    testWidgets('touch targets and contrast', (tester) async {
-      await pumpScreen(tester, const InsightsScreen(), setup: _tall);
-      await expectLater(tester, meetsGuideline(textContrastGuideline));
-      // Legend rows and Top rows are ≥ 48dp; bars are 1/12 of the chart wide (see notes).
-      expect(tester.getSize(find.bySemanticsLabel(RegExp('^AI: '))).height, greaterThanOrEqualTo(48));
-      final top = find.ancestor(of: find.text('ChatGPT Plus').last, matching: find.byType(InkWell)).first;
-      expect(tester.getSize(top).height, greaterThanOrEqualTo(48));
+    testWidgets('076 price rises + next 12 months', (tester) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: tall);
+      expect(find.text('Price rises'), findsWidgets);
+      expect(rich(r'+$3.50 more a month than a year ago'), findsOneWidget);
+      expect(rich(r'That’s $42.00 a year · Netflix Standard changed the most'), findsOneWidget);
+      expect(find.text(r'$15.49 → $17.99'), findsOneWidget);
+      expect(find.text(r'+$2.50'), findsOneWidget);
+      expect(find.text(r'+$1.00'), findsOneWidget);
+      expect(find.text('Review Netflix Standard'), findsOneWidget);
+      expect(find.text('Next 12 months'), findsOneWidget);
+      expect(find.text('Last 12 months'), findsOneWidget);
+      expect(find.textContaining('a year compared with the last 12 months', findRichText: true), findsOneWidget);
+      expect(find.textContaining('New this year', findRichText: true), findsOneWidget);
+      expect(rich('Other'), findsOneWidget);
+    });
+
+    testWidgets('077 coming up 13 weeks ↔ 12 months (082), budgets', (tester) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: tall);
+      expect(find.text('Coming up'), findsOneWidget);
+      expect(find.text('W46'), findsOneWidget);
+      expect(find.textContaining('Biggest: W', findRichText: true), findsOneWidget);
+      await tester.tap(find.descendant(of: find.byType(ComingUpCard), matching: find.text('12 months')));
+      await tester.pumpAndSettle();
+      expect(find.text('Mar'), findsWidgets);
+      expect(find.textContaining('renews)', findRichText: true), findsOneWidget, reason: '082: a yearly renewal peaks');
+      expect(find.text('Budgets'), findsOneWidget);
+      expect(find.text(r'$40.00 / $35.00'), findsOneWidget, reason: 'AI over budget');
+      expect(find.bySemanticsLabel(r'AI: $40.00 of $35.00, over budget'), findsOneWidget);
+    });
+
+    testWidgets('078 savings, Not worth it, overlap hint', (tester) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: tall);
+      expect(rich(r'You’re saving $191.87 a year'), findsOneWidget);
+      expect(find.text('by cancelling 2 subscriptions'), findsOneWidget);
+      expect(rich(r'Dropping the 2 you marked “Not worth it” would save $587.88 more a year.'), findsOneWidget);
+      expect(find.text('You pay for 3 video services — do you need all of them?'), findsOneWidget);
+    });
+
+    testWidgets('(i) opens how the numbers work', (tester) async {
+      await pumpScreen(tester, const InsightsScreen(), setup: insights);
+      await tester.tap(find.bySemanticsLabel('How this is calculated'));
+      await tester.pumpAndSettle();
+      expect(find.text('How the numbers work'), findsOneWidget);
+      await tester.tap(find.text('Got it'));
+      await tester.pumpAndSettle();
+      expect(find.text('How the numbers work'), findsNothing);
     });
   });
 
-  group('phone data 2026-11-06 (USD Primary, VI) — fix-insights', () {
-    Future<void> pump(WidgetTester tester, InsightsRange range) => pumpScreen(
-      tester,
-      InsightsScreen(initialRange: range),
-      setup: const ScreenSetup(tab: 2, height: 2600, locale: 'vi'),
-      subscriptions: DeviceSample.subscriptions,
-      periods: DeviceSample.periods,
-      today: DeviceSample.today,
-      rates: DeviceSample.rates,
-      primary: DeviceSample.primary,
-    );
-
-    testWidgets('#1 this month: big number and % are the same total', (tester) async {
-      await pump(tester, InsightsRange.thisMonth);
-      expect(find.text('Tổng · tháng này'), findsOneWidget);
-      expect(find.text('Đã trả · tháng này'), findsNothing);
-      // Nothing paid yet; ≈ $34.36 expected vs $30.67 in October → +12% (each line rounded to cents).
-      expect(find.textContaining(RegExp(r'^≈ 34,36\s')), findsNWidgets(2), reason: 'headline + Expected row');
-      expect(find.text('Nhiều hơn 12% so với tháng trước'), findsOneWidget);
-    });
-
-    testWidgets('#2 this year: no % against an untracked last year', (tester) async {
-      await pump(tester, InsightsRange.thisYear);
-      expect(find.textContaining('so với năm ngoái'), findsNothing);
-      expect(find.text('Chưa đủ dữ liệu năm ngoái để so sánh'), findsOneWidget);
-    });
-
-    testWidgets('#3 by category says it is a monthly equivalent', (tester) async {
-      await pump(tester, InsightsRange.thisMonth);
-      expect(find.text('quy ra mỗi tháng, gói đang dùng'), findsOneWidget);
-      expect(
-        find.text(
-          'Gói trả theo năm (hoặc không theo tháng) được chia đều ra mỗi tháng, nên đây không phải số phải trả trong tháng này.',
-        ),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('#4 peaks: month order, December worded as expected', (tester) async {
-      await pump(tester, InsightsRange.thisYear);
-      expect(
-        find.text(
-          'Tháng 3 tăng vọt vì gia hạn gói năm Google One 2TB. '
-          'Tháng 12 dự kiến tăng vọt vì gia hạn gói năm ChatGPT Pro 100.',
-        ),
-        findsOneWidget,
-      );
-      await tester.tap(find.text('12 tháng'));
-      await tester.pumpAndSettle();
-      expect(find.text('Tháng 2 và 3 tăng vọt vì gia hạn gói năm Canva Pro và Google One 2TB.'), findsOneWidget);
-    });
+  testWidgets('079 August: Paid / Not paid; Netflix still at the old price', (tester) async {
+    await pumpScreen(tester, const InsightsScreen(), setup: tall);
+    for (var i = 0; i < 3; i++) {
+      await tester.tap(find.byTooltip('Previous month'));
+    }
+    await tester.pumpAndSettle();
+    expect(find.text('Cost of August'), findsOneWidget);
+    expect(find.text('Not paid'), findsOneWidget);
+    expect(find.text('Still to pay'), findsNothing);
+    expect(find.descendant(of: find.byType(TopExpensiveCard), matching: find.text(r'$15.49')), findsOneWidget);
   });
 
-  testWidgets('empty state (png 46)', (tester) async {
-    await pumpScreen(
-      tester,
-      const InsightsScreen(),
-      setup: const ScreenSetup(tab: 2),
-      subscriptions: const [],
-      periods: const [],
-    );
+  testWidgets('080 December: Projected tag, Disney+ drops out after its pause', (tester) async {
+    await pumpScreen(tester, const InsightsScreen(), setup: tall);
+    await tester.tap(find.byTooltip('Next month'));
+    await tester.pumpAndSettle();
+    expect(find.text('December 2026'), findsWidgets);
+    expect(find.byType(ProjectedTag), findsOneWidget);
+    expect(find.descendant(of: find.byType(TopExpensiveCard), matching: find.text('Disney+')), findsNothing);
+  });
+
+  testWidgets('081 Year 2026: 12 months added up, ≈ per month', (tester) async {
+    await pumpScreen(tester, const InsightsScreen(), setup: tall);
+    await tester.tap(find.text('Year'));
+    await tester.pumpAndSettle();
+    expect(find.text('2026'), findsWidgets);
+    expect(find.text('Cost in 2026'), findsOneWidget);
+    expect(find.text('Each month of 2026'), findsOneWidget);
+    expect(find.textContaining(' a month', findRichText: true), findsWidgets);
+    expect(find.text('share of the year'), findsOneWidget);
+    // A bar goes back to Month mode on that month.
+    await tester.tap(find.bySemanticsLabel(RegExp(r'^March 2026')));
+    await tester.pumpAndSettle();
+    expect(find.text('Cost of March'), findsOneWidget);
+  });
+
+  testWidgets('083 tap a slice: Video in November', (tester) async {
+    await pumpScreen(tester, const InsightsScreen(), setup: tall);
+    await tester.tap(find.bySemanticsLabel(videoSlice));
+    await tester.pumpAndSettle();
+    expect(find.byType(CategoryMonthScreen), findsOneWidget);
+    expect(find.text('Video · November'), findsOneWidget);
+    expect(find.text('3 subscriptions · 22% of November'), findsOneWidget);
+    expect(find.text('Netflix Standard'), findsOneWidget);
+    expect(find.textContaining('Disney+ still counts in November'), findsOneWidget);
+    await tester.tap(find.text('Netflix Standard'));
+    await tester.pumpAndSettle();
+    expect(pushed.last, '/subscription/netflix');
+  });
+
+  testWidgets('084 next 12 months as a list', (tester) async {
+    await pumpScreen(tester, const InsightsScreen(), setup: tall);
+    await tester.tap(find.descendant(of: find.byType(NextYearCard), matching: find.text('View as list')));
+    await tester.pumpAndSettle();
+    expect(find.byType(ForecastListScreen), findsOneWidget);
+    expect(find.textContaining('expected charges from real due dates'), findsOneWidget);
+    expect(find.text('NOVEMBER 2026'), findsOneWidget);
+    expect(find.text('To confirm'), findsOneWidget, reason: 'Claude Pro, 8 Nov');
+  });
+
+  testWidgets('085 empty', (tester) async {
+    await pumpScreen(tester, const InsightsScreen(), setup: insights, subscriptions: const [], periods: const []);
     expect(find.text('Add subscriptions to see insights'), findsOneWidget);
-    expect(find.byType(MonthBarChart), findsNothing);
-    await tester.tap(find.text('Add a subscription'));
+    expect(find.text('Browse services'), findsOneWidget);
+    expect(find.byType(MonthBarsCard), findsNothing);
+    await tester.tap(find.text('Browse services'));
     await tester.pumpAndSettle();
     expect(pushed, ['/catalog']);
   });
 
-  testWidgets('only cancelled subscriptions: history and savings, no donut', (tester) async {
+  testWidgets('086 only yearly plans: spread monthly, nothing to pay this month', (tester) async {
     await pumpScreen(
       tester,
       const InsightsScreen(),
-      setup: _tall,
-      subscriptions: [Sample.duolingo, Sample.appleMusic],
-      periods: const [],
+      setup: insights,
+      subscriptions: [Product.googleOne, Product.canva],
+      periods: [
+        for (final p in Product.periods)
+          if (p.subscriptionId == 'googleone' || p.subscriptionId == 'canva') p,
+      ],
     );
-    expect(find.text('By month'), findsOneWidget);
-    expect(find.text('By category'), findsNothing);
-    expect(find.text('Most expensive'), findsNothing);
-    expect(find.text('You’re saving'), findsOneWidget);
+    expect(rich(r'≈ $18.33'), findsOneWidget);
+    expect(find.text(r'$0.00'), findsNWidgets(2));
   });
 
   testWidgets('Vietnamese wording', (tester) async {
-    await pumpScreen(tester, const InsightsScreen(), setup: const ScreenSetup(tab: 2, height: 2600, locale: 'vi'));
-    expect(find.text('Tổng · 12 tháng qua'), findsOneWidget);
-    expect(find.text('Dự kiến, chưa xác nhận'), findsOneWidget);
-    expect(find.text('Tháng 2 và 3 tăng vọt vì gia hạn gói năm Canva Pro và Google One 2TB.'), findsOneWidget);
-    expect(find.text('quy ra mỗi tháng, gói đang dùng'), findsOneWidget);
-    expect(find.text('≈ 1,07tr'), findsOneWidget);
-    expect(find.text('Bạn trả 2 dịch vụ video'), findsOneWidget);
-    expect(find.text('nhờ huỷ Duolingo Super và Apple Music'), findsOneWidget);
+    await pumpScreen(tester, const InsightsScreen(), setup: const ScreenSetup(tab: 2, locale: 'vi', height: 4200));
+    expect(find.text('Thống kê'), findsWidgets);
+    expect(find.text('Tháng 11, 2026'), findsWidgets);
+    expect(find.text('Chi phí tháng 11'), findsOneWidget);
+    expect(find.textContaining('so với thg 10'), findsOneWidget);
+    expect(find.text('Còn phải thanh toán'), findsOneWidget);
+    expect(find.text('Theo danh mục'), findsOneWidget);
+    expect(find.text('Tăng giá'), findsOneWidget);
+    expect(find.text('12 tháng tới'), findsOneWidget);
+    expect(find.text('T46'), findsOneWidget);
+    expect(find.text('Bạn trả 3 dịch vụ video — cần hết không?'), findsOneWidget);
   });
 
-  group('no overflow: 360/390 × EN/VI × light/dark × 100/130/200%', () {
+  testWidgets('numbers on screen are spoken: no "≈" in labels, bars and rows labelled', (tester) async {
+    final handle = tester.ensureSemantics();
+    await pumpScreen(tester, const InsightsScreen(), setup: tall);
+    expect(find.bySemanticsLabel(RegExp('≈')), findsNothing);
+    expect(
+      find.bySemanticsLabel(RegExp(r'^Netflix Standard: \$15\.49 to \$17\.99, \+\$2\.50 a month$')),
+      findsOneWidget,
+    );
+    handle.dispose();
+  });
+
+  group('no overflow: 360/390 × EN/VI × light/dark × 100/130/200% + 320 × 200%', () {
     for (final s in layoutMatrix) {
       testWidgets(s.name, (tester) async {
-        for (final range in InsightsRange.values) {
-          await pumpScreen(tester, InsightsScreen(initialRange: range), setup: s);
+        final setup = ScreenSetup(
+          tab: 2,
+          width: s.width,
+          height: s.height,
+          locale: s.locale,
+          dark: s.dark,
+          textScale: s.textScale,
+        );
+        for (final screen in const [InsightsScreen(), InsightsScreen(initialYear: true)]) {
+          await pumpScreen(tester, screen, setup: setup);
           await scrollThrough(tester);
           expectNoLayoutErrors(tester);
         }
-        await pumpScreen(tester, const InsightsScreen(), setup: s, subscriptions: const [], periods: const []);
-        expectNoLayoutErrors(tester);
-        // Category sheet.
-        await pumpScreen(
-          tester,
-          const InsightsScreen(),
-          setup: ScreenSetup(
-            width: s.width,
-            locale: s.locale,
-            dark: s.dark,
-            textScale: s.textScale,
-            height: 3200,
-            tab: 2,
-          ),
-        );
-        await tester.tap(find.bySemanticsLabel(RegExp(s.locale == 'vi' ? '^Lưu trữ: ' : '^Storage: ')));
+        // 080 + the pushed pages (083, 084).
+        await pumpScreen(tester, const InsightsScreen(), setup: setup);
+        await tester.tap(find.byTooltip(s.locale == 'vi' ? 'Tháng sau' : 'Next month'));
         await tester.pumpAndSettle();
+        await scrollThrough(tester);
+        expectNoLayoutErrors(tester);
+        await pumpScreen(tester, const InsightsScreen(), setup: setup);
+        await scrollTo(tester, find.bySemanticsLabel(videoSlice));
+        await tester.tap(find.bySemanticsLabel(videoSlice));
+        await tester.pumpAndSettle();
+        expectNoLayoutErrors(tester);
+        Navigator.of(tester.element(find.byType(CategoryMonthScreen))).pop();
+        await tester.pumpAndSettle();
+        final list = find.descendant(
+          of: find.byType(NextYearCard),
+          matching: find.text(s.locale == 'vi' ? 'Xem dạng danh sách' : 'View as list'),
+        );
+        await scrollTo(tester, list);
+        await tester.tap(list);
+        await tester.pumpAndSettle();
+        await scrollThrough(tester);
+        expectNoLayoutErrors(tester);
+        await pumpScreen(tester, const InsightsScreen(), setup: setup, subscriptions: const [], periods: const []);
         expectNoLayoutErrors(tester);
       });
     }
@@ -290,37 +294,34 @@ void main() {
     for (final dark in [false, true]) {
       final t = dark ? 'dark' : 'light';
       testWidgets('compare $t', (tester) async {
-        final s = ScreenSetup(tab: 2, dark: dark);
+        final s = ScreenSetup(tab: 2, dark: dark, height: 4200);
         await pumpScreen(tester, const InsightsScreen(), setup: s);
-        await shot('44-s9-insights-$t');
-        await tester.drag(find.byType(Scrollable).first, const Offset(0, -760));
+        await shot('074-078-insights-november-$t');
+        await tester.tap(find.byTooltip('Next month'));
         await tester.pumpAndSettle();
-        await shot('45-s9-insights-more-$t');
-        await pumpScreen(tester, const InsightsScreen(), setup: s, subscriptions: const [], periods: const []);
-        await shot('46-s9-empty-$t');
+        await shot('080-insights-december-$t');
+        await pumpScreen(tester, const InsightsScreen(initialYear: true), setup: s);
+        await shot('081-insights-year-$t');
+        await pumpScreen(
+          tester,
+          const InsightsScreen(),
+          setup: ScreenSetup(tab: 2, dark: dark, height: 4200, locale: 'vi', width: 360),
+        );
+        await shot('074-insights-vi-360-$t');
+        await pumpScreen(
+          tester,
+          const InsightsScreen(),
+          setup: ScreenSetup(tab: 2, dark: dark, height: 6000, width: 320, textScale: 2),
+        );
+        await shot('074-insights-320-200-$t');
         await pumpScreen(tester, const InsightsScreen(), setup: s);
-        await tester.ensureVisible(find.bySemanticsLabel(RegExp('^Storage: ')));
+        await tester.tap(find.bySemanticsLabel(videoSlice));
         await tester.pumpAndSettle();
-        await tester.tap(find.bySemanticsLabel(RegExp('^Storage: ')));
+        await shot('083-insights-video-$t');
+        await pumpScreen(tester, const InsightsScreen(), setup: s);
+        await tester.tap(find.descendant(of: find.byType(NextYearCard), matching: find.text('View as list')));
         await tester.pumpAndSettle();
-        await shot('47-s9-category-$t');
-        final vi = ScreenSetup(tab: 2, dark: dark, locale: 'vi', height: 2300);
-        await pumpScreen(tester, const InsightsScreen(), setup: vi);
-        await shot('vi-s9-insights-full-$t');
-        for (final scale in [1.3, 2.0]) {
-          for (final lang in ['vi', 'en']) {
-            final big = ScreenSetup(
-              tab: 2,
-              dark: dark,
-              locale: lang,
-              width: 360,
-              height: scale > 1.5 ? 3600 : 2700,
-              textScale: scale,
-            );
-            await pumpScreen(tester, const InsightsScreen(), setup: big);
-            await shot('s9-full-${big.name}');
-          }
-        }
+        await shot('084-insights-list-$t');
       });
     }
   });
