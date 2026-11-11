@@ -8,18 +8,20 @@ import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../data/settings_repository.dart';
 import '../../domain/domain.dart';
-import 'app_info.dart';
+import 'about_card.dart';
 import 'appearance_sheet.dart';
 import 'auto_backup_section.dart';
+import 'automation_screen.dart';
 import 'backup_actions.dart';
 import 'reminders_screen.dart';
 import 'security_section.dart';
 import 'settings_actions.dart';
 import 'settings_format.dart';
-import 'settings_platform.dart';
 import 'widgets/settings_bits.dart';
 
-/// S10 Settings (png 48, 49): Money · Reminders · Appearance · Data · Security · About + privacy card.
+/// S10 Settings (mockup v14 087–093), product.md §4.10 in this order: Money · Reminders ·
+/// Appearance & language · Organize · Automation (Pro) · Data (Automatic backup card, Back up now,
+/// Restore, Export CSV, Erase all data) · Security · About (inline card) + the privacy note.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -31,9 +33,10 @@ class SettingsScreen extends ConsumerWidget {
     if (settings == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     final notificationsOn = ref.watch(notificationsEnabledProvider).value;
     final now = ref.watch(clockProvider)();
-    final platform = ref.watch(settingsPlatformProvider);
+    final repo = ref.read(settingsRepositoryProvider);
 
     void openReminders() => Navigator.of(context).push(RemindersScreen.route());
+    void toggleTabBar() => repo.setHideTabBarOnScroll(!settings.hideTabBarOnScroll);
 
     return Scaffold(
       body: SafeArea(
@@ -69,11 +72,11 @@ class SettingsScreen extends ConsumerWidget {
                 ValueRow(
                   icon: AppIcons.reminder,
                   label: l.settingsRemindMe,
-                  value: reminderValue(l, settings.defaultReminderDays),
+                  value: reminderValue(l, settings.defaultReminderOffsets),
                   onTap: openReminders,
                 ),
                 ValueRow(
-                  icon: AppIcons.awaiting,
+                  icon: LucideIcons.clock,
                   label: l.settingsReminderTime,
                   value: TimeOfDay(hour: settings.reminderHour, minute: settings.reminderMinute).format(context),
                   onTap: () => SettingsActions.pickReminderTime(context, ref, settings),
@@ -92,7 +95,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            // ---- Appearance ----
+            // ---- Appearance & language ----
             SectionHeader(label: l.settingsSectionAppearance),
             AppGroup(
               dividerIndent: 52,
@@ -105,102 +108,87 @@ class SettingsScreen extends ConsumerWidget {
                     AppThemeMode.light => l.settingsThemeLight,
                     AppThemeMode.dark => l.settingsThemeDark,
                   },
-                  onTap: () => showAppearanceSheet(context),
+                  onTap: () => showThemeSheet(context),
                 ),
                 ValueRow(
                   icon: AppIcons.language,
                   label: l.settingsLanguage,
                   value: SettingsFormat.languageName(settings.localeCode ?? 'en'),
-                  onTap: () => showAppearanceSheet(context),
+                  onTap: () => showLanguageSheet(context),
+                ),
+                SettingRow(
+                  icon: LucideIcons.panelBottom,
+                  label: l.settingsHideTabBar,
+                  onTap: toggleTabBar,
+                  trailing: AppToggle(
+                    value: settings.hideTabBarOnScroll,
+                    semanticLabel: l.settingsHideTabBar,
+                    onChanged: (_) => toggleTabBar(),
+                  ),
                 ),
               ],
             ),
-            // ---- Data ----
-            SectionHeader(label: l.settingsSectionData),
+            // ---- Organize ----
+            SectionHeader(label: l.settingsSectionOrganize),
+            const _OrganizeGroup(),
+            // ---- Automation (Pro) ----
+            ProSectionHeader(l.settingsSectionAutomation),
             AppGroup(
               dividerIndent: 52,
               children: [
                 SettingRow(
-                  icon: AppIcons.backup,
-                  label: l.settingsExportBackup,
-                  subtitle: l.settingsExportBackupHint,
-                  trailing: Icon(AppIcons.restoreFile, size: 18, color: c.inkMuted),
+                  icon: LucideIcons.scanLine,
+                  label: l.settingsScan,
+                  subtitle: l.settingsScanHint,
+                  onTap: () => Navigator.of(context).push(AutomationScreen.route()),
+                ),
+                SettingRow(
+                  icon: AppIcons.reminderRing,
+                  label: l.settingsBankNotifications,
+                  trailing: SoonChip(l.settingsSoon),
+                ),
+                SettingRow(icon: AppIcons.mail, label: 'Gmail', trailing: SoonChip(l.settingsSoon)),
+              ],
+            ),
+            // ---- Data ----
+            SectionHeader(label: l.settingsSectionData),
+            const AutoBackupSection(),
+            const SizedBox(height: AppSpace.s2),
+            AppGroup(
+              dividerIndent: 52,
+              children: [
+                SettingRow(
+                  icon: AppIcons.backupNow,
+                  label: l.settingsBackupNow,
+                  subtitle: l.settingsBackupNowHint,
                   onTap: () => BackupActions.exportJson(context, ref),
                 ),
                 SettingRow(
-                  icon: AppIcons.restore,
+                  icon: LucideIcons.folderOpen,
                   label: l.settingsRestore,
+                  subtitle: l.settingsRestoreHint,
                   onTap: () => BackupActions.restore(context, ref),
                 ),
                 SettingRow(
                   icon: AppIcons.csv,
                   label: l.settingsExportCsv,
                   subtitle: l.settingsExportCsvHint,
-                  trailing: Icon(AppIcons.restoreFile, size: 18, color: c.inkMuted),
+                  trailing: Icon(LucideIcons.share, size: 18, color: c.inkMuted),
                   onTap: () => BackupActions.exportCsv(context, ref),
                 ),
-              ],
-            ),
-            const SizedBox(height: AppSpace.s2),
-            AutoBackupSection(
-              extraRows: [
-                Divider(height: 1, thickness: 1, indent: 52, color: c.line),
                 SettingRow(
                   icon: AppIcons.delete,
                   label: l.settingsDeleteAll,
-                  subtitle: l.settingsDeleteAllHint,
                   danger: true,
                   onTap: () => BackupActions.deleteAll(context, ref),
                 ),
               ],
             ),
-            ListNote(l.settingsDataNote),
             // ---- Security ----
             const SecuritySection(),
             // ---- About ----
             SectionHeader(label: l.settingsSectionAbout),
-            AppGroup(
-              dividerIndent: 52,
-              children: [
-                ValueRow(icon: AppIcons.info, label: l.settingsVersion, value: appVersionLabel, chevron: false),
-                SettingRow(
-                  icon: AppIcons.secure,
-                  label: l.settingsPrivacyPolicy,
-                  external: kPrivacyPolicyUrl != null,
-                  onTap: () => SettingsActions.openPrivacyPolicy(context, ref),
-                ),
-                SettingRow(
-                  icon: LucideIcons.fileText,
-                  label: l.settingsTerms,
-                  external: kTermsUrl != null,
-                  onTap: () => SettingsActions.openTerms(context, ref),
-                ),
-                SettingRow(
-                  icon: LucideIcons.scrollText,
-                  label: l.settingsLicenses,
-                  onTap: () => SettingsActions.openLicenses(context),
-                ),
-                SettingRow(
-                  icon: LucideIcons.image,
-                  label: l.settingsLogosTitle,
-                  subtitle: l.settingsLogosOwnership,
-                  chevron: false,
-                ),
-                if (SettingsActions.canRate(platform))
-                  SettingRow(
-                    icon: AppIcons.rate,
-                    label: l.settingsRateApp,
-                    external: true,
-                    onTap: () => SettingsActions.rateApp(context, ref),
-                  ),
-                SettingRow(
-                  icon: AppIcons.mail,
-                  label: l.settingsFeedback,
-                  external: true,
-                  onTap: () => SettingsActions.sendFeedback(context, ref),
-                ),
-              ],
-            ),
+            const AboutCard(),
             const SizedBox(height: AppSpace.s6),
             PrivacyNote(l.settingsPrivacyNote),
           ],
@@ -221,9 +209,56 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-/// "3 days before" / "On the day" / "Off".
-String reminderValue(AppLocalizations l, int days) =>
-    days == ReminderDays.off ? l.settingsReminderOff : l.settingsReminderValue(days);
+/// Categories · Labels · Payment methods (counts) · Budget (monthly total or "Not set").
+class _OrganizeGroup extends ConsumerWidget {
+  const _OrganizeGroup();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    String count<T>(AsyncValue<List<T>> v) => v.value == null ? '' : '${v.value!.length}';
+    final total = (ref.watch(budgetsProvider).value ?? const <Budget>[]).where((b) => b.isTotal).firstOrNull;
+    return AppGroup(
+      dividerIndent: 52,
+      children: [
+        ValueRow(
+          icon: LucideIcons.shapes,
+          label: l.manageCategoriesTitle,
+          value: count(ref.watch(categoriesProvider)),
+          onTap: () => context.push(AppRoutes.settingsCategories),
+        ),
+        ValueRow(
+          icon: LucideIcons.tag,
+          label: l.manageLabelsTitle,
+          value: count(ref.watch(labelsProvider)),
+          onTap: () => context.push(AppRoutes.settingsLabels),
+        ),
+        ValueRow(
+          icon: LucideIcons.creditCard,
+          label: l.managePaymentMethodsTitle,
+          value: count(ref.watch(paymentMethodsProvider)),
+          onTap: () => context.push(AppRoutes.settingsPaymentMethods),
+        ),
+        ValueRow(
+          icon: LucideIcons.target,
+          label: l.manageBudgetsTitle,
+          value: total == null
+              ? l.settingsBudgetNotSet
+              : l.settingsBudgetValue(
+                  SettingsFormat.moneyWhole(Money(total.amountMinor, total.currency), l.localeName),
+                ),
+          onTap: () => context.push(AppRoutes.settingsBudgets),
+        ),
+      ],
+    );
+  }
+}
+
+/// "On the day, 3 days" (each chosen offset, smallest first) / "Off".
+String reminderValue(AppLocalizations l, Set<int> offsets) {
+  if (offsets.isEmpty) return l.settingsReminderOff;
+  return (offsets.toList()..sort()).map(l.settingsRemindChoice).join(', ');
+}
 
 /// Currencies (other than [primary]) used by the subscriptions, sorted.
 List<String> usedForeignCurrencies(List<Subscription>? subs, String primary) =>

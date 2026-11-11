@@ -87,6 +87,7 @@ class _RatesScreenState extends ConsumerState<RatesScreen> {
                           to: b,
                           rate: rates.rate(a, b),
                           subtitle: sub(from),
+                          manual: rates.isOverridden(from, primary),
                           onTap: () => showRateOverrideSheet(context, from: from, to: primary),
                         );
                       },
@@ -137,6 +138,7 @@ class _PairRow extends StatelessWidget {
     required this.rate,
     required this.subtitle,
     required this.onTap,
+    this.manual = false,
   });
 
   final String from;
@@ -144,6 +146,9 @@ class _PairRow extends StatelessWidget {
   final double? rate;
   final String subtitle;
   final VoidCallback onTap;
+
+  /// "✎ Set by you" in `success` (mockup 094).
+  final bool manual;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +189,21 @@ class _PairRow extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      Text(subtitle, style: AppType.meta.copyWith(color: c.inkMuted)),
+                      Text.rich(
+                        TextSpan(
+                          style: AppType.meta.copyWith(color: manual ? c.success : c.inkMuted),
+                          children: [
+                            if (manual) ...[
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: Icon(LucideIcons.pencil, size: 12, color: c.success),
+                              ),
+                              const TextSpan(text: ' '),
+                            ],
+                            TextSpan(text: subtitle),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

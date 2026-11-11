@@ -77,13 +77,16 @@ abstract final class SettingsActions {
   }
 
   /// `mailto:` with the version in the subject; without a mail app, shows the address instead.
-  static Future<void> sendFeedback(BuildContext context, WidgetRef ref) async {
+  static Future<void> sendFeedback(BuildContext context, WidgetRef ref) =>
+      _mail(context, ref, context.l10n.settingsFeedbackSubject(appVersionLabel));
+
+  /// "Join early access" (Pro sheet, mockup 113): an email to support; nothing is stored or billed.
+  static Future<void> joinEarlyAccess(BuildContext context, WidgetRef ref) =>
+      _mail(context, ref, context.l10n.settingsEarlyAccessSubject);
+
+  static Future<void> _mail(BuildContext context, WidgetRef ref, String subject) async {
     final l = context.l10n;
-    final uri = Uri(
-      scheme: 'mailto',
-      path: kSupportEmail,
-      query: 'subject=${Uri.encodeComponent(l.settingsFeedbackSubject(appVersionLabel))}',
-    );
+    final uri = Uri(scheme: 'mailto', path: kSupportEmail, query: 'subject=${Uri.encodeComponent(subject)}');
     final ok = await ref.read(settingsPlatformProvider).openExternal(uri);
     if (!ok && context.mounted) showAppToast(context, l.settingsNoEmailApp(kSupportEmail), icon: AppIcons.mail);
   }

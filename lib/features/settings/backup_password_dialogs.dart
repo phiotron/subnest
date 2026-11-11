@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/widgets/widgets.dart';
-import '../../data/backup/backup_crypto.dart';
+import 'widgets/settings_bits.dart';
 
 /// Minimum length of a backup-file password.
 const backupPasswordMinLength = 6;
@@ -13,78 +13,108 @@ typedef BackupExportEncryptor = Future<String> Function(String password);
 /// Decrypts an envelope with a password; tests can replace it.
 typedef BackupDecryptor = Future<String> Function(String envelope, String password);
 
-/// A password input styled like the rest of Settings. Obscured, with an error line.
-class _PasswordField extends StatelessWidget {
-  const _PasswordField({
+/// Password input (`.input` with a lock in front and an eye to show it): `surface-2`, 1 px `line`
+/// ring, `brand` ring while focused, `danger` ring + "⚠ message" under it on [errorText].
+class PasswordInput extends StatefulWidget {
+  const PasswordInput({
+    super.key,
     required this.controller,
-    required this.label,
+    required this.hint,
     this.errorText,
     this.enabled = true,
     this.autofocus = false,
     this.textInputAction,
     this.onSubmitted,
+    this.onChanged,
   });
 
   final TextEditingController controller;
-  final String label;
+  final String hint;
   final String? errorText;
   final bool enabled;
   final bool autofocus;
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onChanged;
+
+  @override
+  State<PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<PasswordInput> {
+  bool _show = false;
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final c = context.colors;
-    return TextField(
-      controller: controller,
-      enabled: enabled,
-      autofocus: autofocus,
-      obscureText: true,
-      autocorrect: false,
-      enableSuggestions: false,
-      textInputAction: textInputAction,
-      onSubmitted: onSubmitted,
-      style: AppType.body.copyWith(color: c.ink),
-      decoration: InputDecoration(
-        labelText: label,
-        errorText: errorText,
-        filled: true,
-        fillColor: c.surface2,
-        border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(AppRadius.md))),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(AppRadius.md)),
-          borderSide: BorderSide(color: c.line),
+    OutlineInputBorder ring(Color color, double width) => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      borderSide: BorderSide(color: color, width: width),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextField(
+          controller: widget.controller,
+          enabled: widget.enabled,
+          autofocus: widget.autofocus,
+          obscureText: !_show,
+          autocorrect: false,
+          enableSuggestions: false,
+          keyboardType: TextInputType.visiblePassword,
+          textInputAction: widget.textInputAction,
+          onSubmitted: widget.onSubmitted,
+          onChanged: widget.onChanged,
+          style: AppType.body.copyWith(color: c.ink),
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            hintStyle: AppType.body.copyWith(color: c.inkMuted),
+            filled: true,
+            fillColor: c.surface2,
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            prefixIcon: Icon(LucideIcons.lock, size: 18, color: c.inkMuted),
+            suffixIcon: IconButton(
+              tooltip: _show ? l.settingsBackupPasswordHide : l.settingsBackupPasswordShow,
+              onPressed: () => setState(() => _show = !_show),
+              icon: Icon(_show ? LucideIcons.eyeOff : LucideIcons.eye, size: 18, color: c.inkMuted),
+            ),
+            border: ring(c.line, 1),
+            enabledBorder: ring(widget.errorText == null ? c.line : c.danger, widget.errorText == null ? 1 : 2),
+            focusedBorder: ring(widget.errorText == null ? c.brand : c.danger, 2),
+            disabledBorder: ring(c.line, 1),
+          ),
         ),
-      ),
+        if (widget.errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Semantics(
+              liveRegion: true,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Icon(LucideIcons.circleAlert, size: 14, color: c.danger),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(widget.errorText!, style: AppType.meta.copyWith(color: c.danger)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
 
-/// Warning line above password fields: the password cannot be recovered.
-class _PasswordWarning extends StatelessWidget {
-  const _PasswordWarning(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpace.s3),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(AppIcons.alert, size: 18, color: c.danger),
-          const SizedBox(width: AppSpace.s2),
-          Expanded(child: Text(text, style: AppType.meta.copyWith(color: c.danger))),
-        ],
-      ),
-    );
-  }
-}
-
-mixin _TwoPasswords<T extends StatefulWidget> on State<T> {
+/// Two password fields (new + repeat) with the length rule; shared by Back up now and the
+/// Automatic backup set-up.
+mixin TwoPasswords<T extends StatefulWidget> on State<T> {
   final password = TextEditingController();
   final confirm = TextEditingController();
   String? passwordError;
@@ -102,30 +132,55 @@ mixin _TwoPasswords<T extends StatefulWidget> on State<T> {
     return tooShort || mismatch ? null : pw;
   }
 
-  List<Widget> fields(
+  /// Password · "✓ At least 6 characters" · Repeat password.
+  List<Widget> passwordFields(
     AppLocalizations l, {
     required VoidCallback onSubmit,
     bool enabled = true,
     bool autofocus = false,
-  }) => [
-    _PasswordField(
-      controller: password,
-      label: l.settingsBackupPassword,
-      errorText: passwordError,
-      enabled: enabled,
-      autofocus: autofocus,
-      textInputAction: TextInputAction.next,
-    ),
-    const SizedBox(height: AppSpace.s3),
-    _PasswordField(
-      controller: confirm,
-      label: l.settingsBackupPasswordConfirm,
-      errorText: confirmError,
-      enabled: enabled,
-      textInputAction: TextInputAction.done,
-      onSubmitted: (_) => onSubmit(),
-    ),
-  ];
+  }) {
+    final c = context.colors;
+    final longEnough = password.text.runes.length >= backupPasswordMinLength;
+    return [
+      PasswordInput(
+        controller: password,
+        hint: l.settingsBackupPassword,
+        errorText: passwordError,
+        enabled: enabled,
+        autofocus: autofocus,
+        textInputAction: TextInputAction.next,
+        onChanged: (_) => setState(() => passwordError = null),
+      ),
+      if (passwordError == null)
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Row(
+            children: [
+              Icon(LucideIcons.check, size: 13, color: longEnough ? c.success : c.inkMuted),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  l.settingsAutoBackupPasswordRule,
+                  style: AppType.meta.copyWith(color: longEnough ? c.success : c.inkMuted),
+                ),
+              ),
+            ],
+          ),
+        ),
+      const SizedBox(height: AppSpace.s3),
+      PasswordInput(
+        controller: confirm,
+        hint: l.settingsBackupPasswordConfirm,
+        errorText: confirmError,
+        enabled: enabled,
+        textInputAction: TextInputAction.done,
+        onSubmitted: (_) => onSubmit(),
+        onChanged: (_) {
+          if (confirmError != null) setState(() => confirmError = null);
+        },
+      ),
+    ];
+  }
 
   @override
   void dispose() {
@@ -138,19 +193,24 @@ mixin _TwoPasswords<T extends StatefulWidget> on State<T> {
   }
 }
 
-/// "Export backup": the password is optional (off by default). Turning it on shows the warning
-/// and two password fields, then encrypts while the dialog stays open ("Working…"). Returns null
-/// when cancelled, an empty string for an unprotected export, or the encrypted envelope text.
-class BackupExportDialog extends StatefulWidget {
-  const BackupExportDialog({super.key, required this.encrypt});
+/// "Back up now" sheet (mockup 098): the file that will be saved (name, what it holds, size),
+/// "Protect with a password" (off by default; on → two password fields, encrypted with
+/// AES-256-GCM while the sheet stays open), "Save file…" / Cancel. Pops null when cancelled, an
+/// empty string for an unprotected file, or the encrypted envelope text.
+class BackupNowSheet extends StatefulWidget {
+  const BackupNowSheet({super.key, required this.fileName, required this.meta, required this.encrypt});
 
+  final String fileName;
+
+  /// "12 subscriptions · 148 payments · 41 KB".
+  final String meta;
   final BackupExportEncryptor encrypt;
 
   @override
-  State<BackupExportDialog> createState() => _BackupExportDialogState();
+  State<BackupNowSheet> createState() => _BackupNowSheetState();
 }
 
-class _BackupExportDialogState extends State<BackupExportDialog> with _TwoPasswords {
+class _BackupNowSheetState extends State<BackupNowSheet> with TwoPasswords {
   bool _protect = false;
   bool _busy = false;
 
@@ -171,162 +231,76 @@ class _BackupExportDialogState extends State<BackupExportDialog> with _TwoPasswo
     }
   }
 
+  void _toggle() => setState(() {
+    _protect = !_protect;
+    passwordError = null;
+    confirmError = null;
+  });
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    final c = context.colors;
     return PopScope(
       canPop: !_busy,
-      child: AppDialog(
-        title: l.settingsExportBackup,
-        body: l.settingsBackupExportNote,
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: _busy ? null : () => setState(() => _protect = !_protect),
-              child: Row(
-                children: [
-                  Expanded(child: Text(l.settingsBackupProtect, style: AppType.body)),
-                  const SizedBox(width: AppSpace.s3),
-                  AppToggle(
-                    value: _protect,
-                    semanticLabel: l.settingsBackupProtect,
-                    onChanged: _busy ? null : (on) => setState(() => _protect = on),
-                  ),
-                ],
-              ),
-            ),
-            if (_protect) ...[
-              const SizedBox(height: AppSpace.s2),
-              _PasswordWarning(l.settingsBackupPasswordWarning),
-              ...fields(l, enabled: !_busy, autofocus: true, onSubmit: () => _submit(l)),
-            ],
-          ],
-        ),
+      child: AppSheet(
+        title: l.settingsBackupNow,
         actions: [
-          AppButton.text(label: l.commonCancel, expand: true, onPressed: _busy ? null : () => Navigator.pop(context)),
           AppButton.primary(
-            label: _busy ? l.settingsBackupWorking : l.settingsBackupExportAction,
-            icon: AppIcons.backup,
+            label: _busy ? l.settingsBackupWorking : l.settingsBackupSave,
+            icon: LucideIcons.hardDriveDownload,
             expand: true,
             loading: _busy,
             onPressed: _busy ? null : () => _submit(l),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Asks for the password of an encrypted backup. A wrong password is shown under the field and
-/// what was typed stays for a retry. While decrypting, the field and Cancel are disabled. Returns
-/// the decrypted JSON, null when cancelled.
-class BackupUnlockDialog extends StatefulWidget {
-  const BackupUnlockDialog({super.key, required this.envelope, this.decrypt = decryptBackupOffThread});
-
-  final String envelope;
-  final BackupDecryptor decrypt;
-
-  @override
-  State<BackupUnlockDialog> createState() => _BackupUnlockDialogState();
-}
-
-class _BackupUnlockDialogState extends State<BackupUnlockDialog> {
-  final _password = TextEditingController();
-  bool _busy = false;
-  bool _wrong = false;
-
-  @override
-  void dispose() {
-    _password.clear();
-    _password.dispose();
-    super.dispose();
-  }
-
-  Future<void> _open() async {
-    if (_busy || _password.text.isEmpty) return;
-    setState(() {
-      _busy = true;
-      _wrong = false;
-    });
-    try {
-      final json = await widget.decrypt(widget.envelope, _password.text);
-      if (mounted) Navigator.pop(context, json);
-    } catch (_) {
-      // A wrong password and a modified file cannot be told apart; keep the dialog open.
-      if (!mounted) return;
-      setState(() {
-        _busy = false;
-        _wrong = true;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return PopScope(
-      canPop: !_busy,
-      child: AppDialog(
-        title: l.settingsBackupEnterPasswordTitle,
-        body: l.settingsBackupEnterPasswordBody,
-        content: _PasswordField(
-          controller: _password,
-          label: l.settingsBackupPassword,
-          enabled: !_busy,
-          autofocus: true,
-          textInputAction: TextInputAction.done,
-          errorText: _wrong ? l.settingsBackupWrongPassword : null,
-          onSubmitted: (_) => _open(),
-        ),
-        actions: [
           AppButton.text(label: l.commonCancel, expand: true, onPressed: _busy ? null : () => Navigator.pop(context)),
-          AppButton.primary(
-            label: _busy ? l.settingsBackupWorking : l.settingsBackupOpen,
-            expand: true,
-            loading: _busy,
-            onPressed: _busy ? null : _open,
+        ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FileChip(name: widget.fileName, meta: widget.meta),
+              const SizedBox(height: AppSpace.s1),
+              MergeSemantics(
+                child: InkWell(
+                  onTap: _busy ? null : _toggle,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: AppSpace.s2),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(l.settingsBackupProtect, style: AppType.label.copyWith(color: c.ink)),
+                              const SizedBox(height: 2),
+                              Text(l.settingsBackupProtectHint, style: AppType.meta.copyWith(color: c.inkMuted)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: AppSpace.s3),
+                        AppToggle(
+                          value: _protect,
+                          semanticLabel: l.settingsBackupProtect,
+                          onChanged: _busy ? null : (_) => _toggle(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (_protect) ...[
+                const SizedBox(height: AppSpace.s2),
+                ...passwordFields(l, enabled: !_busy, autofocus: true, onSubmit: () => _submit(l)),
+                const SizedBox(height: AppSpace.s3),
+                Text(l.settingsBackupPasswordWarning, style: AppType.meta.copyWith(color: c.warningInk)),
+              ],
+            ],
           ),
-        ],
+        ),
       ),
-    );
-  }
-}
-
-/// Sets the password for automatic backups (always required): warning, at least 6 characters,
-/// typed twice. Returns the password, null when cancelled.
-class AutoBackupPasswordDialog extends StatefulWidget {
-  const AutoBackupPasswordDialog({super.key});
-
-  @override
-  State<AutoBackupPasswordDialog> createState() => _AutoBackupPasswordDialogState();
-}
-
-class _AutoBackupPasswordDialogState extends State<AutoBackupPasswordDialog> with _TwoPasswords {
-  void _submit(AppLocalizations l) {
-    final pw = validated(l);
-    if (pw != null) Navigator.pop(context, pw);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return AppDialog(
-      title: l.settingsAutoBackupPasswordTitle,
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _PasswordWarning(l.settingsAutoBackupPasswordWarning),
-          ...fields(l, autofocus: true, onSubmit: () => _submit(l)),
-        ],
-      ),
-      actions: [
-        AppButton.text(label: l.commonCancel, expand: true, onPressed: () => Navigator.pop(context)),
-        AppButton.primary(label: l.settingsAutoBackupTurnOn, expand: true, onPressed: () => _submit(l)),
-      ],
     );
   }
 }

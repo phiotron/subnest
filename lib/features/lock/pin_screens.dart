@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/widgets/widgets.dart';
+import '../settings/widgets/app_mark.dart';
 import 'app_lock.dart';
 import 'pin_pad.dart';
 
@@ -25,6 +26,19 @@ abstract final class PinActions {
     return true;
   }
 
+  /// "Change PIN" (Settings, PIN on — mockup 090): the current PIN first, then a new one twice.
+  /// Back at any step keeps the old PIN. True when the PIN was changed.
+  static Future<bool> change(BuildContext context, WidgetRef ref) async {
+    final nav = Navigator.of(context, rootNavigator: true);
+    final ok = await nav.push<bool>(MaterialPageRoute(builder: (_) => const PinCheckScreen()));
+    if (ok != true) return false;
+    final pin = await nav.push<String>(MaterialPageRoute(builder: (_) => const PinSetupScreen()));
+    if (pin == null) return false;
+    await ref.read(pinServiceProvider).setPin(pin);
+    ref.invalidate(pinEnabledProvider);
+    return true;
+  }
+
   /// Turn the lock off: only with the current PIN. True when it was turned off.
   static Future<bool> turnOff(BuildContext context, WidgetRef ref) async {
     final ok = await Navigator.of(
@@ -38,7 +52,8 @@ abstract final class PinActions {
   }
 }
 
-/// Frame of the Settings PIN screens: top bar "PIN lock" with ‹, keypad at the bottom.
+/// Frame of the Settings PIN screens (mockup 104–105): top bar "PIN lock" with ‹ (cancels), then
+/// the same block as the lock screen — app mark, title, dots, message, keypad.
 class _PinScaffold extends StatelessWidget {
   const _PinScaffold({required this.pad});
 
@@ -56,8 +71,8 @@ class _PinScaffold extends StatelessWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: AppSpace.s6, bottom: AppSpace.s6),
-                child: pad,
+                padding: const EdgeInsets.only(top: AppSpace.s4, bottom: AppSpace.s6),
+                child: Align(alignment: Alignment.topCenter, child: pad),
               ),
             ),
           ],
@@ -87,9 +102,9 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
       pad: PinPad(
         // A new pad per step: the dots start empty.
         key: ValueKey(firstStep),
-        expand: true,
+        leading: const AppMark(size: 56, radius: 13),
         title: firstStep ? l.securityNewPin : l.securityConfirmPin,
-        message: firstStep ? l.securityPinWarning : null,
+        message: firstStep ? l.securityPinSetNote : null,
         error: _error,
         onCompleted: (pin) async {
           if (firstStep) {
@@ -129,7 +144,7 @@ class _PinCheckScreenState extends ConsumerState<PinCheckScreen> {
     final l = context.l10n;
     return _PinScaffold(
       pad: PinPad(
-        expand: true,
+        leading: const AppMark(size: 56, radius: 13),
         title: l.securityEnterPin,
         error: _error,
         onCompleted: (pin) async {

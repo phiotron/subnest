@@ -8,8 +8,8 @@ import '../lock/pin_screens.dart';
 import '../lock/privacy_screen.dart';
 import 'settings_platform.dart';
 
-/// Settings › Security (APP.md decision 2026-11-10 item 5), right after Data: PIN lock · Privacy
-/// screen. Layout as A002 (switch rows with a note), drawn with the Subnest components.
+/// Settings › Security (mockup 088, 090), right after Data: PIN lock (+ Change PIN while on) ·
+/// Hide content in app switcher.
 class SecuritySection extends ConsumerWidget {
   const SecuritySection({super.key});
 
@@ -22,6 +22,9 @@ class SecuritySection extends ConsumerWidget {
 
     Future<void> togglePin() => pinOn ? PinActions.turnOff(context, ref) : PinActions.turnOn(context, ref);
     Future<void> togglePrivacy() => setPrivacyScreen(ref, !privacyOn);
+    Future<void> changePin() async {
+      if (await PinActions.change(context, ref) && context.mounted) showAppToast(context, l.securityPinChanged);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -31,12 +34,13 @@ class SecuritySection extends ConsumerWidget {
           dividerIndent: 52,
           children: [
             SettingRow(
-              icon: AppIcons.privacy,
+              icon: LucideIcons.lockKeyhole,
               label: l.securityPinLock,
-              subtitle: l.securityPinWarning,
+              subtitle: pinOn ? l.securityPinOnNote : l.securityPinOffNote,
               onTap: togglePin,
               trailing: AppToggle(value: pinOn, semanticLabel: l.securityPinLock, onChanged: (_) => togglePin()),
             ),
+            if (pinOn) SettingRow(icon: LucideIcons.keyRound, label: l.securityChangePin, onTap: changePin),
             SettingRow(
               icon: LucideIcons.eyeOff,
               label: l.securityPrivacyScreen,

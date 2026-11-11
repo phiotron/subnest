@@ -9,6 +9,7 @@ import '../../core/l10n/l10n.dart';
 import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../settings/backup_actions.dart';
+import '../settings/widgets/app_mark.dart';
 import 'app_lock.dart';
 import 'pin_pad.dart';
 
@@ -77,13 +78,12 @@ class _LockGateState extends ConsumerState<LockGate> with WidgetsBindingObserver
     final locked = lock != AppLockState.unlocked;
     return Stack(
       children: [
-        Offstage(offstage: locked, child: TickerMode(enabled: !locked, child: widget.child)),
+        Offstage(
+          offstage: locked,
+          child: TickerMode(enabled: !locked, child: widget.child),
+        ),
         if (locked)
-          LockScreen(
-            checking: lock == AppLockState.checking,
-            navigatorKey: _lockNavigator,
-            router: widget.router,
-          ),
+          LockScreen(checking: lock == AppLockState.checking, navigatorKey: _lockNavigator, router: widget.router),
       ],
     );
   }
@@ -136,7 +136,8 @@ class _LockBodyState extends ConsumerState<_LockBody> {
               AppButton.danger(label: l.settingsDeleteAll, expand: true, onPressed: () => Navigator.pop(ctx, true)),
         ),
         Builder(
-          builder: (ctx) => AppButton.text(label: l.commonCancel, expand: true, onPressed: () => Navigator.pop(ctx)),
+          builder: (ctx) =>
+              AppButton.text(label: l.securityTryAgain, expand: true, onPressed: () => Navigator.pop(ctx)),
         ),
       ],
     );
@@ -159,8 +160,8 @@ class _LockBodyState extends ConsumerState<_LockBody> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
-    // Keypad at the bottom, "Forgot PIN" under it; scrolls when there is not enough room
-    // (200 % text).
+    // Mockup 002–004 (`.pinw`): app mark, title, dots, message, keypad, "Forgot PIN?" under it.
+    // The block sits at the top; it scrolls when there is not enough room (200 % text).
     return Scaffold(
       backgroundColor: c.bg,
       body: SafeArea(
@@ -169,22 +170,17 @@ class _LockBodyState extends ConsumerState<_LockBody> {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: AppSpace.s10),
+                padding: const EdgeInsets.only(top: 56, bottom: AppSpace.s2),
                 child: Column(
                   children: [
-                    Expanded(
-                      child: PinPad(
-                        expand: true,
-                        leading: Icon(AppIcons.privacy, size: 40, color: c.brand),
-                        title: l.securityEnterPin,
-                        error: _error,
-                        onCompleted: _check,
-                      ),
+                    PinPad(
+                      leading: const AppMark(size: 56, radius: 13),
+                      title: l.securityEnterPin,
+                      error: _error,
+                      onCompleted: _check,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpace.s4, bottom: AppSpace.s2),
-                      child: AppButton.text(label: l.securityForgotPin, onPressed: _forgot),
-                    ),
+                    const SizedBox(height: AppSpace.s4),
+                    AppButton.text(label: l.securityForgotPin, onPressed: _forgot),
                   ],
                 ),
               ),

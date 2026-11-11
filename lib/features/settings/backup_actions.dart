@@ -12,10 +12,11 @@ import '../../data/backup/backup_service.dart';
 import '../../data/catalog/catalog_providers.dart';
 import '../../data/logos/logo_providers.dart';
 import '../../data/providers.dart';
-import '../../domain/domain.dart';
 import '../lock/app_lock.dart';
 import 'auto_backup_providers.dart';
 import 'backup_password_dialogs.dart';
+import 'restore_screen.dart';
+import 'settings_format.dart';
 import 'settings_platform.dart';
 
 String _stamp(DateTime d) =>
@@ -24,29 +25,37 @@ String _stamp(DateTime d) =>
 
 /// Backup, restore and delete flows shared by Settings (F7).
 abstract final class BackupActions {
-  /// Full backup → optional password → system share sheet. No password is required here; when the
-  /// user protects the file it is encrypted with AES-256-GCM before leaving the app.
+  /// "Back up now" (mockup 098): full backup → the sheet (file name, what it holds, optional
+  /// password) → system share sheet. When the user protects the file it is encrypted with
+  /// AES-256-GCM before leaving the app.
   static Future<void> exportJson(BuildContext context, WidgetRef ref) async {
     final l = context.l10n;
     final backup = ref.read(backupServiceProvider);
     final now = ref.read(clockProvider)();
     final String plain;
+    final BackupSummary summary;
     try {
       plain = await backup.exportJsonText();
+      summary = BackupSummary.of(backup, plain);
     } catch (_) {
       if (context.mounted) showAppToast(context, l.settingsExportFailed, icon: AppIcons.alert);
       return;
     }
     if (!context.mounted) return;
-    final result = await showDialog<String>(
-      context: context,
-      builder: (_) => BackupExportDialog(encrypt: (password) => encryptBackupOffThread(plain, password)),
+    final name = 'subnest-${_stamp(now)}.subnest';
+    final result = await showAppSheet<String>(
+      context,
+      builder: (_) => BackupNowSheet(
+        fileName: name,
+        meta: l.settingsBackupFileMeta(summary.subscriptions, summary.payments, SettingsFormat.fileSize(plain.length)),
+        encrypt: (password) => encryptBackupOffThread(plain, password),
+      ),
     );
     if (result == null || !context.mounted) return;
     final content = result.isEmpty ? plain : result;
     final done = await ref.read(settingsPlatformProvider).share([
-      ExportFile('subnest-${_stamp(now)}.subnest', content, 'application/json'),
-    ], subject: l.settingsExportBackup);
+      ExportFile(name, content, 'application/json'),
+    ], subject: l.settingsBackupNow);
     if (!done) return;
     await backup.markBackedUp();
     if (context.mounted) showAppToast(context, l.settingsExported);
@@ -64,10 +73,11 @@ abstract final class BackupActions {
     }
   }
 
-  /// Pick a file → encrypted: ask for its password (any Subnest file, automatic ones too) → check
-  /// the whole file → ONE confirmation (file name, what it holds) → replace all data and the
-  /// settings in the file. A bad file never reaches the confirmation and changes nothing. The
-  /// automatic-backup configuration of this phone (secure storage) is not touched.
+  /// Pick a file → check it → the Restore screen (mockup 099–101): an encrypted file asks for its
+  /// password there (any Subnest file, automatic ones too), then ONE confirmation, then all data
+  /// and the settings in the file replace what is on the phone. A bad file never reaches the
+  /// screen and changes nothing. The automatic-backup configuration of this phone (secure
+  /// storage) is not touched.
   static Future<void> restore(BuildContext context, WidgetRef ref) async {
     final l = context.l10n;
     final backup = ref.read(backupServiceProvider);
@@ -79,43 +89,26 @@ abstract final class BackupActions {
       return;
     }
     if (picked == null || !context.mounted) return;
-    var text = picked.text;
-    if (isEncryptedBackup(text)) {
-      try {
-        checkEncryptedBackup(text);
-      } on BackupFormatException {
-        showAppToast(context, l.settingsRestoreInvalid, icon: AppIcons.alert);
-        return;
-      }
-      final envelope = text;
-      final plain = await showDialog<String>(
-        context: context,
-        builder: (_) => BackupUnlockDialog(envelope: envelope),
-      );
-      if (plain == null || !context.mounted) return;
-      text = plain;
-    }
-    final int subs;
-    final int payments;
+    final text = picked.text;
+    BackupSummary? summary;
     try {
-      final parsed = backup.parse(text);
-      subs = parsed.subscriptions.length;
-      payments = parsed.periods.where((p) => p.outcome == PeriodOutcome.payment).length;
+      if (isEncryptedBackup(text)) {
+        checkEncryptedBackup(text);
+      } else {
+        summary = BackupSummary.of(backup, text);
+      }
     } on BackupFormatException {
       showAppToast(context, l.settingsRestoreInvalid, icon: AppIcons.alert);
       return;
     }
-    final ok = await showRestoreDialog(context, fileName: picked.name, subscriptions: subs, payments: payments);
-    if (ok != true || !context.mounted) return;
-    try {
-      final r = await backup.importJson(text);
-      if (context.mounted) showAppToast(context, l.settingsRestoreDone(r.subscriptions));
-    } catch (_) {
-      if (context.mounted) showAppToast(context, l.settingsRestoreFailed, icon: AppIcons.alert);
-    }
+    await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => RestoreScreen(fileName: picked!.name, text: text, summary: summary),
+      ),
+    );
   }
 
-  /// "Delete all data" after two confirmations: [eraseEverything], then straight to onboarding
+  /// "Erase all data" after two confirmations (mockup 102–103): [eraseEverything], then straight to onboarding
   /// (English + USD, like a new install). Also steps 2–3 of "Forgot PIN" on the lock screen
   /// (session S). Returns true when everything was deleted.
   ///
@@ -132,7 +125,7 @@ abstract final class BackupActions {
       actions: [
         Builder(
           builder: (ctx) =>
-              AppButton.danger(label: l.settingsDelete, expand: true, onPressed: () => Navigator.pop(ctx, true)),
+              AppButton.danger(label: l.commonContinue, expand: true, onPressed: () => Navigator.pop(ctx, true)),
         ),
         Builder(
           builder: (ctx) => AppButton.text(label: l.commonCancel, expand: true, onPressed: () => Navigator.pop(ctx)),
@@ -140,23 +133,7 @@ abstract final class BackupActions {
       ],
     );
     if (first != true || !context.mounted) return false;
-    final second = await showAppDialog<bool>(
-      context,
-      title: l.settingsCannotUndo,
-      body: l.settingsDeleteAllConfirm2,
-      actions: [
-        Builder(
-          builder: (ctx) => AppButton.danger(
-            label: l.settingsDeleteEverything,
-            expand: true,
-            onPressed: () => Navigator.pop(ctx, true),
-          ),
-        ),
-        Builder(
-          builder: (ctx) => AppButton.text(label: l.commonCancel, expand: true, onPressed: () => Navigator.pop(ctx)),
-        ),
-      ],
-    );
+    final second = await showDialog<bool>(context: context, builder: (_) => const EraseConfirmDialog());
     if (second != true || !context.mounted) return false;
     // Read before the wipe: the language goes back to English with the settings.
     final done = l.settingsDeleteAllDone;
@@ -205,41 +182,77 @@ abstract final class BackupActions {
   }
 }
 
-/// "Restore this backup?" (png 56, without the Merge/Replace choice — restore always replaces):
-/// file name, what it holds, what happens, then a `danger` "Replace my data".
-Future<bool?> showRestoreDialog(
-  BuildContext context, {
-  required String fileName,
-  required int subscriptions,
-  required int payments,
-}) {
-  final l = context.l10n;
-  final c = context.colors;
-  return showAppDialog<bool>(
-    context,
-    title: l.settingsRestoreTitle,
-    content: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(fileName, style: AppType.meta.copyWith(color: c.inkMuted)),
-        const SizedBox(height: 2),
-        Text(l.settingsRestoreHolds(subscriptions, payments), style: AppType.body.copyWith(color: c.inkMuted)),
-        const SizedBox(height: AppSpace.s3),
-        Text(l.settingsRestoreReplaceNote, style: AppType.body.copyWith(color: c.ink)),
-      ],
-    ),
-    actions: [
-      Builder(
-        builder: (ctx) => AppButton.danger(
-          label: l.settingsRestoreReplaceAction,
+/// Erase all data, step 2 (mockup 103): "Type ERASE to confirm" (XOA in Vietnamese, any case),
+/// "This can't be undone.", `danger` "Erase everything" enabled once the word matches.
+class EraseConfirmDialog extends StatefulWidget {
+  const EraseConfirmDialog({super.key});
+
+  @override
+  State<EraseConfirmDialog> createState() => _EraseConfirmDialogState();
+}
+
+class _EraseConfirmDialogState extends State<EraseConfirmDialog> {
+  final _text = TextEditingController();
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    final word = l.settingsDeleteAllWord;
+    final ok = _text.text.trim().toUpperCase() == word;
+    return AppDialog(
+      title: l.settingsDeleteAllTypeTitle(word),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            key: const ValueKey('erase-word'),
+            controller: _text,
+            autofocus: true,
+            autocorrect: false,
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.characters,
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (_) {
+              if (ok) Navigator.pop(context, true);
+            },
+            style: AppType.body.copyWith(color: c.ink, fontWeight: FontWeight.w600),
+            decoration: InputDecoration(
+              hintText: word,
+              hintStyle: AppType.body.copyWith(color: c.inkMuted),
+              filled: true,
+              fillColor: c.surface2,
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(color: c.line),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(color: c.brand, width: 2),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpace.s2),
+          Text(l.settingsDeleteAllConfirm2, style: AppType.meta.copyWith(color: c.inkMuted)),
+        ],
+      ),
+      actions: [
+        AppButton.danger(
+          label: l.settingsDeleteEverything,
           expand: true,
-          onPressed: () => Navigator.pop(ctx, true),
+          onPressed: ok ? () => Navigator.pop(context, true) : null,
         ),
-      ),
-      Builder(
-        builder: (ctx) => AppButton.text(label: l.commonCancel, expand: true, onPressed: () => Navigator.pop(ctx)),
-      ),
-    ],
-  );
+        AppButton.text(label: l.commonCancel, expand: true, onPressed: () => Navigator.pop(context)),
+      ],
+    );
+  }
 }

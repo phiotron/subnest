@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:intl/intl.dart';
 
 import '../../core/l10n/l10n.dart';
+import '../../core/utils/format.dart';
 import '../../domain/domain.dart';
 
 /// Small formatting rules used only by the Settings screens.
@@ -65,6 +66,19 @@ abstract final class SettingsFormat {
     s = vi ? s.replaceAll('.', '').replaceAll(',', '.') : s.replaceAll(',', '');
     final v = double.tryParse(s);
     return (v == null || v <= 0 || v.isNaN || v.isInfinite) ? null : v;
+  }
+
+  /// "$150" for a whole amount (Budget row, Budget screen), "$12.50" otherwise.
+  static String moneyWhole(Money m, String localeName) {
+    final s = Fmt.moneyOf(m, localeName);
+    final unit = math.pow(10, currencyDecimals(m.currency)).toInt();
+    return unit > 1 && m.minor % unit == 0 ? s.replaceFirst(RegExp(r'[.,]0+(?=[^0-9]*$)'), '') : s;
+  }
+
+  /// "41 KB" / "1.2 MB" (the file chips of Back up now and Restore). [bytes] ≈ characters.
+  static String fileSize(int bytes) {
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).ceil()} KB';
+    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
   /// Language name in its own language (the picker shows these untranslated).

@@ -10,7 +10,8 @@ import '../../domain/domain.dart';
 import 'settings_actions.dart';
 import 'widgets/settings_bits.dart';
 
-/// S10 › Reminders (png 54): permission banner, default "remind before", time, preview.
+/// S10 › Reminders (mockup 095–096): permission banner, the default offsets (any combination of
+/// On the day · 1 · 3 · 7 days), time, note, preview.
 /// Pushed with [route] (no go_router path yet — see notes).
 class RemindersScreen extends ConsumerWidget {
   const RemindersScreen({super.key});
@@ -32,8 +33,9 @@ class RemindersScreen extends ConsumerWidget {
           : SafeArea(
               top: false,
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s6),
+                padding: const EdgeInsets.fromLTRB(AppSpace.s4, 0, AppSpace.s4, AppSpace.s6),
                 children: [
+                  const SizedBox(height: AppSpace.s2),
                   if (notificationsOn == false) ...[
                     AppBanner(
                       kind: BannerKind.warning,
@@ -43,30 +45,23 @@ class RemindersScreen extends ConsumerWidget {
                       actionLabel: l.settingsOpenSystemSettings,
                       onAction: () => SettingsActions.openNotificationSettings(context, ref),
                     ),
-                    const SizedBox(height: AppSpace.s4),
+                    const SizedBox(height: AppSpace.s2),
                   ],
                   AppGroup(
                     dividerIndent: 0,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s4, AppSpace.s4, AppSpace.s2),
+                        padding: const EdgeInsets.fromLTRB(AppSpace.s4, 14, AppSpace.s4, 14),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(l.settingsRemindBefore, style: AppType.label.copyWith(color: c.ink)),
                             const SizedBox(height: AppSpace.s2),
-                            AppSegmentedControl<int>(
-                              selected: settings.defaultReminderDays,
-                              onChanged: repo.setDefaultReminderDays,
-                              segments: [
-                                for (final d in ReminderDays.choices)
-                                  AppSegment(
-                                    value: d,
-                                    label: d == ReminderDays.off ? l.settingsReminderOff : l.settingsRemindChoice(d),
-                                  ),
-                              ],
+                            _OffsetChips(
+                              selected: settings.defaultReminderOffsets,
+                              onChanged: repo.setDefaultReminderOffsets,
                             ),
-                            const SizedBox(height: AppSpace.s2),
+                            const SizedBox(height: AppSpace.s1),
                             Text(l.settingsRemindTrialNote, style: AppType.meta.copyWith(color: c.inkMuted)),
                           ],
                         ),
@@ -82,7 +77,7 @@ class RemindersScreen extends ConsumerWidget {
                   ListNote(l.settingsRemindersNote),
                   SectionHeader(label: l.settingsPreview),
                   _Preview(
-                    days: settings.defaultReminderDays,
+                    offsets: settings.defaultReminderOffsets,
                     hour: settings.reminderHour,
                     minute: settings.reminderMinute,
                   ),
@@ -110,19 +105,52 @@ class RemindersScreen extends ConsumerWidget {
   }
 }
 
-/// The reminder the user would get, built from the real notification strings (S12) and their
-/// next renewal — or a Netflix sample when there is none yet.
-class _Preview extends ConsumerWidget {
-  const _Preview({required this.days, required this.hour, required this.minute});
+/// `.chips.fit`: four chips on one row (6 px apart), each on or off; at large text they wrap.
+class _OffsetChips extends StatelessWidget {
+  const _OffsetChips({required this.selected, required this.onChanged});
 
-  final int days;
+  final Set<int> selected;
+  final ValueChanged<Set<int>> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final large = MediaQuery.textScalerOf(context).scale(10) >= 13;
+    Widget chip(int d, {required bool fit}) => AppChip(
+      label: l.settingsRemindChoice(d),
+      selected: selected.contains(d),
+      fit: fit,
+      showCheck: false,
+      onTap: () => onChanged(selected.contains(d) ? ({...selected}..remove(d)) : {...selected, d}),
+    );
+    if (large) {
+      return Wrap(spacing: 6, children: [for (final d in ReminderOffsets.choices) chip(d, fit: false)]);
+    }
+    return Row(
+      children: [
+        for (final (i, d) in ReminderOffsets.choices.indexed) ...[
+          if (i > 0) const SizedBox(width: 6),
+          Expanded(child: chip(d, fit: true)),
+        ],
+      ],
+    );
+  }
+}
+
+/// The reminder the user would get, built from the real notification strings (S12) and their
+/// next renewal — or a sample when there is none yet. Shows the earliest reminder (largest offset).
+class _Preview extends ConsumerWidget {
+  const _Preview({required this.offsets, required this.hour, required this.minute});
+
+  final Set<int> offsets;
   final int hour;
   final int minute;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    if (days == ReminderDays.off) return ListNote(l.settingsPreviewOff, top: 0);
+    if (offsets.isEmpty) return ListNote(l.settingsPreviewOff, top: 0);
+    final days = offsets.reduce((a, b) => a > b ? a : b);
     final today = ref.watch(todayProvider);
     // The next real renewal it would be about: Active, not waiting for a confirmation (that one
     // already had its reminder — real phone QA showed "Gym Fit renews in 3 days" for a period due today).
@@ -135,9 +163,7 @@ class _Preview extends ConsumerWidget {
     final primary = ref.watch(primaryCurrencyProvider);
     final name = subs.isEmpty ? l.settingsPreviewSampleName : subs.first.name;
     final share = subs.isEmpty ? Money.major(primary == 'VND' ? 260000 : 15.49, primary) : subs.first.myShare;
-    final body = days == ReminderDays.onTheDay
-        ? l.notificationsDueToday(name)
-        : l.notificationsRenewalSoon(name, days, l.money(share));
+    final body = days == 0 ? l.notificationsDueToday(name) : l.notificationsRenewalSoon(name, days, l.money(share));
     return NotificationPreview(
       appName: l.commonAppName,
       time: TimeOfDay(hour: hour, minute: minute).format(context),

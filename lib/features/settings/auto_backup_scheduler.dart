@@ -99,9 +99,8 @@ class IosAutoBackupScheduler implements AutoBackupScheduler {
 }
 
 /// The right implementation for the running platform.
-AutoBackupScheduler platformAutoBackupScheduler(NotificationService notifications) =>
-    switch (defaultTargetPlatform) {
-      TargetPlatform.android => const AndroidAutoBackupScheduler(),
-      TargetPlatform.iOS => IosAutoBackupScheduler(notifications),
-      _ => const NoopAutoBackupScheduler(),
-    };
+AutoBackupScheduler platformAutoBackupScheduler(NotificationService notifications) => switch (defaultTargetPlatform) {
+  TargetPlatform.android => const AndroidAutoBackupScheduler(),
+  TargetPlatform.iOS => IosAutoBackupScheduler(notifications),
+  _ => const NoopAutoBackupScheduler(),
+};

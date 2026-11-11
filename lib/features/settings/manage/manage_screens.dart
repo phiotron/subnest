@@ -13,7 +13,7 @@ class _Placeholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: Text(title)),
-    body: Center(child: Text(context.l10n.managePlaceholder)),
+    body: Center(child: const Text('')),
   );
 }
 

@@ -29,9 +29,7 @@ final autoBackupServiceProvider = Provider<AutoBackupService>(
 
 /// Configuration and latest result for the "Automatic backup" card; invalidate
 /// after each action.
-final autoBackupStateProvider = FutureProvider<AutoBackupState>(
-  (ref) => ref.watch(autoBackupServiceProvider).state(),
-);
+final autoBackupStateProvider = FutureProvider<AutoBackupState>((ref) => ref.watch(autoBackupServiceProvider).state());
 
 /// "Back up now" is running from Settings: the button shows a spinner and
 /// ignores taps until it finishes.
@@ -66,11 +64,5 @@ final autoBackupScheduleSyncProvider = Provider<void>((ref) {
   }
   final code = settings.value!.localeCode ?? 'en';
   final l = lookupAppLocalizations(Locale(code));
-  unawaited(
-    scheduler.schedule(
-      s.time,
-      title: l.commonAppName,
-      body: l.settingsAutoBackupNotificationBody,
-    ),
-  );
+  unawaited(scheduler.schedule(s.time, title: l.commonAppName, body: l.settingsAutoBackupNotificationBody));
 });

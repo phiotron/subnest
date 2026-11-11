@@ -9,17 +9,15 @@ import '../../data/backup/backup_folder_service.dart';
 import '../../data/backup/backup_schedule.dart';
 import '../../data/providers.dart';
 import 'auto_backup_providers.dart';
-import 'backup_password_dialogs.dart';
+import 'auto_backup_screen.dart';
 import 'widgets/settings_bits.dart';
 
-/// "Automatic backup" card in Settings → Data: switch + subtitle; when on, the folder, a status
-/// line (✓ / warning), the "Next" line and the pair of buttons, then the "Backup time" row.
-/// [extraRows] are appended at the end of the card so Settings can put "Delete all data" as the
-/// last row of the Data group.
+/// "Automatic backup" card at the top of Settings › Data (mockup 088 on, 091 off): database icon,
+/// title, a status line (✓ last backup in `success`, a failure in `danger`) and the switch; when on,
+/// Folder · Time · Password · Keeps under a hairline. Tapping the card opens the Automatic backup
+/// screen (folder, time, Back up now); the switch turns it on (set-up screen) or off.
 class AutoBackupSection extends ConsumerStatefulWidget {
-  const AutoBackupSection({super.key, this.extraRows = const []});
-
-  final List<Widget> extraRows;
+  const AutoBackupSection({super.key});
 
   @override
   ConsumerState<AutoBackupSection> createState() => _AutoBackupSectionState();
@@ -53,122 +51,129 @@ class _AutoBackupSectionState extends ConsumerState<AutoBackupSection> with Widg
     final l = context.l10n;
     final c = context.colors;
     final state = ref.watch(autoBackupStateProvider).value ?? const AutoBackupState();
-    final running = ref.watch(autoBackupRunningProvider);
-    final now = ref.watch(clockProvider)();
     final ios = Theme.of(context).platform == TargetPlatform.iOS;
-    final folderError =
-        state.lastFailed &&
-        (state.lastResult == AutoBackupResult.permissionDenied || state.lastResult == AutoBackupResult.folderMissing);
-    final backupNow = AppButton.tonal(
-      label: l.settingsAutoBackupNow,
-      icon: AppIcons.backupNow,
-      loading: running,
-      onPressed: running ? null : () => backupNowFromSettings(context, ref),
-    );
-    final chooseAgain = AppButton.outline(
-      label: l.settingsAutoBackupChooseFolder,
-      icon: AppIcons.folder,
-      onPressed: running ? null : () => repickFolder(context, ref),
-    );
+    final on = state.enabled;
 
-    void toggle() => state.enabled ? disableAutoBackup(context, ref, l) : enableAutoBackup(context, ref);
+    void toggle() => on ? disableAutoBackup(context, ref, l) : enableAutoBackup(context, ref);
+
+    final status = !on
+        ? Text(l.settingsAutoBackupOffNote, style: AppType.meta.copyWith(color: c.inkMuted))
+        : AutoBackupStatusLine(state: state);
 
     return AppCard(
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: 14),
+      onTap: on ? () => Navigator.of(context).push(AutoBackupScreen.route()) : toggle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SettingRow(
-            icon: AppIcons.autoBackup,
-            label: l.settingsAutoBackup,
-            subtitle: ios ? l.settingsAutoBackupNoteIos : l.settingsAutoBackupNote,
-            onTap: toggle,
-            trailing: AppToggle(
-              value: state.enabled,
-              semanticLabel: l.settingsAutoBackup,
-              onChanged: (_) => toggle(),
-            ),
-          ),
-          if (state.enabled) ...[
-            Divider(height: 1, thickness: 1, indent: 52, color: c.line),
-            ValueRow(
-              icon: AppIcons.schedule,
-              label: l.settingsAutoBackupTime,
-              value: _timeOfDay(state.time).format(context),
-              onTap: running ? null : () => pickBackupTime(context, ref),
-            ),
-            Divider(height: 1, thickness: 1, indent: 52, color: c.line),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s3, AppSpace.s4, AppSpace.s4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (ios)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpace.s2),
-                      child: Text(l.settingsAutoBackupRunsOnOpenIos, style: AppType.meta.copyWith(color: c.inkMuted)),
-                    ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(AppIcons.folder, size: 18, color: c.inkMuted),
-                      const SizedBox(width: AppSpace.s2),
-                      Expanded(
-                        child: Text(
-                          l.settingsAutoBackupFolder(state.folderName ?? l.settingsAutoBackupFolderUnknown),
-                          style: AppType.meta.copyWith(color: c.inkMuted),
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (ios && state.folderInICloud != true)
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpace.s2),
-                      child: Text(
-                        l.settingsAutoBackupLocalFolderWarningIos,
-                        style: AppType.meta.copyWith(color: c.danger),
-                      ),
-                    ),
-                  const SizedBox(height: AppSpace.s2),
-                  Text(
-                    _lastText(context, l, state),
-                    style: AppType.meta.copyWith(
-                      color: state.lastFailed ? c.danger : c.inkMuted,
-                      fontWeight: state.lastFailed ? FontWeight.w600 : null,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(_nextText(context, l, state, ios, now), style: AppType.meta.copyWith(color: c.inkMuted)),
-                  const SizedBox(height: AppSpace.s3),
-                  Row(
-                    children: [
-                      Expanded(child: folderError ? chooseAgain : backupNow),
-                      const SizedBox(width: AppSpace.s2),
-                      Expanded(child: folderError ? backupNow : chooseAgain),
-                    ],
-                  ),
-                ],
+          Row(
+            children: [
+              Icon(LucideIcons.database, size: 20, color: on ? c.brand : c.inkMuted),
+              const SizedBox(width: AppSpace.s3),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l.settingsAutoBackup, style: AppType.label.copyWith(color: c.ink)),
+                    const SizedBox(height: 2),
+                    status,
+                  ],
+                ),
               ),
+              const SizedBox(width: AppSpace.s3),
+              AppToggle(value: on, semanticLabel: l.settingsAutoBackup, onChanged: (_) => toggle()),
+            ],
+          ),
+          if (on) ...[
+            const SizedBox(height: AppSpace.s3),
+            Divider(height: 1, thickness: 1, color: c.line),
+            const SizedBox(height: AppSpace.s3),
+            KeyValueGrid(
+              rows: [
+                (l.settingsAutoBackupFolderLabel, KvText(state.folderName ?? l.settingsAutoBackupFolderUnknown)),
+                (
+                  l.settingsAutoBackupTimeLabel,
+                  KvText(l.settingsAutoBackupDaily(backupTimeOfDay(state.time).format(context))),
+                ),
+                (l.settingsAutoBackupPasswordLabel, const KvText('••••••••', icon: LucideIcons.lock)),
+                (l.settingsAutoBackupKeepsLabel, KvText(l.settingsAutoBackupKeepsValue)),
+              ],
             ),
+            ...autoBackupIosNotes(context, state, ios),
           ],
-          ...widget.extraRows,
         ],
       ),
     );
   }
 }
 
-TimeOfDay _timeOfDay(BackupTime t) => TimeOfDay(hour: t.hour, minute: t.minute);
+/// "✓ Last: yesterday, 21:00" in `success`; a failure in `danger` with an alert icon; never in muted.
+class AutoBackupStatusLine extends ConsumerWidget {
+  const AutoBackupStatusLine({super.key, required this.state});
 
-String _formatWhen(BuildContext context, DateTime d) {
-  final locale = Localizations.localeOf(context).toLanguageTag();
-  return DateFormat.MMMd(locale).add_Hm().format(d);
+  final AutoBackupState state;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final c = context.colors;
+    final now = ref.watch(clockProvider)();
+    final text = _lastText(context, l, state, now);
+    final failed = state.lastFailed;
+    final ok = !failed && state.lastAt != null;
+    final color = failed ? c.danger : (ok ? c.success : c.inkMuted);
+    return Text.rich(
+      TextSpan(
+        style: AppType.meta.copyWith(color: color, fontWeight: failed ? FontWeight.w600 : null),
+        children: [
+          if (failed || ok) ...[
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Icon(failed ? LucideIcons.circleAlert : LucideIcons.circleCheck, size: 13, color: color),
+            ),
+            const TextSpan(text: ' '),
+          ],
+          TextSpan(text: text),
+        ],
+      ),
+    );
+  }
 }
 
-String _lastText(BuildContext context, AppLocalizations l, AutoBackupState s) {
+/// iOS only: backups run when the app opens; a folder that may live only on this iPhone.
+List<Widget> autoBackupIosNotes(BuildContext context, AutoBackupState state, bool ios) {
+  if (!ios) return const [];
+  final l = context.l10n;
+  final c = context.colors;
+  return [
+    const SizedBox(height: AppSpace.s3),
+    Text(l.settingsAutoBackupRunsOnOpenIos, style: AppType.meta.copyWith(color: c.inkMuted)),
+    if (state.folderInICloud != true) ...[
+      const SizedBox(height: AppSpace.s2),
+      Text(l.settingsAutoBackupLocalFolderWarningIos, style: AppType.meta.copyWith(color: c.danger)),
+    ],
+  ];
+}
+
+TimeOfDay backupTimeOfDay(BackupTime t) => TimeOfDay(hour: t.hour, minute: t.minute);
+
+/// "yesterday, 21:00" / "today, 09:12" / "Nov 8, 21:00".
+String _formatWhen(BuildContext context, DateTime d, DateTime now) {
+  final locale = Localizations.localeOf(context).toLanguageTag();
+  final l = context.l10n;
+  final time = DateFormat.Hm(locale).format(d);
+  final day = DateTime(d.year, d.month, d.day);
+  final today = DateTime(now.year, now.month, now.day);
+  final diff = today.difference(day).inDays;
+  if (diff == 0) return l.settingsWhenToday(time);
+  if (diff == 1) return l.settingsWhenYesterday(time);
+  return '${DateFormat.MMMd(locale).format(d)}, $time';
+}
+
+String _lastText(BuildContext context, AppLocalizations l, AutoBackupState s, DateTime now) {
   final at = s.lastAt;
-  final time = at == null ? null : _formatWhen(context, at);
+  final time = at == null ? null : _formatWhen(context, at, now);
   if (s.lastFailed) {
     final error = switch (s.lastResult) {
       AutoBackupResult.permissionDenied || AutoBackupResult.folderMissing => l.settingsAutoBackupErrorFolder,
@@ -179,68 +184,17 @@ String _lastText(BuildContext context, AppLocalizations l, AutoBackupState s) {
   if (time == null) return l.settingsAutoBackupNever;
   final checked = s.lastCheckAt;
   if (checked != null && checked.isAfter(at!)) {
-    return l.settingsAutoBackupLastUnchanged(time, _formatWhen(context, checked));
+    return l.settingsAutoBackupLastUnchanged(time, _formatWhen(context, checked, now));
   }
   return l.settingsAutoBackupLast(time);
 }
 
-String _nextText(BuildContext context, AppLocalizations l, AutoBackupState s, bool ios, DateTime now) {
-  if (s.isDue(now)) return ios ? l.settingsAutoBackupNextSoonIos : l.settingsAutoBackupNextSoon;
-  final next = s.nextAt(now);
-  final time = TimeOfDay.fromDateTime(next).format(context);
-  return isToday(now, next) ? l.settingsAutoBackupNextToday(time) : l.settingsAutoBackupNextTomorrow(time);
-}
-
-/// Pick a folder, set a password and turn it on; the first backup runs right away.
+/// Turn it on (mockup 097): the set-up screen picks the folder, the time and the password and
+/// switches it on; then the first backup runs right away and iOS asks for notifications.
 Future<void> enableAutoBackup(BuildContext context, WidgetRef ref) async {
-  final l = context.l10n;
-  final folders = ref.read(backupFolderServiceProvider);
-  final service = ref.read(autoBackupServiceProvider);
-  final PickedFolder? folder;
-  try {
-    folder = await folders.pickFolder();
-  } on BackupFolderException {
-    if (context.mounted) showAppToast(context, l.settingsAutoBackupPickFailed, icon: AppIcons.alert);
-    return;
-  }
-  if (folder == null) return;
-  if (!context.mounted) {
-    // The folder permission was kept when picking but there is no screen left to ask for the
-    // password: release it.
-    await _releaseQuietly(folders, folder.uri);
-    return;
-  }
-  final password = await showDialog<String>(
-    context: context,
-    builder: (_) => const AutoBackupPasswordDialog(),
-  );
-  if (password == null) {
-    await _releaseQuietly(folders, folder.uri);
-    return;
-  }
-  var time = BackupTime.defaultTime;
-  if (context.mounted) {
-    // `dialOnly` like the reminder-time picker: the keyboard-input mode throws "BoxConstraints has
-    // non-normalized height constraints" when the system font size is small (Galaxy A13 at 0.8).
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: _timeOfDay(time),
-      helpText: l.settingsAutoBackupTime,
-      initialEntryMode: TimePickerEntryMode.dialOnly,
-    );
-    if (picked != null) time = BackupTime(picked.hour, picked.minute);
-  }
-  try {
-    await service.enable(folder: folder, password: password, time: time);
-  } catch (_) {
-    // Secure storage (Keystore) failed: cannot turn it on.
-    await service.disable();
-    await _releaseQuietly(folders, folder.uri);
-    if (context.mounted) showAppToast(context, l.settingsAutoBackupErrorOther, icon: AppIcons.alert);
-    return;
-  }
+  final on = await Navigator.of(context).push<bool>(AutoBackupScreen.route(setup: true));
+  if (on != true || !context.mounted) return;
   ref.invalidate(autoBackupStateProvider);
-  if (!context.mounted) return;
   await backupNowFromSettings(context, ref);
   // iOS: ask for notification permission AFTER the first backup so the "Saved" toast does not
   // hide the explanation.
@@ -257,7 +211,7 @@ Future<void> pickBackupTime(BuildContext context, WidgetRef ref) async {
   if (!context.mounted) return;
   final picked = await showTimePicker(
     context: context,
-    initialTime: _timeOfDay(current),
+    initialTime: backupTimeOfDay(current),
     helpText: l.settingsAutoBackupTime,
     initialEntryMode: TimePickerEntryMode.dialOnly, // see enable flow above
   );
@@ -308,7 +262,7 @@ Future<void> ensureBackupNotificationPermission(BuildContext context, WidgetRef 
   }
 }
 
-Future<void> _releaseQuietly(BackupFolderService folders, String uri) async {
+Future<void> releaseFolderQuietly(BackupFolderService folders, String uri) async {
   try {
     await folders.releaseFolder(uri);
   } catch (_) {
@@ -337,16 +291,12 @@ Future<void> backupNowFromSettings(BuildContext context, WidgetRef ref) async {
   }
   if (context.mounted) ref.invalidate(autoBackupStateProvider);
   if (!context.mounted) return;
-  showAppToast(
-    context,
-    switch (result) {
-      AutoBackupResult.ok => l.settingsAutoBackupDone,
-      AutoBackupResult.busy => l.settingsAutoBackupBusy,
-      AutoBackupResult.permissionDenied || AutoBackupResult.folderMissing => l.settingsAutoBackupErrorFolder,
-      _ => l.settingsAutoBackupErrorOther,
-    },
-    icon: result == AutoBackupResult.ok ? AppIcons.paid : AppIcons.alert,
-  );
+  showAppToast(context, switch (result) {
+    AutoBackupResult.ok => l.settingsAutoBackupDone,
+    AutoBackupResult.busy => l.settingsAutoBackupBusy,
+    AutoBackupResult.permissionDenied || AutoBackupResult.folderMissing => l.settingsAutoBackupErrorFolder,
+    _ => l.settingsAutoBackupErrorOther,
+  }, icon: result == AutoBackupResult.ok ? AppIcons.paid : AppIcons.alert);
 }
 
 /// "Choose folder": changes the folder, keeps the password and backs up right away to check.
@@ -365,7 +315,7 @@ Future<void> repickFolder(BuildContext context, WidgetRef ref) async {
   if (!context.mounted) {
     // No screen left to save the choice: release the new permission unless it is the folder
     // already in use (releasing it would break the current backup).
-    if (folder.uri != (await service.state()).folderUri) await _releaseQuietly(folders, folder.uri);
+    if (folder.uri != (await service.state()).folderUri) await releaseFolderQuietly(folders, folder.uri);
     return;
   }
   await service.changeFolder(folder);
