@@ -2761,11 +2761,425 @@ abstract class AppLocalizations {
   /// **'Scan screenshots'**
   String get scanTitle;
 
-  /// No description provided for @scanPlaceholder.
+  /// No description provided for @scanResultsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get scanPlaceholder;
+  /// **'Scan results'**
+  String get scanResultsTitle;
+
+  /// No description provided for @scanStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your subscriptions page'**
+  String get scanStep1Title;
+
+  /// No description provided for @scanStep1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play → Payments & subscriptions, or App Store → Subscriptions'**
+  String get scanStep1Body;
+
+  /// No description provided for @scanStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Take screenshots'**
+  String get scanStep2Title;
+
+  /// No description provided for @scanStep2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll and capture every subscription. Receipts work too.'**
+  String get scanStep2Body;
+
+  /// No description provided for @scanStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick them here'**
+  String get scanStep3Title;
+
+  /// No description provided for @scanStep3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest reads them on this phone and fills everything in.'**
+  String get scanStep3Body;
+
+  /// No description provided for @scanOpenGooglePlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Google Play'**
+  String get scanOpenGooglePlay;
+
+  /// No description provided for @scanOpenAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Open App Store'**
+  String get scanOpenAppStore;
+
+  /// No description provided for @scanPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Text is read on this phone. Your screenshots never leave it.'**
+  String get scanPrivacy;
+
+  /// No description provided for @scanChooseScreenshots.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose screenshots'**
+  String get scanChooseScreenshots;
+
+  /// No description provided for @scanPhotographReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph a receipt'**
+  String get scanPhotographReceipt;
+
+  /// No description provided for @scanPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest only sees the photos you pick'**
+  String get scanPickerTitle;
+
+  /// No description provided for @scanPicker1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'You choose the screenshots'**
+  String get scanPicker1Title;
+
+  /// No description provided for @scanPicker1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing else in your gallery is opened.'**
+  String get scanPicker1Body;
+
+  /// No description provided for @scanPicker2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Read on this phone'**
+  String get scanPicker2Title;
+
+  /// No description provided for @scanPicker2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Text recognition works offline.'**
+  String get scanPicker2Body;
+
+  /// No description provided for @scanPicker3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is uploaded or kept'**
+  String get scanPicker3Title;
+
+  /// No description provided for @scanPicker3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the subscriptions found are saved.'**
+  String get scanPicker3Body;
+
+  /// No description provided for @scanPickerNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Next, your phone asks which photos Subnest may see.'**
+  String get scanPickerNote;
+
+  /// No description provided for @scanContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get scanContinue;
+
+  /// No description provided for @scanNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get scanNotNow;
+
+  /// No description provided for @scanReadingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading {count, plural, =1{1 picture} other{{count} pictures}}'**
+  String scanReadingTitle(int count);
+
+  /// No description provided for @scanFoundSoFar.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {count} so far…'**
+  String scanFoundSoFar(int count);
+
+  /// No description provided for @scanOnThisPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'On this phone · about {seconds} seconds'**
+  String scanOnThisPhone(int seconds);
+
+  /// Scan results title (mockup 118).
+  ///
+  /// In en, this message translates to:
+  /// **'Added {added}, confirmed {confirmed}'**
+  String scanAddedConfirmed(int added, int confirmed);
+
+  /// No description provided for @scanAddedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {count}'**
+  String scanAddedOnly(int count);
+
+  /// No description provided for @scanConfirmedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed {count}'**
+  String scanConfirmedOnly(int count);
+
+  /// No description provided for @scanFoundOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {count, plural, =1{1 charge} other{{count} charges}} to check'**
+  String scanFoundOnly(int count);
+
+  /// No description provided for @scanFromScreenshots.
+  ///
+  /// In en, this message translates to:
+  /// **'From {count, plural, =1{1 screenshot} other{{count} screenshots}}'**
+  String scanFromScreenshots(int count);
+
+  /// No description provided for @scanFromScreenshotsAndReceipts.
+  ///
+  /// In en, this message translates to:
+  /// **'From {screens, plural, =1{1 screenshot} other{{screens} screenshots}} and {receipts, plural, =1{a receipt} other{{receipts} receipts}}'**
+  String scanFromScreenshotsAndReceipts(int screens, int receipts);
+
+  /// No description provided for @scanFromReceipts.
+  ///
+  /// In en, this message translates to:
+  /// **'From {count, plural, =1{a receipt} other{{count} receipts}}'**
+  String scanFromReceipts(int count);
+
+  /// No description provided for @scanGroupAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get scanGroupAdded;
+
+  /// No description provided for @scanGroupConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get scanGroupConfirmed;
+
+  /// No description provided for @scanGroupReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your check'**
+  String get scanGroupReview;
+
+  /// No description provided for @scanGroupDifferent.
+  ///
+  /// In en, this message translates to:
+  /// **'Different amount'**
+  String get scanGroupDifferent;
+
+  /// No description provided for @scanGroupNotAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not added'**
+  String get scanGroupNotAdded;
+
+  /// No description provided for @scanNext.
+  ///
+  /// In en, this message translates to:
+  /// **'next {date}'**
+  String scanNext(String date);
+
+  /// No description provided for @scanUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get scanUndo;
+
+  /// No description provided for @scanRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get scanRemoved;
+
+  /// No description provided for @scanUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'Undone'**
+  String get scanUndone;
+
+  /// No description provided for @scanPeriodPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} period · paid {amount}'**
+  String scanPeriodPaid(String date, String amount);
+
+  /// No description provided for @scanChargedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · charged {amount}'**
+  String scanChargedOn(String date, String amount);
+
+  /// No description provided for @scanUsualPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Usual {amount} — recorded for this period only; the price isn’t changed.'**
+  String scanUsualPrice(String amount);
+
+  /// No description provided for @scanReviewBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} on {date} — {days, plural, =1{1 day} other{{days} days}} before the {due} payment'**
+  String scanReviewBefore(String amount, String date, int days, String due);
+
+  /// No description provided for @scanReviewAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} on {date} — {days, plural, =1{1 day} other{{days} days}} after the {due} payment'**
+  String scanReviewAfter(String amount, String date, int days, String due);
+
+  /// No description provided for @scanReviewAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} on {date} — usually {usual}'**
+  String scanReviewAmount(String amount, String date, String usual);
+
+  /// No description provided for @scanItsThisPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'It’s this period'**
+  String get scanItsThisPeriod;
+
+  /// No description provided for @scanNotThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Not this'**
+  String get scanNotThis;
+
+  /// No description provided for @scanSeenOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen once. Added if a second charge about a month later matches.'**
+  String get scanSeenOnce;
+
+  /// No description provided for @scanNotBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches {name}, which is paused or cancelled.'**
+  String scanNotBilling(String name);
+
+  /// No description provided for @scanDismissedBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'You removed it before, so it isn’t added again.'**
+  String get scanDismissedBefore;
+
+  /// No description provided for @scanAlreadyTracked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is already in your list.'**
+  String scanAlreadyTracked(String name);
+
+  /// No description provided for @scanAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get scanAdd;
+
+  /// No description provided for @scanDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get scanDone;
+
+  /// No description provided for @scanUndoAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo all'**
+  String get scanUndoAll;
+
+  /// No description provided for @scanRemovedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed · won’t be added again'**
+  String scanRemovedToast(String name);
+
+  /// No description provided for @scanNothingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscriptions found'**
+  String get scanNothingTitle;
+
+  /// No description provided for @scanNothingMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'In {count, plural, =1{1 picture} other{{count} pictures}} · nothing was added'**
+  String scanNothingMeta(int count);
+
+  /// No description provided for @scanTryThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Try this'**
+  String get scanTryThis;
+
+  /// No description provided for @scanTip1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the subscriptions list'**
+  String get scanTip1Title;
+
+  /// No description provided for @scanTip1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play → Payments & subscriptions → Subscriptions'**
+  String get scanTip1Body;
+
+  /// No description provided for @scanTip2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep price and date in view'**
+  String get scanTip2Title;
+
+  /// No description provided for @scanTip2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Each price and renewal date should be on screen.'**
+  String get scanTip2Body;
+
+  /// No description provided for @scanTip3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid cropped or blurry shots'**
+  String get scanTip3Title;
+
+  /// No description provided for @scanTip3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-screen screenshots read best.'**
+  String get scanTip3Body;
+
+  /// No description provided for @scanChooseOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose other screenshots'**
+  String get scanChooseOther;
+
+  /// No description provided for @scanAddByHand.
+  ///
+  /// In en, this message translates to:
+  /// **'Add by hand'**
+  String get scanAddByHand;
+
+  /// No description provided for @scanReadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t read that picture. Try another one.'**
+  String get scanReadFailed;
+
+  /// No description provided for @scanOpenStoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t open the store on this phone.'**
+  String get scanOpenStoreFailed;
 
   /// Settings: section header after Data (PIN lock, Privacy screen).
   ///
@@ -4350,6 +4764,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hide password'**
   String get settingsBackupPasswordHide;
+
+  /// Spoken state of the read-only automatic rows on the Automation screen.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get settingsAutoStateOn;
 
   /// No description provided for @subscriptionDetailEdit.
   ///

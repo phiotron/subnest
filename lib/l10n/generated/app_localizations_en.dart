@@ -1996,7 +1996,318 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanTitle => 'Scan screenshots';
 
   @override
-  String get scanPlaceholder => 'Coming soon';
+  String get scanResultsTitle => 'Scan results';
+
+  @override
+  String get scanStep1Title => 'Open your subscriptions page';
+
+  @override
+  String get scanStep1Body =>
+      'Google Play → Payments & subscriptions, or App Store → Subscriptions';
+
+  @override
+  String get scanStep2Title => 'Take screenshots';
+
+  @override
+  String get scanStep2Body =>
+      'Scroll and capture every subscription. Receipts work too.';
+
+  @override
+  String get scanStep3Title => 'Pick them here';
+
+  @override
+  String get scanStep3Body =>
+      'Subnest reads them on this phone and fills everything in.';
+
+  @override
+  String get scanOpenGooglePlay => 'Open Google Play';
+
+  @override
+  String get scanOpenAppStore => 'Open App Store';
+
+  @override
+  String get scanPrivacy =>
+      'Text is read on this phone. Your screenshots never leave it.';
+
+  @override
+  String get scanChooseScreenshots => 'Choose screenshots';
+
+  @override
+  String get scanPhotographReceipt => 'Photograph a receipt';
+
+  @override
+  String get scanPickerTitle => 'Subnest only sees the photos you pick';
+
+  @override
+  String get scanPicker1Title => 'You choose the screenshots';
+
+  @override
+  String get scanPicker1Body => 'Nothing else in your gallery is opened.';
+
+  @override
+  String get scanPicker2Title => 'Read on this phone';
+
+  @override
+  String get scanPicker2Body => 'Text recognition works offline.';
+
+  @override
+  String get scanPicker3Title => 'Nothing is uploaded or kept';
+
+  @override
+  String get scanPicker3Body => 'Only the subscriptions found are saved.';
+
+  @override
+  String get scanPickerNote =>
+      'Next, your phone asks which photos Subnest may see.';
+
+  @override
+  String get scanContinue => 'Continue';
+
+  @override
+  String get scanNotNow => 'Not now';
+
+  @override
+  String scanReadingTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pictures',
+      one: '1 picture',
+    );
+    return 'Reading $_temp0';
+  }
+
+  @override
+  String scanFoundSoFar(int count) {
+    return 'Found $count so far…';
+  }
+
+  @override
+  String scanOnThisPhone(int seconds) {
+    return 'On this phone · about $seconds seconds';
+  }
+
+  @override
+  String scanAddedConfirmed(int added, int confirmed) {
+    return 'Added $added, confirmed $confirmed';
+  }
+
+  @override
+  String scanAddedOnly(int count) {
+    return 'Added $count';
+  }
+
+  @override
+  String scanConfirmedOnly(int count) {
+    return 'Confirmed $count';
+  }
+
+  @override
+  String scanFoundOnly(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count charges',
+      one: '1 charge',
+    );
+    return 'Found $_temp0 to check';
+  }
+
+  @override
+  String scanFromScreenshots(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count screenshots',
+      one: '1 screenshot',
+    );
+    return 'From $_temp0';
+  }
+
+  @override
+  String scanFromScreenshotsAndReceipts(int screens, int receipts) {
+    String _temp0 = intl.Intl.pluralLogic(
+      screens,
+      locale: localeName,
+      other: '$screens screenshots',
+      one: '1 screenshot',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      receipts,
+      locale: localeName,
+      other: '$receipts receipts',
+      one: 'a receipt',
+    );
+    return 'From $_temp0 and $_temp1';
+  }
+
+  @override
+  String scanFromReceipts(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count receipts',
+      one: 'a receipt',
+    );
+    return 'From $_temp0';
+  }
+
+  @override
+  String get scanGroupAdded => 'Added';
+
+  @override
+  String get scanGroupConfirmed => 'Confirmed';
+
+  @override
+  String get scanGroupReview => 'Needs your check';
+
+  @override
+  String get scanGroupDifferent => 'Different amount';
+
+  @override
+  String get scanGroupNotAdded => 'Not added';
+
+  @override
+  String scanNext(String date) {
+    return 'next $date';
+  }
+
+  @override
+  String get scanUndo => 'Undo';
+
+  @override
+  String get scanRemoved => 'Removed';
+
+  @override
+  String get scanUndone => 'Undone';
+
+  @override
+  String scanPeriodPaid(String date, String amount) {
+    return '$date period · paid $amount';
+  }
+
+  @override
+  String scanChargedOn(String date, String amount) {
+    return '$date · charged $amount';
+  }
+
+  @override
+  String scanUsualPrice(String amount) {
+    return 'Usual $amount — recorded for this period only; the price isn’t changed.';
+  }
+
+  @override
+  String scanReviewBefore(String amount, String date, int days, String due) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$amount on $date — $_temp0 before the $due payment';
+  }
+
+  @override
+  String scanReviewAfter(String amount, String date, int days, String due) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$amount on $date — $_temp0 after the $due payment';
+  }
+
+  @override
+  String scanReviewAmount(String amount, String date, String usual) {
+    return '$amount on $date — usually $usual';
+  }
+
+  @override
+  String get scanItsThisPeriod => 'It’s this period';
+
+  @override
+  String get scanNotThis => 'Not this';
+
+  @override
+  String get scanSeenOnce =>
+      'Seen once. Added if a second charge about a month later matches.';
+
+  @override
+  String scanNotBilling(String name) {
+    return 'Matches $name, which is paused or cancelled.';
+  }
+
+  @override
+  String get scanDismissedBefore =>
+      'You removed it before, so it isn’t added again.';
+
+  @override
+  String scanAlreadyTracked(String name) {
+    return '$name is already in your list.';
+  }
+
+  @override
+  String get scanAdd => 'Add';
+
+  @override
+  String get scanDone => 'Done';
+
+  @override
+  String get scanUndoAll => 'Undo all';
+
+  @override
+  String scanRemovedToast(String name) {
+    return '$name removed · won’t be added again';
+  }
+
+  @override
+  String get scanNothingTitle => 'No subscriptions found';
+
+  @override
+  String scanNothingMeta(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pictures',
+      one: '1 picture',
+    );
+    return 'In $_temp0 · nothing was added';
+  }
+
+  @override
+  String get scanTryThis => 'Try this';
+
+  @override
+  String get scanTip1Title => 'Open the subscriptions list';
+
+  @override
+  String get scanTip1Body =>
+      'Google Play → Payments & subscriptions → Subscriptions';
+
+  @override
+  String get scanTip2Title => 'Keep price and date in view';
+
+  @override
+  String get scanTip2Body => 'Each price and renewal date should be on screen.';
+
+  @override
+  String get scanTip3Title => 'Avoid cropped or blurry shots';
+
+  @override
+  String get scanTip3Body => 'Full-screen screenshots read best.';
+
+  @override
+  String get scanChooseOther => 'Choose other screenshots';
+
+  @override
+  String get scanAddByHand => 'Add by hand';
+
+  @override
+  String get scanReadFailed => 'Couldn’t read that picture. Try another one.';
+
+  @override
+  String get scanOpenStoreFailed => 'Couldn’t open the store on this phone.';
 
   @override
   String get securitySection => 'Security';
@@ -3019,6 +3330,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsBackupPasswordHide => 'Hide password';
+
+  @override
+  String get settingsAutoStateOn => 'On';
 
   @override
   String get subscriptionDetailEdit => 'Edit';

@@ -1703,7 +1703,260 @@
   "onboardingEnableReminders": "Turn on reminders",
   "onboardingNoThanks": "No thanks",
   "scanTitle": "Scan screenshots",
-  "scanPlaceholder": "Coming soon",
+  "scanResultsTitle": "Scan results",
+  "scanStep1Title": "Open your subscriptions page",
+  "scanStep1Body": "Google Play → Payments & subscriptions, or App Store → Subscriptions",
+  "scanStep2Title": "Take screenshots",
+  "scanStep2Body": "Scroll and capture every subscription. Receipts work too.",
+  "scanStep3Title": "Pick them here",
+  "scanStep3Body": "Subnest reads them on this phone and fills everything in.",
+  "scanOpenGooglePlay": "Open Google Play",
+  "scanOpenAppStore": "Open App Store",
+  "scanPrivacy": "Text is read on this phone. Your screenshots never leave it.",
+  "scanChooseScreenshots": "Choose screenshots",
+  "scanPhotographReceipt": "Photograph a receipt",
+  "scanPickerTitle": "Subnest only sees the photos you pick",
+  "scanPicker1Title": "You choose the screenshots",
+  "scanPicker1Body": "Nothing else in your gallery is opened.",
+  "scanPicker2Title": "Read on this phone",
+  "scanPicker2Body": "Text recognition works offline.",
+  "scanPicker3Title": "Nothing is uploaded or kept",
+  "scanPicker3Body": "Only the subscriptions found are saved.",
+  "scanPickerNote": "Next, your phone asks which photos Subnest may see.",
+  "scanContinue": "Continue",
+  "scanNotNow": "Not now",
+  "scanReadingTitle": "Reading {count, plural, =1{1 picture} other{{count} pictures}}",
+  "@scanReadingTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanFoundSoFar": "Found {count} so far…",
+  "@scanFoundSoFar": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanOnThisPhone": "On this phone · about {seconds} seconds",
+  "@scanOnThisPhone": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "scanAddedConfirmed": "Added {added}, confirmed {confirmed}",
+  "@scanAddedConfirmed": {
+    "description": "Scan results title (mockup 118).",
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "confirmed": {
+        "type": "int"
+      }
+    }
+  },
+  "scanAddedOnly": "Added {count}",
+  "@scanAddedOnly": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanConfirmedOnly": "Confirmed {count}",
+  "@scanConfirmedOnly": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanFoundOnly": "Found {count, plural, =1{1 charge} other{{count} charges}} to check",
+  "@scanFoundOnly": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanFromScreenshots": "From {count, plural, =1{1 screenshot} other{{count} screenshots}}",
+  "@scanFromScreenshots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanFromScreenshotsAndReceipts": "From {screens, plural, =1{1 screenshot} other{{screens} screenshots}} and {receipts, plural, =1{a receipt} other{{receipts} receipts}}",
+  "@scanFromScreenshotsAndReceipts": {
+    "placeholders": {
+      "screens": {
+        "type": "int"
+      },
+      "receipts": {
+        "type": "int"
+      }
+    }
+  },
+  "scanFromReceipts": "From {count, plural, =1{a receipt} other{{count} receipts}}",
+  "@scanFromReceipts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanGroupAdded": "Added",
+  "scanGroupConfirmed": "Confirmed",
+  "scanGroupReview": "Needs your check",
+  "scanGroupDifferent": "Different amount",
+  "scanGroupNotAdded": "Not added",
+  "scanNext": "next {date}",
+  "@scanNext": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "scanUndo": "Undo",
+  "scanRemoved": "Removed",
+  "scanUndone": "Undone",
+  "scanPeriodPaid": "{date} period · paid {amount}",
+  "@scanPeriodPaid": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "scanChargedOn": "{date} · charged {amount}",
+  "@scanChargedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "scanUsualPrice": "Usual {amount} — recorded for this period only; the price isn’t changed.",
+  "@scanUsualPrice": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "scanReviewBefore": "{amount} on {date} — {days, plural, =1{1 day} other{{days} days}} before the {due} payment",
+  "@scanReviewBefore": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      },
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "scanReviewAfter": "{amount} on {date} — {days, plural, =1{1 day} other{{days} days}} after the {due} payment",
+  "@scanReviewAfter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      },
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "scanReviewAmount": "{amount} on {date} — usually {usual}",
+  "@scanReviewAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "usual": {
+        "type": "String"
+      }
+    }
+  },
+  "scanItsThisPeriod": "It’s this period",
+  "scanNotThis": "Not this",
+  "scanSeenOnce": "Seen once. Added if a second charge about a month later matches.",
+  "scanNotBilling": "Matches {name}, which is paused or cancelled.",
+  "@scanNotBilling": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "scanDismissedBefore": "You removed it before, so it isn’t added again.",
+  "scanAlreadyTracked": "{name} is already in your list.",
+  "@scanAlreadyTracked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "scanAdd": "Add",
+  "scanDone": "Done",
+  "scanUndoAll": "Undo all",
+  "scanRemovedToast": "{name} removed · won’t be added again",
+  "@scanRemovedToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "scanNothingTitle": "No subscriptions found",
+  "scanNothingMeta": "In {count, plural, =1{1 picture} other{{count} pictures}} · nothing was added",
+  "@scanNothingMeta": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scanTryThis": "Try this",
+  "scanTip1Title": "Open the subscriptions list",
+  "scanTip1Body": "Google Play → Payments & subscriptions → Subscriptions",
+  "scanTip2Title": "Keep price and date in view",
+  "scanTip2Body": "Each price and renewal date should be on screen.",
+  "scanTip3Title": "Avoid cropped or blurry shots",
+  "scanTip3Body": "Full-screen screenshots read best.",
+  "scanChooseOther": "Choose other screenshots",
+  "scanAddByHand": "Add by hand",
+  "scanReadFailed": "Couldn’t read that picture. Try another one.",
+  "scanOpenStoreFailed": "Couldn’t open the store on this phone.",
   "securitySection": "Security",
   "@securitySection": {
     "description": "Settings: section header after Data (PIN lock, Privacy screen)."
@@ -2386,6 +2639,10 @@
   },
   "settingsBackupPasswordShow": "Show password",
   "settingsBackupPasswordHide": "Hide password",
+  "settingsAutoStateOn": "On",
+  "@settingsAutoStateOn": {
+    "description": "Spoken state of the read-only automatic rows on the Automation screen."
+  },
   "subscriptionDetailEdit": "Edit",
   "subscriptionDetailStatusActive": "Active",
   "subscriptionDetailStatusTrial": "{days, plural, =0{Trial · ends today} =1{Trial · 1 day left} other{Trial · {days} days left}}",

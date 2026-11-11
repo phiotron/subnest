@@ -1899,7 +1899,307 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scanTitle => 'Quét ảnh chụp';
 
   @override
-  String get scanPlaceholder => 'Sắp có';
+  String get scanResultsTitle => 'Kết quả quét';
+
+  @override
+  String get scanStep1Title => 'Mở trang gói của bạn';
+
+  @override
+  String get scanStep1Body =>
+      'Google Play → Thanh toán & gói thuê bao, hoặc App Store → Gói đăng ký';
+
+  @override
+  String get scanStep2Title => 'Chụp màn hình';
+
+  @override
+  String get scanStep2Body => 'Cuộn và chụp hết các gói. Hoá đơn cũng được.';
+
+  @override
+  String get scanStep3Title => 'Chọn ảnh ở đây';
+
+  @override
+  String get scanStep3Body => 'Subnest đọc ngay trên máy và điền sẵn mọi thứ.';
+
+  @override
+  String get scanOpenGooglePlay => 'Mở Google Play';
+
+  @override
+  String get scanOpenAppStore => 'Mở App Store';
+
+  @override
+  String get scanPrivacy =>
+      'Chữ được đọc ngay trên máy. Ảnh không bao giờ rời khỏi máy.';
+
+  @override
+  String get scanChooseScreenshots => 'Chọn ảnh chụp';
+
+  @override
+  String get scanPhotographReceipt => 'Chụp hoá đơn';
+
+  @override
+  String get scanPickerTitle => 'Subnest chỉ thấy những ảnh bạn chọn';
+
+  @override
+  String get scanPicker1Title => 'Bạn tự chọn ảnh';
+
+  @override
+  String get scanPicker1Body => 'Các ảnh khác không bị mở.';
+
+  @override
+  String get scanPicker2Title => 'Đọc ngay trên máy';
+
+  @override
+  String get scanPicker2Body => 'Nhận chữ chạy offline.';
+
+  @override
+  String get scanPicker3Title => 'Không tải lên, không lưu ảnh';
+
+  @override
+  String get scanPicker3Body => 'Chỉ lưu các gói tìm thấy.';
+
+  @override
+  String get scanPickerNote =>
+      'Tiếp theo, máy hỏi bạn cho Subnest xem ảnh nào.';
+
+  @override
+  String get scanContinue => 'Tiếp tục';
+
+  @override
+  String get scanNotNow => 'Để sau';
+
+  @override
+  String scanReadingTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ảnh',
+    );
+    return 'Đang đọc $_temp0';
+  }
+
+  @override
+  String scanFoundSoFar(int count) {
+    return 'Đã thấy $count gói…';
+  }
+
+  @override
+  String scanOnThisPhone(int seconds) {
+    return 'Trên máy · khoảng $seconds giây';
+  }
+
+  @override
+  String scanAddedConfirmed(int added, int confirmed) {
+    return 'Đã thêm $added gói, xác nhận $confirmed kỳ';
+  }
+
+  @override
+  String scanAddedOnly(int count) {
+    return 'Đã thêm $count gói';
+  }
+
+  @override
+  String scanConfirmedOnly(int count) {
+    return 'Đã xác nhận $count kỳ';
+  }
+
+  @override
+  String scanFoundOnly(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count khoản',
+    );
+    return 'Có $_temp0 cần kiểm';
+  }
+
+  @override
+  String scanFromScreenshots(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ảnh chụp',
+    );
+    return 'Từ $_temp0';
+  }
+
+  @override
+  String scanFromScreenshotsAndReceipts(int screens, int receipts) {
+    String _temp0 = intl.Intl.pluralLogic(
+      screens,
+      locale: localeName,
+      other: '$screens ảnh chụp',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      receipts,
+      locale: localeName,
+      other: '$receipts hoá đơn',
+    );
+    return 'Từ $_temp0 và $_temp1';
+  }
+
+  @override
+  String scanFromReceipts(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hoá đơn',
+    );
+    return 'Từ $_temp0';
+  }
+
+  @override
+  String get scanGroupAdded => 'Đã thêm';
+
+  @override
+  String get scanGroupConfirmed => 'Đã xác nhận';
+
+  @override
+  String get scanGroupReview => 'Cần bạn kiểm';
+
+  @override
+  String get scanGroupDifferent => 'Số tiền khác';
+
+  @override
+  String get scanGroupNotAdded => 'Không thêm';
+
+  @override
+  String scanNext(String date) {
+    return 'kỳ tới $date';
+  }
+
+  @override
+  String get scanUndo => 'Hoàn tác';
+
+  @override
+  String get scanRemoved => 'Đã gỡ';
+
+  @override
+  String get scanUndone => 'Đã hoàn tác';
+
+  @override
+  String scanPeriodPaid(String date, String amount) {
+    return 'Kỳ $date · đã trả $amount';
+  }
+
+  @override
+  String scanChargedOn(String date, String amount) {
+    return '$date · bị trừ $amount';
+  }
+
+  @override
+  String scanUsualPrice(String amount) {
+    return 'Giá thường $amount — chỉ ghi cho kỳ này; giá gói không đổi.';
+  }
+
+  @override
+  String scanReviewBefore(String amount, String date, int days, String due) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days ngày',
+    );
+    return '$amount ngày $date — sớm $_temp0 so với kỳ $due';
+  }
+
+  @override
+  String scanReviewAfter(String amount, String date, int days, String due) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days ngày',
+    );
+    return '$amount ngày $date — trễ $_temp0 so với kỳ $due';
+  }
+
+  @override
+  String scanReviewAmount(String amount, String date, String usual) {
+    return '$amount ngày $date — thường là $usual';
+  }
+
+  @override
+  String get scanItsThisPeriod => 'Đúng kỳ này';
+
+  @override
+  String get scanNotThis => 'Không phải';
+
+  @override
+  String get scanSeenOnce =>
+      'Mới thấy 1 lần. Sẽ thêm nếu tháng sau có lần trừ khớp.';
+
+  @override
+  String scanNotBilling(String name) {
+    return 'Khớp $name, gói này đang tạm dừng hoặc đã huỷ.';
+  }
+
+  @override
+  String get scanDismissedBefore =>
+      'Bạn đã gỡ gói này trước đó nên không tự thêm lại.';
+
+  @override
+  String scanAlreadyTracked(String name) {
+    return '$name đã có trong danh sách của bạn.';
+  }
+
+  @override
+  String get scanAdd => 'Thêm';
+
+  @override
+  String get scanDone => 'Xong';
+
+  @override
+  String get scanUndoAll => 'Hoàn tác tất cả';
+
+  @override
+  String scanRemovedToast(String name) {
+    return 'Đã gỡ $name · sẽ không tự thêm lại';
+  }
+
+  @override
+  String get scanNothingTitle => 'Không tìm thấy gói nào';
+
+  @override
+  String scanNothingMeta(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ảnh',
+    );
+    return 'Trong $_temp0 · chưa thêm gì';
+  }
+
+  @override
+  String get scanTryThis => 'Thử cách này';
+
+  @override
+  String get scanTip1Title => 'Mở danh sách gói';
+
+  @override
+  String get scanTip1Body =>
+      'Google Play → Thanh toán & gói thuê bao → Gói thuê bao';
+
+  @override
+  String get scanTip2Title => 'Để thấy giá và ngày';
+
+  @override
+  String get scanTip2Body => 'Giá và ngày gia hạn phải nằm trong ảnh.';
+
+  @override
+  String get scanTip3Title => 'Tránh ảnh bị cắt hoặc mờ';
+
+  @override
+  String get scanTip3Body => 'Ảnh chụp toàn màn hình đọc tốt nhất.';
+
+  @override
+  String get scanChooseOther => 'Chọn ảnh khác';
+
+  @override
+  String get scanAddByHand => 'Thêm tay';
+
+  @override
+  String get scanReadFailed => 'Không đọc được ảnh này. Thử ảnh khác.';
+
+  @override
+  String get scanOpenStoreFailed => 'Không mở được cửa hàng trên máy này.';
 
   @override
   String get securitySection => 'Bảo mật';
@@ -2885,6 +3185,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsBackupPasswordHide => 'Ẩn mật khẩu';
+
+  @override
+  String get settingsAutoStateOn => 'Bật';
 
   @override
   String get subscriptionDetailEdit => 'Sửa';
