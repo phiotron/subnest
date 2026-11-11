@@ -102,9 +102,12 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     final today = ref.read(todayProvider);
     final primary = ref.read(primaryCurrencyProvider);
     // The Catalog the app already loaded (newest valid source) — never re-parse the asset here.
-    final services = await ref.read(catalogProvider.future);
-    if (!mounted) return;
-    CatalogService? byId(String id) => services.where((s) => s.id == id).firstOrNull;
+    // Only waited for when a service is involved: a custom service must not depend on it.
+    Future<CatalogService?> byId(String id) async {
+      final services = await ref.read(catalogProvider.future);
+      return services.where((s) => s.id == id).firstOrNull;
+    }
+
     var name = '';
     SubscriptionDraft draft;
     if (_isEdit) {
@@ -117,7 +120,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
       _original = s;
       draft = SubscriptionDraft.fromSubscription(s, today);
       name = s.name;
-      final service = s.serviceId == null ? null : byId(s.serviceId!);
+      final service = s.serviceId == null ? null : await byId(s.serviceId!);
       _service = service;
       if (service != null && service.plans.length > 1) {
         final byLength = [...service.plans]..sort((a, b) => b.name.length.compareTo(a.name.length));
@@ -130,7 +133,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
         }
       }
     } else if (widget.serviceId != null) {
-      final service = byId(widget.serviceId!);
+      final service = await byId(widget.serviceId!);
       _service = service;
       _region = ref.read(libraryPickRegionProvider.notifier).take() ?? _region;
       final region = _region;
