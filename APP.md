@@ -104,7 +104,8 @@ trong `CONTEXT.md` (Month spend, Daily average, Month cash flow, Price history, 
 | 0 | điều phối | product.md v2, CONTEXT, APP, TASKS; chip chu kỳ + thẻ dùng thử 3 nút | 2026-11-10 |
 | 1 | **L** Logo · **M** Lõi số liệu · **R** CI iOS + push | xem kế hoạch; M làm migration (gồm cột ảnh tự chọn của L) | đề xuất 2026-11-10 |
 | 1b | **P2** Catalog từ xa (data) | sau khi M commit migration | |
-| 2 | U-Home · U-Insights · U2b · U4 · S UI · Lịch | sau mockup v14 (Phương gửi product.md v2 cho Claude Design) | |
+| 2a | **UH** Tổng quan 012–029 · **UI** Thống kê + Lịch 071–086 · **UD** Chi tiết + Xác nhận 044–070 | mockup v14 `954ef01` (design system v18, 126 màn, token không đổi → không cần phiên design system) | đề xuất 2026-11-11 |
+| 2b | **UF** Thư viện + Form + Onboarding 005–011, 030–043 · **US** Cài đặt + PIN 002–004, 087–113 · **SW** Quét ảnh + Widget + Thông báo 114–126 | sau 2a (≤ 3 phiên cùng lúc) | |
 | 3 | pháp lý (bỏ logo.dev, quyền ảnh) · QA A13 · ảnh store · AAB | | |
 
 ## Kế hoạch 3 phiên điều phối
@@ -195,7 +196,7 @@ NotificationListener của Play và thẩm định restricted scope Gmail (có m
 ## Trạng thái
 | Phiên điều phối | Ngày | Phiên con đã mở | Kết quả |
 |---|---|---|---|
-| #7 Thống kê theo tháng · logo đóng gói · giá tăng · dự đoán (grill popup) | 2026-11-10 | đề xuất L, M, R | 12 quyết định + 6 thuật ngữ; product.md v2 toàn app (gửi Claude Design → v14) |
+| #7 Thống kê theo tháng · logo đóng gói · giá tăng · dự đoán (grill popup) | 2026-11-10 | R CI iOS ✅ · M Lõi số liệu ✅ · L Logo (487/500) ✅ code · P2 Catalog từ xa ✅ code · đợt 2a UH/UI/UD đề xuất | 12 quyết định + 6 thuật ngữ; product.md v2 → mockup v14 `954ef01`; `dev` `812c6a7`…`d1c6b21`; iOS build không ký xanh (ec310d6) |
 | #6 Sao lưu · Bảo mật · Widget · Làm tròn (grill, theo A002) | 2026-11-10 | B Sao lưu ✅ · R Làm tròn ✅ · W Widget ✅ (đang sửa màu chữ widget trên One UI) · S Bảo mật ✅ | 12 quyết định + 9 thuật ngữ; `dev` `9171a92`…`b0f32fa` (chưa push); analyze sạch, **970 test xanh**; thử A13: S (PIN, che nội dung, Quên mã) đạt, W (3 widget, chạm, khoá) đạt, điều phối (làm tròn, sao lưu tự động + hẹn giờ khi app tắt, giữ 2 file, xoá toàn bộ, khôi phục mã hoá) đạt + sửa lỗi time picker cỡ chữ nhỏ — `notes/2026-11-10-*.md`. Còn: CI iOS tay, App Group, ảnh store |
 | #5 Mặc định English + USD (S-90) | 2026-11-10 | không (làm trực tiếp) | English lần đầu + USD mặc định + Thư viện mở tab Chung (giá US) + Settings chỉ EN/VI; thêm S1.0 Language trước Welcome (chữ tiếng Anh, không dịch); version `1.0.0`; analyze sạch, **823 test xanh**; APK release `build/app/outputs/flutter-apk/app-release.apk` cài Galaxy A13 (máy `vi-VN`) mở English + USD |
 | #4 Đợt 2 giao diện theo mockup v13 (đang mở) | 2026-11-06 | U1 Tổng quan ✅ · U2a Thư viện + Form ✅ (tuần 92% → chỉ mở 2; còn lại từ 10/11) | mockup v13 `775901b`; U1 `4075597`…`058cf34`, U2a `522df46` `ed06826` `09faefd`, U1 `3cb500c`; điều phối chạy lại ở `09faefd`: analyze sạch, merge_arb OK, **823 test xanh** (97 golden bỏ qua khi không bật cờ) |
