@@ -38,9 +38,10 @@ Theo mockup v14 114–126, product.md §4.11–4.13, ADR 0003, APP.md "Quyết �
 
 ## Thông báo 126
 - Ba mẫu (nhắc / hết dùng thử / đến ngày) **khớp đúng §4.13** EN + VI; kênh giữ tên "Reminders"/"Nhắc nhở" (fact `doi-chu-hien-thi`).
-- **Thiếu**: thông báo "Sao lưu lỗi — mở Subnest để kiểm tra" chưa tồn tại trong `lib/data` (SW đã SendMessage điều phối). Đã thêm chuỗi
-  `notificationsBackupFailed` (EN+VI) trong `notifications_{en,vi}.arb`; cần `NotificationService.showBackupFailed` + gọi khi tự sao lưu
-  `failed/permissionDenied/folderMissing` (cả nền Android) — ngoài phạm vi SW.
+- **Sao lưu lỗi ✅** (điều phối làm, `e986e92`): SW thêm chuỗi `notificationsBackupFailed` (EN+VI) trong `notifications_{en,vi}.arb`;
+  điều phối thêm `NotificationService.showBackupFailed(settings)` (id 1003, kênh reminders, chỉ chữ, chạm mở /settings), gọi khi tự sao
+  lưu `failed/permissionDenied/folderMissing` — trong app qua `AutoBackupService.onAutomaticFailure` (main.dart), nền Android trong
+  `autoBackupBackgroundMain`. Mục 126 hoàn tất.
 
 ## Việc dở / ghi chú cho điều phối
 - **Chưa có lối vào `/scan`** trong UI (không ai gọi `AppRoutes.scan`) — gắn ở Thêm (+)/Cài đặt (phiên UF/US hoặc điều phối); chỉ Pro
