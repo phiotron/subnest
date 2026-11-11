@@ -337,7 +337,7 @@ String? _packageRoot(String name) {
 
 /// Saves the current frame as a PNG when run with `--dart-define=SHOTS=true`.
 const bool kShots = bool.fromEnvironment('SHOTS');
-const String kShotDir = 'notes/img/2026-11-05-ui-settings';
+const String kShotDir = 'notes/img/2026-11-11-us-settings-pin';
 
 Future<void> shot(WidgetTester tester, String name) async {
   if (!kShots) return;
