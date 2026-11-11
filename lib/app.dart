@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'core/router/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/service_tile_logo.dart';
+import 'data/catalog/catalog_providers.dart';
 import 'data/logos/app_logo_source.dart';
 import 'data/providers.dart';
 import 'data/settings_repository.dart';
@@ -72,10 +73,18 @@ class _SubnestAppState extends ConsumerState<SubnestApp> with WidgetsBindingObse
   Future<void> _housekeeping() async {
     await ref.read(subscriptionRepositoryProvider).normalizeAll();
     await ref.read(exchangeRateRepositoryProvider).refreshIfStale();
+    // Remote Catalog (ADR 0002): at most once a day; failures keep the bundled/cached copy. The first
+    // call also attaches remote-only logos to AppLogoSource.
+    try {
+      await ref.read(catalogUpdaterProvider).refreshIfDue();
+    } catch (_) {}
     // Custom logos: find the folder, delete pictures no subscription points at any more.
     final logos = AppLogoSource.instance.custom;
     await logos.load();
-    await logos.keepOnly({for (final s in await ref.read(subscriptionRepositoryProvider).all()) ?s.customLogoFile});
+    final subs = await ref.read(subscriptionRepositoryProvider).all();
+    await logos.keepOnly({for (final s in subs) ?s.customLogoFile});
+    // "Keep old price" answers of subscriptions that were deleted.
+    await ref.read(catalogNoticeStoreProvider).keepOnly({for (final s in subs) s.id});
   }
 
   void _openDeepLink(String location) => widget.router.push(location);

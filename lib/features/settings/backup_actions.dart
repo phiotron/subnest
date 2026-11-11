@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +9,7 @@ import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/backup/backup_crypto.dart';
 import '../../data/backup/backup_service.dart';
+import '../../data/catalog/catalog_providers.dart';
 import '../../data/logos/logo_providers.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
@@ -41,9 +44,9 @@ abstract final class BackupActions {
     );
     if (result == null || !context.mounted) return;
     final content = result.isEmpty ? plain : result;
-    final done = await ref
-        .read(settingsPlatformProvider)
-        .share([ExportFile('subnest-${_stamp(now)}.subnest', content, 'application/json')], subject: l.settingsExportBackup);
+    final done = await ref.read(settingsPlatformProvider).share([
+      ExportFile('subnest-${_stamp(now)}.subnest', content, 'application/json'),
+    ], subject: l.settingsExportBackup);
     if (!done) return;
     await backup.markBackedUp();
     if (context.mounted) showAppToast(context, l.settingsExported);
@@ -182,6 +185,10 @@ abstract final class BackupActions {
       () => ref.read(pinServiceProvider).disable(),
       // [L · Custom logo] the pictures the user picked for subscriptions.
       () => ref.read(customLogoStoreProvider).clear(),
+      // [P2 · Remote Catalog] the user's "Keep old price" answers (the cached Catalog itself stays).
+      // Not awaited: it lives in the catalog cache folder, whose path lookup must not hold up the
+      // return to onboarding (and never resolves in widget tests).
+      () async => unawaited(ref.read(catalogNoticeStoreProvider).clearDecisions().catchError((_) {})),
       // [W · Widget] clear the home-screen widget data (e.g. `WidgetSync.clear()`), so the widget
       //   shows its empty state instead of old amounts.
     ];
