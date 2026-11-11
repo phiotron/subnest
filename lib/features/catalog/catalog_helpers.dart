@@ -165,6 +165,16 @@ abstract final class CatalogView {
     ].join(' · ');
   }
 
+  /// What a library row shows (png 030–032): the cheapest plan offered in [region], its price and
+  /// whether more plans exist ("from …"); `null` when the service has no price there.
+  static ({CatalogPlan plan, CatalogPrice price, bool many})? rowOffer(CatalogService s, String region) {
+    final offered = plans(s, region);
+    final best = cheapestPlan(offered, region);
+    final price = best?.priceFor(region);
+    if (best == null || price == null) return null;
+    return (plan: best, price: price, many: offered.length > 1);
+  }
+
   /// Whether the price a library row shows is a Reference price (unverified → "Reference price" chip).
   static bool rowIsReference(CatalogService s, String region) =>
       cheapestPlan(plans(s, region), region)?.priceFor(region)?.isReference ?? false;

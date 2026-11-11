@@ -4,15 +4,32 @@ import '../../../core/l10n/l10n.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../domain/domain.dart';
 
-/// S3 library row (design `lrow`, png 22/34/35): 40px tile (Logo.dev logo via `logoDomain`,
-/// monogram fallback) · name (`title-sm`) + meta "from $7.99/month · ≈ ₫202,946 · 4 plans" (wraps,
-/// never truncates) · optional [ReferencePriceChip] · round `brand-soft` plus. Whole row = target.
+/// S3 library row (design `.lrow`, png 030–032): 40px logo · name (`title-sm`) · "from $7.99" +
+/// [CycleChip] (+ [ReferencePriceChip] when unverified) · "≈ ₫202,946" when the price is in another
+/// currency than the Primary one · round `brand-soft` plus. Whole row = one target. Without any
+/// price, [fallback] (the category) stands in for the price line.
 class LibraryRow extends StatelessWidget {
-  const LibraryRow({super.key, required this.service, required this.meta, required this.onTap, this.reference = false});
+  const LibraryRow({
+    super.key,
+    required this.service,
+    required this.onTap,
+    this.price,
+    this.cycle,
+    this.approx,
+    this.fallback = '',
+    this.reference = false,
+  });
 
   final CatalogService service;
-  final String meta;
   final VoidCallback onTap;
+
+  /// "from $7.99" / "$7.99"; `null` = no price.
+  final String? price;
+  final BillingCycle? cycle;
+
+  /// "≈ ₫202,946" in the Primary currency, `null` when the same currency.
+  final String? approx;
+  final String fallback;
 
   /// The shown price is a Reference price (unverified).
   final bool reference;
@@ -20,26 +37,30 @@ class LibraryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final l = context.l10n;
     final s = service;
+    final p = price;
     return Semantics(
       button: true,
       label: [
-        context.l10n.catalogAddService(s.name),
-        context.l10n.spoken(meta), // "≈" read as a word (TalkBack skips the symbol)
-        if (reference) context.l10n.commonReferencePrice,
+        l.catalogAddService(s.name),
+        if (p != null) p else fallback,
+        if (p != null && cycle != null) l.cycle(cycle!),
+        if (reference) l.commonReferencePrice,
+        if (approx != null) l.spoken(approx!), // "≈" read as a word (TalkBack skips the symbol)
       ].join(', '),
       excludeSemantics: true,
       onTap: onTap,
       child: InkWell(
         onTap: onTap,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 64),
+          constraints: const BoxConstraints(minHeight: 60),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpace.s3),
+            padding: const EdgeInsets.symmetric(vertical: AppSpace.s2),
             child: Row(
               children: [
                 ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, serviceId: s.id),
-                const SizedBox(width: AppSpace.s4),
+                const SizedBox(width: AppSpace.s3),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,15 +73,27 @@ class LibraryRow extends StatelessWidget {
                         style: AppType.titleSm.copyWith(color: c.ink),
                       ),
                       const SizedBox(height: 2),
-                      Text(meta, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
-                      if (reference) ...[const SizedBox(height: AppSpace.s1), const ReferencePriceChip()],
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 2,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(p ?? fallback, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                          if (p != null && cycle != null) CycleChip(cycle: cycle!),
+                          if (reference) const ReferencePriceChip(),
+                        ],
+                      ),
+                      if (approx != null) ...[
+                        const SizedBox(height: 2),
+                        Text(approx!, style: AppType.meta.copyWith(color: c.inkMuted).tabular),
+                      ],
                     ],
                   ),
                 ),
                 const SizedBox(width: AppSpace.s3),
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(color: c.brandSoft, shape: BoxShape.circle),
                   child: Icon(AppIcons.add, size: 18, color: c.onBrandSoft),
                 ),
@@ -73,8 +106,8 @@ class LibraryRow extends StatelessWidget {
   }
 }
 
-/// "+ Create a custom service" row (design `lrow custom`): ghost tile · `brand` title + meta ·
-/// chevron. Also the "Not seeing it? Create “abc”" suggestion.
+/// "+ Create a custom service" row (design `.lrow.custom`): ghost tile · `brand` title + meta ·
+/// chevron. Also "Not it? Create “abc”" under search results and "Create “abc”" when nothing matches.
 class CustomServiceRow extends StatelessWidget {
   const CustomServiceRow({super.key, required this.title, required this.subtitle, required this.onTap});
 
@@ -90,13 +123,13 @@ class CustomServiceRow extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 64),
+          constraints: const BoxConstraints(minHeight: 60),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpace.s3),
+            padding: const EdgeInsets.symmetric(vertical: AppSpace.s2),
             child: Row(
               children: [
                 const GhostTile(),
-                const SizedBox(width: AppSpace.s4),
+                const SizedBox(width: AppSpace.s3),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +152,7 @@ class CustomServiceRow extends StatelessWidget {
   }
 }
 
-/// "ⓘ Reference price" chip (design `.ref-chip`): 20px pill, `warning-soft` / `warning-ink`, 11/600.
+/// "Reference price" tag (design `.ref`): 18px, radius 6, `warning-soft` / `warning-ink`, 11/700.
 /// Marks a Catalog price that is not verified from the provider's page (glossary: Reference price).
 class ReferencePriceChip extends StatelessWidget {
   const ReferencePriceChip({super.key});
@@ -128,26 +161,12 @@ class ReferencePriceChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     return Container(
-      constraints: const BoxConstraints(minHeight: 20),
-      padding: const EdgeInsets.fromLTRB(5, 2, 7, 2),
-      decoration: ShapeDecoration(color: c.warningSoft, shape: const StadiumBorder()),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(AppIcons.info, size: 12, color: c.warningInk),
-          const SizedBox(width: 4),
-          Flexible(
-            child: Text(
-              context.l10n.commonReferencePrice,
-              style: AppType.meta.copyWith(
-                fontSize: 11,
-                height: 14 / 11,
-                fontWeight: FontWeight.w600,
-                color: c.warningInk,
-              ),
-            ),
-          ),
-        ],
+      constraints: const BoxConstraints(minHeight: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+      decoration: BoxDecoration(color: c.warningSoft, borderRadius: BorderRadius.circular(6)),
+      child: Text(
+        context.l10n.commonReferencePrice,
+        style: AppType.meta.copyWith(fontSize: 11, height: 16 / 11, fontWeight: FontWeight.w700, color: c.warningInk),
       ),
     );
   }

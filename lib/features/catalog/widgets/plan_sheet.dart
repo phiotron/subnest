@@ -5,7 +5,7 @@ import '../../../core/widgets/widgets.dart';
 import '../../../domain/domain.dart';
 import '../catalog_helpers.dart';
 
-/// S3 plan sheet (v13 png 25; only plans on sale, Reference prices marked in the subtitle): tile + name + "Choose a plan · suggested prices for Vietnam", one
+/// S3 plan sheet (png 034; price + cycle chip on the right; only plans on sale, Reference prices marked in the subtitle): tile + name + "Choose a plan · suggested prices for Vietnam", one
 /// [RadioRow] card per plan with its regional price, a note and "Continue with Premium".
 /// Returns the chosen plan, or `null` when dismissed. Also used by S4's plan chip.
 Future<CatalogPlan?> showPlanSheet(
@@ -54,7 +54,13 @@ class _PlanSheetState extends State<PlanSheet> {
               children: [
                 Row(
                   children: [
-                    ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.monogram, size: 56, serviceId: s.id),
+                    ServiceTile(
+                      name: s.name,
+                      colorValue: s.colorValue,
+                      iconText: s.monogram,
+                      size: 56,
+                      serviceId: s.id,
+                    ),
                     const SizedBox(width: AppSpace.s4),
                     Expanded(
                       child: Column(
@@ -80,15 +86,7 @@ class _PlanSheetState extends State<PlanSheet> {
                   onChanged: (id) => setState(() => _selected = id),
                   options: [
                     for (final p in _plans)
-                      RadioOption(
-                        value: p.id,
-                        title: p.name,
-                        subtitle: [
-                          CatalogView.planSubtitle(l, p),
-                          if (p.priceFor(widget.region)?.isReference ?? false) l.commonReferencePrice,
-                        ].join(' · '),
-                        trailing: _price(context, p),
-                      ),
+                      RadioOption(value: p.id, title: p.name, subtitle: _subtitle(l, p), trailing: _price(context, p)),
                   ],
                 ),
                 const SizedBox(height: AppSpace.s3),
@@ -107,10 +105,27 @@ class _PlanSheetState extends State<PlanSheet> {
     );
   }
 
+  /// "Up to 6 people · Reference price"; the cycle is in the chip on the right (png 034).
+  String? _subtitle(AppLocalizations l, CatalogPlan p) {
+    final parts = [
+      if (p.members != null) l.catalogPlanMembers(p.members!),
+      if (p.priceFor(widget.region)?.isReference ?? false) l.commonReferencePrice,
+    ];
+    return parts.isEmpty ? null : parts.join(' · ');
+  }
+
   Widget? _price(BuildContext context, CatalogPlan p) {
     final l = context.l10n;
     final price = p.priceFor(widget.region);
     if (price == null) return null;
-    return RadioRow.price(context, l.amount(price.amount, price.currency), suffix: perCycle(l, p.cycle));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        RadioRow.price(context, l.amount(price.amount, price.currency)),
+        const SizedBox(height: 3),
+        CycleChip(cycle: p.cycle),
+      ],
+    );
   }
 }

@@ -84,8 +84,8 @@ void main() {
     expect(find.text('Create a custom service'), findsOneWidget);
     expect(find.text('General'), findsOneWidget);
     expect(find.text('Vietnam'), findsOneWidget, reason: 'both tabs, always');
-    expect(find.text('POPULAR'), findsOneWidget);
-    expect(find.text('from \$8.99/month · ≈ ₫228,346 · 3 plans'), findsOneWidget);
+    expect(find.text('POPULAR · US PRICES'), findsOneWidget);
+    expect(find.text('≈ ₫228,346'), findsWidgets);
     await shot(tester, 's3-library-390-en-light-100');
 
     // Category chip filters.
@@ -93,23 +93,26 @@ void main() {
     await settle(tester);
     expect(find.text('Netflix'), findsNothing);
     expect(find.text('Spotify'), findsOneWidget);
+    await tester.drag(find.byType(ListView), const Offset(0, -3000));
+    await settle(tester);
+    expect(find.textContaining('Library updated'), findsOneWidget, reason: 'footer (png 030)');
   });
 
-  addTest('S3 search "netf" → 1 result + "Not seeing it?" (png 17)', (tester) async {
+  addTest('S3 search "netf" → 1 result + "Not it?" (png 032)', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/catalog');
     await tester.enterText(find.byType(TextField), 'netf');
     await settle(tester);
     expect(find.text('1 RESULT'), findsOneWidget);
     expect(find.text('Netflix'), findsOneWidget);
-    expect(find.text('Not seeing it? Create “netf”'), findsOneWidget);
+    expect(find.text('Not it? Create “netf”'), findsOneWidget);
     expect(find.text('All'), findsNothing, reason: 'chips hide while searching');
     await shot(tester, 's3-search-390-en-light-100');
 
     // Clear button.
     await tester.tap(find.byTooltip('Clear search'));
     await settle(tester);
-    expect(find.text('POPULAR'), findsOneWidget);
+    expect(find.text('POPULAR · US PRICES'), findsOneWidget);
   });
 
   addTest('S3 no results → Create “abc” opens S4 with the name (png 18)', (tester) async {
@@ -117,8 +120,8 @@ void main() {
     await pumpAdd(tester, f, location: '/catalog');
     await tester.enterText(find.byType(TextField), 'qzxw');
     await settle(tester);
-    expect(find.text('No service called “qzxw”'), findsOneWidget);
-    expect(find.text('Create it — you can pick the colour and letters.'), findsOneWidget);
+    expect(find.text('Nothing called “qzxw”'), findsOneWidget);
+    expect(find.text('Create it — pick a colour, a letter or a photo.'), findsOneWidget);
     await shot(tester, 's3-no-results-390-en-light-100');
     await tester.tap(find.text('Create “qzxw”'));
     await settle(tester);
@@ -133,7 +136,7 @@ void main() {
     await settle(tester);
     await tester.tap(find.text('Netflix'));
     await settle(tester);
-    expect(find.text('Choose a plan · suggested prices'), findsOneWidget);
+    expect(find.text('Choose a plan · US prices'), findsOneWidget);
     for (final p in ['Standard with ads', 'Standard', 'Premium']) {
       expect(find.text(p), findsOneWidget);
     }
@@ -155,19 +158,19 @@ void main() {
     expect(find.text('General'), findsOneWidget);
     expect(find.text('Vietnam'), findsOneWidget);
     expect(find.text('Search 500+ services'), findsOneWidget);
-    expect(find.text('POPULAR'), findsOneWidget, reason: 'General opens by default (S-90)');
+    expect(find.text('POPULAR · US PRICES'), findsOneWidget, reason: 'General opens by default (S-90)');
     await shot(tester, 's3-general-390-en-light-100');
 
     await tester.tap(find.text('Vietnam'));
     await settle(tester);
-    expect(find.text('POPULAR IN VIETNAM'), findsOneWidget);
-    expect(find.text('from ₫74,000/month · 4 plans'), findsOneWidget);
+    expect(find.text('VIETNAM · PRICES IN VND'), findsOneWidget);
+    expect(find.text('from ₫74,000'), findsOneWidget);
     await shot(tester, 's3-vietnam-390-en-light-100');
 
     await tester.tap(find.text('General'));
     await settle(tester);
-    expect(find.text('POPULAR'), findsOneWidget);
-    expect(find.text('from \$8.99/month · ≈ ₫228,346 · 3 plans'), findsOneWidget);
+    expect(find.text('POPULAR · US PRICES'), findsOneWidget);
+    expect(find.text('≈ ₫228,346'), findsWidgets);
     expect(find.bySemanticsLabel(RegExp('≈')), findsNothing, reason: '"≈" is spoken as a word');
 
     // Picking from General pre-fills the US price the row showed.
@@ -175,7 +178,7 @@ void main() {
     await settle(tester);
     await tester.tap(find.text('Netflix'));
     await settle(tester);
-    expect(find.text('Choose a plan · suggested prices'), findsOneWidget);
+    expect(find.text('Choose a plan · US prices'), findsOneWidget);
     await tester.tap(find.textContaining('Continue with'));
     await settle(tester);
     expect(find.text('New subscription'), findsOneWidget);
