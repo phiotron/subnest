@@ -25,8 +25,9 @@ Commit: `213fbd6` (Cài đặt/PIN), `19a0e70` (hoàn nguyên format 3 file khô
 | 112–113 Tự động (Pro) + Đăng ký sớm (không giá) | `settings/automation_screen.dart` |
 
 ## Lệch có chủ ý / quyết định tự đưa ra (điều phối chưa trả lời)
-- **2 công tắc "Tự thêm gói mới / Tự xác nhận kỳ" (112):** `lib/data` chưa có cài đặt lưu chúng → hiện **bật, chỉ đọc** (đúng hành vi Quét ảnh hiện tại: luôn
-  `applyDetections` + Hoàn tác). Nếu cần chỉnh được: thêm 2 trường vào `AppSettings` + setter rồi nối `AppToggle.onChanged` trong `automation_screen.dart`.
+- **2 hàng "Tự thêm gói mới / Tự xác nhận kỳ" (112) — điều phối chốt phương án A (đúng ADR 0003):** `lib/data` chưa có cài đặt lưu chúng → hiện **trạng thái bật, chỉ đọc**
+  (`_ReadOnlyOn`: vẽ như công tắc nhưng không chạm được, đọc thành "Tự thêm gói mới, Bật" — thông tin, không phải điều khiển) + dòng "Mọi thay đổi tự động đều gắn nhãn Tự động và có Hoàn tác".
+  Đề xuất bản sau: thêm 2 trường vào `AppSettings` + setter rồi nối `AppToggle.onChanged` trong `automation_screen.dart`.
 - **"Đăng ký dùng sớm":** mở email tới `kSupportEmail` với tiêu đề "Subnest Pro early access" (`SettingsActions.joinEarlyAccess`), không lưu/không thu gì.
 - Sao lưu: bỏ tên cũ "Export backup" → "Sao lưu ngay"; hộp thoại xuất cũ thay bằng sheet 098. Khôi phục không còn hộp thoại "Restore this backup?" (thay bằng màn + hộp 101).
 - Đổi mã PIN (090) không có trong mockup ngoài hàng; tôi làm theo A002 (nhập PIN cũ rồi PIN mới). Có toast "Đã đổi mã PIN".
@@ -39,7 +40,7 @@ Commit: `213fbd6` (Cài đặt/PIN), `19a0e70` (hoàn nguyên format 3 file khô
 
 ## Kiểm tra
 - `flutter analyze lib test/features/settings test/features/lock test/a11y`: sạch cho phạm vi mình (lúc làm `subscription_form` của UF có lỗi tạm do chuỗi chưa gen — sau khi gen lại thì sạch).
-- `flutter test test/features/settings test/features/lock test/a11y`: **481 qua** — gồm ma trận 360/390 × EN/VI × sáng/tối × 100/130/200% + 320 × 200% EN/VI cho **mọi** cảnh 002–004, 087–113 (+ biến thể: sao lưu bật / lỗi thư mục, rates offline, PIN lệch…).
+- `flutter test test/features/settings test/features/lock test/a11y test/app_flow_test.dart`: **482 qua, 1 skip (store/legal)** — gồm ma trận 360/390 × EN/VI × sáng/tối × 100/130/200% + 320 × 200% EN/VI cho **mọi** cảnh 002–004, 087–113 (+ biến thể: sao lưu bật / lỗi thư mục, rates offline, PIN lệch…).
   `test/app_flow_test.dart` vẫn xanh. `dart run tool/merge_arb.dart --check` OK.
 - Sửa test: `security_settings_test`, `settings_screens_test`, `settings_harness` (route cho màn mới), `settings_shots_test` (cảnh theo số màn v14, ảnh ra `notes/img/2026-11-11-us-settings-pin/`, **không commit**), `lock_app_test` (Quên mã → Thử lại; Xoá toàn bộ → Tiếp tục → gõ ERASE).
 - So ảnh render (light EN 390) với PNG mockup: 003 và 088b khớp bố cục; các màn còn lại kiểm bằng số đo CSS + test không tràn. **Chưa thử máy thật** (không dùng adb theo brief).
@@ -51,8 +52,14 @@ Commit: `213fbd6` (Cài đặt/PIN), `19a0e70` (hoàn nguyên format 3 file khô
 - Sửa chuỗi hàng loạt dùng script Python ghi ra file (`arb_patch.py`, giữ 1 mục/dòng) — heredoc Git Bash hỏng dấu tiếng Việt/`'`.
 - `dart format` chạy trên cả thư mục feature đã đổi 3 file không thuộc phiên (đã hoàn nguyên) → chỉ format đúng file mình sửa.
 
+## Chính sách quyền riêng tư / Điều khoản trong app (yêu cầu thêm của điều phối)
+`settings/legal_texts.dart` EN + VI: bỏ mọi dấu vết Logo.dev; nói logo đóng gói sẵn (không tải/gửi gì), mạng chỉ để tải tỷ giá + thư viện dịch vụ (file tĩnh trên `phamphuongphuongnd.github.io`, không gửi dữ liệu người dùng),
+ảnh tự chọn lấy bằng bộ chọn ảnh hệ thống, chỉ lưu trên máy + file sao lưu, không tải lên. Bỏ câu "Logos provided by Logo.dev" ở Điều khoản.
+⚠ `store/legal/*.md` (bản công khai, ngoài phạm vi) còn chữ Logo.dev nên test đồng bộ `settings_content_test` "= store/legal/*.md" tạm **skip** (có lý do + TODO); đợt 3 cập nhật store/legal rồi bỏ `skip`.
+Thêm test: bản trong app không còn "logo.dev", có câu đóng gói sẵn (EN + VI).
+
 ## Việc dở / đề xuất
-- Điều phối: trả lời 2 câu hỏi (công tắc Tự động, "Đăng ký dùng sớm") — nếu khác đề xuất thì báo lại.
+- Đợt 3: cập nhật `store/legal/*.md` + trang GitHub Pages theo `legal_texts.dart`, bỏ `skip` ở `settings_content_test`.
 - Chưa có `test` riêng cho sheet Danh mục/Nhãn/Phương thức/Ngân sách (chỉ test bố cục); thêm test luồng (thêm, sửa, xoá → chuyển gói, đặt ngân sách) nếu còn ngân sách.
 - ARB `settings_*`: các chuỗi cũ không còn dùng (vd `settingsExportJson*`, `settingsBackup*` đời cũ) chưa xoá — dọn khi gỡ shim.
 - Màn Tỷ giá: sheet ghi đè (`rate_override_sheet.dart`) chưa chỉnh theo v14 (mockup không vẽ riêng).

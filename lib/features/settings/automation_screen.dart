@@ -82,16 +82,8 @@ class AutomationScreen extends ConsumerWidget {
             AppGroup(
               dividerIndent: 52,
               children: [
-                SettingRow(
-                  icon: LucideIcons.plus,
-                  label: l.settingsAutoAdd,
-                  trailing: AppToggle(value: true, semanticLabel: l.settingsAutoAdd, onChanged: null),
-                ),
-                SettingRow(
-                  icon: LucideIcons.check,
-                  label: l.settingsAutoConfirm,
-                  trailing: AppToggle(value: true, semanticLabel: l.settingsAutoConfirm, onChanged: null),
-                ),
+                _ReadOnlyOn(icon: LucideIcons.plus, label: l.settingsAutoAdd),
+                _ReadOnlyOn(icon: LucideIcons.check, label: l.settingsAutoConfirm),
               ],
             ),
             ListNote(l.settingsAutomationNote),
@@ -107,6 +99,27 @@ class AutomationScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// A "switch" that is information only: drawn on, spoken as "label, On" — not a control.
+class _ReadOnlyOn extends StatelessWidget {
+  const _ReadOnlyOn({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    container: true,
+    label: '$label, ${context.l10n.settingsAutoStateOn}',
+    child: ExcludeSemantics(
+      child: SettingRow(
+        icon: icon,
+        label: label,
+        trailing: IgnorePointer(child: AppToggle(value: true, onChanged: null)),
+      ),
+    ),
+  );
 }
 
 /// "Subnest Pro" early-access sheet (mockup 113): what Pro does, Now / Soon, the early-access

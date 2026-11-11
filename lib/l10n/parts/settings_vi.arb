@@ -239,5 +239,6 @@
   "settingsWhenToday": "hôm nay, {time}",
   "settingsWhenYesterday": "hôm qua, {time}",
   "settingsBackupPasswordShow": "Hiện mật khẩu",
-  "settingsBackupPasswordHide": "Ẩn mật khẩu"
+  "settingsBackupPasswordHide": "Ẩn mật khẩu",
+  "settingsAutoStateOn": "Bật"
 }

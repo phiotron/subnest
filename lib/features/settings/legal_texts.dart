@@ -16,8 +16,9 @@ and iOS handles your information. Subnest is published by Phiotron ("we", "us").
 - **We do not collect any personal data.** Subnest has no account, no sign-in, no analytics, no advertising,
   no crash-reporting service and no tracking.
 - **Everything you enter stays on your device.** We have no server that stores your data and we cannot see it.
-- **The internet is used only to download public information:** currency exchange rates, the service library
-  (suggested prices and plans) and service logos. No information about you or your subscriptions is sent.
+- **The internet is used only to download public information:** currency exchange rates and the service
+  library (suggested prices and plans). No information about you or your subscriptions is sent.
+- **Service logos are built into the app.** Nothing is downloaded or sent to show them.
 - **Reminders are local notifications** scheduled on your device.
 - **Backup files are created only when you ask**, and you decide where to keep them.
 
@@ -29,7 +30,7 @@ To work, the app stores what you enter in its private storage on your device, fo
   people you share a plan with, notes, the payment-method label you type, cancellation link);
 - payment history you confirm (paid / skipped periods and amounts);
 - settings (main currency, reminder time, theme, language), the last downloaded exchange rates and service
-  library, and the service logos the app has downloaded.
+  library, and the pictures you choose yourself as the icon of a custom subscription.
 
 This data never leaves your device through Subnest, except when you yourself export or share a backup file
 (see below). You can delete individual items in the app at any time. Uninstalling the app, or clearing its
@@ -68,22 +69,18 @@ day, when you are online, and keeps the last copy on your device.
 - Suggested prices are updated about once a week and may be out of date. If the download fails, the app uses
   the last downloaded copy, or the copy built into the app.
 
-## Service logos
+## Service logos and pictures
 
-To show the logo of a service, the app downloads the image from **Logo.dev** (img.logo.dev) and keeps it on your
-device, so the same logo is not downloaded again and again. Logos are requested for services shown in the app
-(for example in the service library or in your list) that have a known website.
+The logos of the services in the library are **bundled inside the app**. Showing them needs no internet and
+sends nothing anywhere. If a service has no bundled logo, the app shows a tile with its initials instead.
 
-- The request contains only the website domain of the service (for example `netflix.com`) and the app's
-  publishable key for the Logo.dev service. It does **not** contain your name, your subscriptions' prices,
-  dates or notes, or any identifier created by the app.
-- Logo.dev sees your IP address and the time of the request, as any website does, and can see which service
-  domains are requested from that address. It processes this under the [Logo.dev Privacy Policy](https://www.logo.dev/legal/privacy).
-  We do not receive it.
-- If a logo cannot be downloaded (for example offline) or does not exist, the app shows a letter tile
-  instead.
-- Service names and logos belong to their owners and are shown only to identify the service. Logos provided
-  by [Logo.dev](https://logo.dev).
+- The service library (names, plans, suggested prices) is a static file that Subnest downloads from GitHub
+  Pages (`phamphuongphuongnd.github.io`). The request carries no information about you or your subscriptions;
+  like any website, the host sees your IP address and the time of the request.
+- If you choose a picture as the icon of a custom subscription, you pick it with your system's photo picker.
+  The app can read only the picture you choose. It is stored on your device and in the backup files you create,
+  and is never uploaded.
+- Service names and logos belong to their respective owners and are shown only to identify the service.
 
 ## Notifications
 
@@ -112,7 +109,7 @@ reply to you, do not share it, and will delete it on request.
 
 - **Notifications** — to show renewal and trial reminders.
 - **Alarms & reminders / exact alarms** (Android, if requested) — so reminders arrive at the time you chose.
-- **Internet** — only to download exchange rates, the service library and service logos.
+- **Internet** — only to download exchange rates and the service library.
 - **Files** — the app only accesses a file you pick in the system file picker when restoring a backup.
 
 The app does not request access to your contacts, location, camera, microphone, photos or bank accounts.
@@ -134,7 +131,7 @@ We do not sell or share personal data, and we do not use it for advertising.
 ## Security
 
 Your data stays in the app's private storage, protected by your device's security (for example your screen
-lock). Exchange rates, the service library and logos are downloaded over an encrypted connection (HTTPS).
+lock). Exchange rates and the service library are downloaded over an encrypted connection (HTTPS).
 
 ## Changes to this policy
 
@@ -161,8 +158,9 @@ Android và iOS xử lý thông tin của bạn. Subnest do Phiotron ("chúng t�
   analytics, không quảng cáo, không dịch vụ báo lỗi (crash reporting) và không theo dõi.
 - **Mọi thứ bạn nhập chỉ nằm trên thiết bị của bạn.** Chúng tôi không có máy chủ lưu dữ liệu của bạn và không
   thể xem được dữ liệu đó.
-- **Ứng dụng chỉ dùng Internet để tải thông tin công khai:** tỷ giá ngoại tệ, thư viện dịch vụ (giá gợi ý và
-  gói) và logo dịch vụ. Không thông tin nào về bạn hay các gói đăng ký của bạn được gửi đi.
+- **Ứng dụng chỉ dùng Internet để tải thông tin công khai:** tỷ giá ngoại tệ và thư viện dịch vụ (giá gợi ý và
+  gói). Không thông tin nào về bạn hay các gói đăng ký của bạn được gửi đi.
+- **Logo dịch vụ được đóng gói sẵn trong ứng dụng.** Hiển thị chúng không cần tải hay gửi gì.
 - **Nhắc nhở là thông báo cục bộ** do thiết bị của bạn lên lịch.
 - **File sao lưu chỉ được tạo khi bạn yêu cầu**, và bạn quyết định cất ở đâu.
 
@@ -174,7 +172,7 @@ Android và iOS xử lý thông tin của bạn. Subnest do Phiotron ("chúng t�
   gói, ghi chú, nhãn phương thức thanh toán do bạn gõ, link huỷ);
 - lịch sử thanh toán bạn xác nhận (kỳ đã trả / bỏ qua và số tiền);
 - cài đặt (tiền tệ chính, giờ nhắc, giao diện, ngôn ngữ), tỷ giá và thư viện dịch vụ tải về gần nhất, cùng các
-  logo dịch vụ ứng dụng đã tải.
+  ảnh bạn tự chọn làm biểu tượng cho gói tự tạo.
 
 Dữ liệu này không bao giờ rời khỏi thiết bị thông qua Subnest, trừ khi chính bạn xuất hoặc chia sẻ file sao lưu
 (xem bên dưới). Bạn có thể xoá từng mục trong ứng dụng bất cứ lúc nào. Gỡ ứng dụng, hoặc xoá dữ liệu của ứng dụng,
@@ -213,21 +211,17 @@ mạng, và giữ bản gần nhất trên thiết bị của bạn.
 - Giá gợi ý được cập nhật khoảng một lần mỗi tuần nên có thể đã cũ. Nếu tải không được, ứng dụng dùng bản đã tải
   gần nhất, hoặc bản đóng gói sẵn trong ứng dụng.
 
-## Logo dịch vụ
+## Logo dịch vụ và ảnh
 
-Để hiện logo của một dịch vụ, ứng dụng tải hình từ **Logo.dev** (img.logo.dev) và lưu trên thiết bị của bạn để
-không phải tải lại nhiều lần. Logo được yêu cầu cho các dịch vụ hiện trong ứng dụng (ví dụ trong thư viện dịch
-vụ hoặc danh sách của bạn) mà có website đã biết.
+Logo của các dịch vụ trong thư viện được **đóng gói sẵn trong ứng dụng**. Hiển thị chúng không cần Internet và không
+gửi gì đi đâu cả. Dịch vụ nào chưa có logo thì ứng dụng hiện ô chữ cái viết tắt thay thế.
 
-- Yêu cầu chỉ chứa tên miền website của dịch vụ (ví dụ `netflix.com`) và khoá công khai của ứng dụng dành cho
-  dịch vụ Logo.dev. Nó **không** chứa tên của bạn, giá, ngày hay ghi chú của các gói đăng ký, hay bất kỳ mã định
-  danh nào do ứng dụng tạo ra.
-- Logo.dev thấy địa chỉ IP và thời điểm yêu cầu của bạn, như mọi trang web, và có thể thấy những tên miền dịch vụ
-  nào được yêu cầu từ địa chỉ đó. Họ xử lý thông tin này theo [Chính sách quyền riêng tư của Logo.dev](https://www.logo.dev/legal/privacy).
-  Chúng tôi không nhận được.
-- Nếu không tải được logo (ví dụ khi không có mạng) hoặc dịch vụ không có logo, ứng dụng hiện ô chữ cái thay thế.
-- Tên và logo dịch vụ thuộc về chủ sở hữu của chúng và chỉ hiển thị để nhận diện dịch vụ. Logos provided by
-  [Logo.dev](https://logo.dev).
+- Thư viện dịch vụ (tên, gói, giá gợi ý) là một file tĩnh mà Subnest tải từ GitHub Pages
+  (`phamphuongphuongnd.github.io`). Yêu cầu không mang thông tin nào về bạn hay các gói đăng ký của bạn; như mọi
+  trang web, máy chủ thấy địa chỉ IP và thời điểm yêu cầu.
+- Nếu bạn chọn một ảnh làm biểu tượng cho gói tự tạo, bạn chọn bằng bộ chọn ảnh của hệ thống. Ứng dụng chỉ đọc được
+  ảnh bạn chọn. Ảnh được lưu trên thiết bị và trong các file sao lưu bạn tạo, không bao giờ được tải lên.
+- Tên và logo dịch vụ thuộc về chủ sở hữu tương ứng và chỉ hiển thị để nhận diện dịch vụ.
 
 ## Thông báo
 
@@ -256,7 +250,7 @@ bạn, không chia sẻ cho ai, và sẽ xoá khi bạn yêu cầu.
 
 - **Thông báo** — để hiện nhắc gia hạn và nhắc hết dùng thử.
 - **Báo thức & lời nhắc / báo thức chính xác** (Android, nếu ứng dụng yêu cầu) — để nhắc đến đúng giờ bạn chọn.
-- **Internet** — chỉ để tải tỷ giá, thư viện dịch vụ và logo dịch vụ.
+- **Internet** — chỉ để tải tỷ giá và thư viện dịch vụ.
 - **File** — ứng dụng chỉ truy cập file bạn chọn trong trình chọn file của hệ thống khi khôi phục sao lưu.
 
 Ứng dụng không xin quyền truy cập danh bạ, vị trí, camera, micro, ảnh hay tài khoản ngân hàng.
@@ -278,7 +272,7 @@ Chúng tôi không bán hay chia sẻ dữ liệu cá nhân và không dùng d�
 ## Bảo mật
 
 Dữ liệu của bạn nằm trong vùng lưu trữ riêng của ứng dụng, được bảo vệ bởi cơ chế bảo mật của thiết bị (ví dụ khoá
-màn hình). Tỷ giá, thư viện dịch vụ và logo được tải qua kết nối mã hoá (HTTPS).
+màn hình). Tỷ giá và thư viện dịch vụ được tải qua kết nối mã hoá (HTTPS).
 
 ## Thay đổi chính sách
 
@@ -311,8 +305,7 @@ User License Agreement also applies.
 3. **Your data and backups.** Your data is stored only on your device. You are responsible for keeping backups;
    we cannot recover data that is lost, for example when the app is uninstalled or the device is reset.
 4. **Trademarks.** Service names and logos shown in the app belong to their respective owners and are used
-   only to identify those services. Subnest is not affiliated with, sponsored or endorsed by them. Logos
-   provided by [Logo.dev](https://logo.dev).
+   only to identify those services. Subnest is not affiliated with, sponsored or endorsed by them.
 5. **No warranty.** The app is provided "as is", without warranties of any kind, to the extent permitted by law.
 6. **Limitation of liability.** To the extent permitted by law, we are not liable for any charges, fees,
    missed cancellations or other losses arising from your use of the app.
@@ -341,8 +334,7 @@ tiêu chuẩn (Standard EULA) của Apple cũng được áp dụng.
 3. **Dữ liệu và sao lưu.** Dữ liệu của bạn chỉ lưu trên thiết bị. Bạn tự chịu trách nhiệm sao lưu; chúng tôi không
    thể khôi phục dữ liệu bị mất, ví dụ khi gỡ ứng dụng hoặc đặt lại thiết bị.
 4. **Nhãn hiệu.** Tên và logo các dịch vụ hiển thị trong ứng dụng thuộc về chủ sở hữu tương ứng, chỉ dùng để nhận
-   diện dịch vụ. Subnest không liên kết với, không được bảo trợ hay xác nhận bởi các bên đó. Logos provided by
-   [Logo.dev](https://logo.dev).
+   diện dịch vụ. Subnest không liên kết với, không được bảo trợ hay xác nhận bởi các bên đó.
 5. **Không bảo đảm.** Ứng dụng được cung cấp "nguyên trạng", không kèm bảo đảm dưới bất kỳ hình thức nào, trong phạm
    vi pháp luật cho phép.
 6. **Giới hạn trách nhiệm.** Trong phạm vi pháp luật cho phép, chúng tôi không chịu trách nhiệm về các khoản phí,

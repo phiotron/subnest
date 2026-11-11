@@ -289,5 +289,7 @@
   "settingsWhenYesterday": "yesterday, {time}",
   "@settingsWhenYesterday": {"placeholders": {"time": {"type": "String"}}},
   "settingsBackupPasswordShow": "Show password",
-  "settingsBackupPasswordHide": "Hide password"
+  "settingsBackupPasswordHide": "Hide password",
+  "settingsAutoStateOn": "On",
+  "@settingsAutoStateOn": {"description": "Spoken state of the read-only automatic rows on the Automation screen."}
 }
