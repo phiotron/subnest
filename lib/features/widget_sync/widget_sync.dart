@@ -7,7 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 
+import '../../data/logos/app_logo_source.dart';
+import '../../data/logos/logo_providers.dart';
 import '../../data/providers.dart';
+import '../../domain/domain.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../lock/app_lock.dart';
 import 'widget_snapshot.dart';
@@ -149,6 +152,8 @@ final widgetSyncProvider = Provider<void>((ref) {
   if (subs == null || !ratesReady) return; // Wait for data.
   final summary = ref.watch(spendingSummaryProvider);
   if (summary == null) return;
+  final month = LocalDate(today.year, today.month, 1);
+  final logos = ref.watch(widgetLogoSourceProvider);
   unawaited(
     sync.push(
       WidgetSnapshot.build(
@@ -157,7 +162,25 @@ final widgetSyncProvider = Provider<void>((ref) {
         summary: summary,
         primaryCurrency: ref.watch(primaryCurrencyProvider),
         today: today,
+        month: ref.watch(monthSpendProvider(month)),
+        cash: ref.watch(monthCashFlowProvider(month)),
+        logoOf: logos,
       ),
     ),
   );
+});
+
+/// Logo of each widget tile: the bundled logo of its Catalog service (an asset path, read by the
+/// native side straight from the app package), else its Custom logo file, else none (monogram).
+final widgetLogoSourceProvider = Provider<WidgetLogo Function(Subscription s)>((ref) {
+  final source = AppLogoSource.instance;
+  final custom = ref.watch(customLogoStoreProvider);
+  return (s) {
+    final id = s.serviceId;
+    final file = s.customLogoFile;
+    return (
+      asset: id != null && source.hasBundled(id) ? AppLogoSource.assetPath(id) : null,
+      file: file != null ? custom.fileOf(file)?.path : null,
+    );
+  };
 });

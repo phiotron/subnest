@@ -35,8 +35,20 @@ List<Subscription> sample() => [
   ),
   sub(id: 'youtube', name: 'YouTube', priceMinor: 35800, anchor: const LocalDate(2026, 11, 22)),
   sub(id: 'viettel', name: 'Viettel 5G', priceMinor: 150000, anchor: const LocalDate(2026, 12, 1)),
-  sub(id: 'gym', name: 'Gym', priceMinor: 500000, anchor: const LocalDate(2026, 11, 5), status: SubscriptionStatus.paused),
-  sub(id: 'disney', name: 'Disney', priceMinor: 80000, anchor: const LocalDate(2026, 11, 5), status: SubscriptionStatus.cancelled),
+  sub(
+    id: 'gym',
+    name: 'Gym',
+    priceMinor: 500000,
+    anchor: const LocalDate(2026, 11, 5),
+    status: SubscriptionStatus.paused,
+  ),
+  sub(
+    id: 'disney',
+    name: 'Disney',
+    priceMinor: 80000,
+    anchor: const LocalDate(2026, 11, 5),
+    status: SubscriptionStatus.cancelled,
+  ),
 ];
 
 Map<String, Object?> build(List<Subscription> subs, {AppLocalizations? l, String primary = 'VND'}) {
@@ -73,11 +85,11 @@ void main() {
   });
 
   group('snapshot — list (small / medium / large)', () {
-    test('upcoming = Active + Trial, soonest first (awaiting first), at most 5; Paused/Cancelled left out', () {
+    test('upcoming = Active + Trial, soonest first (awaiting first), at most 6; Paused/Cancelled left out', () {
       final s = build(sample());
       expect(s['state'], 'list');
       final items = itemsOf(s);
-      expect(items.map((i) => i['id']), ['netflix', 'spotify', 'chatgpt', 'icloud', 'youtube']);
+      expect(items.map((i) => i['id']), ['netflix', 'spotify', 'chatgpt', 'icloud', 'youtube', 'viettel']);
       expect(items.map((i) => i['name']), isNot(contains('Gym')));
       expect(items.map((i) => i['name']), isNot(contains('Disney')));
     });
@@ -91,11 +103,17 @@ void main() {
       expect(next['color'], isA<int>());
       expect(next['onColor'], isA<int>());
       expect(next['date'], 'Fri, 6 Nov');
+      expect(next['dateShort'], '6 Nov');
+      expect(next['cycle'], 'Monthly');
       expect(next['due'], '2026-11-06');
       expect(next['trial'], isFalse);
+      expect(next.containsKey('trialEnds'), isFalse);
+      expect(next.containsKey('logo'), isFalse);
       expect(itemsOf(s)[2]['price'], r'$20.00');
       expect(itemsOf(s)[2]['mono'], 'CP');
-      expect(s['next'], 'Next');
+      expect(WidgetSnapshot.smallMeta(s, next, 2), '6 Nov · 2 days left');
+      expect(WidgetSnapshot.smallMeta(s, next, 1), '6 Nov · tomorrow');
+      expect(WidgetSnapshot.smallMeta(s, next, 0), 'Tap to confirm');
     });
 
     test('medium / large: monthly total is the Overview number (≈ when converted), badge counts awaiting', () {
@@ -104,11 +122,11 @@ void main() {
       final summary = const SpendingCalculator(rates: rates, primaryCurrency: 'VND').summary(subs, today);
       final total = Fmt.money(summary.monthly, 'VND', 'en', approx: true);
       expect(s['total'], total);
-      expect(s['totalPerMonth'], '$total/mo');
+      expect(s['per'], '/mo');
       expect(s['totalA11y'], 'Monthly total $total');
       expect(s['badge'], '${summary.awaitingCount} to confirm');
-      expect(s['title'], 'This month');
-      expect(s['upcoming'], 'Upcoming');
+      expect(s['title'], 'November');
+      expect(s.containsKey('paid'), isFalse); // no cash flow passed
     });
 
     test('no "≈" when every Active subscription is in the Primary currency; no badge without awaiting', () {
@@ -119,22 +137,26 @@ void main() {
 
     test('Trial is flagged; relative due text mirrors the native rule', () {
       final s = build(sample());
-      expect(itemsOf(s).firstWhere((i) => i['id'] == 'icloud')['trial'], isTrue);
-      expect(s['firstCharge'], 'first charge');
+      final icloud = itemsOf(s).firstWhere((i) => i['id'] == 'icloud');
+      expect(icloud['trial'], isTrue);
+      expect(icloud['trialEnds'], 'Trial ends 15 Nov');
+      expect(WidgetSnapshot.smallMeta(s, icloud, 11), 'Trial ends 15 Nov');
       expect(WidgetSnapshot.dueText(s, -2), 'To confirm');
       expect(WidgetSnapshot.dueText(s, 0), 'To confirm');
       expect(WidgetSnapshot.dueText(s, 1), 'Tomorrow');
-      expect(WidgetSnapshot.dueText(s, 11), 'In 11 days');
+      expect(WidgetSnapshot.dueText(s, 11), '11 days');
     });
 
     test('Vietnamese strings and formats', () {
       final s = build(sample(), l: vi);
       expect(s['lang'], 'vi');
-      expect(s['upcoming'], 'Sắp trả');
+      expect(s['title'], 'Tháng 11');
       expect(itemsOf(s)[1]['price'], '59.000đ');
       expect(itemsOf(s)[1]['date'], 'T6, 6/11');
-      expect(s['totalPerMonth'], endsWith('/tháng'));
-      expect(WidgetSnapshot.dueText(s, 3), 'Còn 3 ngày');
+      expect(s['per'], '/tháng');
+      expect(itemsOf(s)[1]['cycle'], 'Hằng tháng');
+      expect(WidgetSnapshot.dueText(s, 3), '3 ngày');
+      expect(WidgetSnapshot.smallMeta(s, itemsOf(s)[1], 3), '6/11 · còn 3 ngày');
       expect(WidgetSnapshot.dueText(s, 0), 'Chờ xác nhận');
     });
   });
@@ -143,13 +165,18 @@ void main() {
     test('no subscriptions → empty state, no amounts', () {
       final s = build(const []);
       expect(s['state'], 'empty');
-      expect(s['emptyTitle'], 'No renewals yet');
+      expect(s['emptyTitle'], 'Nothing due');
+      expect(s['emptyBody'], 'Tap to add your first subscription');
       expect(s.containsKey('items'), isFalse);
       expect(s.containsKey('total'), isFalse);
     });
 
     test('only Paused / Cancelled → empty state', () {
-      final s = build(sample().where((x) => x.status == SubscriptionStatus.paused || x.status == SubscriptionStatus.cancelled).toList());
+      final s = build(
+        sample()
+            .where((x) => x.status == SubscriptionStatus.paused || x.status == SubscriptionStatus.cancelled)
+            .toList(),
+      );
       expect(s['state'], 'empty');
     });
   });
@@ -161,9 +188,9 @@ void main() {
         final s = jsonDecode(json) as Map<String, Object?>;
         expect(s['state'], 'locked');
         expect(s['locked'], l.widgetLocked);
-        expect(s.keys.toSet(), {'v', 'state', 'lang', 'locked', 'open'});
-        final text = '${s['locked']} ${s['open']}';
-        expect(text, isNot(matches(RegExp(r'[0-9$₫đ€£¥≈]'))));
+        expect(s.keys.toSet(), {'v', 'state', 'lang', 'locked', 'lockedLong', 'open'});
+        final text = '${s['locked']} ${s['lockedLong']} ${s['open']}';
+        expect(text, isNot(matches(RegExp(r'[0-9$₫€£¥≈]')))); // (VND shows as "59.000đ" only next to digits)
         for (final x in sample()) {
           expect(json, isNot(contains(x.name)));
         }
@@ -173,8 +200,37 @@ void main() {
 
   group('deep links', () {
     test('row → subscription detail; overview → Overview', () {
-      expect(widgetRouteFor(Uri.parse(WidgetLinks.subscription('3f1c-ab_9'))), AppRoutes.subscriptionDetail('3f1c-ab_9'));
+      expect(
+        widgetRouteFor(Uri.parse(WidgetLinks.subscription('3f1c-ab_9'))),
+        AppRoutes.subscriptionDetail('3f1c-ab_9'),
+      );
       expect(widgetRouteFor(Uri.parse(WidgetLinks.overview)), AppRoutes.home);
+      expect(widgetRouteFor(Uri.parse(WidgetLinks.add)), AppRoutes.catalog);
+    });
+
+    test('Month spend + cash flow of this month and logos reach the snapshot', () {
+      final subs = sample();
+      final calc = SpendingCalculator(rates: rates, primaryCurrency: 'VND');
+      final stats = MonthStatsCalculator(calc);
+      final month = stats.month(subs, const LocalDate(2026, 11, 1));
+      final cash = stats.cashFlow(subs, const [], const LocalDate(2026, 11, 1), today);
+      final s = WidgetSnapshot.build(
+        l: en,
+        subscriptions: subs,
+        summary: calc.summary(subs, today),
+        primaryCurrency: 'VND',
+        today: today,
+        month: month,
+        cash: cash,
+        logoOf: (x) => (asset: x.id == 'spotify' ? 'assets/logos/png/spotify.png' : null, file: null),
+      );
+      expect(s['total'], Fmt.moneyOf(Money(month.totalMinor, 'VND'), 'en', approx: true));
+      expect(s['paidLabel'], 'Paid');
+      expect(s['dueLabel'], 'Still to pay');
+      expect(s['due'], Fmt.moneyOf(Money(cash.remainingMinor, 'VND'), 'en', approx: true));
+      expect(s['paidShare'], cash.paidShare);
+      expect(itemsOf(s)[1]['logo'], 'assets/logos/png/spotify.png');
+      expect(itemsOf(s)[0].containsKey('logo'), isFalse);
     });
 
     test('anything else is refused', () {

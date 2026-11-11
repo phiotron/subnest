@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Home-screen widgets (S11), light theme: design tokens surface / ink / ink-muted / brand /
-     warning-ink / warning-soft (lib/core/theme/tokens.g.dart). Dark: values-night/widget_colors.xml. -->
+<!-- Home-screen widgets, light theme (mockups v14 123–125, Android): the card is `brand-soft`, eyebrows
+     and meta lines `on-brand-soft`, names and amounts `ink`; tokens from lib/core/theme/tokens.g.dart.
+     Dark: values-night/widget_colors.xml. -->
 <resources>
-    <color name="widget_surface">#FFFFFF</color>
+    <color name="widget_surface">#D9F1EC</color>
     <color name="widget_ink">#101618</color>
-    <color name="widget_ink_muted">#566065</color>
+    <color name="widget_ink_muted">#0A514B</color>
     <color name="widget_brand">#0E6B63</color>
     <color name="widget_warning_ink">#8A4700</color>
     <color name="widget_warning_soft">#FFF1D6</color>
+    <!-- Cycle chip outline and the "still to pay" part of the bar (brand 22% on the card). -->
+    <color name="widget_chip_line">#A7C7C2</color>
+    <color name="widget_bar_due">#ACD3CE</color>
 </resources>

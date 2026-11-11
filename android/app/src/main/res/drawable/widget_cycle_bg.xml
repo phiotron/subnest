@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cycle chip ("Monthly") next to a price: 1dp outline, radius 6 (design .cyc). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <stroke android:width="1dp" android:color="@color/widget_chip_line"/>
+    <corners android:radius="6dp"/>
+</shape>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Every size: App lock ("Locked with PIN"), no subscriptions yet, or not synced yet. -->
+<!-- Every size (mockup v14 125): App lock (mark, lock, "Locked with PIN", centred), nothing due yet
+     (mark, "Nothing due", "Tap to add…", from the top-left), or not synced yet. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
@@ -8,39 +9,55 @@
     android:padding="16dp">
 
     <LinearLayout
+        android:id="@+id/widget_msg_box"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="center"
+        android:importantForAccessibility="noHideDescendants"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/widget_msg_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginBottom="10dp"
-            android:importantForAccessibility="no"
+            android:id="@+id/widget_msg_mark"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/widget_msg_icon"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/widget_ic_lock"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/widget_msg_gap"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/widget_msg_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:text="@string/widget_open_app"
-            android:textColor="@color/widget_brand"
-            android:textSize="16sp"
+            android:textColor="@color/widget_ink"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/widget_msg_body"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:textColor="@color/widget_ink_muted"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:visibility="gone" />
     </LinearLayout>
 </FrameLayout>

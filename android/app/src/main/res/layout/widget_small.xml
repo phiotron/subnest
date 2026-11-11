@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Small (2×2): the next subscription — tile, "Next", name, days left, price (mockup v13 89/91).
+<!-- Small (2×2, mockups v14 124 / 125): tile + "2 days" (or a clock when it waits for confirmation), name,
+     price + cycle chip, "12 Nov · 2 days left" / "Trial ends 13 Nov" / "Tap to confirm".
      The whole widget opens that subscription; TalkBack reads the root's content description. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widget_bg"
-    android:padding="14dp">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,24 +21,10 @@
             android:orientation="horizontal">
 
             <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:layout_width="32dp"
+                android:layout_height="32dp">
 
-                <ImageView
-                    android:id="@+id/row_tile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/widget_tile" />
-
-                <TextView
-                    android:id="@+id/row_mono"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                <include layout="@layout/widget_tile" />
             </FrameLayout>
 
             <FrameLayout
@@ -45,27 +32,27 @@
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
+            <TextView
+                android:id="@+id/widget_when"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/widget_brand"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/ic_launcher" />
+                android:id="@+id/widget_when_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/widget_ic_clock"
+                android:visibility="gone" />
         </LinearLayout>
 
         <FrameLayout
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/widget_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.08"
-            android:maxLines="1"
-            android:textAllCaps="true"
-            android:textColor="@color/widget_brand"
-            android:textSize="11sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/row_name"
@@ -77,33 +64,57 @@
             android:textSize="17sp"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/row_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/widget_ink"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/row_cycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/widget_cycle_bg"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textColor="@color/widget_ink_muted"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/row_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/widget_ink_muted"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/row_await"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/widget_warning_ink"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/row_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textColor="@color/widget_brand"
-            android:textSize="18sp"
-            android:textStyle="bold" />
     </LinearLayout>
 </FrameLayout>

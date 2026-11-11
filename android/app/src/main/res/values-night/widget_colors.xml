@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Home-screen widgets, dark theme (mockup v13 92): brand-soft surface with on-brand-soft
-     accents; ink / ink-muted / warning tokens of the dark theme. -->
+<!-- Home-screen widgets, dark theme (mockups v14 123–125): `brand-soft` card with `on-brand-soft`
+     eyebrows / meta, dark `ink`, `brand` and warning tokens. -->
 <resources>
     <color name="widget_surface">#11312D</color>
     <color name="widget_ink">#EEF2F3</color>
-    <color name="widget_ink_muted">#A1ACB1</color>
-    <color name="widget_brand">#8FE8D9</color>
+    <color name="widget_ink_muted">#8FE8D9</color>
+    <color name="widget_brand">#46CDB9</color>
     <color name="widget_warning_ink">#FFC966</color>
     <color name="widget_warning_soft">#36270B</color>
+    <color name="widget_chip_line">#3F5F5A</color>
+    <color name="widget_bar_due">#1D534C</color>
 </resources>

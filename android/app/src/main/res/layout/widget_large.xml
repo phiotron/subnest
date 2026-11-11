@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Large (4×4): "This month", monthly total, awaiting badge, the next rows (mockup v13 91/92).
-     Rows (widget_row.xml) are added from code; header and total open the Overview. -->
+<!-- Large (4×4, mockup v14 123): mark + month, "≈ $144.89/mo", "1 to confirm" chip, Paid / Still to pay
+     with their bar, the next rows (widget_row.xml, added from code). Header and total open the Overview. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
@@ -20,74 +20,172 @@
             android:id="@+id/widget_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:importantForAccessibility="no"
-                android:src="@mipmap/ic_launcher" />
-
-            <TextView
-                android:id="@+id/widget_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/widget_brand"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/widget_badge"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/widget_badge_bg"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="8dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="3dp"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/widget_ic_clock" />
+                    android:src="@mipmap/ic_launcher" />
 
                 <TextView
-                    android:id="@+id/widget_badge_text"
+                    android:id="@+id/widget_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:letterSpacing="0.04"
+                    android:maxLines="1"
+                    android:textAllCaps="true"
+                    android:textColor="@color/widget_ink_muted"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/widget_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:background="@drawable/widget_badge_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="4dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/widget_ic_clock" />
+
+                    <TextView
+                        android:id="@+id/widget_badge_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_warning_ink"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/widget_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/widget_total_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:importantForAccessibility="no"
                     android:maxLines="1"
-                    android:textColor="@color/widget_warning_ink"
-                    android:textSize="12sp"
+                    android:textColor="@color/widget_ink"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/widget_per"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginBottom="3dp"
+                    android:importantForAccessibility="no"
+                    android:maxLines="1"
+                    android:textColor="@color/widget_ink_muted"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/widget_cash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="noHideDescendants"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/widget_paid_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_ink_muted"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/widget_paid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_ink"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="noHideDescendants"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/widget_due_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_ink_muted"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/widget_due"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_ink"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/widget_cash_bar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="6dp"
+                    android:importantForAccessibility="no"
+                    android:max="1000"
+                    android:progressDrawable="@drawable/widget_cash_bar" />
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/widget_total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/widget_ink"
-            android:textSize="26sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/widget_rows"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="6dp"
             android:layout_weight="1"
             android:orientation="vertical" />
     </LinearLayout>

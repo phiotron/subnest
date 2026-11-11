@@ -21,6 +21,9 @@ abstract final class WidgetLinks {
   /// Link of the parts that open the Overview (title, total, empty state, locked widget).
   static const overview = 'subnest://widget/overview?homeWidget';
 
+  /// Empty widget ("Tap to add your first subscription", mockup 125) → "+" step 1.
+  static const add = 'subnest://widget/add?homeWidget';
+
   /// Link of one subscription row.
   static String subscription(String id) => 'subnest://widget/subscription/${Uri.encodeComponent(id)}?homeWidget';
 }
@@ -31,6 +34,7 @@ String? widgetRouteFor(Uri? uri) {
   if (uri == null || uri.scheme != WidgetLinks.scheme || uri.host != WidgetLinks.host) return null;
   final parts = uri.pathSegments;
   if (parts.length == 1 && parts[0] == 'overview') return AppRoutes.home;
+  if (parts.length == 1 && parts[0] == 'add') return AppRoutes.catalog;
   if (parts.length == 2 && parts[0] == 'subscription' && _id.hasMatch(parts[1])) {
     return AppRoutes.subscriptionDetail(parts[1]);
   }
