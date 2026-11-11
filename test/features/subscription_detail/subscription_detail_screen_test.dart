@@ -327,11 +327,15 @@ void main() {
       // Again, then Undo.
       await tester.tap(find.text('Restore').first);
       await settle(tester);
+      expect((await app.sub('canva'))!.status, SubscriptionStatus.active);
       await scrollToFinder(tester, find.text('Mark as cancelled'));
       await tester.tap(find.text('Mark as cancelled'));
       await tester.pumpAndSettle();
+      expect(find.text('Mark Canva Pro as cancelled?'), findsOneWidget);
       await tester.tap(find.text('Mark as cancelled').last);
       await settle(tester);
+      expect(find.text('Total saving'), findsOneWidget);
+      expect((await app.sub('canva'))!.status, SubscriptionStatus.cancelled);
       await tester.tap(find.text('Undo'));
       await settle(tester);
       expect((await app.sub('canva'))!.status, SubscriptionStatus.active);

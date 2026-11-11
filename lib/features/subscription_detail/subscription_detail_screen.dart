@@ -57,8 +57,9 @@ class _SubscriptionDetailScreenState extends ConsumerState<SubscriptionDetailScr
     } catch (_) {
       ok = false;
     }
-    if (!ok && mounted)
+    if (!ok && mounted) {
       showAppToast(context, context.l10n.subscriptionDetailLinkFailed(linkHost(link)), icon: AppIcons.alert);
+    }
   }
 
   Future<void> _delete(Subscription s) async {

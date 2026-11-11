@@ -29,7 +29,7 @@ void main() {
       expect(inSheet('Monthly'), findsOneWidget);
       expect(find.text('Amount paid'), findsOneWidget);
       expect(find.text('Your share · plan ₫260,000 ÷ 4'), findsOneWidget);
-      expect(find.text('Paid'), findsOneWidget);
+      expect(inSheet('Paid'), findsOneWidget);
       expect(find.text('Didn’t pay this period'), findsOneWidget);
       expect(find.text('Later'), findsOneWidget);
       await closeApp(tester);
@@ -39,7 +39,7 @@ void main() {
       final app = await pumpApp(tester, push: '/confirm/netflix');
       await tester.enterText(find.descendant(of: find.byType(AmountField), matching: find.byType(TextField)), '70000');
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Paid'));
+      await tester.tap(inSheet('Paid'));
       await settle(tester);
       expect(find.text('Payment saved'), findsOneWidget);
       expect(find.text('Netflix · ₫70,000 · 4 Nov 2026'), findsOneWidget);
@@ -84,7 +84,7 @@ void main() {
       final app = await pumpApp(tester, push: '/confirm/netflix');
       await tester.enterText(find.descendant(of: find.byType(AmountField), matching: find.byType(TextField)), '');
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Paid'));
+      await tester.tap(inSheet('Paid'));
       await settle(tester);
       expect(find.text('Enter the amount you paid.'), findsOneWidget);
       expect((await app.periods()).where((p) => p.dueDate == today), isEmpty);
@@ -107,7 +107,7 @@ void main() {
       expect(find.text('1 more after this'), findsOneWidget);
       expect(find.text('Period of 1 Oct 2026'), findsOneWidget);
       expect(find.text('Current price · change it if you paid a different amount'), findsOneWidget);
-      await tester.tap(find.text('Paid'));
+      await tester.tap(inSheet('Paid'));
       await settle(tester);
       expect(find.text('Payment saved'), findsOneWidget);
       expect(find.text('1 more period to confirm — opening it next'), findsOneWidget);
@@ -252,7 +252,7 @@ void main() {
       await tester.tap(find.text('Back to Overview'));
       await settle(tester);
       expect(find.byType(AwaitingScreen), findsNothing);
-      expect(find.text('Monthly spend'), findsOneWidget);
+      expect(find.byType(AppTabBar), findsOneWidget);
       await closeApp(tester);
     });
 

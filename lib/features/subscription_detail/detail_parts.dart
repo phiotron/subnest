@@ -20,7 +20,6 @@ class SelectedCycleChip extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(minHeight: 24),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      alignment: Alignment.center,
       decoration: BoxDecoration(
         border: Border.all(color: c.brand),
         borderRadius: BorderRadius.circular(8),

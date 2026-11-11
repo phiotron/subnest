@@ -54,6 +54,8 @@ Future<bool> markCancelledFlow(BuildContext context, WidgetRef ref, Subscription
   final allApprox = cancelled.any((x) => x.currency != primary);
   final link = cancelLink(s, ref.read(catalogByIdProvider));
   final navigator = Navigator.of(context, rootNavigator: true);
+  // A toast left from before (e.g. "Restored…") would sit over Done / Undo.
+  ScaffoldMessenger.maybeOf(context)?.removeCurrentSnackBar();
   await navigator.push(
     PageRouteBuilder<void>(
       transitionDuration: AppMotion.of(context, AppMotion.dialog),

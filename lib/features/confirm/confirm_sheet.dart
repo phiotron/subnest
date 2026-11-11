@@ -205,9 +205,12 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
                       StatusBadge(label: chip, kind: BadgeKind.warning, icon: AppIcons.awaiting, large: true),
                       Text(
                         l.confirmPeriodOf(AppDates.full(l, period)),
+                        semanticsLabel: '${l.confirmPeriodOf(AppDates.full(l, period))}, ${l.cycle(s.cycle)}',
                         style: AppType.meta.copyWith(color: c.inkMuted),
                       ),
-                      CycleChip(cycle: s.cycle),
+                      // Read with the period line (a lone 12px chip node also trips the contrast check,
+                      // which samples its outline as a second colour).
+                      ExcludeSemantics(child: CycleChip(cycle: s.cycle)),
                     ],
                   ),
                 ],
