@@ -113,7 +113,28 @@
   },
   "commonNotFound": "This subscription no longer exists.",
   "calendarViewMonth": "Month",
-  "calendarViewAgenda": "Agenda",
+  "calendarViewAgenda": "List",
+  "calendarMonthColon": "{name}:",
+  "@calendarMonthColon": {
+    "description": "Label above the month's real-money total. name = month name (EN), number = month number (VI).",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarToCome": "{count} to come",
+  "@calendarToCome": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calendarExpected": "Expected",
   "calendarMonthYear": "{name} {year}",
   "@calendarMonthYear": {
     "description": "Month navigator title. name = month name (EN), number = month number (VI).",
@@ -132,28 +153,6 @@
   "calendarMonthName": "{name}",
   "@calendarMonthName": {
     "description": "Agenda section for the next month.",
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "number": {
-        "type": "String"
-      }
-    }
-  },
-  "calendarMonthTotal": "{name} total",
-  "@calendarMonthTotal": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "number": {
-        "type": "String"
-      }
-    }
-  },
-  "calendarPaidIn": "Paid in {name}",
-  "@calendarPaidIn": {
     "placeholders": {
       "name": {
         "type": "String"
@@ -187,22 +186,12 @@
       }
     }
   },
-  "calendarCountToConfirm": "{count} to confirm",
-  "@calendarCountToConfirm": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "calendarEmpty": "Nothing due this month.",
   "calendarNothingDue": "Nothing due this day.",
   "calendarPaid": "Paid",
   "calendarSkipped": "Skipped",
-  "calendarUpcoming": "Upcoming",
   "calendarDidNotPay": "Didn’t pay this period",
   "calendarFirstCharge": "First charge after trial",
-  "calendarConfirm": "Confirm",
   "calendarTodayPrefix": "Today · {date}",
   "@calendarTodayPrefix": {
     "placeholders": {
@@ -342,14 +331,6 @@
   },
   "catalogTabGeneral": "General",
   "catalogTabVietnam": "Vietnam",
-  "confirmQuestion": "Did you pay {name}?",
-  "@confirmQuestion": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "confirmDueToday": "Due today",
   "confirmOverdue": "Overdue",
   "confirmMoreAfter": "{count, plural, =1{1 more after this} other{{count} more after this}}",
@@ -380,23 +361,24 @@
       }
     }
   },
-  "confirmCurrentPrice": "Current price · edit if it changed",
-  "confirmMovesNext": "Confirming moves the next renewal to {date}.",
-  "@confirmMovesNext": {
+  "confirmCurrentPrice": "Current price · change it if you paid a different amount",
+  "confirmDueOn": "Due {date}",
+  "@confirmDueOn": {
     "placeholders": {
       "date": {
         "type": "String"
       }
     }
   },
-  "confirmNextUp": "Next up: the {date} period, also waiting.",
-  "@confirmNextUp": {
+  "confirmChainMore": "{count, plural, =1{1 more period to confirm — opening it next} other{{count} more periods to confirm — opening the next}}",
+  "@confirmChainMore": {
     "placeholders": {
-      "date": {
-        "type": "String"
+      "count": {
+        "type": "int"
       }
     }
   },
+  "confirmNextPeriodButton": "Next period",
   "confirmPaid": "Paid",
   "confirmSkip": "Didn’t pay this period",
   "confirmLater": "Later",
@@ -412,25 +394,6 @@
     }
   },
   "confirmDone": "Done",
-  "confirmSavedStep": "{date} saved · {amount}",
-  "@confirmSavedStep": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      },
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "confirmSkippedStep": "{date} marked as not paid",
-  "@confirmSkippedStep": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
   "confirmNothingTitle": "Nothing to confirm",
   "confirmNothingBody": "{name} is up to date. Next renewal: {date}.",
   "@confirmNothingBody": {
@@ -609,35 +572,6 @@
       }
     }
   },
-  "homeMonthlySpend": "Monthly spend",
-  "homeYearlySpend": "Yearly spend",
-  "homeActiveCount": "{count} active",
-  "@homeActiveCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "homeTrialCount": "{count, plural, =1{1 trial} other{{count} trials}}",
-  "@homeTrialCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "homeBiggest": "Biggest: {name} · {percent}%",
-  "@homeBiggest": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
   "homeRatesStale": "{days, plural, =1{Offline · rates from yesterday} other{Offline · rates from {days} days ago}}",
   "@homeRatesStale": {
     "placeholders": {
@@ -670,21 +604,10 @@
       }
     }
   },
-  "homeTrialThen": "Then {price} from {date}",
-  "@homeTrialThen": {
-    "placeholders": {
-      "price": {
-        "type": "String"
-      },
-      "date": {
-        "type": "String"
-      }
-    }
-  },
   "homeHowToCancel": "How to cancel",
   "homeKeepIt": "Keep it",
-  "homeViewSubscription": "View subscription",
-  "homeTrialSavings": "Cancel before the first charge to save {amount} a year",
+  "homeViewSubscription": "View",
+  "homeTrialSavings": "Cancel before it charges to save {amount} a year",
   "@homeTrialSavings": {
     "placeholders": {
       "amount": {
@@ -703,34 +626,18 @@
       }
     }
   },
-  "homeUpcoming": "Upcoming · 7 days",
-  "homeCalendar": "Calendar",
-  "homeFirstCharge": "First charge",
   "homeSubscriptions": "Subscriptions",
   "homeTabActive": "Active",
-  "homeTabTrials": "Trials",
+  "homeTabTrials": "Trial",
   "homeTabCancelled": "Cancelled",
-  "homeSortTitle": "Sort subscriptions",
-  "homeSortDue": "Due date",
-  "homeSortDueHint": "Soonest first · awaiting always on top",
+  "homeSortTitle": "Sort by",
+  "homeSortDue": "Next payment",
   "homeSortPrice": "Price",
-  "homeSortPriceHint": "Highest monthly cost first",
   "homeSortName": "Name",
-  "homeSortNameHint": "A → Z",
-  "homeSortDone": "Done",
   "homeSortLabel": "Sort by {by}",
   "@homeSortLabel": {
     "placeholders": {
       "by": {
-        "type": "String"
-      }
-    }
-  },
-  "homeSaving": "You’re saving",
-  "homePerYear": "{amount}/year",
-  "@homePerYear": {
-    "placeholders": {
-      "amount": {
         "type": "String"
       }
     }
@@ -743,21 +650,13 @@
       }
     }
   },
-  "homeTrialEndsWhen": "ends {when}",
-  "@homeTrialEndsWhen": {
-    "placeholders": {
-      "when": {
-        "type": "String"
-      }
-    }
-  },
   "homeTrialBadge": "Trial",
   "homeEmptyActive": "No active subscriptions.",
   "homeEmptyTrials": "No trials right now.",
   "homeEmptyCancelled": "Nothing cancelled yet.",
   "homeTrialsNote": "Trials aren’t in your monthly total until they turn into paid subscriptions.",
   "homeEmptyTitle": "Add your first subscription",
-  "homeEmptyBody": "Pick from 100+ popular services — most take three taps.",
+  "homeEmptyBody": "Pick from 500+ services with their logos and prices — most take three taps.",
   "homeBrowse": "Browse services",
   "homeAdd": "Add subscription",
   "homePausedSince": "since {date}",
@@ -826,24 +725,6 @@
     }
   },
   "homeEmptyFiltered": "No subscriptions match this filter.",
-  "homeWeekTitle": "Due this week",
-  "homeWeekToConfirm": "+{amount} to confirm",
-  "@homeWeekToConfirm": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "homeWeekNothing": "nothing due",
-  "homeBudget": "Budget {amount}",
-  "@homeBudget": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
   "homeBudgetUsed": "{percent}% used",
   "@homeBudgetUsed": {
     "placeholders": {
@@ -878,78 +759,475 @@
   },
   "homeUndo": "Undo",
   "homeUndone": "Undone",
-  "insightsRangeMonth": "This month",
-  "insightsRange12": "12 months",
-  "insightsRangeYear": "This year",
-  "insightsTotalLabel": "{range, select, month{Total · this month} year{Total · this year} other{Total · last 12 months}}",
-  "@insightsTotalLabel": {
-    "description": "Big number of the summary card: Payments + periods still expected in the range (= the bars).",
+  "homeCostMonthly": "Monthly cost",
+  "homeCostYearly": "Yearly cost",
+  "homeDeltaVs": "{amount} vs {period}",
+  "@homeDeltaVs": {
     "placeholders": {
-      "range": {
+      "amount": {
+        "type": "String"
+      },
+      "period": {
         "type": "String"
       }
     }
   },
-  "insightsTrendMore": "{range, select, month{{percent}% more than last month} year{{percent}% more than last year} other{{percent}% more than the 12 months before}}",
-  "@insightsTrendMore": {
+  "homeDeltaUpLabel": "Up {amount} compared with {period}",
+  "@homeDeltaUpLabel": {
     "placeholders": {
-      "range": {
+      "amount": {
         "type": "String"
       },
-      "percent": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDeltaDownLabel": "Down {amount} compared with {period}",
+  "@homeDeltaDownLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "homeDeltaSame": "Same as {period}",
+  "@homeDeltaSame": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "homeFirstMonth": "First month — no comparison yet",
+  "homeCostActive": "{count, plural, =1{1 active subscription} other{{count} active subscriptions}}",
+  "@homeCostActive": {
+    "placeholders": {
+      "count": {
         "type": "int"
       }
     }
   },
-  "insightsTrendLess": "{range, select, month{{percent}% less than last month} year{{percent}% less than last year} other{{percent}% less than the 12 months before}}",
-  "@insightsTrendLess": {
+  "homeCostPerDay": "{amount} a day",
+  "@homeCostPerDay": {
     "placeholders": {
-      "range": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCostYearSub": "{year} · {amount} a month",
+  "@homeCostYearSub": {
+    "placeholders": {
+      "year": {
         "type": "String"
       },
-      "percent": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCostNone": "No subscriptions yet",
+  "homePaid": "Paid",
+  "homeStillToPay": "Still to pay",
+  "homeCashLabel": "Paid {paid}, still to pay {due}",
+  "@homeCashLabel": {
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "homeRange": "{from} to {to}",
+  "@homeRange": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "homeColumnLabel": "{month}: {amount}. Opens Insights for this month",
+  "@homeColumnLabel": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeInfoButton": "How this is calculated",
+  "homeInfoTitle": "How the numbers work",
+  "homeInfoMonthlyBody": "Every subscription active this month, spread evenly: a yearly plan counts as 1/12 each month. A trial counts from its first paid month; a pause stops it from the month after.",
+  "homeInfoCashTitle": "Paid · Still to pay",
+  "homeInfoCashBody": "The real money leaving this month: payments you confirmed, plus renewals still ahead and periods waiting for you. A yearly plan renewing this month counts in full.",
+  "homeInfoApproxTitle": "Why ≈",
+  "homeInfoApproxBody": "Other currencies are converted at today’s rate and rounded per line, so the lines always add up to the total.",
+  "homeInfoNote": "That’s why Paid + Still to pay can differ from the monthly cost.",
+  "homeInfoGotIt": "Got it",
+  "homeTrialThenOn": "Then {price} on {date}",
+  "@homeTrialThenOn": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoticeTitle": "{name} changed its price",
+  "@homeNoticeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoticeShare": "Your share goes from {before} to {after}, from the {date} renewal.",
+  "@homeNoticeShare": {
+    "placeholders": {
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoticeFrom": "From the {date} renewal. Past payments stay as they were.",
+  "@homeNoticeFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoticeReference": "Reference price — check it",
+  "homeNoticeUpdate": "Update",
+  "homeNoticeKeep": "Keep old price",
+  "homeNoticeUpdated": "{name}: {price} from {date}",
+  "@homeNoticeUpdated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoticeKept": "Keeping {name} at {price}",
+  "@homeNoticeKept": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNoticeStale": "The price was already changed — nothing updated",
+  "homeUpcomingTitle": "Upcoming payments",
+  "homeSeeAll": "See all",
+  "homeNext30": "Next 30 days: {amount} in {count, plural, =1{1 charge} other{{count} charges}}",
+  "@homeNext30": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
         "type": "int"
       }
     }
   },
-  "insightsTrendSame": "{range, select, month{Same as last month} year{Same as last year} other{Same as the 12 months before}}",
-  "@insightsTrendSame": {
+  "homeNext30None": "Nothing due in the next 30 days",
+  "homeDaysLeft": "{days, plural, =0{Today} =1{Tomorrow} other{{days} days left}}",
+  "@homeDaysLeft": {
     "placeholders": {
-      "range": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeFirstChargeWhen": "First charge · {when}",
+  "@homeFirstChargeWhen": {
+    "placeholders": {
+      "when": {
         "type": "String"
       }
     }
   },
-  "insightsTrendNoData": "{range, select, month{Not enough data from last month to compare} year{Not enough data from last year to compare} other{Not enough data from the 12 months before to compare}}",
-  "@insightsTrendNoData": {
-    "description": "Shown instead of a % when the history does not reach back to the start of the span before.",
+  "homeMarkPaid": "Mark {name} paid",
+  "@homeMarkPaid": {
     "placeholders": {
-      "range": {
+      "name": {
         "type": "String"
       }
     }
   },
-  "insightsLegendPaid": "Paid",
-  "insightsLegendExpected": "Expected, not yet confirmed",
-  "insightsByMonth": "By month",
+  "homeBudgetTitle": "Budget",
+  "homeBudgetOf": "{spent} of {limit}",
+  "@homeBudgetOf": {
+    "placeholders": {
+      "spent": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "homeBudgetOver": "{count, plural, =1{1 category over budget: {names}} other{{count} categories over budget: {names}}}",
+  "@homeBudgetOver": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "homeTabPaused": "Paused",
+  "homeEmptyPaused": "Nothing paused. Pause a subscription from its detail page — it stops counting from its next due date.",
+  "homeSortButton": "Sort",
+  "homeSortRecent": "Recently added",
+  "homeSavingYear": "You’re saving {amount} a year",
+  "@homeSavingYear": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeRise": "Price went up",
+  "homeSearchYours": "Your subscriptions",
+  "homeSearchLibrary": "Add from the library",
+  "homeSearchCancel": "Cancel",
+  "insightsModeMonth": "Month",
+  "insightsModeYear": "Year",
+  "insightsPrevious": "{mode, select, year{Previous year} other{Previous month}}",
+  "@insightsPrevious": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsNext": "{mode, select, year{Next year} other{Next month}}",
+  "@insightsNext": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsProjected": "Projected",
+  "insightsCostOfMonth": "Cost of {name}",
+  "@insightsCostOfMonth": {
+    "description": "Cost card title. name = month name (EN), number = month number (VI).",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsCostOfYear": "Cost in {year}",
+  "@insightsCostOfYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsVsMonth": "vs {name}",
+  "@insightsVsMonth": {
+    "description": "Change chip. name = short month name (EN), number = month number (VI).",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsVsYear": "vs {year}",
+  "@insightsVsYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsSameMonth": "Same as {name}",
+  "@insightsSameMonth": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsSameYear": "Same as {year}",
+  "@insightsSameYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsChangeLabel": "{direction, select, up{Up {amount} {vs}} down{Down {amount} {vs}} other{{vs}}}",
+  "@insightsChangeLabel": {
+    "description": "Screen-reader label of the change chip.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "vs": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsCount": "{count, plural, =1{1 subscription} other{{count} subscriptions}}",
+  "@insightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsPerDay": "{amount} a day",
+  "@insightsPerDay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsPerMonth": "{amount} a month",
+  "@insightsPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsHowCalculated": "How this is calculated",
+  "insightsPaid": "Paid",
+  "insightsStillToPay": "Still to pay",
+  "insightsNotPaid": "Not paid",
+  "insightsCashLabel": "Paid {paid}, still to pay {due}",
+  "@insightsCashLabel": {
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsCashLabelPast": "Paid {paid}, not paid {due}",
+  "@insightsCashLabelPast": {
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsNothingInMonth": "No subscription was being paid in {name}.",
+  "@insightsNothingInMonth": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsNothingInYear": "No subscription was being paid in {year}.",
+  "@insightsNothingInYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsMissingRates": "Amounts in {currencies} aren’t included — no exchange rate yet.",
+  "@insightsMissingRates": {
+    "placeholders": {
+      "currencies": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsInfoTitle": "How the numbers work",
+  "insightsInfoMonthlyTitle": "Monthly cost",
+  "insightsInfoMonthlyBody": "Every subscription active this month, spread evenly: a yearly plan counts as 1/12 each month. A trial counts from its first paid month; a pause stops it from the month after.",
+  "insightsInfoCashTitle": "Paid · Still to pay",
+  "insightsInfoCashBody": "The real money leaving this month: payments you confirmed, plus renewals still ahead and periods waiting for you. A yearly plan renewing this month counts in full.",
+  "insightsInfoApproxTitle": "Why ≈",
+  "insightsInfoApproxBody": "Other currencies are converted at today’s rate and rounded per line, so the lines always add up to the total.",
+  "insightsInfoNote": "That’s why Paid + Still to pay can differ from the monthly cost.",
+  "insightsInfoOk": "Got it",
+  "insightsBars12": "12 months",
+  "insightsBarsYear": "Each month of {year}",
+  "@insightsBarsYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
   "insightsTapBar": "Tap a bar",
-  "insightsTipPaid": "{amount} paid",
-  "@insightsTipPaid": {
+  "insightsLegendMonthly": "Monthly cost",
+  "insightsBarLabel": "{month}: {amount}{projected, select, yes{, projected} other{}}",
+  "@insightsBarLabel": {
+    "description": "Screen-reader label of one bar.",
     "placeholders": {
+      "month": {
+        "type": "String"
+      },
       "amount": {
+        "type": "String"
+      },
+      "projected": {
         "type": "String"
       }
     }
   },
-  "insightsTipExpected": "{amount} expected",
-  "@insightsTipExpected": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsChartLabel": "Spending per month, paid and expected, {from} to {to}",
+  "insightsChartLabel": "Monthly cost, {from} to {to}",
   "@insightsChartLabel": {
     "placeholders": {
       "from": {
@@ -960,99 +1238,8 @@
       }
     }
   },
-  "insightsCompact": "{unit, select, k{{n}K} m{{n}M} b{{n}B} other{{n}}}",
-  "@insightsCompact": {
-    "description": "Short axis/centre number: 1.07M, 500K.",
-    "placeholders": {
-      "unit": {
-        "type": "String"
-      },
-      "n": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsAnd": "and",
-  "insightsMonthList": "{names}",
-  "@insightsMonthList": {
-    "description": "Months in a sentence: EN names ('February and March'), VI numbers ('Tháng 2 và 3').",
-    "placeholders": {
-      "names": {
-        "type": "String"
-      },
-      "numbers": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakYearly": "{months} jump with the yearly {names} renewals.",
-  "@insightsPeakYearly": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeak": "{months} jump with the {names} renewals.",
-  "@insightsPeak": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakPlain": "Spending was higher than usual in {months}.",
-  "@insightsPeakPlain": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakYearlyAhead": "{months} will jump with the yearly {names} renewals.",
-  "@insightsPeakYearlyAhead": {
-    "description": "Peak months still ahead (expected, hatched bars).",
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakAhead": "{months} will jump with the {names} renewals.",
-  "@insightsPeakAhead": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      },
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsPeakPlainAhead": "Spending will be higher than usual in {months}.",
-  "@insightsPeakPlainAhead": {
-    "placeholders": {
-      "months": {
-        "type": "String"
-      }
-    }
-  },
   "insightsByCategory": "By category",
-  "insightsMonthlyActive": "monthly equivalent, active plans",
-  "insightsCategoryNote": "Yearly and other non-monthly plans are spread evenly per month here, so this is not what you pay this month.",
-  "@insightsCategoryNote": {
-    "description": "Under the donut when a plan is not billed monthly."
-  },
-  "insightsSliceLabel": "{category}: {amount} per month, {percent}%",
+  "insightsSliceLabel": "{category}: {amount}, {percent}%",
   "@insightsSliceLabel": {
     "placeholders": {
       "category": {
@@ -1066,63 +1253,89 @@
       }
     }
   },
-  "insightsCategoryShare": "{percent}% of your monthly spend",
-  "@insightsCategoryShare": {
+  "insightsTop": "Most expensive",
+  "insightsShareOfMonth": "share of the month",
+  "insightsShareOfYear": "share of the year",
+  "insightsRises": "Price rises",
+  "insightsRisesPerMonth": "more a month than a year ago",
+  "insightsRisesYearly": "That’s {amount} a year · {name} changed the most",
+  "@insightsRisesYearly": {
     "placeholders": {
-      "percent": {
-        "type": "int"
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
       }
     }
   },
-  "insightsPerMonthShort": "/mo",
-  "insightsCycleNoteOne": "{name} is billed {price} — counted here as its monthly share.",
-  "@insightsCycleNoteOne": {
+  "insightsRisesEmpty": "No subscription got more expensive in the last 12 months.",
+  "insightsRiseLabel": "{name}: {from} to {to}, {delta} a month",
+  "@insightsRiseLabel": {
     "placeholders": {
       "name": {
         "type": "String"
       },
-      "price": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsCycleNoteMany": "Plans not billed monthly are counted here as their monthly share.",
-  "insightsTop": "Most expensive",
-  "insightsSaving": "You’re saving",
-  "insightsSavingBy": "by cancelling {names}",
-  "@insightsSavingBy": {
-    "placeholders": {
-      "names": {
-        "type": "String"
-      }
-    }
-  },
-  "insightsSavingByCount": "{count, plural, =1{by cancelling 1 service} other{by cancelling {count} services}}",
-  "@insightsSavingByCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "insightsOverlapTitle": "{category, select, music{You pay for {count} music services} other{You pay for {count} video services}}",
-  "@insightsOverlapTitle": {
-    "placeholders": {
-      "category": {
+      "from": {
         "type": "String"
       },
-      "count": {
+      "to": {
+        "type": "String"
+      },
+      "delta": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsReview": "Review {name}",
+  "@insightsReview": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsNext12": "Next 12 months",
+  "insightsForecastProjected": "Projected",
+  "insightsLast12": "Last 12 months",
+  "insightsForecastChange": "{amount} a year compared with the last 12 months",
+  "@insightsForecastChange": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsForecastPartial": "Your recorded payments don’t cover the whole last 12 months yet, so this comparison is rough.",
+  "insightsForecastNew": "New this year",
+  "insightsForecastRises": "Price rises",
+  "insightsForecastOther": "Other",
+  "insightsViewList": "View as list",
+  "insightsComingUp": "Coming up",
+  "insightsWeeks13": "13 weeks",
+  "insightsWeekShort": "W{week}",
+  "@insightsWeekShort": {
+    "placeholders": {
+      "week": {
         "type": "int"
       }
     }
   },
-  "insightsOverlapBody": "{count, plural, =2{{names} together are {amount}/month. Need both?} other{{names} together are {amount}/month. Need all of them?}}",
-  "@insightsOverlapBody": {
+  "insightsWeekLabel": "Week {week}: {amount}",
+  "@insightsWeekLabel": {
     "placeholders": {
-      "count": {
+      "week": {
         "type": "int"
       },
-      "names": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsBiggest": "Biggest: {when} · {amount}",
+  "@insightsBiggest": {
+    "placeholders": {
+      "when": {
         "type": "String"
       },
       "amount": {
@@ -1130,9 +1343,127 @@
       }
     }
   },
+  "insightsRenews": "({name} renews)",
+  "@insightsRenews": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsNothingAhead": "Nothing expected in this time.",
+  "insightsBudgets": "Budgets",
+  "insightsEdit": "Edit",
+  "insightsBudgetLabel": "{category}: {spent} of {limit}{over, select, yes{, over budget} other{}}",
+  "@insightsBudgetLabel": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "spent": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      },
+      "over": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsSavingTitle": "You’re saving {amount} a year",
+  "@insightsSavingTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsSavingBy": "{count, plural, =1{by cancelling 1 subscription} other{by cancelling {count} subscriptions}}",
+  "@insightsSavingBy": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsNotWorthHint": "{count, plural, =1{Dropping the one you marked “Not worth it” would save {amount} more a year.} other{Dropping the {count} you marked “Not worth it” would save {amount} more a year.}}",
+  "@insightsNotWorthHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsOverlapVideo": "{count, plural, =2{You pay for 2 video services — do you need both?} other{You pay for {count} video services — do you need all of them?}}",
+  "@insightsOverlapVideo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsOverlapMusic": "{count, plural, =2{You pay for 2 music services — do you need both?} other{You pay for {count} music services — do you need all of them?}}",
+  "@insightsOverlapMusic": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsCategoryTitle": "{category} · {period}",
+  "@insightsCategoryTitle": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsCategoryShare": "{count, plural, =1{1 subscription} other{{count} subscriptions}} · {percent}% of {period}",
+  "@insightsCategoryShare": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsPauseNote": "{name} still counts in {period} — its pause starts on {date}.",
+  "@insightsPauseNote": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsForecastCount": "{count, plural, =1{1 expected charge from real due dates} other{{count} expected charges from real due dates}}",
+  "@insightsForecastCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "insightsEmptyTitle": "Add subscriptions to see insights",
-  "insightsEmptyBody": "Your spending by month and category shows up here once you’ve added a few.",
-  "insightsEmptyAction": "Add a subscription",
+  "insightsEmptyBody": "Monthly cost, categories, price rises and the next 12 months show up here.",
+  "insightsEmptyAction": "Browse services",
   "manageCategoriesTitle": "Categories",
   "manageLabelsTitle": "Labels",
   "managePaymentMethodsTitle": "Payment methods",
@@ -1765,6 +2096,7 @@
     }
   },
   "subscriptionDetailStatusCancelled": "Cancelled",
+  "subscriptionDetailStatusPaused": "Paused",
   "subscriptionDetailYourShare": "Your share · plan {price} ÷ {count}",
   "@subscriptionDetailYourShare": {
     "placeholders": {
@@ -1776,7 +2108,7 @@
       }
     }
   },
-  "subscriptionDetailAwaitingTitle": "{count, plural, =1{Renewal on {date} needs confirming} other{{count} renewals need confirming, from {date}}}",
+  "subscriptionDetailAwaitingTitle": "{count, plural, =1{Payment on {date} needs confirming} other{{count} payments need confirming, from {date}}}",
   "@subscriptionDetailAwaitingTitle": {
     "placeholders": {
       "count": {
@@ -1787,14 +2119,7 @@
       }
     }
   },
-  "subscriptionDetailAwaitingBody": "Did {amount} go out? The next date waits until you say.",
-  "@subscriptionDetailAwaitingBody": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
+  "subscriptionDetailAwaitingBody": "The next date waits until you say whether it was paid.",
   "subscriptionDetailConfirm": "Confirm",
   "subscriptionDetailTrialEnds": "Trial ends {date}",
   "@subscriptionDetailTrialEnds": {
@@ -1804,28 +2129,20 @@
       }
     }
   },
-  "subscriptionDetailTrialBody": "After that it renews at {price}. Cancel before then if you don’t want it.",
-  "@subscriptionDetailTrialBody": {
+  "subscriptionDetailTrialSave": "Then {price}. Cancel before to save {yearly} a year.",
+  "@subscriptionDetailTrialSave": {
     "placeholders": {
       "price": {
+        "type": "String"
+      },
+      "yearly": {
         "type": "String"
       }
     }
   },
   "subscriptionDetailHowToCancel": "How to cancel",
   "subscriptionDetailKeepIt": "Keep it",
-  "subscriptionDetailKept": "Keeping {name}. The first charge is on {date}.",
-  "@subscriptionDetailKept": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "subscriptionDetailSaving": "Saving {amount}/year",
+  "subscriptionDetailSaving": "Saving {amount} a year",
   "@subscriptionDetailSaving": {
     "placeholders": {
       "amount": {
@@ -1841,8 +2158,9 @@
       }
     }
   },
+  "subscriptionDetailRestoreShort": "Restore",
   "subscriptionDetailRestore": "Restore subscription",
-  "subscriptionDetailRestored": "Restored. Next renewal: {date}.",
+  "subscriptionDetailRestored": "Restored. Next payment: {date}.",
   "@subscriptionDetailRestored": {
     "placeholders": {
       "date": {
@@ -1850,63 +2168,175 @@
       }
     }
   },
-  "subscriptionDetailNextRenewal": "Next renewal",
-  "subscriptionDetailFirstCharge": "First charge",
-  "subscriptionDetailWaits": "Waits for your confirmation",
-  "subscriptionDetailCycle": "Billing cycle",
-  "subscriptionDetailEveryDay": "{count, plural, =1{Every day} other{Every {count} days}}",
-  "@subscriptionDetailEveryDay": {
+  "subscriptionDetailPausedTitle": "Paused since {date}",
+  "@subscriptionDetailPausedTitle": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "subscriptionDetailEveryWeek": "{count, plural, =1{Every week} other{Every {count} weeks}}",
-  "@subscriptionDetailEveryWeek": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "subscriptionDetailEveryMonth": "{count, plural, =1{Every month} other{Every {count} months}}",
-  "@subscriptionDetailEveryMonth": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "subscriptionDetailEveryYear": "{count, plural, =1{Every year} other{Every {count} years}}",
-  "@subscriptionDetailEveryYear": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "subscriptionDetailRemindMe": "Remind me",
-  "subscriptionDetailRemindValue": "{days, plural, =0{On the day, {time}} =1{1 day before, {time}} other{{days} days before, {time}}}",
-  "@subscriptionDetailRemindValue": {
-    "placeholders": {
-      "days": {
-        "type": "int"
-      },
-      "time": {
+      "date": {
         "type": "String"
       }
     }
   },
+  "subscriptionDetailPausedBody": "No payments, no reminders, not counted.",
+  "subscriptionDetailResume": "Resume",
+  "subscriptionDetailPausesTitle": "Pauses from {date}",
+  "@subscriptionDetailPausesTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPausesBody": "Still counted until then — that payment is the first one skipped.",
+  "subscriptionDetailUndo": "Undo",
+  "subscriptionDetailPauseUndone": "Pause undone. Next payment: {date}.",
+  "@subscriptionDetailPauseUndone": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailNoticeTitle": "New library price: {price}",
+  "@subscriptionDetailNoticeTitle": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailNoticeBody": "You pay {price}. Update from the next payment, or keep your price.",
+  "@subscriptionDetailNoticeBody": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailNoticeReview": "Review",
+  "subscriptionDetailPlanGoneTitle": "This plan is no longer sold",
+  "subscriptionDetailPlanGoneBody": "It left the library for new customers. Yours keeps its price and dates.",
+  "subscriptionDetailPlanClosedTitle": "No longer sold to new customers",
+  "subscriptionDetailPlanClosedBody": "Existing customers keep it. Yours keeps its price and dates.",
+  "subscriptionDetailPlanRenamedTitle": "Now called {name}",
+  "@subscriptionDetailPlanRenamedTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPlanRenamedBody": "The library renamed {old}. Nothing changes for you.",
+  "@subscriptionDetailPlanRenamedBody": {
+    "placeholders": {
+      "old": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailLibrary": "Service library",
+  "subscriptionDetailLibraryGone": "No longer sold",
+  "subscriptionDetailLibraryClosed": "Closed to new customers",
+  "subscriptionDetailLibraryRenamed": "Renamed",
+  "subscriptionDetailAutoTitle": "Added automatically",
+  "subscriptionDetailAutoBody": "{source, select, scan{Found in a screenshot} notification{Found in a bank notification} other{Found in an email}} on {date}. Not yours? Remove it — it won’t be added again.",
+  "@subscriptionDetailAutoBody": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailAutoRemove": "Remove",
+  "subscriptionDetailAutoRemoveTitle": "Remove {name}?",
+  "@subscriptionDetailAutoRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailAutoRemoveBody": "It was added {source, select, scan{from a screenshot} notification{from a bank notification} other{from an email}}. Subnest will remember and won’t add it again.",
+  "@subscriptionDetailAutoRemoveBody": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailAutoRemoved": "{name} removed",
+  "@subscriptionDetailAutoRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailNextPayment": "Next payment",
+  "subscriptionDetailFirstPayment": "First payment",
+  "subscriptionDetailWaits": "Waiting for your confirmation",
+  "subscriptionDetailCycle": "Billing cycle",
+  "subscriptionDetailReminders": "Reminders",
   "subscriptionDetailRemindOff": "Off",
   "subscriptionDetailCategory": "Category",
+  "subscriptionDetailLabels": "Labels",
   "subscriptionDetailPaymentMethod": "Payment method",
   "subscriptionDetailSince": "Since",
   "subscriptionDetailTotalPaid": "Total paid",
+  "subscriptionDetailWorthIt": "Worth it?",
   "subscriptionDetailNotes": "Notes",
+  "subscriptionDetailPriceHistory": "Price history",
+  "subscriptionDetailPriceNeverChanged": "The price has never changed.",
+  "subscriptionDetailPriceFrom": "From {date}",
+  "@subscriptionDetailPriceFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceNext": "next payment",
+  "subscriptionDetailPriceSourceManual": "You changed it",
+  "subscriptionDetailPriceSourceCatalog": "Library update",
+  "subscriptionDetailPriceSourceBackfill": "From past payments",
+  "subscriptionDetailPriceStarted": "Started at {price}",
+  "@subscriptionDetailPriceStarted": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceRose": "up {amount}",
+  "@subscriptionDetailPriceRose": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceFell": "down {amount}",
+  "@subscriptionDetailPriceFell": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "subscriptionDetailHistory": "Payment history",
   "subscriptionDetailPaid": "Paid",
   "subscriptionDetailDidntPay": "Didn’t pay",
+  "subscriptionDetailPaidFrom": "{source, select, scan{From screenshot} notification{From notification} other{From email}}",
+  "@subscriptionDetailPaidFrom": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailAutoUndone": "Payment removed — that period waits for confirmation again.",
   "subscriptionDetailNoHistory": "No payments yet — the first charge is on {date}.",
   "@subscriptionDetailNoHistory": {
     "placeholders": {
@@ -1932,8 +2362,7 @@
       }
     }
   },
-  "subscriptionDetailHowToCancelRow": "How to cancel this service",
-  "subscriptionDetailOpens": "Opens {host} account settings",
+  "subscriptionDetailOpens": "Opens {host} account page",
   "@subscriptionDetailOpens": {
     "placeholders": {
       "host": {
@@ -1949,6 +2378,7 @@
       }
     }
   },
+  "subscriptionDetailPause": "Pause",
   "subscriptionDetailMarkCancelled": "Mark as cancelled",
   "subscriptionDetailDelete": "Delete subscription",
   "subscriptionDetailCancelTitle": "Mark {name} as cancelled?",
@@ -1959,7 +2389,7 @@
       }
     }
   },
-  "subscriptionDetailCancelBody": "Reminders stop and {amount}/year moves into your savings. You can restore it any time.",
+  "subscriptionDetailCancelBody": "Reminders stop and {amount} a year moves into your savings. You can restore it any time.",
   "@subscriptionDetailCancelBody": {
     "placeholders": {
       "amount": {
@@ -1976,14 +2406,7 @@
       }
     }
   },
-  "subscriptionDetailDeleteBody": "{count, plural, =0{This removes it for good. To stop reminders but keep it, mark it as cancelled instead.} =1{This removes it and its 1 payment record for good. To stop reminders but keep the history, mark it as cancelled instead.} other{This removes it and its {count} payment records for good. To stop reminders but keep the history, mark it as cancelled instead.}}",
-  "@subscriptionDetailDeleteBody": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "subscriptionDetailDeleteBody": "It and its payment and price history are removed for good. To stop reminders but keep the history, mark it as cancelled instead.",
   "subscriptionDetailDeleteAction": "Delete",
   "subscriptionDetailDeleted": "{name} deleted",
   "@subscriptionDetailDeleted": {
@@ -1993,17 +2416,161 @@
       }
     }
   },
-  "subscriptionDetailCelebrateCancelled": "{name} cancelled",
-  "@subscriptionDetailCelebrateCancelled": {
+  "subscriptionDetailPauseTitle": "Pause {name}?",
+  "@subscriptionDetailPauseTitle": {
     "placeholders": {
       "name": {
         "type": "String"
       }
     }
   },
-  "subscriptionDetailCelebrateYear": "a year saved",
-  "subscriptionDetailCelebrateNow": "You’re now saving",
-  "subscriptionDetailPerYear": "{amount}/year",
+  "subscriptionDetailPauseBody": "Nothing is cancelled with the service — this only stops tracking.",
+  "subscriptionDetailPauseNow": "Now → {date}",
+  "@subscriptionDetailPauseNow": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPauseNowBody": "Still counted — you paid for this period",
+  "subscriptionDetailPauseFromBody": "No payments, no reminders, not in totals",
+  "subscriptionDetailPauseAction": "Pause from {date}",
+  "@subscriptionDetailPauseAction": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPaused": "{name} pauses from {date}",
+  "@subscriptionDetailPaused": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailResumeTitle": "Resume {name}",
+  "@subscriptionDetailResumeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailResumeAsk": "When is the next payment?",
+  "subscriptionDetailResumeNote": "Defaults to today. The cycle starts again from the date you pick.",
+  "subscriptionDetailResumeToday": "Resume from today",
+  "subscriptionDetailResumeFrom": "Resume from {date}",
+  "@subscriptionDetailResumeFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailResumed": "Resumed. Next payment: {date}.",
+  "@subscriptionDetailResumed": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceSheetTitle": "Update the price?",
+  "subscriptionDetailPriceSheetSub": "{plan} · library price",
+  "@subscriptionDetailPriceSheetSub": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailYouPayNow": "You pay now",
+  "subscriptionDetailNewPrice": "New price",
+  "subscriptionDetailShareOf": "your share {amount}",
+  "@subscriptionDetailShareOf": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceSheetNote": "Applies from the {date} payment and is saved to the price history. Past payments stay as paid.",
+  "@subscriptionDetailPriceSheetNote": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailReferencePrice": "Reference price — check it on the provider’s page.",
+  "subscriptionDetailUpdateFrom": "Update from {date}",
+  "@subscriptionDetailUpdateFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailKeepPrice": "Keep {price}",
+  "@subscriptionDetailKeepPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceUpdated": "New price from {date}",
+  "@subscriptionDetailPriceUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceKept": "Keeping {price}. We won’t ask about this price again.",
+  "@subscriptionDetailPriceKept": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailPriceStale": "The price changed meanwhile — nothing was updated.",
+  "subscriptionDetailCelebrateTitle": "Nice — that’s {amount} a year saved",
+  "@subscriptionDetailCelebrateTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailCelebrateBody": "{name} is marked as cancelled. Remember to cancel it on {host} too — Subnest can’t do that for you.",
+  "@subscriptionDetailCelebrateBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailCelebrateBodyNoHost": "{name} is marked as cancelled. Remember to cancel it with the provider too — Subnest can’t do that for you.",
+  "@subscriptionDetailCelebrateBodyNoHost": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDetailTotalSaving": "Total saving",
+  "subscriptionDetailPerYear": "{amount} a year",
   "@subscriptionDetailPerYear": {
     "placeholders": {
       "amount": {
@@ -2011,7 +2578,15 @@
       }
     }
   },
-  "subscriptionDetailSeeCancelled": "See cancelled",
+  "subscriptionDetailFromCancelled": "{count, plural, =1{from 1 cancelled subscription} other{from {count} cancelled subscriptions}}",
+  "@subscriptionDetailFromCancelled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionDetailDone": "Done",
   "subscriptionDetailPaymentTitle": "Payment · {date}",
   "@subscriptionDetailPaymentTitle": {
     "placeholders": {
