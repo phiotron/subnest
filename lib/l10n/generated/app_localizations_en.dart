@@ -2008,7 +2008,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLicenses => 'Open-source licenses';
 
   @override
-  String get settingsLogosAttribution => 'Logos provided by Logo.dev';
+  String get settingsLogosTitle => 'Service logos';
 
   @override
   String get settingsLogosOwnership =>
@@ -2915,6 +2915,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionFormDeleteAction => 'Delete';
+
+  @override
+  String get subscriptionFormTilePhoto => 'Photo';
+
+  @override
+  String get subscriptionFormTilePhotoPick => 'Choose photo';
+
+  @override
+  String get subscriptionFormTilePhotoChange => 'Change photo';
+
+  @override
+  String get subscriptionFormTilePhotoRemove => 'Remove photo';
+
+  @override
+  String get subscriptionFormTilePhotoNote =>
+      'Shown instead of the letters. It stays on this phone and in your backups.';
+
+  @override
+  String get subscriptionFormTilePhotoFailed => 'Couldn’t open that photo.';
+
+  @override
+  String get subscriptionFormCropTitle => 'Move and zoom';
+
+  @override
+  String get subscriptionFormCropHint =>
+      'Pinch to zoom, drag to move. The square is your logo.';
+
+  @override
+  String get subscriptionFormCropUse => 'Use photo';
 
   @override
   String get widgetNext => 'Next';

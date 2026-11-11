@@ -2822,11 +2822,11 @@ abstract class AppLocalizations {
   /// **'Open-source licenses'**
   String get settingsLicenses;
 
-  /// No description provided for @settingsLogosAttribution.
+  /// No description provided for @settingsLogosTitle.
   ///
   /// In en, this message translates to:
-  /// **'Logos provided by Logo.dev'**
-  String get settingsLogosAttribution;
+  /// **'Service logos'**
+  String get settingsLogosTitle;
 
   /// No description provided for @settingsLogosOwnership.
   ///
@@ -4153,6 +4153,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get subscriptionFormDeleteAction;
+
+  /// No description provided for @subscriptionFormTilePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get subscriptionFormTilePhoto;
+
+  /// No description provided for @subscriptionFormTilePhotoPick.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photo'**
+  String get subscriptionFormTilePhotoPick;
+
+  /// No description provided for @subscriptionFormTilePhotoChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get subscriptionFormTilePhotoChange;
+
+  /// No description provided for @subscriptionFormTilePhotoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get subscriptionFormTilePhotoRemove;
+
+  /// No description provided for @subscriptionFormTilePhotoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown instead of the letters. It stays on this phone and in your backups.'**
+  String get subscriptionFormTilePhotoNote;
+
+  /// No description provided for @subscriptionFormTilePhotoFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t open that photo.'**
+  String get subscriptionFormTilePhotoFailed;
+
+  /// No description provided for @subscriptionFormCropTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move and zoom'**
+  String get subscriptionFormCropTitle;
+
+  /// No description provided for @subscriptionFormCropHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinch to zoom, drag to move. The square is your logo.'**
+  String get subscriptionFormCropHint;
+
+  /// No description provided for @subscriptionFormCropUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use photo'**
+  String get subscriptionFormCropUse;
 
   /// Home widget (small): eyebrow above the next subscription to be charged.
   ///

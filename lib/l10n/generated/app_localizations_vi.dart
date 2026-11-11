@@ -1943,7 +1943,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsLicenses => 'Giấy phép mã nguồn mở';
 
   @override
-  String get settingsLogosAttribution => 'Logos provided by Logo.dev';
+  String get settingsLogosTitle => 'Logo dịch vụ';
 
   @override
   String get settingsLogosOwnership =>
@@ -2811,6 +2811,35 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get subscriptionFormDeleteAction => 'Xoá';
+
+  @override
+  String get subscriptionFormTilePhoto => 'Ảnh';
+
+  @override
+  String get subscriptionFormTilePhotoPick => 'Chọn ảnh';
+
+  @override
+  String get subscriptionFormTilePhotoChange => 'Đổi ảnh';
+
+  @override
+  String get subscriptionFormTilePhotoRemove => 'Gỡ ảnh';
+
+  @override
+  String get subscriptionFormTilePhotoNote =>
+      'Hiện thay cho chữ. Ảnh chỉ nằm trên máy này và trong bản sao lưu.';
+
+  @override
+  String get subscriptionFormTilePhotoFailed => 'Không mở được ảnh này.';
+
+  @override
+  String get subscriptionFormCropTitle => 'Kéo và phóng to';
+
+  @override
+  String get subscriptionFormCropHint =>
+      'Chụm hai ngón để phóng to, kéo để di chuyển. Ô vuông là logo.';
+
+  @override
+  String get subscriptionFormCropUse => 'Dùng ảnh';
 
   @override
   String get widgetNext => 'Tiếp theo';
