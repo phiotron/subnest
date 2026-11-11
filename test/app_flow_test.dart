@@ -14,6 +14,7 @@ import 'package:subnest/data/db/app_database.dart';
 import 'package:subnest/data/notifications/notification_service.dart';
 import 'package:subnest/data/providers.dart';
 import 'package:subnest/domain/domain.dart';
+import 'package:subnest/features/insights/insights_screen.dart';
 
 /// End-to-end smoke test of the placeholder flow (brief step 6):
 /// add → list → detail → confirm → cancel → insights, on an in-memory DB.
@@ -121,9 +122,13 @@ void main() {
     // Insights tab shows numbers.
     await tester.tap(find.text('Insights'));
     await settle();
-    expect(find.text('Month'), findsOneWidget);
-    expect(find.text('Year'), findsOneWidget);
-    expect(find.textContaining('Paid'), findsWidgets);
+    final insights = find.byType(InsightsScreen);
+    expect(insights, findsOneWidget);
+    // Month | Year picker and the month navigator exist only on Insights.
+    expect(find.descendant(of: insights, matching: find.text('Month')), findsOneWidget);
+    expect(find.descendant(of: insights, matching: find.text('Year')), findsOneWidget);
+    expect(find.descendant(of: insights, matching: find.byTooltip('Previous month')), findsOneWidget);
+    expect(find.descendant(of: insights, matching: find.text('Still to pay')), findsOneWidget);
 
     // Tear down: dispose providers (cancels timers) and close the DB.
     await tester.pumpWidget(const SizedBox());
