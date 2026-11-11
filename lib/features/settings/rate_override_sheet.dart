@@ -284,11 +284,7 @@ class _RateBox extends StatelessWidget {
               ],
             )
           else if (preview != null)
-            Text(
-              preview!,
-              semanticsLabel: context.l10n.spokenLabel(preview!),
-              style: AppType.meta.copyWith(color: c.inkMuted),
-            ),
+            Text(preview!, semanticsLabel: context.l10n.spokenLabel(preview!), style: AppType.meta.copyWith(color: c.inkMuted)),
         ],
       ),
     );
