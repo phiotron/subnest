@@ -226,6 +226,30 @@ void main() {
     expect(folder.files, hasLength(1));
   });
 
+  test('an automatic failure calls onAutomaticFailure; "Back up now" and successes do not', () async {
+    final calls = <AutoBackupResult>[];
+    AutoBackupService.onAutomaticFailure = (r) async => calls.add(r);
+    addTearDown(() => AutoBackupService.onAutomaticFailure = null);
+    await enable();
+    folder.failWith = BackupFolderError.permissionDenied;
+    expect(await service.backupNow(), AutoBackupResult.permissionDenied);
+    expect(calls, isEmpty, reason: 'manual run shows its own result');
+    now = DateTime(2026, 11, 4, 21);
+    await service.maybeRunDaily();
+    expect(calls, [AutoBackupResult.permissionDenied]);
+    // A throwing hook never breaks the backup flow.
+    AutoBackupService.onAutomaticFailure = (_) async => throw StateError('no notifications');
+    folder.failWith = BackupFolderError.folderMissing;
+    now = DateTime(2026, 11, 5, 21);
+    expect(await service.maybeRunIfDue(), AutoBackupResult.folderMissing);
+    // Success: no call.
+    AutoBackupService.onAutomaticFailure = (r) async => calls.add(r);
+    folder.failWith = null;
+    now = DateTime(2026, 11, 6, 21);
+    expect(await service.maybeRunIfDue(), AutoBackupResult.ok);
+    expect(calls, hasLength(1));
+  });
+
   test('an encryption error or unexpected exception never throws', () async {
     service = w.autoBackup(folder: folder, secrets: secrets, encrypt: (_, _) async => throw StateError('broken'));
     await enable();

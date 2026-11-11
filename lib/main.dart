@@ -10,9 +10,11 @@ import 'app.dart';
 import 'core/router/app_router.dart';
 import 'core/router/routes.dart';
 import 'data/backup/auto_backup_background.dart';
+import 'data/backup/auto_backup_service.dart';
 import 'data/db/app_database.dart';
 import 'data/notifications/notification_service.dart';
 import 'data/providers.dart';
+import 'data/settings_repository.dart';
 import 'features/settings/auto_backup_providers.dart';
 
 Future<void> main() async {
@@ -30,10 +32,17 @@ Future<void> main() async {
   );
 
   final settings = await container.read(settingsRepositoryProvider).load();
+  AutoBackupService.onAutomaticFailure = (_) async =>
+      notifications.showBackupFailed(await container.read(settingsRepositoryProvider).load());
   final router = createRouter(initialLocation: settings.onboardingDone ? AppRoutes.home : AppRoutes.onboarding);
 
   runAutoBackupOnOpen(container);
-  runApp(UncontrolledProviderScope(container: container, child: SubnestApp(router: router)));
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: SubnestApp(router: router),
+    ),
+  );
 }
 
 /// Automatic backup (F7) inside the app:
@@ -65,10 +74,28 @@ Future<void> autoBackupBackgroundMain() async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   final result = await runScheduledAutoBackup(openDatabase: AppDatabase.defaults);
+  if (AutoBackupService.isFailure(result)) await _notifyBackupFailed();
   try {
     await const MethodChannel(backupJobChannel).invokeMethod<void>('done', result?.name);
   } catch (_) {
     // Kotlin finishes after the timeout.
+  }
+}
+
+/// Background engine: "Backup failed" notification in the user's language. Never throws.
+Future<void> _notifyBackupFailed() async {
+  AppDatabase? db;
+  try {
+    db = AppDatabase.defaults();
+    final settings = await SettingsRepository(db).load();
+    final notifications = NotificationService();
+    await notifications.init();
+    await notifications.showBackupFailed(settings);
+  } catch (_) {
+  } finally {
+    try {
+      await db?.close();
+    } catch (_) {}
   }
 }
 

@@ -174,8 +174,32 @@ class NotificationService {
     } catch (_) {}
   }
 
+  /// Id of the "Backup failed" notification (one at a time; a newer failure replaces it).
+  static const backupFailedNotificationId = 1003;
+
+  /// "Backup failed — open Subnest to check" (product.md §4.13) after an automatic backup failed;
+  /// text only, on the existing reminders channel; tapping opens Settings.
+  Future<void> showBackupFailed(AppSettings settings) async {
+    if (!_ready) return;
+    final l10n = _l10n(settings);
+    final text = l10n.notificationsBackupFailed;
+    try {
+      await _plugin.show(
+        id: backupFailedNotificationId,
+        title: null,
+        body: text,
+        notificationDetails: details(l10n, text),
+        payload: '/settings',
+      );
+    } catch (_) {}
+  }
+
   /// Debounced re-schedule of all reminders.
-  void scheduleSync(List<Subscription> subs, AppSettings settings, {Duration delay = const Duration(milliseconds: 400)}) {
+  void scheduleSync(
+    List<Subscription> subs,
+    AppSettings settings, {
+    Duration delay = const Duration(milliseconds: 400),
+  }) {
     _debounce?.cancel();
     _debounce = Timer(delay, () => sync(subs, settings));
   }
@@ -247,7 +271,11 @@ class NotificationService {
 
   /// Developer/QA helper: shows one notification now and schedules one in [delay].
   /// Tapping either opens [route].
-  Future<void> sendTest(AppSettings settings, {String route = '/home', Duration delay = const Duration(seconds: 10)}) async {
+  Future<void> sendTest(
+    AppSettings settings, {
+    String route = '/home',
+    Duration delay = const Duration(seconds: 10),
+  }) async {
     if (!_ready) return;
     final l10n = _l10n(settings);
     await _plugin.show(

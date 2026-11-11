@@ -10,5 +10,7 @@
   "@notificationsDueToday": {"placeholders": {"name": {"type": "String"}}},
   "notificationsTestTitle": "Subnest reminders are on",
   "notificationsTestScheduledTitle": "Scheduled test reminder",
-  "notificationsTestBody": "This is how renewal reminders will look."
+  "notificationsTestBody": "This is how renewal reminders will look.",
+  "notificationsBackupFailed": "Backup failed — open Subnest to check",
+  "@notificationsBackupFailed": {"description": "Notification when an automatic backup failed (product.md §4.13, mockup 126). Only failures are notified; plain text, no action buttons."}
 }

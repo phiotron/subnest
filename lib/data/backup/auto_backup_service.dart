@@ -130,6 +130,16 @@ class AutoBackupService {
 
   bool _running = false;
 
+  /// Called when an AUTOMATIC attempt ([maybeRunIfDue]: open/resume catch-up, iOS notification)
+  /// fails, so the user hears about it (product.md §4.13 "Backup failed"). Set once by `main.dart`
+  /// in the app; the Android background engine notifies from `autoBackupBackgroundMain` instead.
+  /// "Back up now" in Settings shows its own result and does not call it.
+  static Future<void> Function(AutoBackupResult result)? onAutomaticFailure;
+
+  /// Results worth a "Backup failed" notification.
+  static bool isFailure(AutoBackupResult? r) =>
+      r == AutoBackupResult.failed || r == AutoBackupResult.permissionDenied || r == AutoBackupResult.folderMissing;
+
   static String fileName(DateTime d) {
     String two(int n) => n.toString().padLeft(2, '0');
     return 'subnest-auto-${d.year}${two(d.month)}${two(d.day)}-${two(d.hour)}${two(d.minute)}.subnest';
@@ -269,7 +279,13 @@ class AutoBackupService {
         await secrets.write(lastCheckKey, _writeTime(now));
         return null;
       }
-      return await backupNow();
+      final result = await backupNow();
+      if (isFailure(result)) {
+        try {
+          await onAutomaticFailure?.call(result);
+        } catch (_) {}
+      }
+      return result;
     } catch (_) {
       // Never let a background error escape.
       return null;

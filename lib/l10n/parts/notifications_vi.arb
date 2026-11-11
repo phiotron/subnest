@@ -7,5 +7,6 @@
   "notificationsDueToday": "Hôm nay gia hạn {name} — chạm để xác nhận",
   "notificationsTestTitle": "Nhắc nhở Subnest đã bật",
   "notificationsTestScheduledTitle": "Nhắc thử đã hẹn giờ",
-  "notificationsTestBody": "Nhắc gia hạn sẽ trông như thế này."
+  "notificationsTestBody": "Nhắc gia hạn sẽ trông như thế này.",
+  "notificationsBackupFailed": "Sao lưu lỗi — mở Subnest để kiểm tra"
 }

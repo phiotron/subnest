@@ -343,11 +343,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogCustom => 'Create a custom service';
 
   @override
-  String get catalogCustomSub => 'Anything not in the library';
+  String get catalogCustomSub => 'Your own name, colour, letter or photo';
 
   @override
   String catalogCustomNamed(String name) {
-    return 'Not seeing it? Create “$name”';
+    return 'Not it? Create “$name”';
   }
 
   @override
@@ -359,10 +359,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogCustomService => 'Custom service';
 
   @override
-  String get catalogPopularVietnam => 'Popular in Vietnam';
+  String get catalogPopularVietnam => 'Vietnam · prices in VND';
 
   @override
-  String get catalogPopular => 'Popular';
+  String get catalogPopular => 'Popular · US prices';
 
   @override
   String get catalogMore => 'More services';
@@ -380,12 +380,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String catalogNoResultTitle(String name) {
-    return 'No service called “$name”';
+    return 'Nothing called “$name”';
   }
 
   @override
   String get catalogNoResultBody =>
-      'Create it — you can pick the colour and letters.';
+      'Create it — pick a colour, a letter or a photo.';
 
   @override
   String catalogFrom(String price) {
@@ -409,11 +409,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get catalogPlanSubVietnam =>
-      'Choose a plan · suggested prices for Vietnam';
+  String get catalogPlanSubVietnam => 'Choose a plan · prices in VND';
 
   @override
-  String get catalogPlanSub => 'Choose a plan · suggested prices';
+  String get catalogPlanSub => 'Choose a plan · US prices';
 
   @override
   String catalogPlanMembers(int count) {
@@ -433,6 +432,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get catalogTabVietnam => 'Vietnam';
+
+  @override
+  String catalogUpdated(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Library updated $days days ago',
+      one: 'Library updated yesterday',
+      zero: 'Library updated today',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get confirmDueToday => 'Due today';
@@ -1639,10 +1650,148 @@ class AppLocalizationsEn extends AppLocalizations {
   String get managePaymentMethodsTitle => 'Payment methods';
 
   @override
-  String get manageBudgetsTitle => 'Budgets';
+  String get manageBudgetsTitle => 'Budget';
 
   @override
-  String get managePlaceholder => 'Coming soon';
+  String manageSubCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subscriptions',
+      one: '1 subscription',
+      zero: 'No subscriptions',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get manageCategoriesIntro =>
+      'Drag to reorder. Colours are used in charts and filters.';
+
+  @override
+  String get manageNewCategory => 'New category';
+
+  @override
+  String get manageEditCategory => 'Edit category';
+
+  @override
+  String get manageName => 'Name';
+
+  @override
+  String get manageNameRequired => 'Enter a name';
+
+  @override
+  String get manageColour => 'Colour';
+
+  @override
+  String get manageIcon => 'Icon';
+
+  @override
+  String get manageDeleteCategory => 'Delete category';
+
+  @override
+  String manageDeleteTitle(String name) {
+    return 'Delete “$name”?';
+  }
+
+  @override
+  String manageDeleteMoveBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subscriptions use it.',
+      one: '1 subscription uses it.',
+    );
+    return '$_temp0 Move them to:';
+  }
+
+  @override
+  String get manageDeleteUnusedBody => 'No subscription uses it.';
+
+  @override
+  String get manageMoveAndDelete => 'Move and delete';
+
+  @override
+  String manageMoveCategory(String name) {
+    return 'Move to $name';
+  }
+
+  @override
+  String get manageReorderHint => 'Drag to reorder';
+
+  @override
+  String get manageLabelsIntro =>
+      'Labels cut across categories — a subscription can have several.';
+
+  @override
+  String get manageNewLabel => 'New label';
+
+  @override
+  String get manageEditLabel => 'Edit label';
+
+  @override
+  String get manageDeleteLabel => 'Delete label';
+
+  @override
+  String get manageDeleteLabelBody =>
+      'It’s taken off every subscription that has it. The subscriptions stay.';
+
+  @override
+  String get managePaymentMethodsIntro =>
+      'Names only — Subnest never connects to a bank or card.';
+
+  @override
+  String get manageAddPaymentMethod => 'Add payment method';
+
+  @override
+  String get manageEditPaymentMethod => 'Edit payment method';
+
+  @override
+  String get manageDeletePaymentMethod => 'Delete payment method';
+
+  @override
+  String get manageDeletePaymentMethodBody =>
+      'Subscriptions that use it are left without a payment method.';
+
+  @override
+  String get manageBudgetTotal => 'Monthly budget, all subscriptions';
+
+  @override
+  String manageBudgetUsed(int percent, String amount) {
+    return '$percent% used this month · $amount';
+  }
+
+  @override
+  String get manageBudgetPerCategory => 'Per category · optional';
+
+  @override
+  String manageBudgetThisMonth(String amount) {
+    return '$amount this month';
+  }
+
+  @override
+  String get manageBudgetSet => 'Set';
+
+  @override
+  String get manageBudgetNote =>
+      'Budgets compare against the monthly cost. Going over turns the bar red — no notifications.';
+
+  @override
+  String manageBudgetFor(String name) {
+    return 'Budget · $name';
+  }
+
+  @override
+  String get manageBudgetAmount => 'Per month';
+
+  @override
+  String get manageBudgetRemove => 'Remove budget';
+
+  @override
+  String get manageBudgetInvalid => 'Enter an amount above 0';
+
+  @override
+  String get manageBudgetTotalNone => 'No monthly budget yet';
 
   @override
   String get notificationsChannelName => 'Reminders';
@@ -1693,6 +1842,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This is how renewal reminders will look.';
 
   @override
+  String get notificationsBackupFailed =>
+      'Backup failed — open Subnest to check';
+
+  @override
   String get onboardingSkip => 'Skip';
 
   @override
@@ -1701,11 +1854,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get onboardingLanguageTitle => 'Language';
+  String get onboardingLanguageTitle => 'Choose your language';
 
   @override
   String get onboardingLanguageHint =>
-      'Subnest speaks English and Vietnamese. You can change this any time in Settings.';
+      'You can change it later in Settings. The whole app switches at once.';
+
+  @override
+  String get onboardingLanguageEnglishSub => 'English';
+
+  @override
+  String get onboardingLanguageVietnameseSub => 'Vietnamese';
 
   @override
   String get onboardingWelcomeTitle => 'All your subscriptions, one nest';
@@ -1715,17 +1874,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingBenefitRemindSub =>
-      '3 days ahead, and before trials end.';
+      'Before renewals and before trials end.';
 
   @override
-  String get onboardingBenefitTotal => 'Know exactly what each month costs';
+  String get onboardingBenefitTotal => 'Know what each month really costs';
 
   @override
   String get onboardingBenefitTotalSub =>
-      'In your currency, shared plans split fairly.';
+      'Every price shows its cycle — no more guessing.';
 
   @override
-  String get onboardingBenefitPrivate => 'Private — data stays on your phone';
+  String get onboardingBenefitPrivate => 'Your data stays on this phone';
 
   @override
   String get onboardingBenefitPrivateSub =>
@@ -1739,16 +1898,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingCurrencyHint =>
-      'Used to add up your totals. Each subscription still keeps its own currency.';
+      'Totals are added up in it. Each subscription keeps its own currency.';
 
   @override
-  String get onboardingCurrencyDefault => 'Default — change it any time';
-
-  @override
-  String get onboardingCurrencyChosen => 'Your choice';
-
-  @override
-  String get onboardingCurrencyChange => 'Choose another currency';
+  String get onboardingCurrencyChange => 'Choose another currency…';
 
   @override
   String get onboardingCurrencyRatesNote =>
@@ -1764,7 +1917,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingPickTitle => 'What do you pay for?';
 
   @override
-  String get onboardingPickSearch => 'Search 100+ services';
+  String get onboardingPickSearch => 'Search 500+ services';
 
   @override
   String onboardingPickSelected(int count) {
@@ -1784,12 +1937,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String onboardingPickMeta(String price, String cycle) {
-    return '$price · $cycle';
-  }
-
-  @override
-  String get onboardingPickEdit => 'Edit';
+  String get onboardingPickEdit => 'Price & cycle';
 
   @override
   String onboardingPickEditLabel(String name) {
@@ -1816,7 +1964,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String onboardingRemindersBody(String time) {
-    return 'We’ll remind you 3 days before a renewal or a trial ending, at $time. Change it any time.';
+    return '3 days before a renewal or a trial ending, at $time. You can change both later.';
   }
 
   @override
@@ -1842,7 +1990,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingEnableReminders => 'Turn on reminders';
 
   @override
-  String get onboardingNoThanks => 'Not now';
+  String get onboardingNoThanks => 'No thanks';
 
   @override
   String get scanTitle => 'Scan screenshots';
@@ -1861,29 +2009,29 @@ class AppLocalizationsEn extends AppLocalizations {
       'If you forget the PIN, the only way back in is to delete all data in the app.';
 
   @override
-  String get securityEnterPin => 'Enter PIN';
+  String get securityEnterPin => 'Enter your PIN';
 
   @override
   String get securityNewPin => 'Choose a 4-digit PIN';
 
   @override
-  String get securityConfirmPin => 'Enter the PIN again';
+  String get securityConfirmPin => 'Enter it again';
 
   @override
-  String get securityPinMismatch => 'The PINs do not match. Try again.';
+  String get securityPinMismatch => 'The PINs don’t match. Choose one again.';
 
   @override
-  String get securityWrongPin => 'Wrong PIN';
+  String get securityWrongPin => 'Wrong PIN. Try again.';
 
   @override
-  String get securityForgotPin => 'Forgot PIN';
+  String get securityForgotPin => 'Forgot PIN?';
 
   @override
   String get securityForgotPinTitle => 'Forgot your PIN?';
 
   @override
   String get securityForgotPinBody =>
-      'Subnest has no server, so a PIN cannot be recovered. You can delete all data in the app to use it again.';
+      'Subnest has no account and no server, so the PIN can’t be reset. The only way back in is to erase all data on this phone and start fresh. A backup file can be restored afterwards.';
 
   @override
   String securityKeypadDigit(String digit) {
@@ -1899,15 +2047,33 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get securityPrivacyScreen => 'Hide content when switching apps';
+  String get securityPrivacyScreen => 'Hide content in app switcher';
 
   @override
-  String get securityPrivacyScreenNote =>
-      'Blocks screenshots and hides content in the recent apps list';
+  String get securityPrivacyScreenNote => 'Also blocks screenshots';
 
   @override
   String get securityPrivacyScreenNoteIos =>
-      'Hides content in the app switcher. iPhone does not let apps block screenshots.';
+      'Hides content in the app switcher. iPhone doesn’t let apps block screenshots.';
+
+  @override
+  String get securityTryAgain => 'Try again';
+
+  @override
+  String get securityPinSetNote =>
+      'You’ll enter it when Subnest opens, and after 1 minute away.';
+
+  @override
+  String get securityPinOffNote => '4 digits, asked when Subnest opens';
+
+  @override
+  String get securityPinOnNote => 'On · asks after 1 minute away';
+
+  @override
+  String get securityChangePin => 'Change PIN';
+
+  @override
+  String get securityPinChanged => 'PIN changed';
 
   @override
   String get settingsSectionMoney => 'Money';
@@ -2093,7 +2259,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNotifications => 'Notifications';
 
   @override
-  String get settingsNotificationsOn => 'On';
+  String get settingsNotificationsOn => 'Allowed';
 
   @override
   String get settingsNotificationsOff => 'Off';
@@ -2114,7 +2280,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Open your phone’s Settings › Apps › Subnest › Notifications.';
 
   @override
-  String get settingsRemindBefore => 'Remind me before a renewal';
+  String get settingsRemindBefore => 'Remind me before a payment';
 
   @override
   String settingsRemindChoice(int count) {
@@ -2123,21 +2289,21 @@ class AppLocalizationsEn extends AppLocalizations {
       locale: localeName,
       other: '$count days',
       one: '1 day',
-      zero: 'On day',
+      zero: 'On the day',
     );
     return '$_temp0';
   }
 
   @override
   String get settingsRemindTrialNote =>
-      'Trials get the same reminder before they end.';
+      'Pick any combination. Trials get the same reminders before they end.';
 
   @override
   String get settingsReminderTimeShort => 'Time';
 
   @override
   String get settingsRemindersNote =>
-      'You can change this for a single subscription from its edit screen. Applies to new reminders; existing ones move to the new time.';
+      'Each subscription can override these on its edit screen. PIN lock doesn’t change what notifications say.';
 
   @override
   String get settingsPreview => 'Preview';
@@ -2160,7 +2326,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTestReminderSent => 'Test reminder sent';
 
   @override
-  String get settingsSectionAppearance => 'Appearance';
+  String get settingsSectionAppearance => 'Appearance & language';
 
   @override
   String get settingsAppearanceTitle => 'Appearance';
@@ -2236,10 +2402,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Everything, as a .json file to restore later';
 
   @override
-  String get settingsExportCsv => 'Export spreadsheet';
+  String get settingsExportCsv => 'Export CSV';
 
   @override
-  String get settingsExportCsvHint => 'CSV · opens in Excel or Sheets';
+  String get settingsExportCsvHint =>
+      'Subscriptions and payments, for spreadsheets';
 
   @override
   String get settingsExportCsvLong => 'Subscriptions and payments as .csv';
@@ -2252,10 +2419,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn’t create the file. Please try again.';
 
   @override
-  String get settingsRestore => 'Restore from file';
+  String get settingsRestore => 'Restore';
 
   @override
-  String get settingsRestoreHint => 'Pick a Subnest backup (.subnest)';
+  String get settingsRestoreHint => 'Replaces everything on this phone';
 
   @override
   String settingsLastBackup(String date) {
@@ -2271,7 +2438,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNeverBackedUp => 'No backup yet';
 
   @override
-  String get settingsRestoreTitle => 'Restore this backup?';
+  String get settingsRestoreTitle => 'Replace all data?';
 
   @override
   String settingsRestoreHolds(int subs, int payments) {
@@ -2291,7 +2458,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsRestoreReplaceAction => 'Replace my data';
+  String get settingsRestoreReplaceAction => 'Replace and restore';
 
   @override
   String get settingsRestoreReplaceNote =>
@@ -2325,20 +2492,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsPrivacyPolicy => 'Privacy policy';
 
   @override
-  String get settingsTerms => 'Terms of use';
+  String get settingsTerms => 'Terms';
 
   @override
-  String get settingsLicenses => 'Open-source licenses';
+  String get settingsLicenses => 'Licences';
 
   @override
   String get settingsLogosTitle => 'Service logos';
 
   @override
   String get settingsLogosOwnership =>
-      'Service names and logos belong to their owners and are shown only to identify the service.';
+      'Service names and logos belong to their respective owners.';
 
   @override
-  String get settingsRateApp => 'Rate Subnest';
+  String get settingsRateApp => 'Rate the app';
 
   @override
   String get settingsFeedback => 'Send feedback';
@@ -2407,25 +2574,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String settingsAutoBackupLast(String time) {
-    return 'Last backup $time';
+    return 'Last: $time';
   }
 
   @override
   String settingsAutoBackupLastUnchanged(String checked, String last) {
-    return 'Checked $checked: data unchanged, kept the earlier copy. Last backup $last.';
+    return 'Last: $last · checked $checked, no changes';
   }
 
   @override
-  String get settingsAutoBackupNever => 'No automatic backup yet';
+  String get settingsAutoBackupNever => 'No backup yet';
 
   @override
   String settingsAutoBackupFailedAt(String time, String error) {
-    return 'Last attempt $time: $error';
+    return 'Last try $time: $error';
   }
 
   @override
   String get settingsAutoBackupErrorFolder =>
-      'folder unavailable — choose it again';
+      'folder unavailable — tap Folder to choose it again';
 
   @override
   String get settingsAutoBackupErrorOther => 'backup failed';
@@ -2458,7 +2625,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAutoBackupTime => 'Backup time';
 
   @override
-  String get settingsAutoBackupTurnOn => 'Turn on';
+  String get settingsAutoBackupTurnOn => 'Turn on automatic backup';
 
   @override
   String get settingsAutoBackupOffDone => 'Automatic backup turned off';
@@ -2532,40 +2699,326 @@ class AppLocalizationsEn extends AppLocalizations {
       'This backup is encrypted. Enter the password you set when exporting it.';
 
   @override
-  String get settingsBackupWrongPassword =>
-      'Wrong password, or the file was changed';
+  String get settingsBackupWrongPassword => 'Wrong password';
 
   @override
   String get settingsBackupOpen => 'Open';
 
   @override
-  String get settingsDeleteAll => 'Delete all data';
+  String get settingsDeleteAll => 'Erase all data';
 
   @override
   String get settingsDeleteAllHint => 'Everything, like a new install';
 
   @override
-  String get settingsDeleteAllTitle => 'Delete all data?';
+  String get settingsDeleteAllTitle => 'Erase all data?';
 
   @override
   String get settingsDeleteAllConfirm =>
-      'This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.';
+      'Every subscription, payment, price history, label and setting on this phone is deleted. Subnest goes back to the first-run screens. Automatic backup files in your folder are kept.';
 
   @override
-  String get settingsDeleteAllConfirm2 =>
-      'This cannot be undone. Export a backup first if you might need it.';
+  String get settingsDeleteAllConfirm2 => 'This can’t be undone.';
 
   @override
   String get settingsCannotUndo => 'This cannot be undone';
 
   @override
-  String get settingsDeleteEverything => 'Delete everything';
+  String get settingsDeleteEverything => 'Erase everything';
 
   @override
   String get settingsDelete => 'Delete';
 
   @override
-  String get settingsDeleteAllDone => 'All data deleted';
+  String get settingsDeleteAllDone => 'All data erased';
+
+  @override
+  String get settingsThemeNote =>
+      'System follows your phone’s light or dark mode.';
+
+  @override
+  String get settingsLanguageNote =>
+      'The whole app switches right away. Dates and amounts follow the language.';
+
+  @override
+  String get settingsHideTabBar => 'Hide tab bar when scrolling';
+
+  @override
+  String get settingsSectionOrganize => 'Organize';
+
+  @override
+  String settingsBudgetValue(String amount) {
+    return '$amount/mo';
+  }
+
+  @override
+  String get settingsBudgetNotSet => 'Not set';
+
+  @override
+  String get settingsSectionAutomation => 'Automation';
+
+  @override
+  String get settingsScan => 'Screenshot scan';
+
+  @override
+  String get settingsScanHint => 'Add from store pages and receipts';
+
+  @override
+  String get settingsBankNotifications => 'Bank & wallet notifications';
+
+  @override
+  String get settingsSoon => 'Soon';
+
+  @override
+  String get settingsAutoBackupOffNote =>
+      'Off — your data lives only on this phone';
+
+  @override
+  String get settingsAutoBackupFolderLabel => 'Folder';
+
+  @override
+  String get settingsAutoBackupTimeLabel => 'Time';
+
+  @override
+  String settingsAutoBackupDaily(String time) {
+    return '$time every day';
+  }
+
+  @override
+  String get settingsAutoBackupPasswordLabel => 'Password';
+
+  @override
+  String get settingsAutoBackupKeepsLabel => 'Keeps';
+
+  @override
+  String get settingsAutoBackupKeepsValue => '2 newest files';
+
+  @override
+  String get settingsAutoBackupIntro =>
+      'Once a day Subnest saves an encrypted .subnest file to a folder you choose — on this phone, an SD card or a synced folder like Google Drive.';
+
+  @override
+  String get settingsAutoBackupSetupTime => 'Time';
+
+  @override
+  String get settingsAutoBackupKeep => 'Keep';
+
+  @override
+  String get settingsAutoBackupKeepValue => '2 newest';
+
+  @override
+  String get settingsAutoBackupChoose => 'Choose…';
+
+  @override
+  String get settingsAutoBackupPasswordRule => 'At least 6 characters';
+
+  @override
+  String get settingsAutoBackupWriteDownTitle => 'Write the password down';
+
+  @override
+  String get settingsAutoBackupWriteDownBody =>
+      'Without it the backup can’t be opened — there’s no reset.';
+
+  @override
+  String get settingsAutoBackupFolderNeeded => 'Choose a folder first';
+
+  @override
+  String get settingsBackupNow => 'Back up now';
+
+  @override
+  String get settingsBackupNowHint =>
+      'A .subnest file, with or without a password';
+
+  @override
+  String settingsBackupFileMeta(int subs, int payments, String size) {
+    String _temp0 = intl.Intl.pluralLogic(
+      subs,
+      locale: localeName,
+      other: '$subs subscriptions',
+      one: '1 subscription',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      payments,
+      locale: localeName,
+      other: '$payments payments',
+      one: '1 payment',
+    );
+    return '$_temp0 · $_temp1 · $size';
+  }
+
+  @override
+  String get settingsBackupProtectHint =>
+      'Recommended if you save it to the cloud';
+
+  @override
+  String get settingsBackupSave => 'Save file…';
+
+  @override
+  String get settingsRestoreValid => 'Valid';
+
+  @override
+  String settingsRestoreProtected(String size) {
+    return 'Password-protected · $size';
+  }
+
+  @override
+  String get settingsRestoreInFile => 'In this file';
+
+  @override
+  String get settingsRestoreSubs => 'Subscriptions';
+
+  @override
+  String get settingsRestorePayments => 'Payments';
+
+  @override
+  String get settingsRestorePriceChanges => 'Price changes';
+
+  @override
+  String get settingsRestoreSettings => 'Settings and labels';
+
+  @override
+  String get settingsRestoreIncluded => 'Included';
+
+  @override
+  String get settingsRestoreWarnTitle => 'Restoring replaces everything';
+
+  @override
+  String get settingsRestoreWarnBody =>
+      'What’s on this phone now is removed and the file’s data takes its place.';
+
+  @override
+  String get settingsRestoreHasPassword => 'This backup has a password';
+
+  @override
+  String get settingsRestoreUnlock => 'Unlock and restore';
+
+  @override
+  String settingsRestoreReplaceBody(int current, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      current,
+      locale: localeName,
+      other: '$current current subscriptions are',
+      one: '1 current subscription is',
+      zero: 'data',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subscriptions',
+      one: '1 subscription',
+    );
+    return 'Your $_temp0 replaced by the $_temp1 in this backup.';
+  }
+
+  @override
+  String settingsDeleteAllTypeTitle(String word) {
+    return 'Type $word to confirm';
+  }
+
+  @override
+  String get settingsDeleteAllWord => 'ERASE';
+
+  @override
+  String settingsVersionValue(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get settingsLibrary => 'Service library';
+
+  @override
+  String settingsLibraryValue(String ago, int count) {
+    return 'Updated $ago · $count services';
+  }
+
+  @override
+  String settingsLibraryCount(int count) {
+    return '$count services';
+  }
+
+  @override
+  String get settingsAgoToday => 'today';
+
+  @override
+  String get settingsPriceLists => 'Price lists';
+
+  @override
+  String get settingsPriceListsValue => 'US + Vietnam';
+
+  @override
+  String get settingsAutomationHero => 'Let Subnest find your subscriptions';
+
+  @override
+  String get settingsAutomationHeroBody =>
+      'Everything is read on this phone. Nothing is uploaded.';
+
+  @override
+  String get settingsAutomationScanHint =>
+      'Google Play / App Store pages, receipts';
+
+  @override
+  String get settingsOpen => 'Open';
+
+  @override
+  String get settingsGmailHint => 'Receipts and renewal emails';
+
+  @override
+  String get settingsAutomationFound => 'When something is found';
+
+  @override
+  String get settingsAutoAdd => 'Add new ones automatically';
+
+  @override
+  String get settingsAutoConfirm => 'Confirm periods automatically';
+
+  @override
+  String get settingsAutomationNote =>
+      'Every automatic change is tagged Auto and has Undo.';
+
+  @override
+  String get settingsEarlyAccessCta => 'Get early access';
+
+  @override
+  String get settingsProBody =>
+      'Finds and confirms subscriptions for you. Adding them by hand stays free, always.';
+
+  @override
+  String get settingsProNow => 'Now';
+
+  @override
+  String get settingsProUndo => 'Undo on every change';
+
+  @override
+  String get settingsEarlyAccessTitle => 'Early access';
+
+  @override
+  String get settingsEarlyAccessBody =>
+      'Join now and we’ll tell you the price before Pro starts charging. Nothing is billed without asking you.';
+
+  @override
+  String get settingsJoinEarlyAccess => 'Join early access';
+
+  @override
+  String get settingsNotNow => 'Not now';
+
+  @override
+  String get settingsEarlyAccessSubject => 'Subnest Pro early access';
+
+  @override
+  String settingsWhenToday(String time) {
+    return 'today, $time';
+  }
+
+  @override
+  String settingsWhenYesterday(String time) {
+    return 'yesterday, $time';
+  }
+
+  @override
+  String get settingsBackupPasswordShow => 'Show password';
+
+  @override
+  String get settingsBackupPasswordHide => 'Hide password';
 
   @override
   String get subscriptionDetailEdit => 'Edit';
@@ -3147,8 +3600,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormPriceRequired => 'Price must be more than 0';
 
   @override
-  String subscriptionFormPriceWas(String old, String date) {
-    return 'Was $old. The new price applies from the next period ($date). Past payments stay as they were.';
+  String subscriptionFormPriceWas(String old) {
+    return 'Was $old. Saving asks when the new price starts and adds it to the price history.';
   }
 
   @override
@@ -3270,7 +3723,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormReminder => 'Remind me';
 
   @override
-  String get subscriptionFormRemindOnDay => 'On day';
+  String get subscriptionFormRemindOnDay => 'On the day';
 
   @override
   String subscriptionFormRemindDays(int count) {
@@ -3290,7 +3743,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormMore => 'More details';
 
   @override
-  String get subscriptionFormMoreSub => 'Cancel link, notes';
+  String get subscriptionFormMoreSub =>
+      'Payment method, cancel link, notes, worth it?';
 
   @override
   String get subscriptionFormPaymentMethod => 'Payment method';
@@ -3313,62 +3767,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String subscriptionFormPriceDialogTitle(String price) {
-    return 'Use $price from the next period?';
+    return 'Use $price from the next payment?';
   }
 
   @override
   String subscriptionFormPriceDialogBody(String date) {
-    return 'The $date renewal and later ones use the new price.';
+    return 'The $date payment and later ones use the new price. Your past payments stay exactly as paid, and the change is saved to the price history.';
   }
 
   @override
-  String subscriptionFormPriceDialogPast(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Your $count past payments stay at what you actually paid.',
-      one: 'Your past payment stays at what you actually paid.',
-    );
-    return '$_temp0';
+  String subscriptionFormPriceApply(String date) {
+    return 'Apply from $date';
   }
 
   @override
-  String get subscriptionFormPriceApply => 'Apply from next period';
-
-  @override
-  String subscriptionFormPriceKeep(String price) {
-    return 'Keep $price';
-  }
-
-  @override
-  String get subscriptionFormTileTitle => 'Tile';
-
-  @override
-  String get subscriptionFormTilePreview => 'Preview in a list';
-
-  @override
-  String get subscriptionFormTileLetters => 'Letters';
-
-  @override
-  String get subscriptionFormTileEmoji => 'Emoji';
-
-  @override
-  String get subscriptionFormTileLettersHint => '1–2 characters';
+  String get subscriptionFormTileTitle => 'Change icon';
 
   @override
   String get subscriptionFormTileColour => 'Colour';
-
-  @override
-  String subscriptionFormTileColourNote(String name) {
-    return 'The first swatch is $name’s own colour from the library. Letter colour is picked for contrast automatically.';
-  }
-
-  @override
-  String get subscriptionFormTileColourNoteCustom =>
-      'Letter colour is picked for contrast automatically.';
-
-  @override
-  String get subscriptionFormTileOrEmoji => 'Or an emoji';
 
   @override
   String subscriptionFormTileSwatch(int index) {
@@ -3425,9 +3841,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormNewLabelHint => 'e.g. Family, Work';
 
   @override
-  String get subscriptionFormMethodNone => 'None';
-
-  @override
   String subscriptionFormMethodUsage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -3448,11 +3861,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionFormAdd => 'Add';
-
-  @override
-  String subscriptionFormRemindMany(String time) {
-    return 'Pick any — each one sends its own reminder at $time.';
-  }
 
   @override
   String get subscriptionFormWorthIt => 'Worth it?';
@@ -3476,52 +3884,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionFormDeleteAction => 'Delete';
 
   @override
-  String get subscriptionFormTilePhoto => 'Photo';
-
-  @override
   String get subscriptionFormTilePhotoPick => 'Choose photo';
-
-  @override
-  String get subscriptionFormTilePhotoChange => 'Change photo';
 
   @override
   String get subscriptionFormTilePhotoRemove => 'Remove photo';
 
   @override
-  String get subscriptionFormTilePhotoNote =>
-      'Shown instead of the letters. It stays on this phone and in your backups.';
-
-  @override
   String get subscriptionFormTilePhotoFailed => 'Couldn’t open that photo.';
 
   @override
-  String get subscriptionFormCropTitle => 'Move and zoom';
+  String get subscriptionFormCropTitle => 'Move and scale';
 
   @override
-  String get subscriptionFormCropHint =>
-      'Pinch to zoom, drag to move. The square is your logo.';
+  String get subscriptionFormCropHint => 'The square is what shows as the icon';
 
   @override
   String get subscriptionFormCropUse => 'Use photo';
 
   @override
-  String get widgetNext => 'Next';
+  String get subscriptionFormPriceNow => 'Now';
 
   @override
-  String get widgetUpcoming => 'Upcoming';
+  String subscriptionFormPriceFrom(String date) {
+    return 'From $date';
+  }
+
+  @override
+  String subscriptionFormRemindAt(String time) {
+    return 'at $time';
+  }
+
+  @override
+  String get subscriptionFormCustomSub =>
+      'Custom service · tap the icon for a photo';
+
+  @override
+  String get subscriptionFormAddMethod => 'Add';
+
+  @override
+  String get subscriptionFormTileLetterPreview => 'Letter on colour';
+
+  @override
+  String get subscriptionFormTilePhotoPreview => 'Your photo, cropped square';
+
+  @override
+  String get subscriptionFormTileTakePhoto => 'Take photo';
+
+  @override
+  String get subscriptionFormTileLetterOrEmoji => 'Letter or emoji';
+
+  @override
+  String get subscriptionFormCropRotate => 'Rotate';
+
+  @override
+  String get subscriptionFormMethodNone => 'None';
 
   @override
   String get widgetThisMonth => 'This month';
 
   @override
-  String widgetPerMonth(String amount) {
-    return '$amount/mo';
-  }
+  String get widgetPerMonthShort => '/mo';
 
   @override
   String widgetMonthlyTotalA11y(String amount) {
     return 'Monthly total $amount';
   }
+
+  @override
+  String get widgetPaid => 'Paid';
+
+  @override
+  String get widgetStillToPay => 'Still to pay';
 
   @override
   String widgetToConfirm(int count) {
@@ -3532,24 +3965,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get widgetAwaiting => 'To confirm';
 
   @override
+  String get widgetTapToConfirm => 'Tap to confirm';
+
+  @override
   String get widgetDueTomorrow => 'Tomorrow';
 
   @override
   String widgetDueInDays(String days) {
-    return 'In $days days';
+    return '$days days';
   }
 
   @override
-  String get widgetFirstCharge => 'first charge';
+  String get widgetLeftTomorrow => 'tomorrow';
 
   @override
-  String get widgetEmptyTitle => 'No renewals yet';
+  String widgetLeftDays(String days) {
+    return '$days days left';
+  }
 
   @override
-  String get widgetEmptyBody => 'Open Subnest to add your first subscription';
+  String widgetTrialEnds(String date) {
+    return 'Trial ends $date';
+  }
+
+  @override
+  String get widgetEmptyTitle => 'Nothing due';
+
+  @override
+  String get widgetEmptyBody => 'Tap to add your first subscription';
 
   @override
   String get widgetLocked => 'Locked with PIN';
+
+  @override
+  String get widgetLockedLong =>
+      'Locked with PIN — open Subnest to see your payments';
 
   @override
   String get widgetOpenApp => 'Open Subnest';

@@ -557,13 +557,13 @@ abstract class AppLocalizations {
   /// No description provided for @catalogCustomSub.
   ///
   /// In en, this message translates to:
-  /// **'Anything not in the library'**
+  /// **'Your own name, colour, letter or photo'**
   String get catalogCustomSub;
 
   /// No description provided for @catalogCustomNamed.
   ///
   /// In en, this message translates to:
-  /// **'Not seeing it? Create “{name}”'**
+  /// **'Not it? Create “{name}”'**
   String catalogCustomNamed(String name);
 
   /// No description provided for @catalogCreateNamed.
@@ -581,13 +581,13 @@ abstract class AppLocalizations {
   /// No description provided for @catalogPopularVietnam.
   ///
   /// In en, this message translates to:
-  /// **'Popular in Vietnam'**
+  /// **'Vietnam · prices in VND'**
   String get catalogPopularVietnam;
 
   /// No description provided for @catalogPopular.
   ///
   /// In en, this message translates to:
-  /// **'Popular'**
+  /// **'Popular · US prices'**
   String get catalogPopular;
 
   /// No description provided for @catalogMore.
@@ -605,13 +605,13 @@ abstract class AppLocalizations {
   /// No description provided for @catalogNoResultTitle.
   ///
   /// In en, this message translates to:
-  /// **'No service called “{name}”'**
+  /// **'Nothing called “{name}”'**
   String catalogNoResultTitle(String name);
 
   /// No description provided for @catalogNoResultBody.
   ///
   /// In en, this message translates to:
-  /// **'Create it — you can pick the colour and letters.'**
+  /// **'Create it — pick a colour, a letter or a photo.'**
   String get catalogNoResultBody;
 
   /// No description provided for @catalogFrom.
@@ -635,13 +635,13 @@ abstract class AppLocalizations {
   /// No description provided for @catalogPlanSubVietnam.
   ///
   /// In en, this message translates to:
-  /// **'Choose a plan · suggested prices for Vietnam'**
+  /// **'Choose a plan · prices in VND'**
   String get catalogPlanSubVietnam;
 
   /// No description provided for @catalogPlanSub.
   ///
   /// In en, this message translates to:
-  /// **'Choose a plan · suggested prices'**
+  /// **'Choose a plan · US prices'**
   String get catalogPlanSub;
 
   /// No description provided for @catalogPlanMembers.
@@ -673,6 +673,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vietnam'**
   String get catalogTabVietnam;
+
+  /// No description provided for @catalogUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{Library updated today} =1{Library updated yesterday} other{Library updated {days} days ago}}'**
+  String catalogUpdated(int days);
 
   /// No description provided for @confirmDueToday.
   ///
@@ -2230,14 +2236,224 @@ abstract class AppLocalizations {
   /// No description provided for @manageBudgetsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Budgets'**
+  /// **'Budget'**
   String get manageBudgetsTitle;
 
-  /// No description provided for @managePlaceholder.
+  /// No description provided for @manageSubCount.
   ///
   /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get managePlaceholder;
+  /// **'{count, plural, =0{No subscriptions} =1{1 subscription} other{{count} subscriptions}}'**
+  String manageSubCount(int count);
+
+  /// No description provided for @manageCategoriesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to reorder. Colours are used in charts and filters.'**
+  String get manageCategoriesIntro;
+
+  /// No description provided for @manageNewCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'New category'**
+  String get manageNewCategory;
+
+  /// No description provided for @manageEditCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit category'**
+  String get manageEditCategory;
+
+  /// No description provided for @manageName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get manageName;
+
+  /// No description provided for @manageNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name'**
+  String get manageNameRequired;
+
+  /// No description provided for @manageColour.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour'**
+  String get manageColour;
+
+  /// No description provided for @manageIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get manageIcon;
+
+  /// No description provided for @manageDeleteCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete category'**
+  String get manageDeleteCategory;
+
+  /// No description provided for @manageDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}”?'**
+  String manageDeleteTitle(String name);
+
+  /// No description provided for @manageDeleteMoveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 subscription uses it.} other{{count} subscriptions use it.}} Move them to:'**
+  String manageDeleteMoveBody(int count);
+
+  /// No description provided for @manageDeleteUnusedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription uses it.'**
+  String get manageDeleteUnusedBody;
+
+  /// No description provided for @manageMoveAndDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Move and delete'**
+  String get manageMoveAndDelete;
+
+  /// No description provided for @manageMoveCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to {name}'**
+  String manageMoveCategory(String name);
+
+  /// No description provided for @manageReorderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to reorder'**
+  String get manageReorderHint;
+
+  /// No description provided for @manageLabelsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Labels cut across categories — a subscription can have several.'**
+  String get manageLabelsIntro;
+
+  /// No description provided for @manageNewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New label'**
+  String get manageNewLabel;
+
+  /// No description provided for @manageEditLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit label'**
+  String get manageEditLabel;
+
+  /// No description provided for @manageDeleteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete label'**
+  String get manageDeleteLabel;
+
+  /// No description provided for @manageDeleteLabelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It’s taken off every subscription that has it. The subscriptions stay.'**
+  String get manageDeleteLabelBody;
+
+  /// No description provided for @managePaymentMethodsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Names only — Subnest never connects to a bank or card.'**
+  String get managePaymentMethodsIntro;
+
+  /// No description provided for @manageAddPaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Add payment method'**
+  String get manageAddPaymentMethod;
+
+  /// No description provided for @manageEditPaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit payment method'**
+  String get manageEditPaymentMethod;
+
+  /// No description provided for @manageDeletePaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete payment method'**
+  String get manageDeletePaymentMethod;
+
+  /// No description provided for @manageDeletePaymentMethodBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions that use it are left without a payment method.'**
+  String get manageDeletePaymentMethodBody;
+
+  /// No description provided for @manageBudgetTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly budget, all subscriptions'**
+  String get manageBudgetTotal;
+
+  /// No description provided for @manageBudgetUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% used this month · {amount}'**
+  String manageBudgetUsed(int percent, String amount);
+
+  /// No description provided for @manageBudgetPerCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Per category · optional'**
+  String get manageBudgetPerCategory;
+
+  /// No description provided for @manageBudgetThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} this month'**
+  String manageBudgetThisMonth(String amount);
+
+  /// No description provided for @manageBudgetSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set'**
+  String get manageBudgetSet;
+
+  /// No description provided for @manageBudgetNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Budgets compare against the monthly cost. Going over turns the bar red — no notifications.'**
+  String get manageBudgetNote;
+
+  /// No description provided for @manageBudgetFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget · {name}'**
+  String manageBudgetFor(String name);
+
+  /// No description provided for @manageBudgetAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Per month'**
+  String get manageBudgetAmount;
+
+  /// No description provided for @manageBudgetRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove budget'**
+  String get manageBudgetRemove;
+
+  /// No description provided for @manageBudgetInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount above 0'**
+  String get manageBudgetInvalid;
+
+  /// No description provided for @manageBudgetTotalNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No monthly budget yet'**
+  String get manageBudgetTotalNone;
 
   /// No description provided for @notificationsChannelName.
   ///
@@ -2293,6 +2509,12 @@ abstract class AppLocalizations {
   /// **'This is how renewal reminders will look.'**
   String get notificationsTestBody;
 
+  /// Notification when an automatic backup failed (product.md §4.13, mockup 126). Only failures are notified; plain text, no action buttons.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup failed — open Subnest to check'**
+  String get notificationsBackupFailed;
+
   /// No description provided for @onboardingSkip.
   ///
   /// In en, this message translates to:
@@ -2308,14 +2530,26 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingLanguageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Language'**
+  /// **'Choose your language'**
   String get onboardingLanguageTitle;
 
   /// No description provided for @onboardingLanguageHint.
   ///
   /// In en, this message translates to:
-  /// **'Subnest speaks English and Vietnamese. You can change this any time in Settings.'**
+  /// **'You can change it later in Settings. The whole app switches at once.'**
   String get onboardingLanguageHint;
+
+  /// No description provided for @onboardingLanguageEnglishSub.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get onboardingLanguageEnglishSub;
+
+  /// No description provided for @onboardingLanguageVietnameseSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Vietnamese'**
+  String get onboardingLanguageVietnameseSub;
 
   /// No description provided for @onboardingWelcomeTitle.
   ///
@@ -2332,25 +2566,25 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingBenefitRemindSub.
   ///
   /// In en, this message translates to:
-  /// **'3 days ahead, and before trials end.'**
+  /// **'Before renewals and before trials end.'**
   String get onboardingBenefitRemindSub;
 
   /// No description provided for @onboardingBenefitTotal.
   ///
   /// In en, this message translates to:
-  /// **'Know exactly what each month costs'**
+  /// **'Know what each month really costs'**
   String get onboardingBenefitTotal;
 
   /// No description provided for @onboardingBenefitTotalSub.
   ///
   /// In en, this message translates to:
-  /// **'In your currency, shared plans split fairly.'**
+  /// **'Every price shows its cycle — no more guessing.'**
   String get onboardingBenefitTotalSub;
 
   /// No description provided for @onboardingBenefitPrivate.
   ///
   /// In en, this message translates to:
-  /// **'Private — data stays on your phone'**
+  /// **'Your data stays on this phone'**
   String get onboardingBenefitPrivate;
 
   /// No description provided for @onboardingBenefitPrivateSub.
@@ -2374,25 +2608,13 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingCurrencyHint.
   ///
   /// In en, this message translates to:
-  /// **'Used to add up your totals. Each subscription still keeps its own currency.'**
+  /// **'Totals are added up in it. Each subscription keeps its own currency.'**
   String get onboardingCurrencyHint;
-
-  /// No description provided for @onboardingCurrencyDefault.
-  ///
-  /// In en, this message translates to:
-  /// **'Default — change it any time'**
-  String get onboardingCurrencyDefault;
-
-  /// No description provided for @onboardingCurrencyChosen.
-  ///
-  /// In en, this message translates to:
-  /// **'Your choice'**
-  String get onboardingCurrencyChosen;
 
   /// No description provided for @onboardingCurrencyChange.
   ///
   /// In en, this message translates to:
-  /// **'Choose another currency'**
+  /// **'Choose another currency…'**
   String get onboardingCurrencyChange;
 
   /// No description provided for @onboardingCurrencyRatesNote.
@@ -2422,7 +2644,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingPickSearch.
   ///
   /// In en, this message translates to:
-  /// **'Search 100+ services'**
+  /// **'Search 500+ services'**
   String get onboardingPickSearch;
 
   /// No description provided for @onboardingPickSelected.
@@ -2437,16 +2659,10 @@ abstract class AppLocalizations {
   /// **'No service called “{name}”. You can add it later with +.'**
   String onboardingPickNoMatch(String name);
 
-  /// No description provided for @onboardingPickMeta.
-  ///
-  /// In en, this message translates to:
-  /// **'{price} · {cycle}'**
-  String onboardingPickMeta(String price, String cycle);
-
   /// No description provided for @onboardingPickEdit.
   ///
   /// In en, this message translates to:
-  /// **'Edit'**
+  /// **'Price & cycle'**
   String get onboardingPickEdit;
 
   /// No description provided for @onboardingPickEditLabel.
@@ -2494,7 +2710,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingRemindersBody.
   ///
   /// In en, this message translates to:
-  /// **'We’ll remind you 3 days before a renewal or a trial ending, at {time}. Change it any time.'**
+  /// **'3 days before a renewal or a trial ending, at {time}. You can change both later.'**
   String onboardingRemindersBody(String time);
 
   /// No description provided for @onboardingDemoNow.
@@ -2536,7 +2752,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingNoThanks.
   ///
   /// In en, this message translates to:
-  /// **'Not now'**
+  /// **'No thanks'**
   String get onboardingNoThanks;
 
   /// No description provided for @scanTitle.
@@ -2572,7 +2788,7 @@ abstract class AppLocalizations {
   /// Lock screen title; also when turning the PIN lock off.
   ///
   /// In en, this message translates to:
-  /// **'Enter PIN'**
+  /// **'Enter your PIN'**
   String get securityEnterPin;
 
   /// No description provided for @securityNewPin.
@@ -2584,25 +2800,25 @@ abstract class AppLocalizations {
   /// No description provided for @securityConfirmPin.
   ///
   /// In en, this message translates to:
-  /// **'Enter the PIN again'**
+  /// **'Enter it again'**
   String get securityConfirmPin;
 
   /// Choosing a PIN: the second entry differs; the user starts over.
   ///
   /// In en, this message translates to:
-  /// **'The PINs do not match. Try again.'**
+  /// **'The PINs don’t match. Choose one again.'**
   String get securityPinMismatch;
 
   /// No description provided for @securityWrongPin.
   ///
   /// In en, this message translates to:
-  /// **'Wrong PIN'**
+  /// **'Wrong PIN. Try again.'**
   String get securityWrongPin;
 
   /// Text button at the bottom of the lock screen.
   ///
   /// In en, this message translates to:
-  /// **'Forgot PIN'**
+  /// **'Forgot PIN?'**
   String get securityForgotPin;
 
   /// No description provided for @securityForgotPinTitle.
@@ -2614,7 +2830,7 @@ abstract class AppLocalizations {
   /// Dialog from Forgot PIN; the next step is Delete all data (two more confirmations).
   ///
   /// In en, this message translates to:
-  /// **'Subnest has no server, so a PIN cannot be recovered. You can delete all data in the app to use it again.'**
+  /// **'Subnest has no account and no server, so the PIN can’t be reset. The only way back in is to erase all data on this phone and start fresh. A backup file can be restored afterwards.'**
   String get securityForgotPinBody;
 
   /// Screen reader label of a PIN keypad key.
@@ -2638,20 +2854,56 @@ abstract class AppLocalizations {
   /// Settings: Privacy screen switch (independent of PIN lock, off by default).
   ///
   /// In en, this message translates to:
-  /// **'Hide content when switching apps'**
+  /// **'Hide content in app switcher'**
   String get securityPrivacyScreen;
 
   /// Under the Privacy screen switch on Android.
   ///
   /// In en, this message translates to:
-  /// **'Blocks screenshots and hides content in the recent apps list'**
+  /// **'Also blocks screenshots'**
   String get securityPrivacyScreenNote;
 
   /// No description provided for @securityPrivacyScreenNoteIos.
   ///
   /// In en, this message translates to:
-  /// **'Hides content in the app switcher. iPhone does not let apps block screenshots.'**
+  /// **'Hides content in the app switcher. iPhone doesn’t let apps block screenshots.'**
   String get securityPrivacyScreenNoteIos;
+
+  /// Forgot PIN dialog: back to the keypad.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get securityTryAgain;
+
+  /// Choosing a PIN, first step, under the dots.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ll enter it when Subnest opens, and after 1 minute away.'**
+  String get securityPinSetNote;
+
+  /// Settings: under PIN lock while it is off.
+  ///
+  /// In en, this message translates to:
+  /// **'4 digits, asked when Subnest opens'**
+  String get securityPinOffNote;
+
+  /// Settings: under PIN lock while it is on.
+  ///
+  /// In en, this message translates to:
+  /// **'On · asks after 1 minute away'**
+  String get securityPinOnNote;
+
+  /// Settings row under PIN lock while it is on: current PIN, then a new one twice.
+  ///
+  /// In en, this message translates to:
+  /// **'Change PIN'**
+  String get securityChangePin;
+
+  /// No description provided for @securityPinChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN changed'**
+  String get securityPinChanged;
 
   /// No description provided for @settingsSectionMoney.
   ///
@@ -2902,7 +3154,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsNotificationsOn.
   ///
   /// In en, this message translates to:
-  /// **'On'**
+  /// **'Allowed'**
   String get settingsNotificationsOn;
 
   /// No description provided for @settingsNotificationsOff.
@@ -2938,19 +3190,19 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRemindBefore.
   ///
   /// In en, this message translates to:
-  /// **'Remind me before a renewal'**
+  /// **'Remind me before a payment'**
   String get settingsRemindBefore;
 
   /// No description provided for @settingsRemindChoice.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{On day} =1{1 day} other{{count} days}}'**
+  /// **'{count, plural, =0{On the day} =1{1 day} other{{count} days}}'**
   String settingsRemindChoice(int count);
 
   /// No description provided for @settingsRemindTrialNote.
   ///
   /// In en, this message translates to:
-  /// **'Trials get the same reminder before they end.'**
+  /// **'Pick any combination. Trials get the same reminders before they end.'**
   String get settingsRemindTrialNote;
 
   /// No description provided for @settingsReminderTimeShort.
@@ -2962,7 +3214,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRemindersNote.
   ///
   /// In en, this message translates to:
-  /// **'You can change this for a single subscription from its edit screen. Applies to new reminders; existing ones move to the new time.'**
+  /// **'Each subscription can override these on its edit screen. PIN lock doesn’t change what notifications say.'**
   String get settingsRemindersNote;
 
   /// No description provided for @settingsPreview.
@@ -3004,7 +3256,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsSectionAppearance.
   ///
   /// In en, this message translates to:
-  /// **'Appearance'**
+  /// **'Appearance & language'**
   String get settingsSectionAppearance;
 
   /// No description provided for @settingsAppearanceTitle.
@@ -3118,13 +3370,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsExportCsv.
   ///
   /// In en, this message translates to:
-  /// **'Export spreadsheet'**
+  /// **'Export CSV'**
   String get settingsExportCsv;
 
   /// No description provided for @settingsExportCsvHint.
   ///
   /// In en, this message translates to:
-  /// **'CSV · opens in Excel or Sheets'**
+  /// **'Subscriptions and payments, for spreadsheets'**
   String get settingsExportCsvHint;
 
   /// No description provided for @settingsExportCsvLong.
@@ -3148,13 +3400,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRestore.
   ///
   /// In en, this message translates to:
-  /// **'Restore from file'**
+  /// **'Restore'**
   String get settingsRestore;
 
   /// No description provided for @settingsRestoreHint.
   ///
   /// In en, this message translates to:
-  /// **'Pick a Subnest backup (.subnest)'**
+  /// **'Replaces everything on this phone'**
   String get settingsRestoreHint;
 
   /// No description provided for @settingsLastBackup.
@@ -3178,7 +3430,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRestoreTitle.
   ///
   /// In en, this message translates to:
-  /// **'Restore this backup?'**
+  /// **'Replace all data?'**
   String get settingsRestoreTitle;
 
   /// No description provided for @settingsRestoreHolds.
@@ -3190,7 +3442,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRestoreReplaceAction.
   ///
   /// In en, this message translates to:
-  /// **'Replace my data'**
+  /// **'Replace and restore'**
   String get settingsRestoreReplaceAction;
 
   /// No description provided for @settingsRestoreReplaceNote.
@@ -3238,13 +3490,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsTerms.
   ///
   /// In en, this message translates to:
-  /// **'Terms of use'**
+  /// **'Terms'**
   String get settingsTerms;
 
   /// No description provided for @settingsLicenses.
   ///
   /// In en, this message translates to:
-  /// **'Open-source licenses'**
+  /// **'Licences'**
   String get settingsLicenses;
 
   /// No description provided for @settingsLogosTitle.
@@ -3256,13 +3508,13 @@ abstract class AppLocalizations {
   /// No description provided for @settingsLogosOwnership.
   ///
   /// In en, this message translates to:
-  /// **'Service names and logos belong to their owners and are shown only to identify the service.'**
+  /// **'Service names and logos belong to their respective owners.'**
   String get settingsLogosOwnership;
 
   /// No description provided for @settingsRateApp.
   ///
   /// In en, this message translates to:
-  /// **'Rate Subnest'**
+  /// **'Rate the app'**
   String get settingsRateApp;
 
   /// No description provided for @settingsFeedback.
@@ -3370,31 +3622,31 @@ abstract class AppLocalizations {
   /// No description provided for @settingsAutoBackupLast.
   ///
   /// In en, this message translates to:
-  /// **'Last backup {time}'**
+  /// **'Last: {time}'**
   String settingsAutoBackupLast(String time);
 
   /// No description provided for @settingsAutoBackupLastUnchanged.
   ///
   /// In en, this message translates to:
-  /// **'Checked {checked}: data unchanged, kept the earlier copy. Last backup {last}.'**
+  /// **'Last: {last} · checked {checked}, no changes'**
   String settingsAutoBackupLastUnchanged(String checked, String last);
 
   /// No description provided for @settingsAutoBackupNever.
   ///
   /// In en, this message translates to:
-  /// **'No automatic backup yet'**
+  /// **'No backup yet'**
   String get settingsAutoBackupNever;
 
   /// No description provided for @settingsAutoBackupFailedAt.
   ///
   /// In en, this message translates to:
-  /// **'Last attempt {time}: {error}'**
+  /// **'Last try {time}: {error}'**
   String settingsAutoBackupFailedAt(String time, String error);
 
   /// No description provided for @settingsAutoBackupErrorFolder.
   ///
   /// In en, this message translates to:
-  /// **'folder unavailable — choose it again'**
+  /// **'folder unavailable — tap Folder to choose it again'**
   String get settingsAutoBackupErrorFolder;
 
   /// No description provided for @settingsAutoBackupErrorOther.
@@ -3448,7 +3700,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsAutoBackupTurnOn.
   ///
   /// In en, this message translates to:
-  /// **'Turn on'**
+  /// **'Turn on automatic backup'**
   String get settingsAutoBackupTurnOn;
 
   /// No description provided for @settingsAutoBackupOffDone.
@@ -3580,7 +3832,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsBackupWrongPassword.
   ///
   /// In en, this message translates to:
-  /// **'Wrong password, or the file was changed'**
+  /// **'Wrong password'**
   String get settingsBackupWrongPassword;
 
   /// No description provided for @settingsBackupOpen.
@@ -3592,7 +3844,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDeleteAll.
   ///
   /// In en, this message translates to:
-  /// **'Delete all data'**
+  /// **'Erase all data'**
   String get settingsDeleteAll;
 
   /// No description provided for @settingsDeleteAllHint.
@@ -3604,19 +3856,19 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDeleteAllTitle.
   ///
   /// In en, this message translates to:
-  /// **'Delete all data?'**
+  /// **'Erase all data?'**
   String get settingsDeleteAllTitle;
 
   /// No description provided for @settingsDeleteAllConfirm.
   ///
   /// In en, this message translates to:
-  /// **'This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.'**
+  /// **'Every subscription, payment, price history, label and setting on this phone is deleted. Subnest goes back to the first-run screens. Automatic backup files in your folder are kept.'**
   String get settingsDeleteAllConfirm;
 
   /// No description provided for @settingsDeleteAllConfirm2.
   ///
   /// In en, this message translates to:
-  /// **'This cannot be undone. Export a backup first if you might need it.'**
+  /// **'This can’t be undone.'**
   String get settingsDeleteAllConfirm2;
 
   /// No description provided for @settingsCannotUndo.
@@ -3628,7 +3880,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDeleteEverything.
   ///
   /// In en, this message translates to:
-  /// **'Delete everything'**
+  /// **'Erase everything'**
   String get settingsDeleteEverything;
 
   /// No description provided for @settingsDelete.
@@ -3640,8 +3892,464 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDeleteAllDone.
   ///
   /// In en, this message translates to:
-  /// **'All data deleted'**
+  /// **'All data erased'**
   String get settingsDeleteAllDone;
+
+  /// Theme sheet, under System / Light / Dark.
+  ///
+  /// In en, this message translates to:
+  /// **'System follows your phone’s light or dark mode.'**
+  String get settingsThemeNote;
+
+  /// Language sheet, under English / Tiếng Việt.
+  ///
+  /// In en, this message translates to:
+  /// **'The whole app switches right away. Dates and amounts follow the language.'**
+  String get settingsLanguageNote;
+
+  /// No description provided for @settingsHideTabBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide tab bar when scrolling'**
+  String get settingsHideTabBar;
+
+  /// Settings section: Categories, Labels, Payment methods, Budget.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize'**
+  String get settingsSectionOrganize;
+
+  /// Settings › Budget row value.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/mo'**
+  String settingsBudgetValue(String amount);
+
+  /// No description provided for @settingsBudgetNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get settingsBudgetNotSet;
+
+  /// Settings section (Pro) and the title of the Automation screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Automation'**
+  String get settingsSectionAutomation;
+
+  /// No description provided for @settingsScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot scan'**
+  String get settingsScan;
+
+  /// No description provided for @settingsScanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add from store pages and receipts'**
+  String get settingsScanHint;
+
+  /// No description provided for @settingsBankNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank & wallet notifications'**
+  String get settingsBankNotifications;
+
+  /// Small chip on automation sources that are not built yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Soon'**
+  String get settingsSoon;
+
+  /// No description provided for @settingsAutoBackupOffNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Off — your data lives only on this phone'**
+  String get settingsAutoBackupOffNote;
+
+  /// No description provided for @settingsAutoBackupFolderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder'**
+  String get settingsAutoBackupFolderLabel;
+
+  /// No description provided for @settingsAutoBackupTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get settingsAutoBackupTimeLabel;
+
+  /// No description provided for @settingsAutoBackupDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} every day'**
+  String settingsAutoBackupDaily(String time);
+
+  /// No description provided for @settingsAutoBackupPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get settingsAutoBackupPasswordLabel;
+
+  /// No description provided for @settingsAutoBackupKeepsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps'**
+  String get settingsAutoBackupKeepsLabel;
+
+  /// No description provided for @settingsAutoBackupKeepsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'2 newest files'**
+  String get settingsAutoBackupKeepsValue;
+
+  /// Automatic backup set-up screen (Android), under the icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Once a day Subnest saves an encrypted .subnest file to a folder you choose — on this phone, an SD card or a synced folder like Google Drive.'**
+  String get settingsAutoBackupIntro;
+
+  /// No description provided for @settingsAutoBackupSetupTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get settingsAutoBackupSetupTime;
+
+  /// No description provided for @settingsAutoBackupKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep'**
+  String get settingsAutoBackupKeep;
+
+  /// No description provided for @settingsAutoBackupKeepValue.
+  ///
+  /// In en, this message translates to:
+  /// **'2 newest'**
+  String get settingsAutoBackupKeepValue;
+
+  /// No description provided for @settingsAutoBackupChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose…'**
+  String get settingsAutoBackupChoose;
+
+  /// No description provided for @settingsAutoBackupPasswordRule.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 6 characters'**
+  String get settingsAutoBackupPasswordRule;
+
+  /// No description provided for @settingsAutoBackupWriteDownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the password down'**
+  String get settingsAutoBackupWriteDownTitle;
+
+  /// No description provided for @settingsAutoBackupWriteDownBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it the backup can’t be opened — there’s no reset.'**
+  String get settingsAutoBackupWriteDownBody;
+
+  /// No description provided for @settingsAutoBackupFolderNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a folder first'**
+  String get settingsAutoBackupFolderNeeded;
+
+  /// No description provided for @settingsBackupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get settingsBackupNow;
+
+  /// No description provided for @settingsBackupNowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A .subnest file, with or without a password'**
+  String get settingsBackupNowHint;
+
+  /// Back up now sheet, under the file name.
+  ///
+  /// In en, this message translates to:
+  /// **'{subs, plural, =1{1 subscription} other{{subs} subscriptions}} · {payments, plural, =1{1 payment} other{{payments} payments}} · {size}'**
+  String settingsBackupFileMeta(int subs, int payments, String size);
+
+  /// No description provided for @settingsBackupProtectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended if you save it to the cloud'**
+  String get settingsBackupProtectHint;
+
+  /// No description provided for @settingsBackupSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save file…'**
+  String get settingsBackupSave;
+
+  /// No description provided for @settingsRestoreValid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get settingsRestoreValid;
+
+  /// No description provided for @settingsRestoreProtected.
+  ///
+  /// In en, this message translates to:
+  /// **'Password-protected · {size}'**
+  String settingsRestoreProtected(String size);
+
+  /// No description provided for @settingsRestoreInFile.
+  ///
+  /// In en, this message translates to:
+  /// **'In this file'**
+  String get settingsRestoreInFile;
+
+  /// No description provided for @settingsRestoreSubs.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get settingsRestoreSubs;
+
+  /// No description provided for @settingsRestorePayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get settingsRestorePayments;
+
+  /// No description provided for @settingsRestorePriceChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Price changes'**
+  String get settingsRestorePriceChanges;
+
+  /// No description provided for @settingsRestoreSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings and labels'**
+  String get settingsRestoreSettings;
+
+  /// No description provided for @settingsRestoreIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Included'**
+  String get settingsRestoreIncluded;
+
+  /// No description provided for @settingsRestoreWarnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring replaces everything'**
+  String get settingsRestoreWarnTitle;
+
+  /// No description provided for @settingsRestoreWarnBody.
+  ///
+  /// In en, this message translates to:
+  /// **'What’s on this phone now is removed and the file’s data takes its place.'**
+  String get settingsRestoreWarnBody;
+
+  /// No description provided for @settingsRestoreHasPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'This backup has a password'**
+  String get settingsRestoreHasPassword;
+
+  /// No description provided for @settingsRestoreUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock and restore'**
+  String get settingsRestoreUnlock;
+
+  /// No description provided for @settingsRestoreReplaceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {current, plural, =0{data} =1{1 current subscription is} other{{current} current subscriptions are}} replaced by the {count, plural, =1{1 subscription} other{{count} subscriptions}} in this backup.'**
+  String settingsRestoreReplaceBody(int current, int count);
+
+  /// Erase all data, step 2: the word must be typed.
+  ///
+  /// In en, this message translates to:
+  /// **'Type {word} to confirm'**
+  String settingsDeleteAllTypeTitle(String word);
+
+  /// The word typed to confirm Erase all data. Plain capitals, no accents.
+  ///
+  /// In en, this message translates to:
+  /// **'ERASE'**
+  String get settingsDeleteAllWord;
+
+  /// No description provided for @settingsVersionValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String settingsVersionValue(String version);
+
+  /// No description provided for @settingsLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Service library'**
+  String get settingsLibrary;
+
+  /// No description provided for @settingsLibraryValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {ago} · {count} services'**
+  String settingsLibraryValue(String ago, int count);
+
+  /// No description provided for @settingsLibraryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} services'**
+  String settingsLibraryCount(int count);
+
+  /// No description provided for @settingsAgoToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get settingsAgoToday;
+
+  /// No description provided for @settingsPriceLists.
+  ///
+  /// In en, this message translates to:
+  /// **'Price lists'**
+  String get settingsPriceLists;
+
+  /// No description provided for @settingsPriceListsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'US + Vietnam'**
+  String get settingsPriceListsValue;
+
+  /// No description provided for @settingsAutomationHero.
+  ///
+  /// In en, this message translates to:
+  /// **'Let Subnest find your subscriptions'**
+  String get settingsAutomationHero;
+
+  /// No description provided for @settingsAutomationHeroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is read on this phone. Nothing is uploaded.'**
+  String get settingsAutomationHeroBody;
+
+  /// No description provided for @settingsAutomationScanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play / App Store pages, receipts'**
+  String get settingsAutomationScanHint;
+
+  /// No description provided for @settingsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get settingsOpen;
+
+  /// No description provided for @settingsGmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipts and renewal emails'**
+  String get settingsGmailHint;
+
+  /// No description provided for @settingsAutomationFound.
+  ///
+  /// In en, this message translates to:
+  /// **'When something is found'**
+  String get settingsAutomationFound;
+
+  /// No description provided for @settingsAutoAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new ones automatically'**
+  String get settingsAutoAdd;
+
+  /// No description provided for @settingsAutoConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm periods automatically'**
+  String get settingsAutoConfirm;
+
+  /// No description provided for @settingsAutomationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Every automatic change is tagged Auto and has Undo.'**
+  String get settingsAutomationNote;
+
+  /// No description provided for @settingsEarlyAccessCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Get early access'**
+  String get settingsEarlyAccessCta;
+
+  /// No description provided for @settingsProBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Finds and confirms subscriptions for you. Adding them by hand stays free, always.'**
+  String get settingsProBody;
+
+  /// No description provided for @settingsProNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get settingsProNow;
+
+  /// No description provided for @settingsProUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo on every change'**
+  String get settingsProUndo;
+
+  /// No description provided for @settingsEarlyAccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Early access'**
+  String get settingsEarlyAccessTitle;
+
+  /// No description provided for @settingsEarlyAccessBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Join now and we’ll tell you the price before Pro starts charging. Nothing is billed without asking you.'**
+  String get settingsEarlyAccessBody;
+
+  /// No description provided for @settingsJoinEarlyAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Join early access'**
+  String get settingsJoinEarlyAccess;
+
+  /// No description provided for @settingsNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get settingsNotNow;
+
+  /// Subject of the email opened by Join early access.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnest Pro early access'**
+  String get settingsEarlyAccessSubject;
+
+  /// No description provided for @settingsWhenToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today, {time}'**
+  String settingsWhenToday(String time);
+
+  /// No description provided for @settingsWhenYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'yesterday, {time}'**
+  String settingsWhenYesterday(String time);
+
+  /// No description provided for @settingsBackupPasswordShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get settingsBackupPasswordShow;
+
+  /// No description provided for @settingsBackupPasswordHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get settingsBackupPasswordHide;
 
   /// No description provided for @subscriptionDetailEdit.
   ///
@@ -4486,8 +5194,8 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFormPriceWas.
   ///
   /// In en, this message translates to:
-  /// **'Was {old}. The new price applies from the next period ({date}). Past payments stay as they were.'**
-  String subscriptionFormPriceWas(String old, String date);
+  /// **'Was {old}. Saving asks when the new price starts and adds it to the price history.'**
+  String subscriptionFormPriceWas(String old);
 
   /// No description provided for @subscriptionFormCycle.
   ///
@@ -4648,7 +5356,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFormRemindOnDay.
   ///
   /// In en, this message translates to:
-  /// **'On day'**
+  /// **'On the day'**
   String get subscriptionFormRemindOnDay;
 
   /// No description provided for @subscriptionFormRemindDays.
@@ -4672,7 +5380,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFormMoreSub.
   ///
   /// In en, this message translates to:
-  /// **'Cancel link, notes'**
+  /// **'Payment method, cancel link, notes, worth it?'**
   String get subscriptionFormMoreSub;
 
   /// No description provided for @subscriptionFormPaymentMethod.
@@ -4714,86 +5422,32 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFormPriceDialogTitle.
   ///
   /// In en, this message translates to:
-  /// **'Use {price} from the next period?'**
+  /// **'Use {price} from the next payment?'**
   String subscriptionFormPriceDialogTitle(String price);
 
   /// No description provided for @subscriptionFormPriceDialogBody.
   ///
   /// In en, this message translates to:
-  /// **'The {date} renewal and later ones use the new price.'**
+  /// **'The {date} payment and later ones use the new price. Your past payments stay exactly as paid, and the change is saved to the price history.'**
   String subscriptionFormPriceDialogBody(String date);
-
-  /// No description provided for @subscriptionFormPriceDialogPast.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Your past payment stays at what you actually paid.} other{Your {count} past payments stay at what you actually paid.}}'**
-  String subscriptionFormPriceDialogPast(int count);
 
   /// No description provided for @subscriptionFormPriceApply.
   ///
   /// In en, this message translates to:
-  /// **'Apply from next period'**
-  String get subscriptionFormPriceApply;
-
-  /// No description provided for @subscriptionFormPriceKeep.
-  ///
-  /// In en, this message translates to:
-  /// **'Keep {price}'**
-  String subscriptionFormPriceKeep(String price);
+  /// **'Apply from {date}'**
+  String subscriptionFormPriceApply(String date);
 
   /// No description provided for @subscriptionFormTileTitle.
   ///
   /// In en, this message translates to:
-  /// **'Tile'**
+  /// **'Change icon'**
   String get subscriptionFormTileTitle;
-
-  /// No description provided for @subscriptionFormTilePreview.
-  ///
-  /// In en, this message translates to:
-  /// **'Preview in a list'**
-  String get subscriptionFormTilePreview;
-
-  /// No description provided for @subscriptionFormTileLetters.
-  ///
-  /// In en, this message translates to:
-  /// **'Letters'**
-  String get subscriptionFormTileLetters;
-
-  /// No description provided for @subscriptionFormTileEmoji.
-  ///
-  /// In en, this message translates to:
-  /// **'Emoji'**
-  String get subscriptionFormTileEmoji;
-
-  /// No description provided for @subscriptionFormTileLettersHint.
-  ///
-  /// In en, this message translates to:
-  /// **'1–2 characters'**
-  String get subscriptionFormTileLettersHint;
 
   /// No description provided for @subscriptionFormTileColour.
   ///
   /// In en, this message translates to:
   /// **'Colour'**
   String get subscriptionFormTileColour;
-
-  /// No description provided for @subscriptionFormTileColourNote.
-  ///
-  /// In en, this message translates to:
-  /// **'The first swatch is {name}’s own colour from the library. Letter colour is picked for contrast automatically.'**
-  String subscriptionFormTileColourNote(String name);
-
-  /// No description provided for @subscriptionFormTileColourNoteCustom.
-  ///
-  /// In en, this message translates to:
-  /// **'Letter colour is picked for contrast automatically.'**
-  String get subscriptionFormTileColourNoteCustom;
-
-  /// No description provided for @subscriptionFormTileOrEmoji.
-  ///
-  /// In en, this message translates to:
-  /// **'Or an emoji'**
-  String get subscriptionFormTileOrEmoji;
 
   /// No description provided for @subscriptionFormTileSwatch.
   ///
@@ -4885,12 +5539,6 @@ abstract class AppLocalizations {
   /// **'e.g. Family, Work'**
   String get subscriptionFormNewLabelHint;
 
-  /// No description provided for @subscriptionFormMethodNone.
-  ///
-  /// In en, this message translates to:
-  /// **'None'**
-  String get subscriptionFormMethodNone;
-
   /// No description provided for @subscriptionFormMethodUsage.
   ///
   /// In en, this message translates to:
@@ -4914,12 +5562,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add'**
   String get subscriptionFormAdd;
-
-  /// No description provided for @subscriptionFormRemindMany.
-  ///
-  /// In en, this message translates to:
-  /// **'Pick any — each one sends its own reminder at {time}.'**
-  String subscriptionFormRemindMany(String time);
 
   /// No description provided for @subscriptionFormWorthIt.
   ///
@@ -4957,35 +5599,17 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get subscriptionFormDeleteAction;
 
-  /// No description provided for @subscriptionFormTilePhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'Photo'**
-  String get subscriptionFormTilePhoto;
-
   /// No description provided for @subscriptionFormTilePhotoPick.
   ///
   /// In en, this message translates to:
   /// **'Choose photo'**
   String get subscriptionFormTilePhotoPick;
 
-  /// No description provided for @subscriptionFormTilePhotoChange.
-  ///
-  /// In en, this message translates to:
-  /// **'Change photo'**
-  String get subscriptionFormTilePhotoChange;
-
   /// No description provided for @subscriptionFormTilePhotoRemove.
   ///
   /// In en, this message translates to:
   /// **'Remove photo'**
   String get subscriptionFormTilePhotoRemove;
-
-  /// No description provided for @subscriptionFormTilePhotoNote.
-  ///
-  /// In en, this message translates to:
-  /// **'Shown instead of the letters. It stays on this phone and in your backups.'**
-  String get subscriptionFormTilePhotoNote;
 
   /// No description provided for @subscriptionFormTilePhotoFailed.
   ///
@@ -4996,13 +5620,13 @@ abstract class AppLocalizations {
   /// No description provided for @subscriptionFormCropTitle.
   ///
   /// In en, this message translates to:
-  /// **'Move and zoom'**
+  /// **'Move and scale'**
   String get subscriptionFormCropTitle;
 
   /// No description provided for @subscriptionFormCropHint.
   ///
   /// In en, this message translates to:
-  /// **'Pinch to zoom, drag to move. The square is your logo.'**
+  /// **'The square is what shows as the icon'**
   String get subscriptionFormCropHint;
 
   /// No description provided for @subscriptionFormCropUse.
@@ -5011,35 +5635,101 @@ abstract class AppLocalizations {
   /// **'Use photo'**
   String get subscriptionFormCropUse;
 
-  /// Home widget (small): eyebrow above the next subscription to be charged.
+  /// No description provided for @subscriptionFormPriceNow.
   ///
   /// In en, this message translates to:
-  /// **'Next'**
-  String get widgetNext;
+  /// **'Now'**
+  String get subscriptionFormPriceNow;
 
-  /// Home widget (medium): title of the list of next charges.
+  /// No description provided for @subscriptionFormPriceFrom.
   ///
   /// In en, this message translates to:
-  /// **'Upcoming'**
-  String get widgetUpcoming;
+  /// **'From {date}'**
+  String subscriptionFormPriceFrom(String date);
 
-  /// Home widget (large): title above the monthly total.
+  /// No description provided for @subscriptionFormRemindAt.
+  ///
+  /// In en, this message translates to:
+  /// **'at {time}'**
+  String subscriptionFormRemindAt(String time);
+
+  /// No description provided for @subscriptionFormCustomSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom service · tap the icon for a photo'**
+  String get subscriptionFormCustomSub;
+
+  /// No description provided for @subscriptionFormAddMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get subscriptionFormAddMethod;
+
+  /// No description provided for @subscriptionFormTileLetterPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter on colour'**
+  String get subscriptionFormTileLetterPreview;
+
+  /// No description provided for @subscriptionFormTilePhotoPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Your photo, cropped square'**
+  String get subscriptionFormTilePhotoPreview;
+
+  /// No description provided for @subscriptionFormTileTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get subscriptionFormTileTakePhoto;
+
+  /// No description provided for @subscriptionFormTileLetterOrEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter or emoji'**
+  String get subscriptionFormTileLetterOrEmoji;
+
+  /// No description provided for @subscriptionFormCropRotate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate'**
+  String get subscriptionFormCropRotate;
+
+  /// No description provided for @subscriptionFormMethodNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get subscriptionFormMethodNone;
+
+  /// Home widget: fallback title above the monthly total.
   ///
   /// In en, this message translates to:
   /// **'This month'**
   String get widgetThisMonth;
 
-  /// Home widget (medium): monthly total with a short 'per month'.
+  /// Home widget (medium / large): short 'per month' after the monthly total (mockups 122–123).
   ///
   /// In en, this message translates to:
-  /// **'{amount}/mo'**
-  String widgetPerMonth(String amount);
+  /// **'/mo'**
+  String get widgetPerMonthShort;
 
   /// Home widget: screen reader label of the monthly total.
   ///
   /// In en, this message translates to:
   /// **'Monthly total {amount}'**
   String widgetMonthlyTotalA11y(String amount);
+
+  /// Home widget (large): money already paid this month (same as the Overview's Cost card).
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get widgetPaid;
+
+  /// Home widget (large): money still to be charged this month.
+  ///
+  /// In en, this message translates to:
+  /// **'Still to pay'**
+  String get widgetStillToPay;
 
   /// Home widget (large): badge with the number of Billing periods waiting for confirmation.
   ///
@@ -5053,34 +5743,52 @@ abstract class AppLocalizations {
   /// **'To confirm'**
   String get widgetAwaiting;
 
+  /// Home widget (small): the next subscription waits for confirmation (mockup 125).
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to confirm'**
+  String get widgetTapToConfirm;
+
   /// No description provided for @widgetDueTomorrow.
   ///
   /// In en, this message translates to:
   /// **'Tomorrow'**
   String get widgetDueTomorrow;
 
-  /// Home widget: days left until the Due date (2 or more). The widget fills {days} itself, so it stays right after midnight.
+  /// Home widget (small, top right): days left until the Due date (2 or more). The widget fills {days} itself, so it stays right after midnight.
   ///
   /// In en, this message translates to:
-  /// **'In {days} days'**
+  /// **'{days} days'**
   String widgetDueInDays(String days);
 
-  /// Home widget (small): after the days left, when the subscription is a Trial.
+  /// Home widget (small): after the date, the Due date is tomorrow — '12 Nov · tomorrow'.
   ///
   /// In en, this message translates to:
-  /// **'first charge'**
-  String get widgetFirstCharge;
+  /// **'tomorrow'**
+  String get widgetLeftTomorrow;
+
+  /// Home widget (small): after the date — '12 Nov · 2 days left'. The widget fills {days} itself.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days left'**
+  String widgetLeftDays(String days);
+
+  /// Home widget (small): the next subscription is a free trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Trial ends {date}'**
+  String widgetTrialEnds(String date);
 
   /// No description provided for @widgetEmptyTitle.
   ///
   /// In en, this message translates to:
-  /// **'No renewals yet'**
+  /// **'Nothing due'**
   String get widgetEmptyTitle;
 
   /// No description provided for @widgetEmptyBody.
   ///
   /// In en, this message translates to:
-  /// **'Open Subnest to add your first subscription'**
+  /// **'Tap to add your first subscription'**
   String get widgetEmptyBody;
 
   /// Home widget when App lock is on: the only text shown (no names, no amounts).
@@ -5088,6 +5796,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Locked with PIN'**
   String get widgetLocked;
+
+  /// Medium / large home widget when App lock is on (mockup 125).
+  ///
+  /// In en, this message translates to:
+  /// **'Locked with PIN — open Subnest to see your payments'**
+  String get widgetLockedLong;
 
   /// Home widget: screen reader label of the parts that open the Overview.
   ///

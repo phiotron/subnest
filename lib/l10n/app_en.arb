@@ -248,8 +248,8 @@
   "catalogSearchHint": "Search 500+ services",
   "catalogClearSearch": "Clear search",
   "catalogCustom": "Create a custom service",
-  "catalogCustomSub": "Anything not in the library",
-  "catalogCustomNamed": "Not seeing it? Create “{name}”",
+  "catalogCustomSub": "Your own name, colour, letter or photo",
+  "catalogCustomNamed": "Not it? Create “{name}”",
   "@catalogCustomNamed": {
     "placeholders": {
       "name": {
@@ -266,8 +266,8 @@
     }
   },
   "catalogCustomService": "Custom service",
-  "catalogPopularVietnam": "Popular in Vietnam",
-  "catalogPopular": "Popular",
+  "catalogPopularVietnam": "Vietnam · prices in VND",
+  "catalogPopular": "Popular · US prices",
   "catalogMore": "More services",
   "catalogResults": "{count, plural, =1{1 result} other{{count} results}}",
   "@catalogResults": {
@@ -277,7 +277,7 @@
       }
     }
   },
-  "catalogNoResultTitle": "No service called “{name}”",
+  "catalogNoResultTitle": "Nothing called “{name}”",
   "@catalogNoResultTitle": {
     "placeholders": {
       "name": {
@@ -285,7 +285,7 @@
       }
     }
   },
-  "catalogNoResultBody": "Create it — you can pick the colour and letters.",
+  "catalogNoResultBody": "Create it — pick a colour, a letter or a photo.",
   "catalogFrom": "from {price}",
   "@catalogFrom": {
     "placeholders": {
@@ -310,8 +310,8 @@
       }
     }
   },
-  "catalogPlanSubVietnam": "Choose a plan · suggested prices for Vietnam",
-  "catalogPlanSub": "Choose a plan · suggested prices",
+  "catalogPlanSubVietnam": "Choose a plan · prices in VND",
+  "catalogPlanSub": "Choose a plan · US prices",
   "catalogPlanMembers": "Up to {count} people",
   "@catalogPlanMembers": {
     "placeholders": {
@@ -331,6 +331,14 @@
   },
   "catalogTabGeneral": "General",
   "catalogTabVietnam": "Vietnam",
+  "catalogUpdated": "{days, plural, =0{Library updated today} =1{Library updated yesterday} other{Library updated {days} days ago}}",
+  "@catalogUpdated": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "confirmDueToday": "Due today",
   "confirmOverdue": "Overdue",
   "confirmMoreAfter": "{count, plural, =1{1 more after this} other{{count} more after this}}",
@@ -1467,8 +1475,95 @@
   "manageCategoriesTitle": "Categories",
   "manageLabelsTitle": "Labels",
   "managePaymentMethodsTitle": "Payment methods",
-  "manageBudgetsTitle": "Budgets",
-  "managePlaceholder": "Coming soon",
+  "manageBudgetsTitle": "Budget",
+  "manageSubCount": "{count, plural, =0{No subscriptions} =1{1 subscription} other{{count} subscriptions}}",
+  "@manageSubCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "manageCategoriesIntro": "Drag to reorder. Colours are used in charts and filters.",
+  "manageNewCategory": "New category",
+  "manageEditCategory": "Edit category",
+  "manageName": "Name",
+  "manageNameRequired": "Enter a name",
+  "manageColour": "Colour",
+  "manageIcon": "Icon",
+  "manageDeleteCategory": "Delete category",
+  "manageDeleteTitle": "Delete “{name}”?",
+  "@manageDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageDeleteMoveBody": "{count, plural, =1{1 subscription uses it.} other{{count} subscriptions use it.}} Move them to:",
+  "@manageDeleteMoveBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "manageDeleteUnusedBody": "No subscription uses it.",
+  "manageMoveAndDelete": "Move and delete",
+  "manageMoveCategory": "Move to {name}",
+  "@manageMoveCategory": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageReorderHint": "Drag to reorder",
+  "manageLabelsIntro": "Labels cut across categories — a subscription can have several.",
+  "manageNewLabel": "New label",
+  "manageEditLabel": "Edit label",
+  "manageDeleteLabel": "Delete label",
+  "manageDeleteLabelBody": "It’s taken off every subscription that has it. The subscriptions stay.",
+  "managePaymentMethodsIntro": "Names only — Subnest never connects to a bank or card.",
+  "manageAddPaymentMethod": "Add payment method",
+  "manageEditPaymentMethod": "Edit payment method",
+  "manageDeletePaymentMethod": "Delete payment method",
+  "manageDeletePaymentMethodBody": "Subscriptions that use it are left without a payment method.",
+  "manageBudgetTotal": "Monthly budget, all subscriptions",
+  "manageBudgetUsed": "{percent}% used this month · {amount}",
+  "@manageBudgetUsed": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "manageBudgetPerCategory": "Per category · optional",
+  "manageBudgetThisMonth": "{amount} this month",
+  "@manageBudgetThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "manageBudgetSet": "Set",
+  "manageBudgetNote": "Budgets compare against the monthly cost. Going over turns the bar red — no notifications.",
+  "manageBudgetFor": "Budget · {name}",
+  "@manageBudgetFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageBudgetAmount": "Per month",
+  "manageBudgetRemove": "Remove budget",
+  "manageBudgetInvalid": "Enter an amount above 0",
+  "manageBudgetTotalNone": "No monthly budget yet",
   "notificationsChannelName": "Reminders",
   "notificationsChannelDescription": "Renewal and free-trial reminders",
   "notificationsRenewalSoon": "{name} renews in {count, plural, =1{1 day} other{{count} days}} — {amount}",
@@ -1508,6 +1603,10 @@
   "notificationsTestTitle": "Subnest reminders are on",
   "notificationsTestScheduledTitle": "Scheduled test reminder",
   "notificationsTestBody": "This is how renewal reminders will look.",
+  "notificationsBackupFailed": "Backup failed — open Subnest to check",
+  "@notificationsBackupFailed": {
+    "description": "Notification when an automatic backup failed (product.md §4.13, mockup 126). Only failures are notified; plain text, no action buttons."
+  },
   "onboardingSkip": "Skip",
   "onboardingStep": "Step {step} of {total}",
   "@onboardingStep": {
@@ -1520,26 +1619,26 @@
       }
     }
   },
-  "onboardingLanguageTitle": "Language",
-  "onboardingLanguageHint": "Subnest speaks English and Vietnamese. You can change this any time in Settings.",
+  "onboardingLanguageTitle": "Choose your language",
+  "onboardingLanguageHint": "You can change it later in Settings. The whole app switches at once.",
+  "onboardingLanguageEnglishSub": "English",
+  "onboardingLanguageVietnameseSub": "Vietnamese",
   "onboardingWelcomeTitle": "All your subscriptions, one nest",
   "onboardingBenefitRemind": "Reminders before you’re charged",
-  "onboardingBenefitRemindSub": "3 days ahead, and before trials end.",
-  "onboardingBenefitTotal": "Know exactly what each month costs",
-  "onboardingBenefitTotalSub": "In your currency, shared plans split fairly.",
-  "onboardingBenefitPrivate": "Private — data stays on your phone",
+  "onboardingBenefitRemindSub": "Before renewals and before trials end.",
+  "onboardingBenefitTotal": "Know what each month really costs",
+  "onboardingBenefitTotalSub": "Every price shows its cycle — no more guessing.",
+  "onboardingBenefitPrivate": "Your data stays on this phone",
   "onboardingBenefitPrivateSub": "No account, no bank link, no tracking.",
   "onboardingStart": "Get started",
   "onboardingCurrencyTitle": "Your main currency",
-  "onboardingCurrencyHint": "Used to add up your totals. Each subscription still keeps its own currency.",
-  "onboardingCurrencyDefault": "Default — change it any time",
-  "onboardingCurrencyChosen": "Your choice",
-  "onboardingCurrencyChange": "Choose another currency",
+  "onboardingCurrencyHint": "Totals are added up in it. Each subscription keeps its own currency.",
+  "onboardingCurrencyChange": "Choose another currency…",
   "onboardingCurrencyRatesNote": "Exchange rates update once a day when you’re online. You can set your own in Settings.",
   "onboardingCurrencySheetTitle": "Main currency",
   "onboardingCurrencySearch": "Search currency or country",
   "onboardingPickTitle": "What do you pay for?",
-  "onboardingPickSearch": "Search 100+ services",
+  "onboardingPickSearch": "Search 500+ services",
   "onboardingPickSelected": "{count, plural, =0{Nothing selected yet} =1{1 selected} other{{count} selected}}",
   "@onboardingPickSelected": {
     "placeholders": {
@@ -1556,18 +1655,7 @@
       }
     }
   },
-  "onboardingPickMeta": "{price} · {cycle}",
-  "@onboardingPickMeta": {
-    "placeholders": {
-      "price": {
-        "type": "String"
-      },
-      "cycle": {
-        "type": "String"
-      }
-    }
-  },
-  "onboardingPickEdit": "Edit",
+  "onboardingPickEdit": "Price & cycle",
   "onboardingPickEditLabel": "Edit price and cycle of {name}",
   "@onboardingPickEditLabel": {
     "placeholders": {
@@ -1582,7 +1670,7 @@
   "onboardingQuickCycle": "Billing cycle",
   "onboardingQuickRemove": "Don’t add it",
   "onboardingRemindersTitle": "A heads-up before every charge",
-  "onboardingRemindersBody": "We’ll remind you 3 days before a renewal or a trial ending, at {time}. Change it any time.",
+  "onboardingRemindersBody": "3 days before a renewal or a trial ending, at {time}. You can change both later.",
   "@onboardingRemindersBody": {
     "placeholders": {
       "time": {
@@ -1613,7 +1701,7 @@
   },
   "onboardingDemoLabel": "Example reminders",
   "onboardingEnableReminders": "Turn on reminders",
-  "onboardingNoThanks": "Not now",
+  "onboardingNoThanks": "No thanks",
   "scanTitle": "Scan screenshots",
   "scanPlaceholder": "Coming soon",
   "securitySection": "Security",
@@ -1628,23 +1716,23 @@
   "@securityPinWarning": {
     "description": "Under the PIN lock switch and on the first step of choosing a PIN."
   },
-  "securityEnterPin": "Enter PIN",
+  "securityEnterPin": "Enter your PIN",
   "@securityEnterPin": {
     "description": "Lock screen title; also when turning the PIN lock off."
   },
   "securityNewPin": "Choose a 4-digit PIN",
-  "securityConfirmPin": "Enter the PIN again",
-  "securityPinMismatch": "The PINs do not match. Try again.",
+  "securityConfirmPin": "Enter it again",
+  "securityPinMismatch": "The PINs don’t match. Choose one again.",
   "@securityPinMismatch": {
     "description": "Choosing a PIN: the second entry differs; the user starts over."
   },
-  "securityWrongPin": "Wrong PIN",
-  "securityForgotPin": "Forgot PIN",
+  "securityWrongPin": "Wrong PIN. Try again.",
+  "securityForgotPin": "Forgot PIN?",
   "@securityForgotPin": {
     "description": "Text button at the bottom of the lock screen."
   },
   "securityForgotPinTitle": "Forgot your PIN?",
-  "securityForgotPinBody": "Subnest has no server, so a PIN cannot be recovered. You can delete all data in the app to use it again.",
+  "securityForgotPinBody": "Subnest has no account and no server, so the PIN can’t be reset. The only way back in is to erase all data on this phone and start fresh. A backup file can be restored afterwards.",
   "@securityForgotPinBody": {
     "description": "Dialog from Forgot PIN; the next step is Delete all data (two more confirmations)."
   },
@@ -1670,15 +1758,36 @@
       }
     }
   },
-  "securityPrivacyScreen": "Hide content when switching apps",
+  "securityPrivacyScreen": "Hide content in app switcher",
   "@securityPrivacyScreen": {
     "description": "Settings: Privacy screen switch (independent of PIN lock, off by default)."
   },
-  "securityPrivacyScreenNote": "Blocks screenshots and hides content in the recent apps list",
+  "securityPrivacyScreenNote": "Also blocks screenshots",
   "@securityPrivacyScreenNote": {
     "description": "Under the Privacy screen switch on Android."
   },
-  "securityPrivacyScreenNoteIos": "Hides content in the app switcher. iPhone does not let apps block screenshots.",
+  "securityPrivacyScreenNoteIos": "Hides content in the app switcher. iPhone doesn’t let apps block screenshots.",
+  "securityTryAgain": "Try again",
+  "@securityTryAgain": {
+    "description": "Forgot PIN dialog: back to the keypad."
+  },
+  "securityPinSetNote": "You’ll enter it when Subnest opens, and after 1 minute away.",
+  "@securityPinSetNote": {
+    "description": "Choosing a PIN, first step, under the dots."
+  },
+  "securityPinOffNote": "4 digits, asked when Subnest opens",
+  "@securityPinOffNote": {
+    "description": "Settings: under PIN lock while it is off."
+  },
+  "securityPinOnNote": "On · asks after 1 minute away",
+  "@securityPinOnNote": {
+    "description": "Settings: under PIN lock while it is on."
+  },
+  "securityChangePin": "Change PIN",
+  "@securityChangePin": {
+    "description": "Settings row under PIN lock while it is on: current PIN, then a new one twice."
+  },
+  "securityPinChanged": "PIN changed",
   "settingsSectionMoney": "Money",
   "settingsPrimaryCurrency": "Main currency",
   "settingsSearchCurrency": "Search currency or country",
@@ -1844,14 +1953,14 @@
   "settingsReminderOff": "Off",
   "settingsReminderTime": "Reminder time",
   "settingsNotifications": "Notifications",
-  "settingsNotificationsOn": "On",
+  "settingsNotificationsOn": "Allowed",
   "settingsNotificationsOff": "Off",
   "settingsNotificationsOffTitle": "Notifications are off for Subnest",
   "settingsNotificationsOffBody": "Reminders can’t reach you until you allow them in system settings.",
   "settingsOpenSystemSettings": "Open settings",
   "settingsOpenSystemSettingsFailed": "Open your phone’s Settings › Apps › Subnest › Notifications.",
-  "settingsRemindBefore": "Remind me before a renewal",
-  "settingsRemindChoice": "{count, plural, =0{On day} =1{1 day} other{{count} days}}",
+  "settingsRemindBefore": "Remind me before a payment",
+  "settingsRemindChoice": "{count, plural, =0{On the day} =1{1 day} other{{count} days}}",
   "@settingsRemindChoice": {
     "placeholders": {
       "count": {
@@ -1859,16 +1968,16 @@
       }
     }
   },
-  "settingsRemindTrialNote": "Trials get the same reminder before they end.",
+  "settingsRemindTrialNote": "Pick any combination. Trials get the same reminders before they end.",
   "settingsReminderTimeShort": "Time",
-  "settingsRemindersNote": "You can change this for a single subscription from its edit screen. Applies to new reminders; existing ones move to the new time.",
+  "settingsRemindersNote": "Each subscription can override these on its edit screen. PIN lock doesn’t change what notifications say.",
   "settingsPreview": "Preview",
   "settingsPreviewSampleName": "Your subscription",
   "settingsPreviewOff": "Reminders are off. Renewals still show up in the app as they come due.",
   "settingsTestReminder": "Send a test reminder",
   "settingsTestReminderHint": "Debug only · one now and one in 10 seconds",
   "settingsTestReminderSent": "Test reminder sent",
-  "settingsSectionAppearance": "Appearance",
+  "settingsSectionAppearance": "Appearance & language",
   "settingsAppearanceTitle": "Appearance",
   "settingsTheme": "Theme",
   "settingsLanguage": "Language",
@@ -1901,13 +2010,13 @@
   "settingsExportJson": "Export backup",
   "settingsExportJsonHint": "JSON · everything, to restore later",
   "settingsExportJsonLong": "Everything, as a .json file to restore later",
-  "settingsExportCsv": "Export spreadsheet",
-  "settingsExportCsvHint": "CSV · opens in Excel or Sheets",
+  "settingsExportCsv": "Export CSV",
+  "settingsExportCsvHint": "Subscriptions and payments, for spreadsheets",
   "settingsExportCsvLong": "Subscriptions and payments as .csv",
   "settingsExported": "Saved — keep it somewhere safe",
   "settingsExportFailed": "Couldn’t create the file. Please try again.",
-  "settingsRestore": "Restore from file",
-  "settingsRestoreHint": "Pick a Subnest backup (.subnest)",
+  "settingsRestore": "Restore",
+  "settingsRestoreHint": "Replaces everything on this phone",
   "settingsLastBackup": "Last backup: {date}",
   "@settingsLastBackup": {
     "placeholders": {
@@ -1928,7 +2037,7 @@
     }
   },
   "settingsNeverBackedUp": "No backup yet",
-  "settingsRestoreTitle": "Restore this backup?",
+  "settingsRestoreTitle": "Replace all data?",
   "settingsRestoreHolds": "It holds {subs, plural, =1{1 subscription} other{{subs} subscriptions}} and {payments, plural, =1{1 payment} other{{payments} payments}}.",
   "@settingsRestoreHolds": {
     "placeholders": {
@@ -1940,7 +2049,7 @@
       }
     }
   },
-  "settingsRestoreReplaceAction": "Replace my data",
+  "settingsRestoreReplaceAction": "Replace and restore",
   "settingsRestoreReplaceNote": "Everything on this phone — subscriptions, payments, lists and settings — will be replaced by this backup. Automatic backup stays as it is.",
   "settingsRestoreInvalid": "That file isn’t a Subnest backup.",
   "settingsRestoreFailed": "Couldn’t restore that backup. Nothing was changed.",
@@ -1955,11 +2064,11 @@
   "settingsSectionAbout": "About",
   "settingsVersion": "Version",
   "settingsPrivacyPolicy": "Privacy policy",
-  "settingsTerms": "Terms of use",
-  "settingsLicenses": "Open-source licenses",
+  "settingsTerms": "Terms",
+  "settingsLicenses": "Licences",
   "settingsLogosTitle": "Service logos",
-  "settingsLogosOwnership": "Service names and logos belong to their owners and are shown only to identify the service.",
-  "settingsRateApp": "Rate Subnest",
+  "settingsLogosOwnership": "Service names and logos belong to their respective owners.",
+  "settingsRateApp": "Rate the app",
   "settingsFeedback": "Send feedback",
   "settingsFeedbackSubject": "Subnest feedback ({version})",
   "@settingsFeedbackSubject": {
@@ -1998,7 +2107,7 @@
   },
   "settingsAutoBackupFolderUnknown": "Chosen folder",
   "settingsAutoBackupLocalFolderWarningIos": "This folder may be stored only on this iPhone. If so, losing the phone means losing these files. To keep them safe, choose a folder in iCloud Drive or Google Drive.",
-  "settingsAutoBackupLast": "Last backup {time}",
+  "settingsAutoBackupLast": "Last: {time}",
   "@settingsAutoBackupLast": {
     "placeholders": {
       "time": {
@@ -2006,7 +2115,7 @@
       }
     }
   },
-  "settingsAutoBackupLastUnchanged": "Checked {checked}: data unchanged, kept the earlier copy. Last backup {last}.",
+  "settingsAutoBackupLastUnchanged": "Last: {last} · checked {checked}, no changes",
   "@settingsAutoBackupLastUnchanged": {
     "placeholders": {
       "checked": {
@@ -2017,8 +2126,8 @@
       }
     }
   },
-  "settingsAutoBackupNever": "No automatic backup yet",
-  "settingsAutoBackupFailedAt": "Last attempt {time}: {error}",
+  "settingsAutoBackupNever": "No backup yet",
+  "settingsAutoBackupFailedAt": "Last try {time}: {error}",
   "@settingsAutoBackupFailedAt": {
     "placeholders": {
       "time": {
@@ -2029,7 +2138,7 @@
       }
     }
   },
-  "settingsAutoBackupErrorFolder": "folder unavailable — choose it again",
+  "settingsAutoBackupErrorFolder": "folder unavailable — tap Folder to choose it again",
   "settingsAutoBackupErrorOther": "backup failed",
   "settingsAutoBackupNextToday": "Next: today, {time}",
   "@settingsAutoBackupNextToday": {
@@ -2052,7 +2161,7 @@
   "settingsAutoBackupNow": "Back up now",
   "settingsAutoBackupChooseFolder": "Choose folder",
   "settingsAutoBackupTime": "Backup time",
-  "settingsAutoBackupTurnOn": "Turn on",
+  "settingsAutoBackupTurnOn": "Turn on automatic backup",
   "settingsAutoBackupOffDone": "Automatic backup turned off",
   "settingsAutoBackupDone": "Backup saved",
   "settingsAutoBackupBusy": "A backup is already running",
@@ -2074,17 +2183,209 @@
   "settingsBackupWorking": "Working…",
   "settingsBackupEnterPasswordTitle": "Enter backup password",
   "settingsBackupEnterPasswordBody": "This backup is encrypted. Enter the password you set when exporting it.",
-  "settingsBackupWrongPassword": "Wrong password, or the file was changed",
+  "settingsBackupWrongPassword": "Wrong password",
   "settingsBackupOpen": "Open",
-  "settingsDeleteAll": "Delete all data",
+  "settingsDeleteAll": "Erase all data",
   "settingsDeleteAllHint": "Everything, like a new install",
-  "settingsDeleteAllTitle": "Delete all data?",
-  "settingsDeleteAllConfirm": "This removes all subscriptions, payments, categories, labels, budgets and settings from this phone and turns off automatic backup and PIN lock. Files already backed up stay in their folder. Subnest then starts again like a new install.",
-  "settingsDeleteAllConfirm2": "This cannot be undone. Export a backup first if you might need it.",
+  "settingsDeleteAllTitle": "Erase all data?",
+  "settingsDeleteAllConfirm": "Every subscription, payment, price history, label and setting on this phone is deleted. Subnest goes back to the first-run screens. Automatic backup files in your folder are kept.",
+  "settingsDeleteAllConfirm2": "This can’t be undone.",
   "settingsCannotUndo": "This cannot be undone",
-  "settingsDeleteEverything": "Delete everything",
+  "settingsDeleteEverything": "Erase everything",
   "settingsDelete": "Delete",
-  "settingsDeleteAllDone": "All data deleted",
+  "settingsDeleteAllDone": "All data erased",
+  "settingsThemeNote": "System follows your phone’s light or dark mode.",
+  "@settingsThemeNote": {
+    "description": "Theme sheet, under System / Light / Dark."
+  },
+  "settingsLanguageNote": "The whole app switches right away. Dates and amounts follow the language.",
+  "@settingsLanguageNote": {
+    "description": "Language sheet, under English / Tiếng Việt."
+  },
+  "settingsHideTabBar": "Hide tab bar when scrolling",
+  "settingsSectionOrganize": "Organize",
+  "@settingsSectionOrganize": {
+    "description": "Settings section: Categories, Labels, Payment methods, Budget."
+  },
+  "settingsBudgetValue": "{amount}/mo",
+  "@settingsBudgetValue": {
+    "description": "Settings › Budget row value.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsBudgetNotSet": "Not set",
+  "settingsSectionAutomation": "Automation",
+  "@settingsSectionAutomation": {
+    "description": "Settings section (Pro) and the title of the Automation screen."
+  },
+  "settingsScan": "Screenshot scan",
+  "settingsScanHint": "Add from store pages and receipts",
+  "settingsBankNotifications": "Bank & wallet notifications",
+  "settingsSoon": "Soon",
+  "@settingsSoon": {
+    "description": "Small chip on automation sources that are not built yet."
+  },
+  "settingsAutoBackupOffNote": "Off — your data lives only on this phone",
+  "settingsAutoBackupFolderLabel": "Folder",
+  "settingsAutoBackupTimeLabel": "Time",
+  "settingsAutoBackupDaily": "{time} every day",
+  "@settingsAutoBackupDaily": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAutoBackupPasswordLabel": "Password",
+  "settingsAutoBackupKeepsLabel": "Keeps",
+  "settingsAutoBackupKeepsValue": "2 newest files",
+  "settingsAutoBackupIntro": "Once a day Subnest saves an encrypted .subnest file to a folder you choose — on this phone, an SD card or a synced folder like Google Drive.",
+  "@settingsAutoBackupIntro": {
+    "description": "Automatic backup set-up screen (Android), under the icon."
+  },
+  "settingsAutoBackupSetupTime": "Time",
+  "settingsAutoBackupKeep": "Keep",
+  "settingsAutoBackupKeepValue": "2 newest",
+  "settingsAutoBackupChoose": "Choose…",
+  "settingsAutoBackupPasswordRule": "At least 6 characters",
+  "settingsAutoBackupWriteDownTitle": "Write the password down",
+  "settingsAutoBackupWriteDownBody": "Without it the backup can’t be opened — there’s no reset.",
+  "settingsAutoBackupFolderNeeded": "Choose a folder first",
+  "settingsBackupNow": "Back up now",
+  "settingsBackupNowHint": "A .subnest file, with or without a password",
+  "settingsBackupFileMeta": "{subs, plural, =1{1 subscription} other{{subs} subscriptions}} · {payments, plural, =1{1 payment} other{{payments} payments}} · {size}",
+  "@settingsBackupFileMeta": {
+    "description": "Back up now sheet, under the file name.",
+    "placeholders": {
+      "subs": {
+        "type": "int"
+      },
+      "payments": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsBackupProtectHint": "Recommended if you save it to the cloud",
+  "settingsBackupSave": "Save file…",
+  "settingsRestoreValid": "Valid",
+  "settingsRestoreProtected": "Password-protected · {size}",
+  "@settingsRestoreProtected": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsRestoreInFile": "In this file",
+  "settingsRestoreSubs": "Subscriptions",
+  "settingsRestorePayments": "Payments",
+  "settingsRestorePriceChanges": "Price changes",
+  "settingsRestoreSettings": "Settings and labels",
+  "settingsRestoreIncluded": "Included",
+  "settingsRestoreWarnTitle": "Restoring replaces everything",
+  "settingsRestoreWarnBody": "What’s on this phone now is removed and the file’s data takes its place.",
+  "settingsRestoreHasPassword": "This backup has a password",
+  "settingsRestoreUnlock": "Unlock and restore",
+  "settingsRestoreReplaceBody": "Your {current, plural, =0{data} =1{1 current subscription is} other{{current} current subscriptions are}} replaced by the {count, plural, =1{1 subscription} other{{count} subscriptions}} in this backup.",
+  "@settingsRestoreReplaceBody": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsDeleteAllTypeTitle": "Type {word} to confirm",
+  "@settingsDeleteAllTypeTitle": {
+    "description": "Erase all data, step 2: the word must be typed.",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsDeleteAllWord": "ERASE",
+  "@settingsDeleteAllWord": {
+    "description": "The word typed to confirm Erase all data. Plain capitals, no accents."
+  },
+  "settingsVersionValue": "Version {version}",
+  "@settingsVersionValue": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLibrary": "Service library",
+  "settingsLibraryValue": "Updated {ago} · {count} services",
+  "@settingsLibraryValue": {
+    "placeholders": {
+      "ago": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsLibraryCount": "{count} services",
+  "@settingsLibraryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsAgoToday": "today",
+  "settingsPriceLists": "Price lists",
+  "settingsPriceListsValue": "US + Vietnam",
+  "settingsAutomationHero": "Let Subnest find your subscriptions",
+  "settingsAutomationHeroBody": "Everything is read on this phone. Nothing is uploaded.",
+  "settingsAutomationScanHint": "Google Play / App Store pages, receipts",
+  "settingsOpen": "Open",
+  "settingsGmailHint": "Receipts and renewal emails",
+  "settingsAutomationFound": "When something is found",
+  "settingsAutoAdd": "Add new ones automatically",
+  "settingsAutoConfirm": "Confirm periods automatically",
+  "settingsAutomationNote": "Every automatic change is tagged Auto and has Undo.",
+  "settingsEarlyAccessCta": "Get early access",
+  "settingsProBody": "Finds and confirms subscriptions for you. Adding them by hand stays free, always.",
+  "settingsProNow": "Now",
+  "settingsProUndo": "Undo on every change",
+  "settingsEarlyAccessTitle": "Early access",
+  "settingsEarlyAccessBody": "Join now and we’ll tell you the price before Pro starts charging. Nothing is billed without asking you.",
+  "settingsJoinEarlyAccess": "Join early access",
+  "settingsNotNow": "Not now",
+  "settingsEarlyAccessSubject": "Subnest Pro early access",
+  "@settingsEarlyAccessSubject": {
+    "description": "Subject of the email opened by Join early access."
+  },
+  "settingsWhenToday": "today, {time}",
+  "@settingsWhenToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsWhenYesterday": "yesterday, {time}",
+  "@settingsWhenYesterday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsBackupPasswordShow": "Show password",
+  "settingsBackupPasswordHide": "Hide password",
   "subscriptionDetailEdit": "Edit",
   "subscriptionDetailStatusActive": "Active",
   "subscriptionDetailStatusTrial": "{days, plural, =0{Trial · ends today} =1{Trial · 1 day left} other{Trial · {days} days left}}",
@@ -2631,13 +2932,10 @@
   "subscriptionFormPrice": "Price",
   "subscriptionFormPriceAfterTrial": "Price after trial",
   "subscriptionFormPriceRequired": "Price must be more than 0",
-  "subscriptionFormPriceWas": "Was {old}. The new price applies from the next period ({date}). Past payments stay as they were.",
+  "subscriptionFormPriceWas": "Was {old}. Saving asks when the new price starts and adds it to the price history.",
   "@subscriptionFormPriceWas": {
     "placeholders": {
       "old": {
-        "type": "String"
-      },
-      "date": {
         "type": "String"
       }
     }
@@ -2720,7 +3018,7 @@
   },
   "subscriptionFormCategory": "Category",
   "subscriptionFormReminder": "Remind me",
-  "subscriptionFormRemindOnDay": "On day",
+  "subscriptionFormRemindOnDay": "On the day",
   "subscriptionFormRemindDays": "{count, plural, =1{1 day} other{{count} days}}",
   "@subscriptionFormRemindDays": {
     "placeholders": {
@@ -2731,14 +3029,14 @@
   },
   "subscriptionFormRemindNone": "No reminder for this subscription",
   "subscriptionFormMore": "More details",
-  "subscriptionFormMoreSub": "Cancel link, notes",
+  "subscriptionFormMoreSub": "Payment method, cancel link, notes, worth it?",
   "subscriptionFormPaymentMethod": "Payment method",
   "subscriptionFormManageUrl": "Cancel / manage link",
   "subscriptionFormManageUrlFromLibrary": "Filled in from the library. Opens from “How to cancel”.",
   "subscriptionFormNotes": "Notes",
   "subscriptionFormAddButton": "Add subscription",
   "subscriptionFormSaveChanges": "Save changes",
-  "subscriptionFormPriceDialogTitle": "Use {price} from the next period?",
+  "subscriptionFormPriceDialogTitle": "Use {price} from the next payment?",
   "@subscriptionFormPriceDialogTitle": {
     "placeholders": {
       "price": {
@@ -2746,7 +3044,7 @@
       }
     }
   },
-  "subscriptionFormPriceDialogBody": "The {date} renewal and later ones use the new price.",
+  "subscriptionFormPriceDialogBody": "The {date} payment and later ones use the new price. Your past payments stay exactly as paid, and the change is saved to the price history.",
   "@subscriptionFormPriceDialogBody": {
     "placeholders": {
       "date": {
@@ -2754,39 +3052,9 @@
       }
     }
   },
-  "subscriptionFormPriceDialogPast": "{count, plural, =1{Your past payment stays at what you actually paid.} other{Your {count} past payments stay at what you actually paid.}}",
-  "@subscriptionFormPriceDialogPast": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "subscriptionFormPriceApply": "Apply from next period",
-  "subscriptionFormPriceKeep": "Keep {price}",
-  "@subscriptionFormPriceKeep": {
-    "placeholders": {
-      "price": {
-        "type": "String"
-      }
-    }
-  },
-  "subscriptionFormTileTitle": "Tile",
-  "subscriptionFormTilePreview": "Preview in a list",
-  "subscriptionFormTileLetters": "Letters",
-  "subscriptionFormTileEmoji": "Emoji",
-  "subscriptionFormTileLettersHint": "1–2 characters",
+  "subscriptionFormPriceApply": "Apply from {date}",
+  "subscriptionFormTileTitle": "Change icon",
   "subscriptionFormTileColour": "Colour",
-  "subscriptionFormTileColourNote": "The first swatch is {name}’s own colour from the library. Letter colour is picked for contrast automatically.",
-  "@subscriptionFormTileColourNote": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "subscriptionFormTileColourNoteCustom": "Letter colour is picked for contrast automatically.",
-  "subscriptionFormTileOrEmoji": "Or an emoji",
   "subscriptionFormTileSwatch": "Colour {index}",
   "@subscriptionFormTileSwatch": {
     "placeholders": {
@@ -2833,7 +3101,6 @@
   "subscriptionFormLabels": "Labels",
   "subscriptionFormNewLabel": "New label",
   "subscriptionFormNewLabelHint": "e.g. Family, Work",
-  "subscriptionFormMethodNone": "None",
   "subscriptionFormMethodUsage": "{count, plural, =0{Not used yet} =1{1 subscription} other{{count} subscriptions}}",
   "@subscriptionFormMethodUsage": {
     "placeholders": {
@@ -2845,14 +3112,6 @@
   "subscriptionFormMethodAddHint": "Add a card or wallet",
   "subscriptionFormMethodNote": "Free text — Subnest never connects to your bank.",
   "subscriptionFormAdd": "Add",
-  "subscriptionFormRemindMany": "Pick any — each one sends its own reminder at {time}.",
-  "@subscriptionFormRemindMany": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
   "subscriptionFormWorthIt": "Worth it?",
   "subscriptionFormWorthNotRated": "Not rated",
   "subscriptionFormDelete": "Delete subscription",
@@ -2866,35 +3125,51 @@
   },
   "subscriptionFormDeleteBody": "Its payment history goes too. This can't be undone.",
   "subscriptionFormDeleteAction": "Delete",
-  "subscriptionFormTilePhoto": "Photo",
   "subscriptionFormTilePhotoPick": "Choose photo",
-  "subscriptionFormTilePhotoChange": "Change photo",
   "subscriptionFormTilePhotoRemove": "Remove photo",
-  "subscriptionFormTilePhotoNote": "Shown instead of the letters. It stays on this phone and in your backups.",
   "subscriptionFormTilePhotoFailed": "Couldn’t open that photo.",
-  "subscriptionFormCropTitle": "Move and zoom",
-  "subscriptionFormCropHint": "Pinch to zoom, drag to move. The square is your logo.",
+  "subscriptionFormCropTitle": "Move and scale",
+  "subscriptionFormCropHint": "The square is what shows as the icon",
   "subscriptionFormCropUse": "Use photo",
-  "widgetNext": "Next",
-  "@widgetNext": {
-    "description": "Home widget (small): eyebrow above the next subscription to be charged."
-  },
-  "widgetUpcoming": "Upcoming",
-  "@widgetUpcoming": {
-    "description": "Home widget (medium): title of the list of next charges."
-  },
-  "widgetThisMonth": "This month",
-  "@widgetThisMonth": {
-    "description": "Home widget (large): title above the monthly total."
-  },
-  "widgetPerMonth": "{amount}/mo",
-  "@widgetPerMonth": {
-    "description": "Home widget (medium): monthly total with a short 'per month'.",
+  "@subscriptionFormPriceApply": {
     "placeholders": {
-      "amount": {
+      "date": {
         "type": "String"
       }
     }
+  },
+  "subscriptionFormPriceNow": "Now",
+  "subscriptionFormPriceFrom": "From {date}",
+  "@subscriptionFormPriceFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFormRemindAt": "at {time}",
+  "@subscriptionFormRemindAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFormCustomSub": "Custom service · tap the icon for a photo",
+  "subscriptionFormAddMethod": "Add",
+  "subscriptionFormTileLetterPreview": "Letter on colour",
+  "subscriptionFormTilePhotoPreview": "Your photo, cropped square",
+  "subscriptionFormTileTakePhoto": "Take photo",
+  "subscriptionFormTileLetterOrEmoji": "Letter or emoji",
+  "subscriptionFormCropRotate": "Rotate",
+  "subscriptionFormMethodNone": "None",
+  "widgetThisMonth": "This month",
+  "@widgetThisMonth": {
+    "description": "Home widget: fallback title above the monthly total."
+  },
+  "widgetPerMonthShort": "/mo",
+  "@widgetPerMonthShort": {
+    "description": "Home widget (medium / large): short 'per month' after the monthly total (mockups 122–123)."
   },
   "widgetMonthlyTotalA11y": "Monthly total {amount}",
   "@widgetMonthlyTotalA11y": {
@@ -2904,6 +3179,14 @@
         "type": "String"
       }
     }
+  },
+  "widgetPaid": "Paid",
+  "@widgetPaid": {
+    "description": "Home widget (large): money already paid this month (same as the Overview's Cost card)."
+  },
+  "widgetStillToPay": "Still to pay",
+  "@widgetStillToPay": {
+    "description": "Home widget (large): money still to be charged this month."
   },
   "widgetToConfirm": "{count} to confirm",
   "@widgetToConfirm": {
@@ -2918,25 +3201,51 @@
   "@widgetAwaiting": {
     "description": "Home widget: the Due date has come and the payment waits for the user."
   },
+  "widgetTapToConfirm": "Tap to confirm",
+  "@widgetTapToConfirm": {
+    "description": "Home widget (small): the next subscription waits for confirmation (mockup 125)."
+  },
   "widgetDueTomorrow": "Tomorrow",
-  "widgetDueInDays": "In {days} days",
+  "widgetDueInDays": "{days} days",
   "@widgetDueInDays": {
-    "description": "Home widget: days left until the Due date (2 or more). The widget fills {days} itself, so it stays right after midnight.",
+    "description": "Home widget (small, top right): days left until the Due date (2 or more). The widget fills {days} itself, so it stays right after midnight.",
     "placeholders": {
       "days": {
         "type": "String"
       }
     }
   },
-  "widgetFirstCharge": "first charge",
-  "@widgetFirstCharge": {
-    "description": "Home widget (small): after the days left, when the subscription is a Trial."
+  "widgetLeftTomorrow": "tomorrow",
+  "@widgetLeftTomorrow": {
+    "description": "Home widget (small): after the date, the Due date is tomorrow — '12 Nov · tomorrow'."
   },
-  "widgetEmptyTitle": "No renewals yet",
-  "widgetEmptyBody": "Open Subnest to add your first subscription",
+  "widgetLeftDays": "{days} days left",
+  "@widgetLeftDays": {
+    "description": "Home widget (small): after the date — '12 Nov · 2 days left'. The widget fills {days} itself.",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetTrialEnds": "Trial ends {date}",
+  "@widgetTrialEnds": {
+    "description": "Home widget (small): the next subscription is a free trial.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetEmptyTitle": "Nothing due",
+  "widgetEmptyBody": "Tap to add your first subscription",
   "widgetLocked": "Locked with PIN",
   "@widgetLocked": {
     "description": "Home widget when App lock is on: the only text shown (no names, no amounts)."
+  },
+  "widgetLockedLong": "Locked with PIN — open Subnest to see your payments",
+  "@widgetLockedLong": {
+    "description": "Medium / large home widget when App lock is on (mockup 125)."
   },
   "widgetOpenApp": "Open Subnest",
   "@widgetOpenApp": {

@@ -328,7 +328,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get catalogTitle => 'Thêm subscription';
+  String get catalogTitle => 'Thêm gói đăng ký';
 
   @override
   String get catalogSearchHint => 'Tìm trong 500+ dịch vụ';
@@ -340,11 +340,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get catalogCustom => 'Tạo dịch vụ tuỳ chỉnh';
 
   @override
-  String get catalogCustomSub => 'Cho dịch vụ không có trong thư viện';
+  String get catalogCustomSub => 'Tên, màu, chữ hoặc ảnh của riêng bạn';
 
   @override
   String catalogCustomNamed(String name) {
-    return 'Không thấy? Tạo “$name”';
+    return 'Không phải? Tạo “$name”';
   }
 
   @override
@@ -356,10 +356,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get catalogCustomService => 'Dịch vụ tuỳ chỉnh';
 
   @override
-  String get catalogPopularVietnam => 'Phổ biến ở Việt Nam';
+  String get catalogPopularVietnam => 'Việt Nam · giá VND';
 
   @override
-  String get catalogPopular => 'Phổ biến';
+  String get catalogPopular => 'Phổ biến · giá US';
 
   @override
   String get catalogMore => 'Dịch vụ khác';
@@ -375,7 +375,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get catalogNoResultBody => 'Tạo mới — bạn tự chọn màu và chữ cái.';
+  String get catalogNoResultBody => 'Tạo mới — chọn màu, chữ cái hoặc ảnh.';
 
   @override
   String catalogFrom(String price) {
@@ -393,10 +393,10 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get catalogPlanSubVietnam => 'Chọn gói · giá gợi ý tại Việt Nam';
+  String get catalogPlanSubVietnam => 'Chọn gói · giá VND';
 
   @override
-  String get catalogPlanSub => 'Chọn gói · giá gợi ý';
+  String get catalogPlanSub => 'Chọn gói · giá US';
 
   @override
   String catalogPlanMembers(int count) {
@@ -416,6 +416,18 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get catalogTabVietnam => 'Việt Nam';
+
+  @override
+  String catalogUpdated(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Thư viện cập nhật $days ngày trước',
+      one: 'Thư viện cập nhật hôm qua',
+      zero: 'Thư viện cập nhật hôm nay',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get confirmDueToday => 'Đến hạn hôm nay';
@@ -1556,7 +1568,138 @@ class AppLocalizationsVi extends AppLocalizations {
   String get manageBudgetsTitle => 'Ngân sách';
 
   @override
-  String get managePlaceholder => 'Sắp có';
+  String manageSubCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gói',
+      zero: 'Chưa có gói',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get manageCategoriesIntro =>
+      'Kéo để sắp xếp. Màu dùng trong biểu đồ và bộ lọc.';
+
+  @override
+  String get manageNewCategory => 'Thêm danh mục';
+
+  @override
+  String get manageEditCategory => 'Sửa danh mục';
+
+  @override
+  String get manageName => 'Tên';
+
+  @override
+  String get manageNameRequired => 'Nhập tên';
+
+  @override
+  String get manageColour => 'Màu';
+
+  @override
+  String get manageIcon => 'Biểu tượng';
+
+  @override
+  String get manageDeleteCategory => 'Xoá danh mục';
+
+  @override
+  String manageDeleteTitle(String name) {
+    return 'Xoá “$name”?';
+  }
+
+  @override
+  String manageDeleteMoveBody(int count) {
+    return '$count gói đang dùng danh mục này. Chuyển sang:';
+  }
+
+  @override
+  String get manageDeleteUnusedBody => 'Không gói nào dùng danh mục này.';
+
+  @override
+  String get manageMoveAndDelete => 'Chuyển và xoá';
+
+  @override
+  String manageMoveCategory(String name) {
+    return 'Chuyển sang $name';
+  }
+
+  @override
+  String get manageReorderHint => 'Kéo để đổi thứ tự';
+
+  @override
+  String get manageLabelsIntro =>
+      'Nhãn dùng chéo danh mục — một gói có thể có nhiều nhãn.';
+
+  @override
+  String get manageNewLabel => 'Thêm nhãn';
+
+  @override
+  String get manageEditLabel => 'Sửa nhãn';
+
+  @override
+  String get manageDeleteLabel => 'Xoá nhãn';
+
+  @override
+  String get manageDeleteLabelBody =>
+      'Nhãn được gỡ khỏi các gói đang gắn. Các gói vẫn giữ nguyên.';
+
+  @override
+  String get managePaymentMethodsIntro =>
+      'Chỉ là tên gọi — Subnest không kết nối ngân hàng hay thẻ.';
+
+  @override
+  String get manageAddPaymentMethod => 'Thêm phương thức';
+
+  @override
+  String get manageEditPaymentMethod => 'Sửa phương thức';
+
+  @override
+  String get manageDeletePaymentMethod => 'Xoá phương thức';
+
+  @override
+  String get manageDeletePaymentMethodBody =>
+      'Các gói đang dùng sẽ không còn phương thức thanh toán.';
+
+  @override
+  String get manageBudgetTotal => 'Ngân sách tháng, tất cả gói';
+
+  @override
+  String manageBudgetUsed(int percent, String amount) {
+    return '$percent% đã dùng tháng này · $amount';
+  }
+
+  @override
+  String get manageBudgetPerCategory => 'Theo danh mục · tuỳ chọn';
+
+  @override
+  String manageBudgetThisMonth(String amount) {
+    return '$amount tháng này';
+  }
+
+  @override
+  String get manageBudgetSet => 'Đặt';
+
+  @override
+  String get manageBudgetNote =>
+      'Ngân sách so với chi phí tháng. Vượt thì thanh chuyển đỏ — không gửi thông báo.';
+
+  @override
+  String manageBudgetFor(String name) {
+    return 'Ngân sách · $name';
+  }
+
+  @override
+  String get manageBudgetAmount => 'Mỗi tháng';
+
+  @override
+  String get manageBudgetRemove => 'Bỏ ngân sách';
+
+  @override
+  String get manageBudgetInvalid => 'Nhập số tiền lớn hơn 0';
+
+  @override
+  String get manageBudgetTotalNone => 'Chưa đặt ngân sách tháng';
 
   @override
   String get notificationsChannelName => 'Nhắc nhở';
@@ -1603,6 +1746,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get notificationsTestBody => 'Nhắc gia hạn sẽ trông như thế này.';
 
   @override
+  String get notificationsBackupFailed =>
+      'Sao lưu lỗi — mở Subnest để kiểm tra';
+
+  @override
   String get onboardingSkip => 'Bỏ qua';
 
   @override
@@ -1611,31 +1758,37 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get onboardingLanguageTitle => 'Language';
+  String get onboardingLanguageTitle => 'Choose your language';
 
   @override
   String get onboardingLanguageHint =>
-      'Subnest speaks English and Vietnamese. You can change this any time in Settings.';
+      'You can change it later in Settings. The whole app switches at once.';
 
   @override
-  String get onboardingWelcomeTitle => 'Mọi subscription, một tổ';
+  String get onboardingLanguageEnglishSub => 'English';
+
+  @override
+  String get onboardingLanguageVietnameseSub => 'Vietnamese';
+
+  @override
+  String get onboardingWelcomeTitle => 'Mọi gói đăng ký, một tổ';
 
   @override
   String get onboardingBenefitRemind => 'Nhắc trước khi bị trừ tiền';
 
   @override
   String get onboardingBenefitRemindSub =>
-      'Trước 3 ngày, và trước khi hết dùng thử.';
+      'Trước kỳ gia hạn và trước khi hết dùng thử.';
 
   @override
-  String get onboardingBenefitTotal => 'Biết chính xác mỗi tháng tốn bao nhiêu';
+  String get onboardingBenefitTotal => 'Biết mỗi tháng tốn bao nhiêu';
 
   @override
   String get onboardingBenefitTotalSub =>
-      'Theo tiền tệ của bạn, gói chia sẻ tính đúng phần.';
+      'Mọi giá đều ghi rõ chu kỳ — hết đoán.';
 
   @override
-  String get onboardingBenefitPrivate => 'Riêng tư — dữ liệu chỉ trên máy bạn';
+  String get onboardingBenefitPrivate => 'Dữ liệu chỉ nằm trên máy';
 
   @override
   String get onboardingBenefitPrivateSub =>
@@ -1649,16 +1802,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get onboardingCurrencyHint =>
-      'Dùng để cộng tổng chi. Mỗi subscription vẫn có tiền tệ riêng.';
+      'Dùng để cộng tổng. Mỗi gói vẫn giữ tiền tệ riêng.';
 
   @override
-  String get onboardingCurrencyDefault => 'Mặc định — đổi bất cứ lúc nào';
-
-  @override
-  String get onboardingCurrencyChosen => 'Bạn đã chọn';
-
-  @override
-  String get onboardingCurrencyChange => 'Chọn tiền tệ khác';
+  String get onboardingCurrencyChange => 'Chọn tiền tệ khác…';
 
   @override
   String get onboardingCurrencyRatesNote =>
@@ -1674,7 +1821,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get onboardingPickTitle => 'Bạn đang dùng gì?';
 
   @override
-  String get onboardingPickSearch => 'Tìm trong 100+ dịch vụ';
+  String get onboardingPickSearch => 'Tìm trong 500+ dịch vụ';
 
   @override
   String onboardingPickSelected(int count) {
@@ -1693,12 +1840,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String onboardingPickMeta(String price, String cycle) {
-    return '$price · $cycle';
-  }
-
-  @override
-  String get onboardingPickEdit => 'Sửa';
+  String get onboardingPickEdit => 'Giá & chu kỳ';
 
   @override
   String onboardingPickEditLabel(String name) {
@@ -1725,7 +1867,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String onboardingRemindersBody(String time) {
-    return 'Subnest nhắc trước 3 ngày khi sắp gia hạn hoặc hết dùng thử, lúc $time. Đổi bất cứ lúc nào.';
+    return 'Trước 3 ngày khi sắp gia hạn hoặc hết dùng thử, lúc $time. Đổi được bất cứ lúc nào.';
   }
 
   @override
@@ -1779,20 +1921,20 @@ class AppLocalizationsVi extends AppLocalizations {
   String get securityConfirmPin => 'Nhập lại mã PIN';
 
   @override
-  String get securityPinMismatch => 'Hai lần nhập không khớp. Thử lại.';
+  String get securityPinMismatch => 'Hai mã không khớp. Đặt lại mã.';
 
   @override
-  String get securityWrongPin => 'Sai mã PIN';
+  String get securityWrongPin => 'Sai mã PIN. Thử lại.';
 
   @override
-  String get securityForgotPin => 'Quên mã';
+  String get securityForgotPin => 'Quên mã?';
 
   @override
   String get securityForgotPinTitle => 'Quên mã PIN?';
 
   @override
   String get securityForgotPinBody =>
-      'Subnest không có máy chủ nên không lấy lại được mã PIN. Bạn có thể xóa toàn bộ dữ liệu trong app để dùng lại.';
+      'Subnest không có tài khoản hay máy chủ nên không thể đặt lại PIN. Cách duy nhất là xoá toàn bộ dữ liệu trên máy và bắt đầu lại. Sau đó bạn có thể khôi phục từ file sao lưu.';
 
   @override
   String securityKeypadDigit(String digit) {
@@ -1811,12 +1953,30 @@ class AppLocalizationsVi extends AppLocalizations {
   String get securityPrivacyScreen => 'Che nội dung khi chuyển app';
 
   @override
-  String get securityPrivacyScreenNote =>
-      'Chặn chụp màn hình và ẩn nội dung trong danh sách app gần đây';
+  String get securityPrivacyScreenNote => 'Đồng thời chặn chụp màn hình';
 
   @override
   String get securityPrivacyScreenNoteIos =>
       'Ẩn nội dung trong màn chuyển app. iPhone không cho app chặn chụp màn hình.';
+
+  @override
+  String get securityTryAgain => 'Thử lại';
+
+  @override
+  String get securityPinSetNote =>
+      'Bạn sẽ nhập khi mở Subnest và khi quay lại sau 1 phút.';
+
+  @override
+  String get securityPinOffNote => '4 số, hỏi khi mở Subnest';
+
+  @override
+  String get securityPinOnNote => 'Bật · hỏi khi quay lại sau 1 phút';
+
+  @override
+  String get securityChangePin => 'Đổi mã PIN';
+
+  @override
+  String get securityPinChanged => 'Đã đổi mã PIN';
 
   @override
   String get settingsSectionMoney => 'Tiền';
@@ -1998,7 +2158,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsNotifications => 'Thông báo';
 
   @override
-  String get settingsNotificationsOn => 'Bật';
+  String get settingsNotificationsOn => 'Đã cho phép';
 
   @override
   String get settingsNotificationsOff => 'Tắt';
@@ -2018,7 +2178,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Mở Cài đặt của máy › Ứng dụng › Subnest › Thông báo.';
 
   @override
-  String get settingsRemindBefore => 'Nhắc trước khi gia hạn';
+  String get settingsRemindBefore => 'Nhắc trước kỳ thanh toán';
 
   @override
   String settingsRemindChoice(int count) {
@@ -2033,14 +2193,14 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsRemindTrialNote =>
-      'Dùng thử cũng được nhắc như vậy trước khi hết.';
+      'Chọn bao nhiêu mốc tuỳ ý. Dùng thử cũng được nhắc như vậy trước khi hết.';
 
   @override
   String get settingsReminderTimeShort => 'Giờ nhắc';
 
   @override
   String get settingsRemindersNote =>
-      'Có thể chỉnh riêng từng subscription trong màn sửa. Áp dụng cho nhắc mới; nhắc đã lên lịch sẽ chuyển sang giờ mới.';
+      'Từng gói có thể chỉnh riêng trong màn sửa. Bật PIN không đổi nội dung thông báo.';
 
   @override
   String get settingsPreview => 'Xem trước';
@@ -2137,10 +2297,10 @@ class AppLocalizationsVi extends AppLocalizations {
       'Toàn bộ dữ liệu, file .json để khôi phục sau';
 
   @override
-  String get settingsExportCsv => 'Xuất bảng tính';
+  String get settingsExportCsv => 'Xuất CSV';
 
   @override
-  String get settingsExportCsvHint => 'CSV · mở bằng Excel hoặc Sheets';
+  String get settingsExportCsvHint => 'Gói và thanh toán, mở bằng bảng tính';
 
   @override
   String get settingsExportCsvLong => 'Subscription và thanh toán dạng .csv';
@@ -2152,10 +2312,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsExportFailed => 'Không tạo được file. Hãy thử lại.';
 
   @override
-  String get settingsRestore => 'Khôi phục từ file';
+  String get settingsRestore => 'Khôi phục';
 
   @override
-  String get settingsRestoreHint => 'Chọn file sao lưu của Subnest (.subnest)';
+  String get settingsRestoreHint => 'Thay thế toàn bộ dữ liệu trên máy';
 
   @override
   String settingsLastBackup(String date) {
@@ -2171,7 +2331,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsNeverBackedUp => 'Chưa sao lưu lần nào';
 
   @override
-  String get settingsRestoreTitle => 'Khôi phục bản sao lưu này?';
+  String get settingsRestoreTitle => 'Thay thế toàn bộ dữ liệu?';
 
   @override
   String settingsRestoreHolds(int subs, int payments) {
@@ -2189,7 +2349,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get settingsRestoreReplaceAction => 'Thay dữ liệu của tôi';
+  String get settingsRestoreReplaceAction => 'Thay thế và khôi phục';
 
   @override
   String get settingsRestoreReplaceNote =>
@@ -2197,7 +2357,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsRestoreInvalid =>
-      'File này không phải bản sao lưu của Subnest.';
+      'File này không phải bản sao lưu Subnest.';
 
   @override
   String get settingsRestoreFailed =>
@@ -2223,20 +2383,20 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsPrivacyPolicy => 'Chính sách quyền riêng tư';
 
   @override
-  String get settingsTerms => 'Điều khoản sử dụng';
+  String get settingsTerms => 'Điều khoản';
 
   @override
-  String get settingsLicenses => 'Giấy phép mã nguồn mở';
+  String get settingsLicenses => 'Giấy phép';
 
   @override
   String get settingsLogosTitle => 'Logo dịch vụ';
 
   @override
   String get settingsLogosOwnership =>
-      'Tên và logo thuộc chủ sở hữu, chỉ dùng để nhận diện dịch vụ.';
+      'Tên và logo dịch vụ thuộc chủ sở hữu tương ứng.';
 
   @override
-  String get settingsRateApp => 'Đánh giá Subnest';
+  String get settingsRateApp => 'Đánh giá app';
 
   @override
   String get settingsFeedback => 'Gửi góp ý';
@@ -2305,28 +2465,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String settingsAutoBackupLast(String time) {
-    return 'Sao lưu gần nhất $time';
+    return 'Gần nhất: $time';
   }
 
   @override
   String settingsAutoBackupLastUnchanged(String checked, String last) {
-    return 'Đã kiểm $checked: dữ liệu không đổi, giữ bản cũ. Sao lưu gần nhất $last.';
+    return 'Gần nhất: $last · kiểm $checked, không đổi';
   }
 
   @override
-  String get settingsAutoBackupNever => 'Chưa sao lưu tự động lần nào';
+  String get settingsAutoBackupNever => 'Chưa sao lưu lần nào';
 
   @override
   String settingsAutoBackupFailedAt(String time, String error) {
-    return 'Lần thử gần nhất $time: $error';
+    return 'Lần thử $time: $error';
   }
 
   @override
   String get settingsAutoBackupErrorFolder =>
-      'không vào được thư mục — hãy chọn lại';
+      'không mở được thư mục — chạm Thư mục để chọn lại';
 
   @override
-  String get settingsAutoBackupErrorOther => 'sao lưu thất bại';
+  String get settingsAutoBackupErrorOther => 'sao lưu lỗi';
 
   @override
   String settingsAutoBackupNextToday(String time) {
@@ -2355,7 +2515,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsAutoBackupTime => 'Giờ sao lưu';
 
   @override
-  String get settingsAutoBackupTurnOn => 'Bật';
+  String get settingsAutoBackupTurnOn => 'Bật sao lưu tự động';
 
   @override
   String get settingsAutoBackupOffDone => 'Đã tắt sao lưu tự động';
@@ -2401,14 +2561,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsBackupPasswordTooShort => 'Dùng ít nhất 6 ký tự';
 
   @override
-  String get settingsBackupPasswordMismatch => 'Mật khẩu không khớp';
+  String get settingsBackupPasswordMismatch => 'Hai mật khẩu không khớp';
 
   @override
   String get settingsBackupPasswordWarning =>
       'Không có mật khẩu này thì không mở được file. Hãy giữ nó cẩn thận.';
 
   @override
-  String get settingsBackupProtect => 'Đặt mật khẩu bảo vệ';
+  String get settingsBackupProtect => 'Đặt mật khẩu';
 
   @override
   String get settingsBackupExportNote =>
@@ -2428,39 +2588,303 @@ class AppLocalizationsVi extends AppLocalizations {
       'Bản sao lưu này đã mã hóa. Nhập mật khẩu bạn đặt khi xuất file.';
 
   @override
-  String get settingsBackupWrongPassword => 'Sai mật khẩu, hoặc file đã bị sửa';
+  String get settingsBackupWrongPassword => 'Sai mật khẩu';
 
   @override
   String get settingsBackupOpen => 'Mở';
 
   @override
-  String get settingsDeleteAll => 'Xóa toàn bộ dữ liệu';
+  String get settingsDeleteAll => 'Xoá toàn bộ dữ liệu';
 
   @override
   String get settingsDeleteAllHint => 'Mọi thứ, như mới cài';
 
   @override
-  String get settingsDeleteAllTitle => 'Xóa toàn bộ dữ liệu?';
+  String get settingsDeleteAllTitle => 'Xoá toàn bộ dữ liệu?';
 
   @override
   String get settingsDeleteAllConfirm =>
-      'Việc này xóa mọi subscription, thanh toán, danh mục, nhãn, ngân sách và cài đặt khỏi máy này, đồng thời tắt sao lưu tự động và khoá mã PIN. Các file đã sao lưu vẫn còn trong thư mục. Sau đó Subnest bắt đầu lại như mới cài.';
+      'Mọi gói, thanh toán, lịch sử giá, nhãn và cài đặt trên máy bị xoá. Subnest quay về màn hình lần đầu. File sao lưu tự động trong thư mục vẫn được giữ.';
 
   @override
-  String get settingsDeleteAllConfirm2 =>
-      'Không thể hoàn tác. Hãy xuất bản sao lưu trước nếu có thể cần.';
+  String get settingsDeleteAllConfirm2 => 'Không thể hoàn tác.';
 
   @override
   String get settingsCannotUndo => 'Không thể hoàn tác';
 
   @override
-  String get settingsDeleteEverything => 'Xóa hết';
+  String get settingsDeleteEverything => 'Xoá tất cả';
 
   @override
   String get settingsDelete => 'Xóa';
 
   @override
-  String get settingsDeleteAllDone => 'Đã xóa toàn bộ dữ liệu';
+  String get settingsDeleteAllDone => 'Đã xoá toàn bộ dữ liệu';
+
+  @override
+  String get settingsThemeNote => 'Hệ thống: theo chế độ sáng/tối của máy.';
+
+  @override
+  String get settingsLanguageNote =>
+      'Cả app đổi ngay. Ngày và số tiền định dạng theo ngôn ngữ.';
+
+  @override
+  String get settingsHideTabBar => 'Ẩn thanh tab khi cuộn';
+
+  @override
+  String get settingsSectionOrganize => 'Sắp xếp gói';
+
+  @override
+  String settingsBudgetValue(String amount) {
+    return '$amount/tháng';
+  }
+
+  @override
+  String get settingsBudgetNotSet => 'Chưa đặt';
+
+  @override
+  String get settingsSectionAutomation => 'Tự động';
+
+  @override
+  String get settingsScan => 'Quét ảnh chụp';
+
+  @override
+  String get settingsScanHint => 'Thêm từ trang cửa hàng và hoá đơn';
+
+  @override
+  String get settingsBankNotifications => 'Thông báo ngân hàng/ví';
+
+  @override
+  String get settingsSoon => 'Sắp có';
+
+  @override
+  String get settingsAutoBackupOffNote => 'Tắt — dữ liệu chỉ nằm trên máy';
+
+  @override
+  String get settingsAutoBackupFolderLabel => 'Thư mục';
+
+  @override
+  String get settingsAutoBackupTimeLabel => 'Giờ';
+
+  @override
+  String settingsAutoBackupDaily(String time) {
+    return '$time mỗi ngày';
+  }
+
+  @override
+  String get settingsAutoBackupPasswordLabel => 'Mật khẩu';
+
+  @override
+  String get settingsAutoBackupKeepsLabel => 'Giữ';
+
+  @override
+  String get settingsAutoBackupKeepsValue => '2 file mới nhất';
+
+  @override
+  String get settingsAutoBackupIntro =>
+      'Mỗi ngày Subnest lưu một file .subnest đã mã hoá vào thư mục bạn chọn — trên máy, thẻ nhớ hoặc thư mục đồng bộ như Google Drive.';
+
+  @override
+  String get settingsAutoBackupSetupTime => 'Giờ sao lưu';
+
+  @override
+  String get settingsAutoBackupKeep => 'Giữ lại';
+
+  @override
+  String get settingsAutoBackupKeepValue => '2 file mới nhất';
+
+  @override
+  String get settingsAutoBackupChoose => 'Chọn…';
+
+  @override
+  String get settingsAutoBackupPasswordRule => 'Ít nhất 6 ký tự';
+
+  @override
+  String get settingsAutoBackupWriteDownTitle => 'Ghi lại mật khẩu';
+
+  @override
+  String get settingsAutoBackupWriteDownBody =>
+      'Không có mật khẩu thì không mở được file — không thể đặt lại.';
+
+  @override
+  String get settingsAutoBackupFolderNeeded => 'Hãy chọn thư mục trước';
+
+  @override
+  String get settingsBackupNow => 'Sao lưu ngay';
+
+  @override
+  String get settingsBackupNowHint => 'File .subnest, có hoặc không mật khẩu';
+
+  @override
+  String settingsBackupFileMeta(int subs, int payments, String size) {
+    return '$subs gói · $payments thanh toán · $size';
+  }
+
+  @override
+  String get settingsBackupProtectHint => 'Nên bật nếu lưu lên đám mây';
+
+  @override
+  String get settingsBackupSave => 'Lưu file…';
+
+  @override
+  String get settingsRestoreValid => 'Hợp lệ';
+
+  @override
+  String settingsRestoreProtected(String size) {
+    return 'Có mật khẩu · $size';
+  }
+
+  @override
+  String get settingsRestoreInFile => 'Trong file';
+
+  @override
+  String get settingsRestoreSubs => 'Gói đăng ký';
+
+  @override
+  String get settingsRestorePayments => 'Thanh toán';
+
+  @override
+  String get settingsRestorePriceChanges => 'Lần đổi giá';
+
+  @override
+  String get settingsRestoreSettings => 'Cài đặt và nhãn';
+
+  @override
+  String get settingsRestoreIncluded => 'Có';
+
+  @override
+  String get settingsRestoreWarnTitle => 'Khôi phục sẽ thay thế toàn bộ';
+
+  @override
+  String get settingsRestoreWarnBody =>
+      'Dữ liệu hiện có trên máy bị xoá và thay bằng dữ liệu trong file.';
+
+  @override
+  String get settingsRestoreHasPassword => 'File có mật khẩu';
+
+  @override
+  String get settingsRestoreUnlock => 'Mở khoá và khôi phục';
+
+  @override
+  String settingsRestoreReplaceBody(int current, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      current,
+      locale: localeName,
+      other: '$current gói hiện tại',
+      zero: 'Dữ liệu hiện tại',
+    );
+    return '$_temp0 sẽ được thay bằng $count gói trong bản sao lưu này.';
+  }
+
+  @override
+  String settingsDeleteAllTypeTitle(String word) {
+    return 'Gõ $word để xác nhận';
+  }
+
+  @override
+  String get settingsDeleteAllWord => 'XOA';
+
+  @override
+  String settingsVersionValue(String version) {
+    return 'Phiên bản $version';
+  }
+
+  @override
+  String get settingsLibrary => 'Thư viện dịch vụ';
+
+  @override
+  String settingsLibraryValue(String ago, int count) {
+    return 'Cập nhật $ago · $count dịch vụ';
+  }
+
+  @override
+  String settingsLibraryCount(int count) {
+    return '$count dịch vụ';
+  }
+
+  @override
+  String get settingsAgoToday => 'hôm nay';
+
+  @override
+  String get settingsPriceLists => 'Bảng giá';
+
+  @override
+  String get settingsPriceListsValue => 'US + Việt Nam';
+
+  @override
+  String get settingsAutomationHero => 'Để Subnest tự tìm gói đăng ký';
+
+  @override
+  String get settingsAutomationHeroBody =>
+      'Mọi thứ được đọc ngay trên máy. Không tải gì lên.';
+
+  @override
+  String get settingsAutomationScanHint =>
+      'Trang gói Google Play / App Store, hoá đơn';
+
+  @override
+  String get settingsOpen => 'Mở';
+
+  @override
+  String get settingsGmailHint => 'Email hoá đơn và gia hạn';
+
+  @override
+  String get settingsAutomationFound => 'Khi tìm thấy';
+
+  @override
+  String get settingsAutoAdd => 'Tự thêm gói mới';
+
+  @override
+  String get settingsAutoConfirm => 'Tự xác nhận kỳ';
+
+  @override
+  String get settingsAutomationNote =>
+      'Mọi thay đổi tự động đều gắn nhãn Tự động và có Hoàn tác.';
+
+  @override
+  String get settingsEarlyAccessCta => 'Đăng ký dùng sớm';
+
+  @override
+  String get settingsProBody =>
+      'Tự tìm và tự xác nhận gói cho bạn. Nhập tay luôn miễn phí.';
+
+  @override
+  String get settingsProNow => 'Có ngay';
+
+  @override
+  String get settingsProUndo => 'Hoàn tác mọi thay đổi';
+
+  @override
+  String get settingsEarlyAccessTitle => 'Đăng ký sớm';
+
+  @override
+  String get settingsEarlyAccessBody =>
+      'Đăng ký ngay, app sẽ báo giá trước khi Pro bắt đầu tính phí. Không trừ tiền khi chưa hỏi bạn.';
+
+  @override
+  String get settingsJoinEarlyAccess => 'Đăng ký dùng sớm';
+
+  @override
+  String get settingsNotNow => 'Để sau';
+
+  @override
+  String get settingsEarlyAccessSubject => 'Đăng ký dùng sớm Subnest Pro';
+
+  @override
+  String settingsWhenToday(String time) {
+    return 'hôm nay, $time';
+  }
+
+  @override
+  String settingsWhenYesterday(String time) {
+    return 'hôm qua, $time';
+  }
+
+  @override
+  String get settingsBackupPasswordShow => 'Hiện mật khẩu';
+
+  @override
+  String get settingsBackupPasswordHide => 'Ẩn mật khẩu';
 
   @override
   String get subscriptionDetailEdit => 'Sửa';
@@ -3038,8 +3462,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormPriceRequired => 'Giá phải lớn hơn 0';
 
   @override
-  String subscriptionFormPriceWas(String old, String date) {
-    return 'Giá cũ $old. Giá mới áp dụng từ kỳ tới ($date). Các khoản đã trả giữ nguyên.';
+  String subscriptionFormPriceWas(String old) {
+    return 'Giá cũ $old. Khi lưu, app hỏi giá mới áp dụng từ kỳ nào và ghi vào Lịch sử giá.';
   }
 
   @override
@@ -3150,7 +3574,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormMore => 'Thêm chi tiết';
 
   @override
-  String get subscriptionFormMoreSub => 'Link huỷ, ghi chú';
+  String get subscriptionFormMoreSub =>
+      'Thanh toán, link huỷ, ghi chú, đáng tiền?';
 
   @override
   String get subscriptionFormPaymentMethod => 'Phương thức thanh toán';
@@ -3178,56 +3603,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String subscriptionFormPriceDialogBody(String date) {
-    return 'Kỳ $date và các kỳ sau dùng giá mới.';
+    return 'Kỳ $date và các kỳ sau dùng giá mới. Các khoản đã trả giữ nguyên, thay đổi được ghi vào Lịch sử giá.';
   }
 
   @override
-  String subscriptionFormPriceDialogPast(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count khoản đã trả vẫn giữ đúng số tiền bạn đã trả.',
-    );
-    return '$_temp0';
+  String subscriptionFormPriceApply(String date) {
+    return 'Áp dụng từ $date';
   }
 
   @override
-  String get subscriptionFormPriceApply => 'Áp dụng từ kỳ tới';
-
-  @override
-  String subscriptionFormPriceKeep(String price) {
-    return 'Giữ $price';
-  }
-
-  @override
-  String get subscriptionFormTileTitle => 'Biểu tượng';
-
-  @override
-  String get subscriptionFormTilePreview => 'Xem trong danh sách';
-
-  @override
-  String get subscriptionFormTileLetters => 'Chữ cái';
-
-  @override
-  String get subscriptionFormTileEmoji => 'Emoji';
-
-  @override
-  String get subscriptionFormTileLettersHint => '1–2 ký tự';
+  String get subscriptionFormTileTitle => 'Đổi biểu tượng';
 
   @override
   String get subscriptionFormTileColour => 'Màu';
-
-  @override
-  String subscriptionFormTileColourNote(String name) {
-    return 'Ô đầu là màu riêng của $name trong thư viện. Màu chữ tự chọn để đủ tương phản.';
-  }
-
-  @override
-  String get subscriptionFormTileColourNoteCustom =>
-      'Màu chữ tự chọn để đủ tương phản.';
-
-  @override
-  String get subscriptionFormTileOrEmoji => 'Hoặc emoji';
 
   @override
   String subscriptionFormTileSwatch(int index) {
@@ -3284,9 +3672,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormNewLabelHint => 'vd: Gia đình, Công việc';
 
   @override
-  String get subscriptionFormMethodNone => 'Không chọn';
-
-  @override
   String subscriptionFormMethodUsage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -3306,11 +3691,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get subscriptionFormAdd => 'Thêm';
-
-  @override
-  String subscriptionFormRemindMany(String time) {
-    return 'Chọn bao nhiêu cũng được — mỗi mốc gửi một nhắc lúc $time.';
-  }
 
   @override
   String get subscriptionFormWorthIt => 'Đáng tiền không?';
@@ -3334,52 +3714,78 @@ class AppLocalizationsVi extends AppLocalizations {
   String get subscriptionFormDeleteAction => 'Xoá';
 
   @override
-  String get subscriptionFormTilePhoto => 'Ảnh';
-
-  @override
   String get subscriptionFormTilePhotoPick => 'Chọn ảnh';
-
-  @override
-  String get subscriptionFormTilePhotoChange => 'Đổi ảnh';
 
   @override
   String get subscriptionFormTilePhotoRemove => 'Gỡ ảnh';
 
   @override
-  String get subscriptionFormTilePhotoNote =>
-      'Hiện thay cho chữ. Ảnh chỉ nằm trên máy này và trong bản sao lưu.';
-
-  @override
   String get subscriptionFormTilePhotoFailed => 'Không mở được ảnh này.';
 
   @override
-  String get subscriptionFormCropTitle => 'Kéo và phóng to';
+  String get subscriptionFormCropTitle => 'Di chuyển và thu phóng';
 
   @override
   String get subscriptionFormCropHint =>
-      'Chụm hai ngón để phóng to, kéo để di chuyển. Ô vuông là logo.';
+      'Phần trong khung vuông sẽ là biểu tượng';
 
   @override
   String get subscriptionFormCropUse => 'Dùng ảnh';
 
   @override
-  String get widgetNext => 'Tiếp theo';
+  String get subscriptionFormPriceNow => 'Hiện tại';
 
   @override
-  String get widgetUpcoming => 'Sắp trả';
+  String subscriptionFormPriceFrom(String date) {
+    return 'Từ $date';
+  }
+
+  @override
+  String subscriptionFormRemindAt(String time) {
+    return 'lúc $time';
+  }
+
+  @override
+  String get subscriptionFormCustomSub =>
+      'Dịch vụ tự tạo · chạm biểu tượng để chọn ảnh';
+
+  @override
+  String get subscriptionFormAddMethod => 'Thêm';
+
+  @override
+  String get subscriptionFormTileLetterPreview => 'Chữ trên nền màu';
+
+  @override
+  String get subscriptionFormTilePhotoPreview => 'Ảnh của bạn, cắt vuông';
+
+  @override
+  String get subscriptionFormTileTakePhoto => 'Chụp ảnh';
+
+  @override
+  String get subscriptionFormTileLetterOrEmoji => 'Chữ cái hoặc emoji';
+
+  @override
+  String get subscriptionFormCropRotate => 'Xoay';
+
+  @override
+  String get subscriptionFormMethodNone => 'Không chọn';
 
   @override
   String get widgetThisMonth => 'Tháng này';
 
   @override
-  String widgetPerMonth(String amount) {
-    return '$amount/tháng';
-  }
+  String get widgetPerMonthShort => '/tháng';
 
   @override
   String widgetMonthlyTotalA11y(String amount) {
     return 'Tổng mỗi tháng $amount';
   }
+
+  @override
+  String get widgetPaid => 'Đã thanh toán';
+
+  @override
+  String get widgetStillToPay => 'Còn phải thanh toán';
 
   @override
   String widgetToConfirm(int count) {
@@ -3390,24 +3796,41 @@ class AppLocalizationsVi extends AppLocalizations {
   String get widgetAwaiting => 'Chờ xác nhận';
 
   @override
+  String get widgetTapToConfirm => 'Chạm để xác nhận';
+
+  @override
   String get widgetDueTomorrow => 'Ngày mai';
 
   @override
   String widgetDueInDays(String days) {
-    return 'Còn $days ngày';
+    return '$days ngày';
   }
 
   @override
-  String get widgetFirstCharge => 'lần trừ tiền đầu';
+  String get widgetLeftTomorrow => 'ngày mai';
 
   @override
-  String get widgetEmptyTitle => 'Chưa có gói sắp trả';
+  String widgetLeftDays(String days) {
+    return 'còn $days ngày';
+  }
 
   @override
-  String get widgetEmptyBody => 'Mở Subnest để thêm gói đầu tiên';
+  String widgetTrialEnds(String date) {
+    return 'Hết dùng thử $date';
+  }
+
+  @override
+  String get widgetEmptyTitle => 'Chưa có gói';
+
+  @override
+  String get widgetEmptyBody => 'Chạm để thêm gói đầu tiên';
 
   @override
   String get widgetLocked => 'Đã khoá bằng PIN';
+
+  @override
+  String get widgetLockedLong =>
+      'Đã khoá bằng PIN — mở Subnest để xem các khoản';
 
   @override
   String get widgetOpenApp => 'Mở Subnest';
