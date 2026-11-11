@@ -11,6 +11,9 @@ import '../home/ui_harness.dart';
 
 Finder pending(String id, LocalDate due) => find.byKey(ValueKey('pending-$id-$due'));
 
+/// Text inside the confirm sheet (the Overview behind it shows the same names).
+Finder inSheet(String text) => find.descendant(of: find.byType(ConfirmSheet), matching: find.text(text));
+
 void main() {
   setUpAll(() async {
     await initializeDateFormatting();
@@ -18,14 +21,14 @@ void main() {
   });
 
   group('S6 Confirm sheet', () {
-    testWidgets('asks for the period due today (png 34)', (tester) async {
+    testWidgets('asks for the period due today (065)', (tester) async {
       await pumpApp(tester, push: '/confirm/netflix');
-      expect(find.text('Did you pay Netflix?'), findsOneWidget);
+      expect(inSheet('Netflix Premium'), findsOneWidget);
       expect(find.text('Due today'), findsOneWidget);
       expect(find.text('Period of 4 Nov 2026'), findsOneWidget);
+      expect(inSheet('Monthly'), findsOneWidget);
       expect(find.text('Amount paid'), findsOneWidget);
       expect(find.text('Your share · plan ₫260,000 ÷ 4'), findsOneWidget);
-      expect(find.text('Confirming moves the next renewal to Fri, 4 Dec.'), findsOneWidget);
       expect(find.text('Paid'), findsOneWidget);
       expect(find.text('Didn’t pay this period'), findsOneWidget);
       expect(find.text('Later'), findsOneWidget);
@@ -40,7 +43,7 @@ void main() {
       await settle(tester);
       expect(find.text('Payment saved'), findsOneWidget);
       expect(find.text('Netflix · ₫70,000 · 4 Nov 2026'), findsOneWidget);
-      expect(find.text('Next period: Fri, 4 Dec 2026'), findsOneWidget);
+      expect(find.text('Next period: 4 Dec 2026'), findsOneWidget);
       final p = (await app.periods()).firstWhere((p) => p.dueDate == today);
       expect(p.outcome, PeriodOutcome.payment);
       expect(p.amountMinor, 70000);
@@ -98,23 +101,24 @@ void main() {
       await closeApp(tester);
     });
 
-    testWidgets('catch-up: Paid moves to the next period, Didn’t pay finishes (png 36)', (tester) async {
+    testWidgets('catch-up (067): Paid → 1 more period → Next period; Didn’t pay finishes', (tester) async {
       final app = await pumpApp(tester, subscriptions: Mock.many, push: '/confirm/viettel');
-      expect(find.text('Did you pay Viettel 5G?'), findsOneWidget);
+      expect(inSheet('Viettel 5G'), findsOneWidget);
       expect(find.text('1 more after this'), findsOneWidget);
       expect(find.text('Period of 1 Oct 2026'), findsOneWidget);
-      expect(find.text('Current price · edit if it changed'), findsOneWidget);
-      expect(find.text('Next up: the 1 Nov period, also waiting.'), findsOneWidget);
+      expect(find.text('Current price · change it if you paid a different amount'), findsOneWidget);
       await tester.tap(find.text('Paid'));
       await settle(tester);
-      expect(find.text('1 Oct saved · ₫150,000'), findsOneWidget);
-      expect(find.text('Overdue'), findsOneWidget);
+      expect(find.text('Payment saved'), findsOneWidget);
+      expect(find.text('1 more period to confirm — opening it next'), findsOneWidget);
+      await tester.tap(find.text('Next period'));
+      await settle(tester);
+      expect(find.text('Due 1 Nov'), findsOneWidget);
       expect(find.text('Period of 1 Nov 2026'), findsOneWidget);
-      expect(find.text('Confirming moves the next renewal to Tue, 1 Dec.'), findsOneWidget);
       await tester.tap(find.text('Didn’t pay this period'));
       await settle(tester);
       expect(find.text('Marked as not paid'), findsOneWidget);
-      expect(find.text('Next period: Tue, 1 Dec 2026'), findsOneWidget);
+      expect(find.text('Next period: 1 Dec 2026'), findsOneWidget);
       final ps = (await app.periods()).where((p) => p.subscriptionId == 'viettel').toList()
         ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
       expect([for (final p in ps) p.outcome], [PeriodOutcome.payment, PeriodOutcome.skipped]);
@@ -143,23 +147,31 @@ void main() {
         color: 0xFF202123,
       );
       await pumpApp(tester, subscriptions: [chat], push: '/confirm/chatgpt');
-      expect(find.text('Did you pay ChatGPT?'), findsOneWidget);
+      expect(inSheet('ChatGPT Plus'), findsOneWidget);
       expect(find.descendant(of: find.byType(ConfirmSheet), matching: find.text('≈ ₫508,000')), findsOneWidget);
       await closeApp(tester);
     });
 
     testWidgets('Vietnamese (png 34 VI)', (tester) async {
-      await pumpApp(tester, setup: const Setup(locale: 'vi'), push: '/confirm/netflix');
-      expect(find.text('Bạn đã trả Netflix chưa?'), findsOneWidget);
+      await pumpApp(
+        tester,
+        setup: const Setup(locale: 'vi'),
+        push: '/confirm/netflix',
+      );
+      expect(inSheet('Netflix Premium'), findsOneWidget);
       expect(find.text('Đến hạn hôm nay'), findsOneWidget);
       expect(find.text('Kỳ 04/11/2026'), findsOneWidget);
-      expect(find.text('Xác nhận xong, ngày gia hạn tiếp theo là T6, 4/12.'), findsOneWidget);
+      expect(inSheet('Hằng tháng'), findsOneWidget);
       await closeApp(tester);
     });
 
     testWidgets('touch targets ≥ 48dp, labelled; contrast', (tester) async {
       for (final dark in [false, true]) {
-        await pumpApp(tester, setup: Setup(dark: dark), push: '/confirm/netflix');
+        await pumpApp(
+          tester,
+          setup: Setup(dark: dark),
+          push: '/confirm/netflix',
+        );
         final handle = tester.ensureSemantics();
         await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
         await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
@@ -213,7 +225,7 @@ void main() {
       await pumpApp(tester, subscriptions: Mock.many, location: '/awaiting');
       await tester.tap(find.text('4 Nov · today'));
       await settle(tester);
-      expect(find.text('Did you pay Netflix?'), findsOneWidget);
+      expect(inSheet('Netflix Premium'), findsOneWidget);
       await closeApp(tester);
     });
 
@@ -260,7 +272,12 @@ void main() {
     });
 
     testWidgets('Vietnamese', (tester) async {
-      await pumpApp(tester, setup: const Setup(locale: 'vi'), subscriptions: Mock.many, location: '/awaiting');
+      await pumpApp(
+        tester,
+        setup: const Setup(locale: 'vi'),
+        subscriptions: Mock.many,
+        location: '/awaiting',
+      );
       expect(find.text('Chờ xác nhận'), findsWidgets);
       expect(find.text('1/10 · 34 ngày trước'), findsOneWidget);
       expect(find.text('Sau kỳ 1/10'), findsOneWidget);
@@ -270,7 +287,12 @@ void main() {
 
     testWidgets('touch targets ≥ 48dp, labelled; contrast', (tester) async {
       for (final dark in [false, true]) {
-        await pumpApp(tester, setup: Setup(dark: dark), subscriptions: Mock.many, location: '/awaiting');
+        await pumpApp(
+          tester,
+          setup: Setup(dark: dark),
+          subscriptions: Mock.many,
+          location: '/awaiting',
+        );
         final handle = tester.ensureSemantics();
         await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
         await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
@@ -287,6 +309,9 @@ void main() {
         await pumpApp(tester, setup: s, subscriptions: Mock.many, push: '/confirm/viettel');
         expectNoLayoutErrors(tester);
         await tester.tap(find.byIcon(AppIcons.check).first);
+        await settle(tester);
+        expectNoLayoutErrors(tester); // chain view
+        await tester.tap(find.text(s.locale == 'vi' ? 'Kỳ tiếp theo' : 'Next period'));
         await settle(tester);
         expectNoLayoutErrors(tester);
         await tester.tap(find.byIcon(AppIcons.check).first);

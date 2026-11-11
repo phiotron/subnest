@@ -99,7 +99,7 @@ class AwaitingScreen extends ConsumerWidget {
                       final big = MediaQuery.textScalerOf(context).scale(10) >= 13;
                       final button = AppButton.primary(
                         label: big ? l.confirmAllAction : l.confirmAllButton(total),
-                        icon: AppIcons.check,
+                        icon: LucideIcons.checkCheck,
                         expand: true,
                         onPressed: () => _confirmAll(context, ref, items),
                       );
@@ -108,7 +108,12 @@ class AwaitingScreen extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(total, semanticsLabel: l.spokenLabel(total), textAlign: TextAlign.center, style: AppType.titleSm.copyWith(color: c.ink).tabular),
+                          Text(
+                            total,
+                            semanticsLabel: l.spokenLabel(total),
+                            textAlign: TextAlign.center,
+                            style: AppType.titleSm.copyWith(color: c.ink).tabular,
+                          ),
                           const SizedBox(height: AppSpace.s2),
                           button,
                         ],
@@ -159,10 +164,7 @@ class AwaitingScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: Text(
-                            n > 1 ? '${s.name} × $n' : s.name,
-                            style: AppType.body.copyWith(color: c.ink),
-                          ),
+                          child: Text(n > 1 ? '${s.name} × $n' : s.name, style: AppType.body.copyWith(color: c.ink)),
                         ),
                         const SizedBox(width: AppSpace.s3),
                         Text(
@@ -181,18 +183,12 @@ class AwaitingScreen extends ConsumerWidget {
       ),
       actions: [
         Builder(
-          builder: (ctx) => AppButton.primary(
-            label: l.confirmAllAction,
-            expand: true,
-            onPressed: () => Navigator.of(ctx).pop(true),
-          ),
+          builder: (ctx) =>
+              AppButton.primary(label: l.confirmAllAction, expand: true, onPressed: () => Navigator.of(ctx).pop(true)),
         ),
         Builder(
-          builder: (ctx) => AppButton.text(
-            label: l.confirmAllCancel,
-            expand: true,
-            onPressed: () => Navigator.of(ctx).pop(false),
-          ),
+          builder: (ctx) =>
+              AppButton.text(label: l.confirmAllCancel, expand: true, onPressed: () => Navigator.of(ctx).pop(false)),
         ),
       ],
     );
@@ -203,6 +199,9 @@ class AwaitingScreen extends ConsumerWidget {
     if (context.mounted) showAppToast(context, l.confirmAllSaved(count));
   }
 }
+
+/// Large text (≥ 130%): the amount moves under the date so the name keeps its width.
+bool stackedAmount(BuildContext context) => MediaQuery.textScalerOf(context).scale(10) >= 13;
 
 /// One pending period: tile (warning dot, or dimmed when queued), name, "1 Oct · 34d ago"
 /// (+ "🔒 After 1 Oct" when queued), amount, quick ✓ (44px circle in a 48dp target).
@@ -243,11 +242,15 @@ class _PendingRow extends StatelessWidget {
     final quick = Semantics(
       button: true,
       enabled: !queued,
-      label: queued ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)) : l.confirmMarkPaid(s.name, dateText),
+      label: queued
+          ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today))
+          : l.confirmMarkPaid(s.name, dateText),
       excludeSemantics: true,
       onTap: onQuick,
       child: Tooltip(
-        message: queued ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today)) : l.confirmMarkPaid(s.name, dateText),
+        message: queued
+            ? l.confirmQueued(AppDates.short(l, queuedAfter!, today: today))
+            : l.confirmMarkPaid(s.name, dateText),
         excludeFromSemantics: true,
         child: InkResponse(
           onTap: onQuick,
@@ -270,14 +273,17 @@ class _PendingRow extends StatelessWidget {
       ),
     );
 
-    final amount = Text(
-      l.money(s.myShare),
-      maxLines: 1,
-      softWrap: false,
-      style: AppType.titleSm.copyWith(color: c.ink).tabular,
+    // `row-amt`: amount, cycle chip under it.
+    final amount = Column(
+      crossAxisAlignment: stackedAmount(context) ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(l.money(s.myShare), maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: c.ink).tabular),
+        const SizedBox(height: 2),
+        CycleChip(cycle: s.cycle),
+      ],
     );
-    // Large text (≥ 130%): the amount moves under the date so the name keeps its width.
-    final stacked = MediaQuery.textScalerOf(context).scale(10) >= 13;
+    final stacked = stackedAmount(context);
 
     return InkWell(
       onTap: () => context.push(AppRoutes.confirm(s.id)),
@@ -302,7 +308,12 @@ class _PendingRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(s.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppType.titleSm.copyWith(color: c.ink)),
+                    Text(
+                      s.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppType.titleSm.copyWith(color: c.ink),
+                    ),
                     const SizedBox(height: 2),
                     Text('$dateText · $ago', style: AppType.meta.copyWith(color: c.inkMuted)),
                     if (stacked) ...[const SizedBox(height: 2), amount],

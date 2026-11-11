@@ -4,27 +4,35 @@ import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n.dart';
 import '../../core/widgets/widgets.dart';
-import '../home/widgets/overview_cards.dart';
 
-/// S5 "cancelled" moment (png 33): confetti falls once (1.4 s; none under reduce-motion), the
-/// party nest, "+₫1,390,000 a year saved", the new savings total and "See cancelled".
+/// 063 "cancelled" moment: confetti falls once (1.4 s; none under reduce-motion), the party nest,
+/// "Nice — that's $215.88 a year saved", a reminder to cancel with the provider too (Subnest can't),
+/// the Total saving card ("from 3 cancelled subscriptions"), then Done · Undo.
 class CelebrateScreen extends StatefulWidget {
   const CelebrateScreen({
     super.key,
     required this.name,
     required this.savedYearly,
     required this.totalYearly,
-    required this.onSeeCancelled,
+    required this.cancelledCount,
+    required this.host,
+    required this.onDone,
+    required this.onUndo,
   });
 
   final String name;
 
-  /// "₫1,390,000" (formatted, may start with "≈ ").
+  /// "$215.88" (formatted, may start with "≈ ").
   final String savedYearly;
 
-  /// "₫2,869,000" — savings after this cancellation.
+  /// "$191.87" — savings after this cancellation.
   final String totalYearly;
-  final VoidCallback onSeeCancelled;
+  final int cancelledCount;
+
+  /// "canva.com" — where to cancel for real; `null` = no known link.
+  final String? host;
+  final VoidCallback onDone;
+  final VoidCallback onUndo;
 
   @override
   State<CelebrateScreen> createState() => _CelebrateScreenState();
@@ -62,63 +70,89 @@ class _CelebrateScreenState extends State<CelebrateScreen> with SingleTickerProv
             ),
           ),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpace.s5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: AppSpace.s10 + AppSpace.s10),
-                          const NestArt(kind: NestArtKind.party, width: 200),
-                          const SizedBox(height: AppSpace.s2),
-                          Text(
-                            l.subscriptionDetailCelebrateCancelled(widget.name),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: AppSpace.s1, top: AppSpace.s1),
+                    child: AppIconButton(
+                      icon: AppIcons.close,
+                      tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                      onPressed: widget.onDone,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: AppSpace.s6),
+                        const NestArt(kind: NestArtKind.party, width: 220),
+                        const SizedBox(height: AppSpace.s2),
+                        Semantics(
+                          header: true,
+                          liveRegion: true,
+                          child: Text(
+                            l.subscriptionDetailCelebrateTitle(widget.savedYearly),
                             textAlign: TextAlign.center,
-                            style: AppType.meta.copyWith(color: c.inkMuted),
+                            style: AppType.headline.copyWith(color: c.ink),
+                            textScaler: AppTextScale.capped(context, AppTextScale.headline),
                           ),
-                          const SizedBox(height: AppSpace.s4),
-                          Semantics(
-                            liveRegion: true,
-                            child: TextScaleCap(
-                              max: AppTextScale.display,
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  '+${widget.savedYearly}',
-                                  maxLines: 1,
-                                  style: AppType.display.copyWith(color: c.success).tabular,
+                        ),
+                        const SizedBox(height: AppSpace.s2),
+                        Text(
+                          widget.host == null
+                              ? l.subscriptionDetailCelebrateBodyNoHost(widget.name)
+                              : l.subscriptionDetailCelebrateBody(widget.name, widget.host!),
+                          textAlign: TextAlign.center,
+                          style: AppType.body.copyWith(color: c.inkMuted),
+                        ),
+                        const SizedBox(height: AppSpace.s4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+                          decoration: BoxDecoration(color: c.successSoft, borderRadius: BorderRadius.circular(16)),
+                          child: MergeSemantics(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(l.subscriptionDetailTotalSaving, style: AppType.meta.copyWith(color: c.success)),
+                                const SizedBox(height: 2),
+                                Text(
+                                  l.subscriptionDetailPerYear(widget.totalYearly),
+                                  textAlign: TextAlign.center,
+                                  semanticsLabel: l.spokenLabel(l.subscriptionDetailPerYear(widget.totalYearly)),
+                                  style: AppType.title.copyWith(color: c.success).tabular,
                                 ),
-                              ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  l.subscriptionDetailFromCancelled(widget.cancelledCount),
+                                  textAlign: TextAlign.center,
+                                  style: AppType.meta.copyWith(color: c.success),
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                            l.subscriptionDetailCelebrateYear,
-                            textAlign: TextAlign.center,
-                            style: AppType.titleSm.copyWith(color: c.inkMuted),
-                          ),
-                          const SizedBox(height: AppSpace.s6),
-                          SavingsCard(
-                            label: l.subscriptionDetailCelebrateNow,
-                            amount: l.subscriptionDetailPerYear(widget.totalYearly),
-                          ),
-                          const SizedBox(height: AppSpace.s6),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: AppSpace.s6),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: AppSpace.s4),
-                    child: AppButton.primary(
-                      label: l.subscriptionDetailSeeCancelled,
-                      expand: true,
-                      onPressed: widget.onSeeCancelled,
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSpace.s6, 0, AppSpace.s6, AppSpace.s6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AppButton.primary(label: l.subscriptionDetailDone, expand: true, onPressed: widget.onDone),
+                      const SizedBox(height: AppSpace.s2),
+                      AppButton.text(label: l.subscriptionDetailUndo, expand: true, onPressed: widget.onUndo),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

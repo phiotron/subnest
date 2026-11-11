@@ -13,10 +13,10 @@ import '../home/subscription_labels.dart';
 /// S6 Confirm a Billing period (png 34–36) — bottom sheet route `/confirm/:id`, also the deep
 /// link of the "due today" notification, the S2 swipe, the S5 banner and S7 rows.
 ///
-/// Asks "Did you pay Netflix?" for the oldest pending period: amount (My share, editable),
-/// where the next renewal moves, then Paid · Didn't pay this period · Later. Catching up: after
-/// Paid / Didn't pay the sheet moves straight to the next pending period ("1 more after this")
-/// with a short "1 Oct saved" line; after the last one it shows "Payment saved" + the next period.
+/// Mockup v14 065–067: the oldest pending period — logo, name, "Due 8 Nov" (or "1 more after this")
+/// + "Period of 8 Nov 2026" + cycle chip, the amount (My share, editable), then Paid · Didn't pay this
+/// period · Later. After Paid: ✓ + "Payment saved" + "Next period: …"; while older periods remain,
+/// "1 more period to confirm — opening it next" and a Next period button that opens it.
 class ConfirmSheet extends ConsumerStatefulWidget {
   const ConfirmSheet({super.key, required this.subscriptionId});
 
@@ -28,12 +28,15 @@ class ConfirmSheet extends ConsumerStatefulWidget {
 
 /// The result shown after the last pending period was confirmed.
 class _Done {
-  const _Done({required this.paid, required this.period, required this.amount, required this.next});
+  const _Done({required this.paid, required this.period, required this.amount, required this.next, this.more = 0});
 
   final bool paid;
   final LocalDate period;
   final String amount;
   final LocalDate next;
+
+  /// Periods still waiting after this one (chain: "1 more period to confirm").
+  final int more;
 }
 
 class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
@@ -45,9 +48,6 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
   bool _amountEdited = false;
   bool _amountError = false;
   bool _busy = false;
-
-  /// "1 Oct saved · ₫150,000" after a catch-up step.
-  String? _step;
   _Done? _done;
 
   Future<void> _confirm(Subscription s, LocalDate period, PeriodOutcome outcome) async {
@@ -74,17 +74,15 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
     if (!mounted || updated == null) return;
     final amountText = l.money(Money(amountMinor ?? 0, s.currency));
     final remaining = BillingRules.pendingDueDates(updated, ref.read(todayProvider));
-    final day = AppDates.short(l, period, today: ref.read(todayProvider));
     setState(() {
-      if (remaining.isNotEmpty) {
-        _step = paid ? l.confirmSavedStep(day, amountText) : l.confirmSkippedStep(day);
-      } else {
-        _done = _Done(paid: paid, period: period, amount: amountText, next: updated.dueDate);
-      }
+      _done = _Done(paid: paid, period: period, amount: amountText, next: updated.dueDate, more: remaining.length);
     });
     SemanticsService.sendAnnouncement(
       View.of(context),
-      remaining.isNotEmpty ? _step! : (paid ? l.confirmSaved : l.confirmSkippedTitle),
+      [
+        paid ? l.confirmSaved : l.confirmSkippedTitle,
+        if (remaining.isNotEmpty) l.confirmChainMore(remaining.length),
+      ].join('. '),
       Directionality.of(context),
     );
   }
@@ -165,18 +163,7 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
     final more = pending.length - 1;
     final chip = more > 0
         ? l.confirmMoreAfter(more)
-        : (period == today ? l.confirmDueToday : l.confirmOverdue);
-    // Where the Due date goes once this period is confirmed (BillingRules, not UI maths).
-    final next = BillingRules.confirm(
-      s,
-      outcome: PeriodOutcome.payment,
-      today: today,
-      now: DateTime(today.year, today.month, today.day),
-      newId: () => '',
-    ).subscription.dueDate;
-    final note = more > 0
-        ? l.confirmNextUp(AppDates.short(l, pending[1], today: today))
-        : l.confirmMovesNext(AppDates.weekdayShort(l, next, today: today));
+        : (period == today ? l.confirmDueToday : l.confirmDueOn(AppDates.short(l, period, today: today)));
     String? conversion;
     if (s.currency != primary && _amount != null) {
       final v = calc.rates.convert(_amount!, s.currency, primary);
@@ -188,16 +175,17 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (_step != null) ...[
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: StatusBadge(label: _step!, kind: BadgeKind.success, icon: AppIcons.paid, large: true),
-          ),
-          const SizedBox(height: AppSpace.s3),
-        ],
         Row(
           children: [
-            ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 56, serviceId: s.serviceId, customLogoFile: s.customLogoFile),
+            ServiceTile(
+              name: s.name,
+              colorValue: s.colorValue,
+              iconText: s.iconText,
+              size: 56,
+              awaiting: true,
+              serviceId: s.serviceId,
+              customLogoFile: s.customLogoFile,
+            ),
             const SizedBox(width: AppSpace.s3),
             Expanded(
               child: Column(
@@ -206,7 +194,7 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
                 children: [
                   Semantics(
                     header: true,
-                    child: Text(l.confirmQuestion(shortName(s, catalog)), style: AppType.title.copyWith(color: c.ink)),
+                    child: Text(s.name, style: AppType.title.copyWith(color: c.ink)),
                   ),
                   const SizedBox(height: AppSpace.s1),
                   Wrap(
@@ -219,6 +207,7 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
                         l.confirmPeriodOf(AppDates.full(l, period)),
                         style: AppType.meta.copyWith(color: c.inkMuted),
                       ),
+                      CycleChip(cycle: s.cycle),
                     ],
                   ),
                 ],
@@ -243,18 +232,6 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
             _amountEdited = true;
             if (v != null) _amountError = false;
           }),
-        ),
-        const SizedBox(height: AppSpace.s3),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Icon(AppIcons.calendarClock, size: 16, color: c.inkMuted),
-            ),
-            const SizedBox(width: AppSpace.s2),
-            Expanded(child: Text(note, style: AppType.meta.copyWith(color: c.inkMuted))),
-          ],
         ),
         const SizedBox(height: AppSpace.s5),
         AppButton.primary(
@@ -319,16 +296,39 @@ class _ConfirmSheetState extends ConsumerState<ConfirmSheet> {
           style: AppType.body.copyWith(color: c.inkMuted).tabular,
         ),
         const SizedBox(height: AppSpace.s3),
-        Center(
-          child: StatusBadge(
-            label: l.confirmNextPeriod(weekdayFull(l, d.next)),
-            kind: BadgeKind.success,
-            icon: AppIcons.tabCalendar,
-            large: true,
+        if (d.more == 0)
+          Center(
+            child: StatusBadge(
+              label: l.confirmNextPeriod(AppDates.full(l, d.next)),
+              kind: BadgeKind.success,
+              icon: AppIcons.tabCalendar,
+              large: true,
+            ),
+          )
+        else
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(LucideIcons.arrowRight, size: 14, color: c.warningInk),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  l.confirmChainMore(d.more),
+                  textAlign: TextAlign.center,
+                  style: AppType.meta.copyWith(color: c.warningInk, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
-        ),
         const SizedBox(height: AppSpace.s6),
-        AppButton.tonal(label: l.confirmDone, expand: true, onPressed: () => context.pop()),
+        if (d.more == 0)
+          AppButton.tonal(label: l.confirmDone, expand: true, onPressed: () => context.pop())
+        else
+          AppButton.tonal(
+            label: l.confirmNextPeriodButton,
+            expand: true,
+            onPressed: () => setState(() => _done = null),
+          ),
       ],
     );
   }

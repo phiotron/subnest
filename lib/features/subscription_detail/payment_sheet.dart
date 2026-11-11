@@ -81,14 +81,26 @@ class _PaymentSheetState extends ConsumerState<_PaymentSheet> {
     }
 
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(AppSpace.s5, 0, AppSpace.s5, AppSpace.s4 + mq.viewPadding.bottom + mq.viewInsets.bottom),
+      padding: EdgeInsets.fromLTRB(
+        AppSpace.s5,
+        0,
+        AppSpace.s5,
+        AppSpace.s4 + mq.viewPadding.bottom + mq.viewInsets.bottom,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
-              ServiceTile(name: s.name, colorValue: s.colorValue, iconText: s.iconText, size: 56, serviceId: s.serviceId, customLogoFile: s.customLogoFile),
+              ServiceTile(
+                name: s.name,
+                colorValue: s.colorValue,
+                iconText: s.iconText,
+                size: 56,
+                serviceId: s.serviceId,
+                customLogoFile: s.customLogoFile,
+              ),
               const SizedBox(width: AppSpace.s3),
               Expanded(
                 child: Column(
@@ -136,7 +148,11 @@ class _PaymentSheetState extends ConsumerState<_PaymentSheet> {
           AppGroup(
             dividerIndent: 52,
             children: [
-              SettingRow(icon: AppIcons.tabCalendar, label: l.subscriptionDetailPaidOn, value: weekdayFull(l, p.dueDate)),
+              SettingRow(
+                icon: AppIcons.tabCalendar,
+                label: l.subscriptionDetailPaidOn,
+                value: weekdayFull(l, p.dueDate),
+              ),
               if (s.paymentMethod != null && s.paymentMethod!.trim().isNotEmpty)
                 SettingRow(icon: AppIcons.payment, label: l.subscriptionDetailPaidWith, value: s.paymentMethod),
             ],
@@ -144,7 +160,11 @@ class _PaymentSheetState extends ConsumerState<_PaymentSheet> {
           const SizedBox(height: AppSpace.s4),
           AppButton.primary(label: l.subscriptionDetailSave, expand: true, loading: _busy, onPressed: _save),
           const SizedBox(height: AppSpace.s2),
-          AppButton.outline(label: l.subscriptionDetailMarkNotPaid, expand: true, onPressed: _busy ? null : _markNotPaid),
+          AppButton.outline(
+            label: l.subscriptionDetailMarkNotPaid,
+            expand: true,
+            onPressed: _busy ? null : _markNotPaid,
+          ),
           const SizedBox(height: AppSpace.s2),
           AppButton.text(label: l.subscriptionDetailCancel, expand: true, onPressed: () => Navigator.of(context).pop()),
         ],

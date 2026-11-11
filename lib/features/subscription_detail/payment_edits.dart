@@ -15,13 +15,8 @@ class PaymentEdits {
 
   /// Turns a Payment into a Skipped period (amount 0). The subscription's Due date does not move:
   /// the period stays confirmed, only its outcome changes.
-  Future<void> markNotPaid(String periodId) =>
-      (_db.update(_db.confirmedPeriods)..where((t) => t.id.equals(periodId))).write(
-        ConfirmedPeriodsCompanion(
-          outcome: Value(PeriodOutcome.skipped.name),
-          amountMinor: const Value(0),
-        ),
-      );
+  Future<void> markNotPaid(String periodId) => (_db.update(_db.confirmedPeriods)..where((t) => t.id.equals(periodId)))
+      .write(ConfirmedPeriodsCompanion(outcome: Value(PeriodOutcome.skipped.name), amountMinor: const Value(0)));
 }
 
 final paymentEditsProvider = Provider<PaymentEdits>((ref) => PaymentEdits(ref.watch(databaseProvider)));

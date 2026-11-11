@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../core/l10n/l10n.dart';
-import '../../core/router/routes.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/providers.dart';
 import '../../domain/domain.dart';
-import '../home/home_list.dart';
+import '../home/subscription_labels.dart';
 import 'celebrate_screen.dart';
 
-/// "Mark as cancelled" (S5 button, S2 swipe): asks first, cancels through the repository
-/// (BillingRules.cancel — history kept, pending periods dropped), then shows the celebration.
-/// "See cancelled" opens the Overview on its Cancelled tab. Returns whether it was cancelled.
+/// "Mark as cancelled" (S5 button, S2 swipe, png 061): asks first, cancels through the repository
+/// (BillingRules.cancel — history kept, pending periods dropped), then shows the celebration (063).
+/// Done returns to where the user was; Undo restores the subscription. Returns whether it was cancelled.
 Future<bool> markCancelledFlow(BuildContext context, WidgetRef ref, Subscription s) async {
   final l = context.l10n;
   final primary = ref.read(primaryCurrencyProvider);
@@ -52,8 +50,9 @@ Future<bool> markCancelledFlow(BuildContext context, WidgetRef ref, Subscription
   if (!context.mounted) return true;
   final today = ref.read(todayProvider);
   final total = calc.summary(all, today).savingsYearly;
-  final allApprox = all.any((x) => x.status == SubscriptionStatus.cancelled && x.currency != primary);
-  final router = GoRouter.of(context);
+  final cancelled = all.where((x) => x.status == SubscriptionStatus.cancelled).toList();
+  final allApprox = cancelled.any((x) => x.currency != primary);
+  final link = cancelLink(s, ref.read(catalogByIdProvider));
   final navigator = Navigator.of(context, rootNavigator: true);
   await navigator.push(
     PageRouteBuilder<void>(
@@ -63,10 +62,12 @@ Future<bool> markCancelledFlow(BuildContext context, WidgetRef ref, Subscription
         name: s.name,
         savedYearly: yearlyText.replaceFirst('≈ ', ''),
         totalYearly: l.amount(total, primary, approx: allApprox),
-        onSeeCancelled: () {
-          ref.read(homeTabRequestProvider.notifier).request(HomeTab.cancelled);
-          Navigator.of(ctx).pop();
-          router.go(AppRoutes.home);
+        cancelledCount: cancelled.length,
+        host: link == null ? null : linkHost(link),
+        onDone: () => Navigator.of(ctx).pop(),
+        onUndo: () async {
+          await repo.restore(s.id);
+          if (ctx.mounted) Navigator.of(ctx).pop();
         },
       ),
       transitionsBuilder: (ctx, anim, _, child) => FadeTransition(opacity: anim, child: child),
