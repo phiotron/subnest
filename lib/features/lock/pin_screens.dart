@@ -66,16 +66,16 @@ class _PinScaffold extends StatelessWidget {
       appBar: AppTopBar(title: context.l10n.securityPinLock),
       body: SafeArea(
         top: false,
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
+        child: LayoutBuilder(
+          builder: (context, box) => SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: box.maxHeight),
               child: Padding(
                 padding: const EdgeInsets.only(top: AppSpace.s4, bottom: AppSpace.s6),
                 child: Align(alignment: Alignment.topCenter, child: pad),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

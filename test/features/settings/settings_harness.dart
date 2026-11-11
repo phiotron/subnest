@@ -33,6 +33,11 @@ import 'package:subnest/features/settings/rates_screen.dart';
 import 'package:subnest/features/settings/reminders_screen.dart';
 import 'package:subnest/features/settings/settings_platform.dart';
 import 'package:subnest/features/settings/settings_screen.dart';
+import 'package:subnest/features/settings/automation_screen.dart';
+import 'package:subnest/features/settings/auto_backup_screen.dart';
+import 'package:subnest/features/settings/manage/manage_screens.dart';
+import 'package:subnest/features/lock/lock_screen.dart';
+import 'package:subnest/features/lock/pin_screens.dart';
 
 import '../../data/backup/backup_test_utils.dart';
 
@@ -205,7 +210,10 @@ GoRouter settingsTestRouter(String initial) => GoRouter(
   initialLocation: initial,
   routes: [
     // "Delete all data" ends here; the real onboarding has its own tests.
-    GoRoute(path: '/onboarding', builder: (_, _) => const Scaffold(body: Text('ONBOARDING'))),
+    GoRoute(
+      path: '/onboarding',
+      builder: (_, _) => const Scaffold(body: Text('ONBOARDING')),
+    ),
     GoRoute(
       path: '/settings',
       builder: (_, _) => const SettingsScreen(),
@@ -221,7 +229,20 @@ GoRouter settingsTestRouter(String initial) => GoRouter(
           path: 'terms',
           builder: (_, _) => const LegalScreen(doc: LegalDoc.terms),
         ),
+        GoRoute(path: 'categories', builder: (_, _) => const ManageCategoriesScreen()),
+        GoRoute(path: 'labels', builder: (_, _) => const ManageLabelsScreen()),
+        GoRoute(path: 'payment-methods', builder: (_, _) => const ManagePaymentMethodsScreen()),
+        GoRoute(path: 'budgets', builder: (_, _) => const ManageBudgetsScreen()),
+        // Pushed with Navigator in the app; test-only paths here.
+        GoRoute(path: 'automation', builder: (_, _) => const AutomationScreen()),
+        GoRoute(path: 'auto-backup-setup', builder: (_, _) => const AutoBackupScreen(setup: true)),
+        GoRoute(path: 'pin-setup', builder: (_, _) => const PinSetupScreen()),
       ],
+    ),
+    // The lock screen (002–004) sits outside the router in the app.
+    GoRoute(
+      path: '/lock',
+      builder: (context, _) => LockScreen(checking: false, router: GoRouter.of(context)),
     ),
   ],
 );

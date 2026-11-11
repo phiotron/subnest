@@ -21,9 +21,7 @@ void main() {
   final vi = l10nFor('vi');
 
   bool toggleOf(WidgetTester tester, String label) => tester
-      .widget<AppToggle>(
-        find.descendant(of: find.widgetWithText(SettingRow, label), matching: find.byType(AppToggle)),
-      )
+      .widget<AppToggle>(find.descendant(of: find.widgetWithText(SettingRow, label), matching: find.byType(AppToggle)))
       .value;
 
   Future<void> enterPin(WidgetTester tester, String pin) async {
@@ -43,11 +41,12 @@ void main() {
       await tester.scrollUntilVisible(find.text(en.securityPrivacyScreen), 300);
       await tester.pumpAndSettle();
       expect(find.text(en.securitySection.toUpperCase()), findsOneWidget);
-      expect(find.text(en.securityPinWarning), findsOneWidget);
+      expect(find.text(en.securityPinOffNote), findsOneWidget);
+      expect(find.text(en.securityChangePin), findsNothing, reason: 'only while the PIN is on');
       expect(find.text(en.securityPrivacyScreenNote), findsOneWidget, reason: 'Android note');
       expect(toggleOf(tester, en.securityPinLock), isFalse);
       expect(toggleOf(tester, en.securityPrivacyScreen), isFalse);
-      // Order: Data (… Delete all in the automatic-backup card) → Security → About.
+      // Order: Data (automatic-backup card, then Back up now … Erase all data) → Security → About.
       final list = tester.widget<ListView>(find.byType(ListView).first);
       final children = (list.childrenDelegate as SliverChildListDelegate).children;
       final data = children.indexWhere((w) => w is AutoBackupSection);
@@ -75,11 +74,11 @@ void main() {
       await tapVisible(tester, find.text(en.securityPinLock));
       expect(find.byType(PinSetupScreen), findsOneWidget);
       expect(find.text(en.securityNewPin), findsOneWidget);
-      expect(find.text(en.securityPinWarning), findsOneWidget, reason: 'forgot-PIN warning on the first step');
+      expect(find.text(en.securityPinSetNote), findsOneWidget, reason: 'when it is asked, on the first step');
 
       await enterPin(tester, '1234');
       expect(find.text(en.securityConfirmPin), findsOneWidget);
-      expect(find.text(en.securityPinWarning), findsNothing);
+      expect(find.text(en.securityPinSetNote), findsNothing);
       await enterPin(tester, '1235');
       expect(find.text(en.securityPinMismatch), findsOneWidget);
       expect(find.text(en.securityNewPin), findsOneWidget, reason: 'starts over');
@@ -92,6 +91,29 @@ void main() {
       expect(await pinOf(f).isEnabled(), isTrue);
       expect(await pinOf(f).verify('1234'), isTrue);
       expect(f.secrets.values.values.any((v) => v.contains('1234')), isFalse);
+      expect(find.text(en.securityPinOnNote), findsOneWidget);
+      expect(find.text(en.securityChangePin), findsOneWidget);
+    });
+
+    settingsTest('Change PIN: the current PIN first, then a new one twice; a wrong one changes nothing', (
+      tester,
+    ) async {
+      final f = await SettingsFixture.create();
+      await pinOf(f).setPin('2580');
+      await pumpSettings(tester, f);
+      await tapVisible(tester, find.text(en.securityChangePin));
+      expect(find.byType(PinCheckScreen), findsOneWidget);
+      await enterPin(tester, '1111');
+      expect(find.text(en.securityWrongPin), findsOneWidget);
+      await enterPin(tester, '2580');
+      expect(find.byType(PinSetupScreen), findsOneWidget);
+      await enterPin(tester, '4321');
+      await enterPin(tester, '4321');
+      expect(find.byType(PinSetupScreen), findsNothing);
+      expect(find.text(en.securityPinChanged), findsOneWidget);
+      expect(await pinOf(f).verify('4321'), isTrue);
+      expect(await pinOf(f).verify('2580'), isFalse);
+      expect(toggleOf(tester, en.securityPinLock), isTrue);
     });
 
     settingsTest('Back while choosing a PIN: the lock stays off', (tester) async {
@@ -157,9 +179,11 @@ void main() {
       await f.settings.set(privacyScreenKey, 'true');
       await pumpSettings(tester, f);
       await tapVisible(tester, find.text(en.settingsDeleteAll));
-      expect(find.textContaining('turns off automatic backup and PIN lock'), findsOneWidget, reason: 'the confirmation says the PIN goes too');
-      await tester.tap(find.text(en.settingsDelete));
+      expect(find.text(en.settingsDeleteAllConfirm), findsOneWidget);
+      await tester.tap(find.text(en.commonContinue));
       await settle(tester);
+      await tester.enterText(find.byKey(const ValueKey('erase-word')), en.settingsDeleteAllWord);
+      await tester.pump();
       await tester.tap(find.text(en.settingsDeleteEverything));
       await settle(tester);
       expect(find.text('ONBOARDING'), findsOneWidget);

@@ -99,10 +99,14 @@ void main() {
     );
   });
 
-  Future<void> setPin(String pin) => PinService(secrets, settings: () => SettingsRepository(db), iterations: 50).setPin(pin);
+  Future<void> setPin(String pin) =>
+      PinService(secrets, settings: () => SettingsRepository(db), iterations: 50).setPin(pin);
 
-  Future<void> settle(WidgetTester tester) =>
-      tester.pumpAndSettle(const Duration(milliseconds: 100), EnginePhase.sendSemanticsUpdate, const Duration(seconds: 10));
+  Future<void> settle(WidgetTester tester) => tester.pumpAndSettle(
+    const Duration(milliseconds: 100),
+    EnginePhase.sendSemanticsUpdate,
+    const Duration(seconds: 10),
+  );
 
   Future<void> pumpApp(WidgetTester tester) async {
     tester.view
@@ -290,8 +294,8 @@ void main() {
     await settle(tester);
     expect(find.text(en.securityForgotPinTitle), findsOneWidget);
 
-    // Cancel at the explanation → back on the lock screen, nothing deleted.
-    await tester.tap(find.text(en.commonCancel));
+    // "Try again" at the explanation → back on the lock screen, nothing deleted.
+    await tester.tap(find.text(en.securityTryAgain));
     await settle(tester);
     expect(find.text(en.securityEnterPin), findsOneWidget);
     expect(await SubscriptionRepository(db).all(), hasLength(1));
@@ -302,7 +306,7 @@ void main() {
     await tester.tap(find.text(en.settingsDeleteAll));
     await settle(tester);
     expect(find.text(en.settingsDeleteAllTitle), findsOneWidget);
-    await tester.tap(find.text(en.settingsDelete));
+    await tester.tap(find.text(en.commonContinue));
     await settle(tester);
     await tester.tap(find.text(en.commonCancel));
     await settle(tester);
@@ -314,9 +318,10 @@ void main() {
     await settle(tester);
     await tester.tap(find.text(en.settingsDeleteAll));
     await settle(tester);
-    await tester.tap(find.text(en.settingsDelete));
+    await tester.tap(find.text(en.commonContinue));
     await settle(tester);
-    expect(find.text(en.settingsCannotUndo), findsOneWidget);
+    await tester.enterText(find.byKey(const ValueKey('erase-word')), en.settingsDeleteAllWord);
+    await tester.pump();
     await tester.tap(find.text(en.settingsDeleteEverything));
     await settle(tester);
 

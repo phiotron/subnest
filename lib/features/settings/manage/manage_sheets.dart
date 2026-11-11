@@ -223,6 +223,7 @@ class _DeleteCategoryDialogState extends State<_DeleteCategoryDialog> {
                           inMutuallyExclusiveGroup: true,
                           button: true,
                           label: l.manageMoveCategory(l.categoryName(t)),
+                          onTap: () => setState(() => _target = t.id),
                           excludeSemantics: true,
                           child: Material(
                             color: t.id == _target ? c.brandSoft : c.surface2,

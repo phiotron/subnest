@@ -165,13 +165,14 @@ class _LockBodyState extends ConsumerState<_LockBody> {
     return Scaffold(
       backgroundColor: c.bg,
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
+        child: LayoutBuilder(
+          builder: (context, box) => SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: box.maxHeight),
               child: Padding(
                 padding: const EdgeInsets.only(top: 56, bottom: AppSpace.s2),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     PinPad(
                       leading: const AppMark(size: 56, radius: 13),
@@ -185,7 +186,7 @@ class _LockBodyState extends ConsumerState<_LockBody> {
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

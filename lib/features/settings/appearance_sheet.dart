@@ -64,35 +64,37 @@ class LanguageSheet extends ConsumerWidget {
     final current = settings?.localeCode ?? 'en';
     return AppSheet(
       title: l.settingsLanguage,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppCard(
-            padding: EdgeInsets.zero,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (final (code, english) in _options)
-                  _LanguageRow(
-                    title: SettingsFormat.languageName(code),
-                    subtitle: english,
-                    selected: current == code,
-                    onTap: settings == null
-                        ? null
-                        : () async {
-                            await repo.setLocale(code);
-                            if (context.mounted) Navigator.pop(context);
-                          },
-                  ),
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppCard(
+              padding: EdgeInsets.zero,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final (code, english) in _options)
+                    _LanguageRow(
+                      title: SettingsFormat.languageName(code),
+                      subtitle: english,
+                      selected: current == code,
+                      onTap: settings == null
+                          ? null
+                          : () async {
+                              await repo.setLocale(code);
+                              if (context.mounted) Navigator.pop(context);
+                            },
+                    ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: AppSpace.s3, bottom: AppSpace.s4),
-            child: Text(l.settingsLanguageNote, style: AppType.meta.copyWith(color: c.inkMuted)),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpace.s3, bottom: AppSpace.s4),
+              child: Text(l.settingsLanguageNote, style: AppType.meta.copyWith(color: c.inkMuted)),
+            ),
+          ],
+        ),
       ),
     );
   }
