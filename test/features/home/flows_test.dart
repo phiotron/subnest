@@ -25,8 +25,8 @@ void main() {
   testWidgets('flow 3: "due today" notification → S6 → Paid → S2 updated', (tester) async {
     // SubnestApp pushes the notification's route (`/confirm/:id`) on top of the current screen.
     final app = await pumpApp(tester, push: '/confirm/netflix');
-    expect(find.text('Did you pay Netflix?'), findsOneWidget);
-    await tester.tap(find.text('Paid').last); // the sheet's button (the cost card's "Paid" is under it)
+    expect(find.byType(ConfirmSheet), findsOneWidget);
+    await tester.tap(find.descendant(of: find.byType(ConfirmSheet), matching: find.text('Paid')));
     await settle(tester);
     expect(find.text('Payment saved'), findsOneWidget);
     await tester.tap(find.text('Done'));
@@ -59,18 +59,24 @@ void main() {
     await scrollToFinder(tester, find.byKey(const ValueKey('row-canva')));
     await tester.tap(find.byKey(const ValueKey('row-canva')));
     await settle(tester);
-    await scrollToFinder(tester, find.text('How to cancel this service'));
-    await tester.tap(find.text('How to cancel this service'));
+    await scrollToFinder(tester, find.text('How to cancel'));
+    await tester.tap(find.text('How to cancel'));
     await settle(tester);
     expect(launched, ['https://www.canva.com/settings/billing-and-plans']);
+    await scrollToFinder(tester, find.text('Mark as cancelled'));
     await tester.tap(find.text('Mark as cancelled'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Mark as cancelled').last);
     await settle(tester);
-    expect(find.text('+₫1,390,000'), findsOneWidget);
-    expect(find.text('₫2,869,000/year'), findsOneWidget);
-    await tester.tap(find.text('See cancelled'));
+    expect(find.text('Nice — that’s ₫1,390,000 a year saved'), findsOneWidget);
+    await tester.tap(find.text('Done'));
     await settle(tester);
+    await tester.pageBack();
+    await settle(tester);
+    await scrollToFinder(tester, find.textContaining(RegExp('^Cancelled [0-9]'), findRichText: true));
+    await tester.tap(find.textContaining(RegExp('^Cancelled [0-9]'), findRichText: true).last);
+    await settle(tester);
+    await scrollToFinder(tester, find.byKey(const ValueKey('row-canva')));
     expect(find.byKey(const ValueKey('row-canva')), findsOneWidget);
     expect(find.text('You’re saving ₫2,869,000 a year'), findsOneWidget); // saving line on the Cancelled tab
     expect((await app.sub('canva'))!.status, SubscriptionStatus.cancelled);
@@ -83,13 +89,15 @@ void main() {
     await tester.tap(find.text('Spotify trial ends in 2 days'));
     await settle(tester);
     expect(find.text('Trial ends Fri, 6 Nov'), findsOneWidget);
+    await scrollToFinder(tester, find.text('How to cancel'));
     await tester.tap(find.text('How to cancel'));
     await settle(tester);
     expect(launched, ['https://www.spotify.com/account/subscription/']);
-    await tester.tap(find.text('Keep it'));
-    await tester.pumpAndSettle();
     await tester.pageBack();
     await settle(tester);
+    await scrollToFinder(tester, find.text('Keep it'));
+    await tester.tap(find.text('Keep it'));
+    await tester.pumpAndSettle();
     expect(find.text('Spotify trial ends in 2 days'), findsNothing); // kept → card hidden
     await closeApp(tester);
   });

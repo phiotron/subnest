@@ -477,11 +477,12 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.descendant(of: row('netflix'), matching: find.text('Confirm')));
       await settle(tester);
-      expect(find.text('Did you pay Netflix?'), findsOneWidget);
+      expect(location(tester), '/confirm/netflix');
+      expect(find.text('Amount paid'), findsOneWidget);
       await closeApp(tester);
     });
 
-    testWidgets('swipe → Cancel → dialog → celebration → See cancelled', (tester) async {
+    testWidgets('swipe → Cancel → dialog → celebration → Done → Cancelled tab', (tester) async {
       final app = await pumpApp(tester);
       await scrollToFinder(tester, row('icloud'));
       await tester.drag(row('icloud'), const Offset(-100, 0));
@@ -491,10 +492,15 @@ void main() {
       expect(find.text('Mark iCloud+ 200GB as cancelled?'), findsOneWidget);
       await tester.tap(find.text('Mark as cancelled'));
       await settle(tester);
-      expect(find.text('iCloud+ 200GB cancelled'), findsOneWidget);
+      expect(find.text('Nice — that’s ₫708,000 a year saved'), findsOneWidget);
       expect((await app.sub('icloud'))!.status, SubscriptionStatus.cancelled);
-      await tester.tap(find.text('See cancelled'));
+      await tester.tap(find.text('Done'));
       await settle(tester);
+      expect(row('icloud'), findsNothing, reason: 'left the Active tab');
+      await scrollToFinder(tester, segment('Cancelled'));
+      await tester.tap(segment('Cancelled').last);
+      await tester.pumpAndSettle();
+      await scrollToFinder(tester, row('icloud'));
       expect(row('icloud'), findsOneWidget);
       expect(find.text('Cancelled 4 Nov 2026'), findsOneWidget);
       await closeApp(tester);
