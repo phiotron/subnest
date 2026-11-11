@@ -182,7 +182,12 @@ class MiniFieldButton extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: AlignmentDirectional.centerStart,
-                      child: Text(label, maxLines: 1, softWrap: false, style: AppType.titleSm.copyWith(color: fg).tabular),
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: AppType.titleSm.copyWith(color: fg).tabular,
+                      ),
                     ),
                   ),
                   const SizedBox(width: AppSpace.s2),

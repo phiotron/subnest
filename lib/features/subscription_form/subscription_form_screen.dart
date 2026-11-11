@@ -101,7 +101,10 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   Future<void> _load() async {
     final today = ref.read(todayProvider);
     final primary = ref.read(primaryCurrencyProvider);
-    final catalog = ref.read(catalogRepositoryProvider);
+    // The Catalog the app already loaded (newest valid source) — never re-parse the asset here.
+    final services = await ref.read(catalogProvider.future);
+    if (!mounted) return;
+    CatalogService? byId(String id) => services.where((s) => s.id == id).firstOrNull;
     var name = '';
     SubscriptionDraft draft;
     if (_isEdit) {
@@ -114,7 +117,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
       _original = s;
       draft = SubscriptionDraft.fromSubscription(s, today);
       name = s.name;
-      final service = s.serviceId == null ? null : await catalog.byId(s.serviceId!);
+      final service = s.serviceId == null ? null : byId(s.serviceId!);
       _service = service;
       if (service != null && service.plans.length > 1) {
         final byLength = [...service.plans]..sort((a, b) => b.name.length.compareTo(a.name.length));
@@ -127,7 +130,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
         }
       }
     } else if (widget.serviceId != null) {
-      final service = await catalog.byId(widget.serviceId!);
+      final service = byId(widget.serviceId!);
       _service = service;
       _region = ref.read(libraryPickRegionProvider.notifier).take() ?? _region;
       final region = _region;
@@ -243,7 +246,6 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
   }
 
   Future<void> _pickTile() async {
-    final l = context.l10n;
     final d = _draft!;
     _sync();
     final choice = await showTileSheet(
@@ -251,12 +253,11 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
       name: d.name,
       colorValue: d.colorValue,
       iconText: d.iconText,
-      previewMeta: '${l.money(Money(d.myShareMinor, d.currency))}${perCycle(l, d.cycle)}',
       libraryColor: _service?.colorValue,
-      libraryName: _service?.name,
       canUsePhoto: _canUsePhoto(context),
       photo: _photoImage(context),
       pickPhoto: ref.read(customLogoPickerProvider),
+      takePhoto: ref.read(customLogoCameraProvider),
     );
     if (choice == null || !mounted) return;
     _update(() {
@@ -361,13 +362,8 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     if (o != null) {
       final priceChanged = o.priceMinor != d.priceMinor || o.currency != d.currency;
       if (priceChanged && o.status != SubscriptionStatus.cancelled) {
-        final apply = await _confirmPrice(o, d);
-        if (apply == null || !mounted) return;
-        if (!apply) {
-          _price = toMajorUnits(o.priceMinor, o.currency);
-          d.currency = o.currency;
-          _sync();
-        }
+        // Cancel = nothing saved, the form stays open (png 043).
+        if (await _confirmPrice(o, d) != true || !mounted) return;
       }
     }
     final canUsePhoto = _canUsePhoto(context);
@@ -399,35 +395,67 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     }
   }
 
-  /// "Use ₫280,000 from the next period?" (png 27). `true` apply, `false` keep the old price,
-  /// `null` dismissed (nothing saved).
+  /// "Use $19.99 from the next payment?" (png 043): Now / From 15 Dec (+difference when the
+  /// currency is the same). `true` = apply (saving writes the Price history row, effective from the
+  /// next Due date); `null` = Cancel (nothing saved).
   Future<bool?> _confirmPrice(Subscription o, SubscriptionDraft d) async {
     final l = context.l10n;
+    final c = context.colors;
     final today = ref.read(todayProvider);
-    final periods = await ref.read(subscriptionRepositoryProvider).allPeriods();
-    final paid = periods.where((p) => p.subscriptionId == o.id && p.outcome == PeriodOutcome.payment).length;
-    if (!mounted) return null;
     final next = AppDates.short(l, d.trial ? (d.trialEnd ?? d.dueDate) : d.dueDate, today: today);
     final newPrice = l.money(Money(d.priceMinor, d.currency));
     final oldPrice = l.money(Money(o.priceMinor, o.currency));
-    final body = [
-      l.subscriptionFormPriceDialogBody(next),
-      if (paid > 0) l.subscriptionFormPriceDialogPast(paid),
-    ].join(' ');
+    final diff = d.currency == o.currency ? d.priceMinor - o.priceMinor : null;
+    final diffText = diff == null || diff == 0
+        ? ''
+        : ' (${diff > 0 ? '+' : '−'}${l.money(Money(diff.abs(), d.currency))})';
+    final rise = diff != null && diff > 0;
+    Widget cell(String text, {bool strong = false, Color? color}) => Text(
+      text,
+      style: (strong ? AppType.label.copyWith(fontWeight: FontWeight.w700) : AppType.meta)
+          .copyWith(color: color ?? c.ink)
+          .tabular,
+    );
     return showAppDialog<bool>(
       context,
       title: l.subscriptionFormPriceDialogTitle(newPrice),
-      body: body,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l.subscriptionFormPriceDialogBody(next), style: AppType.body.copyWith(color: c.inkMuted)),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: AppSpace.s3),
+            decoration: BoxDecoration(color: c.surface2, borderRadius: BorderRadius.circular(AppRadius.md)),
+            child: Table(
+              columnWidths: const {0: FlexColumnWidth(), 1: IntrinsicColumnWidth()},
+              children: [
+                TableRow(children: [cell(l.subscriptionFormPriceNow), cell(oldPrice, strong: true)]),
+                TableRow(
+                  children: [
+                    Padding(padding: const EdgeInsets.only(top: 4), child: cell(l.subscriptionFormPriceFrom(next))),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: cell('$newPrice$diffText', strong: true, color: rise ? c.warningInk : null),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
       actions: [
         AppButton.primary(
-          label: l.subscriptionFormPriceApply,
+          label: l.subscriptionFormPriceApply(next),
           expand: true,
           onPressed: () => Navigator.of(context, rootNavigator: true).pop(true),
         ),
         AppButton.text(
-          label: l.subscriptionFormPriceKeep(oldPrice),
+          label: l.commonCancel,
           expand: true,
-          onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
         ),
       ],
     );
@@ -467,11 +495,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
           const SizedBox(height: AppSpace.s3),
           _categoryCard(context, d),
           const SizedBox(height: AppSpace.s3),
-          _organizeCard(context, d),
-          const SizedBox(height: AppSpace.s3),
           _reminderCard(context, d, today),
-          const SizedBox(height: AppSpace.s3),
-          _worthCard(context, d),
           const SizedBox(height: AppSpace.s3),
           _moreCard(context, d),
           if (_isEdit) ...[
@@ -522,15 +546,15 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                     right: 0,
                     bottom: 0,
                     child: Container(
-                      width: 26,
-                      height: 26,
+                      width: 24,
+                      height: 24,
                       decoration: BoxDecoration(
                         color: c.surface,
                         shape: BoxShape.circle,
                         boxShadow: context.elevation.card,
                         border: Border.all(color: c.line),
                       ),
-                      child: Icon(AppIcons.edit, size: 13, color: c.ink),
+                      child: Icon(_service == null ? LucideIcons.imagePlus : AppIcons.edit, size: 13, color: c.ink),
                     ),
                   ),
                 ],
@@ -562,7 +586,10 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                   ),
                 ),
               ),
-              if (nameError) FieldError(l.subscriptionFormNameRequired),
+              if (nameError)
+                FieldError(l.subscriptionFormNameRequired)
+              else if (_service == null)
+                Text(l.subscriptionFormCustomSub, style: AppType.meta.copyWith(color: c.inkMuted)),
               if (_plan != null) ...[
                 const SizedBox(height: AppSpace.s1),
                 _PlanChip(name: _plan!.name, onTap: _pickPlan),
@@ -627,15 +654,12 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
-                        child: Icon(AppIcons.info, size: 16, color: c.onBrandSoft),
+                        child: Icon(LucideIcons.history, size: 16, color: c.onBrandSoft),
                       ),
                       const SizedBox(width: AppSpace.s2),
                       Expanded(
                         child: Text(
-                          l.subscriptionFormPriceWas(
-                            l.money(Money(o.priceMinor, o.currency)),
-                            AppDates.short(l, d.dueDate, today: ref.watch(todayProvider)),
-                          ),
+                          l.subscriptionFormPriceWas(l.money(Money(o.priceMinor, o.currency))),
                           style: AppType.meta.copyWith(color: c.onBrandSoft),
                         ),
                       ),
@@ -808,7 +832,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                 const SizedBox(height: AppSpace.s3),
                 _SharePanel(
                   share: l.money(Money(d.myShareMinor, d.currency)),
-                  per: perCycle(l, d.cycle),
+                  cycle: d.cycle,
                   of: l.subscriptionFormShareOf(l.money(Money(d.priceMinor, d.currency)), d.sharedWith),
                 ),
               ],
@@ -845,61 +869,81 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
             ],
           ),
         ),
+        _labelsField(context, d),
       ],
     );
   }
 
-  /// Labels (multi, "+ New label") and the Payment method row (png 26 / 36).
-  Widget _organizeCard(BuildContext context, SubscriptionDraft d) {
+  /// Labels (multi, "+ New label") under Category in the same card (png 036).
+  Widget _labelsField(BuildContext context, SubscriptionDraft d) {
     final l = context.l10n;
     final c = context.colors;
     final labels = ref.watch(labelsProvider).value ?? const <Label>[];
-    // Keep the lists the payment-method sheet reads loaded (a stream read only on tap is still empty).
-    ref
-      ..watch(paymentMethodsProvider)
-      ..watch(subscriptionsProvider);
-    final method = d.paymentMethod?.trim() ?? '';
-    final methodLabel = method.isEmpty ? l.subscriptionFormMethodNone : method;
-    return FormCard(
-      children: [
-        FormFieldPad(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return FormFieldPad(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l.subscriptionFormLabels, style: AppType.label.copyWith(color: c.ink)),
+          const SizedBox(height: AppSpace.s2),
+          Wrap(
+            spacing: AppSpace.s2,
             children: [
-              Text(l.subscriptionFormLabels, style: AppType.label.copyWith(color: c.ink)),
-              const SizedBox(height: AppSpace.s2),
-              Wrap(
-                spacing: AppSpace.s2,
-                children: [
-                  for (final label in labels)
-                    DotChip(
-                      label: label.name,
-                      selected: d.labelIds.contains(label.id),
-                      dotColor: label.colorValue == null ? null : Color(label.colorValue!),
-                      onTap: () => _update(() {
-                        final ids = {...d.labelIds};
-                        if (!ids.remove(label.id)) ids.add(label.id);
-                        d.labelIds = ids;
-                      }),
-                    ),
-                  DotChip(label: l.subscriptionFormNewLabel, dashed: true, onTap: _addLabel),
-                ],
-              ),
+              for (final label in labels)
+                DotChip(
+                  label: label.name,
+                  selected: d.labelIds.contains(label.id),
+                  dotColor: label.colorValue == null ? null : Color(label.colorValue!),
+                  onTap: () => _update(() {
+                    final ids = {...d.labelIds};
+                    if (!ids.remove(label.id)) ids.add(label.id);
+                    d.labelIds = ids;
+                  }),
+                ),
+              DotChip(label: l.subscriptionFormNewLabel, dashed: true, onTap: _addLabel),
             ],
           ),
-        ),
-        FormFieldPad(
-          child: LabelledRow(
-            label: Text(l.subscriptionFormPaymentMethod, style: AppType.label.copyWith(color: c.ink)),
-            trailing: MiniFieldButton(
-              label: methodLabel,
-              icon: AppIcons.expand,
-              semanticLabel: '${l.subscriptionFormPaymentMethod}: $methodLabel',
-              onTap: _pickMethod,
-            ),
+        ],
+      ),
+    );
+  }
+
+  /// Payment method chips (png 036 "More details"): the user's methods (most used first), tap to
+  /// pick, tap again to clear; "+ Add" opens the methods sheet (add / pick).
+  Widget _methodField(BuildContext context, SubscriptionDraft d) {
+    final l = context.l10n;
+    final methods = ref.watch(paymentMethodsProvider).value ?? const <PaymentMethod>[];
+    final usage = <String, int>{};
+    for (final s in ref.watch(subscriptionsProvider).value ?? const <Subscription>[]) {
+      final id = s.paymentMethodId;
+      if (id != null) usage[id] = (usage[id] ?? 0) + 1;
+    }
+    final sorted = [...methods]..sort((a, b) => (usage[b.id] ?? 0).compareTo(usage[a.id] ?? 0));
+    final typed = PaymentMethod.normalizeName(d.paymentMethod ?? '');
+    final selectedId =
+        d.paymentMethodId ?? methods.where((m) => PaymentMethod.normalizeName(m.name) == typed).firstOrNull?.id;
+    return FormFieldPad(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _fieldLabel(context, l.subscriptionFormPaymentMethod),
+          Wrap(
+            spacing: AppSpace.s2,
+            children: [
+              for (final m in sorted)
+                AppChip(
+                  label: m.name,
+                  selected: m.id == selectedId,
+                  onTap: () => _update(() {
+                    final on = m.id != selectedId;
+                    d.paymentMethodId = on ? m.id : null;
+                    d.paymentMethod = on ? m.name : null;
+                  }),
+                ),
+              DotChip(label: l.subscriptionFormAddMethod, dashed: true, onTap: _pickMethod),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -947,7 +991,6 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     final settings = ref.watch(settingsProvider).value;
     final selected = d.reminderOffsets ?? settings?.defaultReminderOffsets ?? ReminderOffsets.defaults;
     final at = FormFormat.time(settings?.reminderHour ?? 9, settings?.reminderMinute ?? 0);
-    final note = selected.isEmpty ? l.subscriptionFormRemindNone : l.subscriptionFormRemindMany(at);
     const choices = ReminderOffsets.choices;
     final large = MediaQuery.textScalerOf(context).scale(16) / 16 >= 1.5;
     final rows = large
@@ -964,8 +1007,11 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(l.subscriptionFormReminder, style: AppType.label.copyWith(color: c.ink)),
-              const SizedBox(height: AppSpace.s2),
+              LabelledRow(
+                label: Text(l.subscriptionFormReminder, style: AppType.label.copyWith(color: c.ink)),
+                trailing: Text(l.subscriptionFormRemindAt(at), style: AppType.meta.copyWith(color: c.inkMuted)),
+              ),
+              const SizedBox(height: 10),
               for (final row in rows) ...[
                 if (row.first > 0) const SizedBox(height: AppSpace.s2),
                 Row(
@@ -991,8 +1037,10 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
                   ],
                 ),
               ],
-              const SizedBox(height: AppSpace.s2),
-              Text(note, style: AppType.meta.copyWith(color: c.inkMuted)),
+              if (selected.isEmpty) ...[
+                const SizedBox(height: AppSpace.s2),
+                Text(l.subscriptionFormRemindNone, style: AppType.meta.copyWith(color: c.inkMuted)),
+              ],
             ],
           ),
         ),
@@ -1000,24 +1048,15 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     );
   }
 
-  Widget _worthCard(BuildContext context, SubscriptionDraft d) {
-    final l = context.l10n;
-    final c = context.colors;
-    return FormCard(
+  Widget _worthField(BuildContext context, SubscriptionDraft d) => FormFieldPad(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FormFieldPad(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(l.subscriptionFormWorthIt, style: AppType.label.copyWith(color: c.ink)),
-              const SizedBox(height: AppSpace.s3),
-              WorthItPicker(value: d.worthIt, onChanged: (w) => _update(() => d.worthIt = w)),
-            ],
-          ),
-        ),
+        _fieldLabel(context, context.l10n.subscriptionFormWorthIt),
+        WorthItPicker(value: d.worthIt, onChanged: (w) => _update(() => d.worthIt = w)),
       ],
-    );
-  }
+    ),
+  );
 
   Future<void> _delete() async {
     final l = context.l10n;
@@ -1088,6 +1127,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
     return FormCard(
       children: [
         header,
+        _methodField(context, d),
         FormFieldPad(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1109,6 +1149,7 @@ class _SubscriptionFormScreenState extends ConsumerState<SubscriptionFormScreen>
             ],
           ),
         ),
+        _worthField(context, d),
         FormFieldPad(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1195,12 +1236,12 @@ class _PlanChip extends StatelessWidget {
   }
 }
 
-/// "Your share ₫65,000/month · ₫260,000 ÷ 4" panel (`brand-soft`).
+/// "Your share $6.25 · $24.99 ÷ 4 [Monthly]" panel (design `.share-panel`, `brand-soft`, png 035).
 class _SharePanel extends StatelessWidget {
-  const _SharePanel({required this.share, required this.per, required this.of});
+  const _SharePanel({required this.share, required this.cycle, required this.of});
 
   final String share;
-  final String per;
+  final BillingCycle cycle;
   final String of;
 
   @override
@@ -1208,11 +1249,11 @@ class _SharePanel extends StatelessWidget {
     final c = context.colors;
     final l = context.l10n;
     return Container(
-      padding: const EdgeInsets.all(AppSpace.s4),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: AppSpace.s3),
       decoration: BoxDecoration(color: c.brandSoft, borderRadius: BorderRadius.circular(AppRadius.md)),
       child: Wrap(
         alignment: WrapAlignment.spaceBetween,
-        crossAxisAlignment: WrapCrossAlignment.end,
+        crossAxisAlignment: WrapCrossAlignment.center,
         spacing: AppSpace.s3,
         runSpacing: AppSpace.s1,
         children: [
@@ -1221,21 +1262,21 @@ class _SharePanel extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(l.subscriptionFormYourShare, style: AppType.meta.copyWith(color: c.onBrandSoft)),
-              Text.rich(
-                TextSpan(
-                  text: share,
-                  style: AppType.title.copyWith(color: c.onBrandSoft).tabular,
-                  children: [
-                    TextSpan(
-                      text: ' $per',
-                      style: AppType.meta.copyWith(color: c.onBrandSoft),
-                    ),
-                  ],
-                ),
+              Text(
+                share,
+                style: AppType.title.copyWith(color: c.onBrandSoft, fontWeight: FontWeight.w700).tabular,
               ),
             ],
           ),
-          Text(of, style: AppType.meta.copyWith(color: c.onBrandSoft).tabular),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(of, style: AppType.meta.copyWith(color: c.onBrandSoft).tabular),
+              const SizedBox(height: 3),
+              CycleChip(cycle: cycle),
+            ],
+          ),
         ],
       ),
     );

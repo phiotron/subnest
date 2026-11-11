@@ -57,7 +57,7 @@ void main() {
     await tester.tap(find.bySemanticsLabel('More'));
     await settle(tester);
     await _scrollTo(tester, find.text('\$26.99 ÷ 4'));
-    expect(find.text('\$6.75 /month'), findsOneWidget);
+    expect(find.text('\$6.75'), findsOneWidget);
     await shot(tester, 's4-add-split-390-en-light-100');
 
     await tester.tap(find.text('Add subscription'));
@@ -122,7 +122,7 @@ void main() {
     expect(saved.trialEndDate, const LocalDate(2026, 11, 20));
   });
 
-  addTest('S4 edit price → note + "Apply from next period" dialog (png 22, 27)', (tester) async {
+  addTest('S4 edit price → note + "Apply from 4 Dec" dialog, price history (png 042, 043)', (tester) async {
     final f = await AddFixture.create();
     await f.addNetflix();
     await pumpAdd(tester, f, location: '/home', push: '/subscription/netflix/edit');
@@ -132,21 +132,24 @@ void main() {
     await tester.enterText(_amount, '280000');
     await settle(tester);
     expect(
-      find.text('Was ₫260,000. The new price applies from the next period (4 Dec). Past payments stay as they were.'),
+      find.text('Was ₫260,000. Saving asks when the new price starts and adds it to the price history.'),
       findsOneWidget,
     );
     await shot(tester, 's4-edit-price-390-en-light-100');
     await tester.tap(find.text('Save changes'));
     await settle(tester);
-    expect(find.text('Use ₫280,000 from the next period?'), findsOneWidget);
+    expect(find.text('Use ₫280,000 from the next payment?'), findsOneWidget);
     expect(
       find.text(
-        'The 4 Dec renewal and later ones use the new price. Your 5 past payments stay at what you actually paid.',
+        'The 4 Dec payment and later ones use the new price. Your past payments stay exactly as paid, '
+        'and the change is saved to the price history.',
       ),
       findsOneWidget,
     );
+    expect(find.text('From 4 Dec'), findsOneWidget);
+    expect(find.text('₫280,000 (+₫20,000)'), findsOneWidget);
     await shot(tester, 's4-price-confirm-390-en-light-100');
-    await tester.tap(find.text('Apply from next period'));
+    await tester.tap(find.text('Apply from 4 Dec'));
     await settle(tester);
     expect(visited.last, '/home');
     final s = (await f.subs.get('netflix'))!;
@@ -155,9 +158,12 @@ void main() {
     expect(s.sharedWith, 4);
     final periods = await f.subs.allPeriods();
     expect(periods.where((p) => p.amountMinor == 65000), hasLength(5), reason: 'past payments untouched');
+    final history = await f.subs.allPriceChanges(subscriptionId: 'netflix');
+    expect(history.single.newPriceMinor, 280000);
+    expect(history.single.effectiveFrom, const LocalDate(2026, 12, 4));
   });
 
-  addTest('S4 edit price → "Keep" saves other changes with the old price', (tester) async {
+  addTest('S4 edit price → Cancel saves nothing and stays on the form', (tester) async {
     final f = await AddFixture.create();
     await f.addNetflix();
     await pumpAdd(tester, f, location: '/home', push: '/subscription/netflix/edit');
@@ -166,11 +172,12 @@ void main() {
     await settle(tester);
     await tester.tap(find.text('Save changes'));
     await settle(tester);
-    await tester.tap(find.text('Keep ₫260,000'));
+    await tester.tap(find.text('Cancel'));
     await settle(tester);
+    expect(find.text('Edit subscription'), findsOneWidget);
     final s = (await f.subs.get('netflix'))!;
     expect(s.priceMinor, 260000);
-    expect(s.name, 'Netflix 4K Premium');
+    expect(s.name, 'Netflix Premium');
   });
 
   addTest('S4 date picker sheet (png 23) moves the renewal', (tester) async {
@@ -188,18 +195,16 @@ void main() {
     expect(find.text('Thu, 10 Dec 2026'), findsOneWidget);
   });
 
-  addTest('S4 tile sheet: colour + emoji (png 24)', (tester) async {
+  addTest('S4 Change icon sheet: colour + letter or emoji (png 038)', (tester) async {
     final f = await AddFixture.create();
     await pumpAdd(tester, f, location: '/home', push: '/subscription/new?service=netflix&plan=premium');
     await tester.tap(find.bySemanticsLabel('Change tile'));
     await settle(tester);
-    expect(find.text('Tile'), findsOneWidget);
-    expect(find.text('Preview in a list'), findsOneWidget);
-    expect(find.text('Netflix Premium'), findsOneWidget);
-    expect(find.textContaining('own colour from the library'), findsOneWidget);
+    expect(find.text('Change icon'), findsOneWidget);
+    expect(find.text('Letter on colour'), findsOneWidget);
     await shot(tester, 's4-tile-sheet-390-en-light-100');
     await tester.tap(find.bySemanticsLabel('Colour 6'));
-    await tester.tap(find.text('🎬'));
+    await tester.enterText(find.byType(TextField).last, '🎬');
     await settle(tester);
     await tester.tap(find.text('Done'));
     await settle(tester);
@@ -268,17 +273,17 @@ void main() {
 
     // Remind me: Settings default {0, 3} pre-selected; each chip toggles on its own.
     await _scrollTo(tester, find.text('Remind me'));
-    expect(find.text('Pick any — each one sends its own reminder at 9:00.'), findsOneWidget);
+    expect(find.text('at 9:00'), findsOneWidget);
     bool on(String label) => tester.widget<AppChip>(find.widgetWithText(AppChip, label)).selected;
-    expect([on('On day'), on('1 day'), on('3 days'), on('7 days')], [true, false, true, false]);
+    expect([on('On the day'), on('1 day'), on('3 days'), on('7 days')], [true, false, true, false]);
     await tester.tap(find.text('7 days'));
     await settle(tester);
-    await tester.tap(find.text('On day'));
+    await tester.tap(find.text('On the day'));
     await settle(tester);
-    expect([on('On day'), on('1 day'), on('3 days'), on('7 days')], [false, false, true, true]);
+    expect([on('On the day'), on('1 day'), on('3 days'), on('7 days')], [false, false, true, true]);
 
     await _scrollTo(tester, find.text('More details'));
-    expect(find.text('Cancel link, notes'), findsOneWidget);
+    expect(find.text('Payment method, cancel link, notes, worth it?'), findsOneWidget);
     await tester.tap(find.text('More details'));
     await settle(tester);
     await _scrollTo(tester, find.text('Notes'));
@@ -291,7 +296,7 @@ void main() {
     expect(s.reminderOffsets, {3, 7});
   });
 
-  addTest('S4 organize: category, labels + New label, payment method sheet + quick add, Worth it (png 36, 37)', (
+  addTest('S4 organize: category + labels card, More details: payment method chips + add, Worth it (png 036)', (
     tester,
   ) async {
     final f = await AddFixture.create();
@@ -318,24 +323,27 @@ void main() {
     await settle(tester);
     expect(find.text('Work'), findsOneWidget);
 
-    // Payment method sheet: list with usage, None, quick add.
-    await _scrollTo(tester, find.text('Payment method'));
-    await tester.tap(find.bySemanticsLabel('Payment method: None'));
+    // More details: payment method chips (tap = pick), "+ Add" opens the sheet with quick add.
+    await _scrollTo(tester, find.text('More details'));
+    await tester.tap(find.text('More details'));
     await settle(tester);
-    expect(find.text('Visa ••4242'), findsOneWidget);
-    expect(find.text('Not used yet'), findsNWidgets(2));
-    expect(find.text('Free text — Subnest never connects to your bank.'), findsOneWidget);
-    await shot(tester, 's4-method-sheet-390-en-light-100');
+    await _scrollTo(tester, find.text('Payment method'));
+    bool chipOn(String label) => tester.widget<AppChip>(find.widgetWithText(AppChip, label)).selected;
+    expect(chipOn('Visa ••4242'), isFalse);
     await tester.tap(find.text('MoMo'));
     await settle(tester);
-    expect(find.bySemanticsLabel('Payment method: MoMo'), findsOneWidget);
-    await tester.tap(find.bySemanticsLabel('Payment method: MoMo'));
+    expect(chipOn('MoMo'), isTrue);
+    await tester.tap(find.text('Add').last);
     await settle(tester);
+    expect(find.text('Free text — Subnest never connects to your bank.'), findsOneWidget);
+    await shot(tester, 's4-method-sheet-390-en-light-100');
     await tester.enterText(find.byType(TextField).last, 'Techcombank ••88');
     await settle(tester);
     await tester.tap(find.text('Add').last);
     await settle(tester);
-    expect(find.bySemanticsLabel('Payment method: Techcombank ••88'), findsOneWidget);
+    await _scrollTo(tester, find.text('Techcombank ••88'));
+    expect(chipOn('Techcombank ••88'), isTrue);
+    expect(chipOn('MoMo'), isFalse);
 
     // Worth it?
     await _scrollTo(tester, find.text('Worth it?'));
@@ -400,17 +408,17 @@ void main() {
         expectNoLayoutErrors(tester, 'new label sheet');
         await tester.tapAt(const Offset(20, 60));
         await settle(tester);
-        await _scrollTo(tester, find.text(l.subscriptionFormPaymentMethod));
-        await tester.tap(find.bySemanticsLabel(RegExp('^${RegExp.escape(l.subscriptionFormPaymentMethod)}: ')));
+        await _scrollTo(tester, find.text(l.subscriptionFormMore));
+        await tester.tap(find.text(l.subscriptionFormMore));
+        await settle(tester);
+        await _scrollTo(tester, find.text(l.subscriptionFormAddMethod));
+        await tester.tap(find.text(l.subscriptionFormAddMethod));
         await settle(tester);
         expectNoLayoutErrors(tester, 'method sheet');
         await tester.tapAt(const Offset(20, 60));
         await settle(tester);
         await _scrollTo(tester, find.text(l.subscriptionFormWorthIt));
         expectNoLayoutErrors(tester, 'worth it');
-        await _scrollTo(tester, find.text(l.subscriptionFormMore));
-        await tester.tap(find.text(l.subscriptionFormMore));
-        await settle(tester);
         await tester.scrollUntilVisible(find.text(l.subscriptionFormNotes), 300, scrollable: _formList);
         expectNoLayoutErrors(tester, 'scrolled');
         // Sheets.

@@ -84,13 +84,17 @@ void main() {
     await tester.tap(find.bySemanticsLabel('Change tile'));
     await settle(tester);
     expect(find.text('Choose photo'), findsOneWidget);
+    expect(find.text('Take photo'), findsOneWidget);
     expect(find.text('Remove photo'), findsNothing);
+    expect(find.text('Letter on colour'), findsOneWidget);
     await tester.tap(find.text('Choose photo'));
     await settle(tester);
     expect(picks, 1);
-    expect(find.text('Change photo'), findsOneWidget);
+    expect(find.text('Choose photo'), findsOneWidget);
     expect(find.text('Remove photo'), findsOneWidget);
-    expect(find.byType(ServiceTileLogo), findsNWidgets(2), reason: 'both previews show the photo');
+    expect(find.text('Take photo'), findsNothing, reason: 'png 040: Choose photo + Remove photo');
+    expect(find.text('Your photo, cropped square'), findsOneWidget);
+    expect(find.byType(ServiceTileLogo), findsOneWidget, reason: 'the preview shows the photo');
     await tester.tap(find.text('Done'));
     await settle(tester);
     expect(find.byType(ServiceTileLogo), findsOneWidget, reason: 'form header tile shows it');
@@ -134,14 +138,12 @@ void main() {
       tester,
       ServiceLogoScope(
         source: _Source(store),
-        child: Builder(
-          builder: (context) => TileChoiceProbe(photo: ServiceLogoScope.of(context).customLogo('s1.png')),
-        ),
+        child: Builder(builder: (context) => TileChoiceProbe(photo: ServiceLogoScope.of(context).customLogo('s1.png'))),
       ),
     );
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
-    expect(find.byType(ServiceTileLogo), findsNWidgets(2));
+    expect(find.byType(ServiceTileLogo), findsOneWidget);
     await tester.tap(find.text('Remove photo'));
     await tester.pumpAndSettle();
     expect(find.byType(ServiceTileLogo), findsNothing);
@@ -165,7 +167,7 @@ void main() {
     );
     await tester.tap(find.text('pick'));
     await tester.pumpAndSettle();
-    expect(find.text('Move and zoom'), findsOneWidget);
+    expect(find.text('Move and scale'), findsOneWidget);
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50))); // decode
     await tester.pump();
     await tester.tap(find.text('Use photo'));
@@ -195,7 +197,6 @@ class TileChoiceProbe extends StatelessWidget {
       name: 'Gym',
       colorValue: 0xFF0F8B8D,
       iconText: null,
-      previewMeta: '15/mo',
       canUsePhoto: true,
       photo: photo,
     ),

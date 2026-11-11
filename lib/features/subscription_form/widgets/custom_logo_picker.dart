@@ -17,11 +17,17 @@ const customLogoSide = 256;
 /// The Custom logo picker the form uses (overridden in tests: no gallery there).
 final customLogoPickerProvider = Provider<Future<Uint8List?> Function(BuildContext context)>((ref) => pickCustomLogo);
 
+/// "Take photo" in the icon sheet (png 038): camera, then the same square crop.
+final customLogoCameraProvider = Provider<Future<Uint8List?> Function(BuildContext context)>(
+  (ref) =>
+      (context) => pickCustomLogo(context, pickBytes: _takePhoto),
+);
+
 /// Picks a photo from the gallery and lets the user crop it square; returns PNG bytes
 /// ([customLogoSide] px) or `null` when cancelled. Android uses the system Photo Picker
 /// (no storage permission); iOS uses PHPicker (no library access prompt).
 ///
-/// [pickBytes] replaces the gallery in tests.
+/// [pickBytes] replaces the gallery (camera, tests).
 Future<Uint8List?> pickCustomLogo(BuildContext context, {Future<Uint8List?> Function()? pickBytes}) async {
   final Uint8List? source;
   try {
@@ -31,9 +37,10 @@ Future<Uint8List?> pickCustomLogo(BuildContext context, {Future<Uint8List?> Func
     return null;
   }
   if (source == null || !context.mounted) return null;
-  return Navigator.of(context, rootNavigator: true).push<Uint8List>(
-    MaterialPageRoute(fullscreenDialog: true, builder: (_) => CustomLogoCropScreen(image: source!)),
-  );
+  return Navigator.of(
+    context,
+    rootNavigator: true,
+  ).push<Uint8List>(MaterialPageRoute(fullscreenDialog: true, builder: (_) => CustomLogoCropScreen(image: source!)));
 }
 
 Future<Uint8List?> _pickFromGallery() async {
@@ -44,8 +51,15 @@ Future<Uint8List?> _pickFromGallery() async {
   return file?.readAsBytes();
 }
 
-/// Square crop: the photo covers the square (cannot zoom out past it); pinch to zoom, drag to
-/// move. "Use photo" renders exactly what the square shows to a [customLogoSide] px PNG.
+/// System camera (Android intent: no CAMERA permission needed; iOS: NSCameraUsageDescription).
+Future<Uint8List?> _takePhoto() async {
+  final file = await ImagePicker().pickImage(source: ImageSource.camera, maxWidth: 1024, maxHeight: 1024);
+  return file?.readAsBytes();
+}
+
+/// Square crop (png 039, dark like a camera): ✕ · "Move and scale" · rotate; the photo covers the
+/// square (cannot zoom out past it), pinch to zoom, drag to move; "Cancel" / "Use photo". "Use
+/// photo" renders exactly what the square shows to a [customLogoSide] px PNG.
 class CustomLogoCropScreen extends StatefulWidget {
   const CustomLogoCropScreen({super.key, required this.image});
 
@@ -56,9 +70,14 @@ class CustomLogoCropScreen extends StatefulWidget {
 }
 
 class _CustomLogoCropScreenState extends State<CustomLogoCropScreen> {
+  /// Fixed camera-like colours (design `.crop`), the same in light and dark.
+  static const _bg = Color(0xFF0B0D0E);
+  static const _fg = Colors.white;
+
   final _boundary = GlobalKey();
   bool _busy = false;
   bool _broken = false;
+  int _turns = 0;
 
   Future<void> _use() async {
     if (_busy) return;
@@ -86,34 +105,76 @@ class _CustomLogoCropScreenState extends State<CustomLogoCropScreen> {
     }
   }
 
+  Widget _roundButton({required IconData icon, required String tooltip, required VoidCallback onTap}) => Tooltip(
+    message: tooltip,
+    child: Semantics(
+      button: true,
+      label: tooltip,
+      excludeSemantics: true,
+      onTap: onTap,
+      child: Material(
+        color: _fg.withValues(alpha: .12),
+        shape: const CircleBorder(),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: onTap,
+          child: SizedBox.square(dimension: 48, child: Icon(icon, size: 22, color: _fg)),
+        ),
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
     return Scaffold(
-      backgroundColor: c.bg,
-      appBar: AppBar(title: Text(l.subscriptionFormCropTitle)),
+      backgroundColor: _bg,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpace.s4),
-          child: Column(
-            children: [
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, box) {
-                    final side = box.maxWidth < box.maxHeight ? box.maxWidth : box.maxHeight;
-                    return Center(
-                      child: SizedBox.square(
-                        dimension: side,
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            RepaintBoundary(
-                              key: _boundary,
-                              child: ClipRect(
-                                child: InteractiveViewer(
-                                  minScale: 1,
-                                  maxScale: 6,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.s4, AppSpace.s2, AppSpace.s4, AppSpace.s2),
+              child: Row(
+                children: [
+                  _roundButton(icon: AppIcons.close, tooltip: l.commonCancel, onTap: () => Navigator.of(context).pop()),
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Text(
+                        l.subscriptionFormCropTitle,
+                        textAlign: TextAlign.center,
+                        style: AppType.label.copyWith(color: _fg, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  _roundButton(
+                    icon: LucideIcons.rotateCw,
+                    tooltip: l.subscriptionFormCropRotate,
+                    onTap: () => setState(() => _turns = (_turns + 1) % 4),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, box) {
+                  final side = (box.maxWidth < box.maxHeight ? box.maxWidth : box.maxHeight) - AppSpace.s10 * 2;
+                  final radius = BorderRadius.circular(side * .28);
+                  return Center(
+                    child: SizedBox.square(
+                      dimension: side,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          RepaintBoundary(
+                            key: _boundary,
+                            child: ClipRect(
+                              child: InteractiveViewer(
+                                minScale: 1,
+                                maxScale: 6,
+                                child: RotatedBox(
+                                  quarterTurns: _turns,
                                   child: Image.memory(
                                     widget.image,
                                     fit: BoxFit.cover,
@@ -132,43 +193,46 @@ class _CustomLogoCropScreenState extends State<CustomLogoCropScreen> {
                                 ),
                               ),
                             ),
-                            // Outside the boundary: guides are not part of the saved image.
-                            IgnorePointer(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: c.brand, width: 2),
-                                  borderRadius: BorderRadius.circular(ServiceTile.radiusFor(side)),
-                                ),
+                          ),
+                          // Outside the boundary: the guide is not part of the saved image.
+                          IgnorePointer(
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: _fg, width: 2),
+                                borderRadius: radius,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-              const SizedBox(height: AppSpace.s3),
-              Text(
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.s5, AppSpace.s1, AppSpace.s5, AppSpace.s3),
+              child: Text(
                 _broken ? l.subscriptionFormTilePhotoFailed : l.subscriptionFormCropHint,
                 textAlign: TextAlign.center,
-                style: AppType.meta.copyWith(color: _broken ? c.danger : c.inkMuted),
+                style: AppType.body.copyWith(color: _fg.withValues(alpha: .85), fontSize: 14),
               ),
-              const SizedBox(height: AppSpace.s4),
-              AppButton.primary(
-                label: l.subscriptionFormCropUse,
-                expand: true,
-                loading: _busy,
-                onPressed: _broken ? null : _use,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.s5, AppSpace.s2, AppSpace.s5, AppSpace.s4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(foregroundColor: _fg, minimumSize: const Size(64, 48)),
+                    child: Text(l.commonCancel, style: AppType.label.copyWith(color: _fg)),
+                  ),
+                  AppButton.primary(label: l.subscriptionFormCropUse, loading: _busy, onPressed: _broken ? null : _use),
+                ],
               ),
-              const SizedBox(height: AppSpace.s2),
-              AppButton.text(
-                label: l.commonCancel,
-                expand: true,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
