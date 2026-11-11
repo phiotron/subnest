@@ -7,7 +7,7 @@ import '../../../domain/stats/calendar_month.dart';
 import 'calendar_labels.dart';
 
 /// Month grid card of S8 (design `.cal-card`): weeks start on Monday; each day shows up to three
-/// service-coloured marks (solid = paid, faded = upcoming, outline = skipped) and "+N"; today is a
+/// mini logos ([MiniLogo]: full = paid, faded = expected, amber edge = to confirm, outline = skipped) and "+N"; today is a
 /// `brand` disc, the selected day a `brand-soft` cell, a day with a period to confirm carries the
 /// amber clock. Legend underneath. Cells are ≥ 48dp wide from a 352dp-wide screen (see
 /// [CalendarScreen] gutter) and grow with the text size.
@@ -81,12 +81,13 @@ class MonthGrid extends StatelessWidget {
                   ),
                   _LegendItem(
                     mark: EventMark(color: c.inkMuted, kind: CalendarEntryKind.upcoming),
-                    label: l.calendarUpcoming,
+                    label: l.calendarExpected,
                   ),
-                  _LegendItem(
-                    mark: EventMark(color: c.inkMuted, kind: CalendarEntryKind.skipped),
-                    label: l.calendarSkipped,
-                  ),
+                  if (month.skippedCount > 0)
+                    _LegendItem(
+                      mark: EventMark(color: c.inkMuted, kind: CalendarEntryKind.skipped),
+                      label: l.calendarSkipped,
+                    ),
                   _LegendItem(
                     mark: Icon(AppIcons.awaiting, size: 12, color: c.warningInk),
                     label: l.commonStatusAwaiting,
@@ -176,23 +177,24 @@ class _DayCell extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       SizedBox(
-                        height: 12,
+                        height: MiniLogo.size,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             for (final (i, e) in entries.take(MonthGrid._maxMarks).indexed) ...[
-                              if (i > 0) const SizedBox(width: 2),
-                              EventMark(color: Color(e.subscription.colorValue), kind: e.kind),
+                              if (i > 0) const SizedBox(width: 1),
+                              MiniLogo(entry: e),
                             ],
                             if (entries.length > MonthGrid._maxMarks) ...[
-                              const SizedBox(width: 2),
+                              const SizedBox(width: 1),
                               Text(
                                 '+${entries.length - MonthGrid._maxMarks}',
                                 textScaler: TextScaler.noScaling,
                                 style: AppType.caption.copyWith(
-                                  fontSize: 10,
+                                  fontSize: 9,
                                   height: 1,
                                   letterSpacing: 0,
+                                  fontWeight: FontWeight.w700,
                                   color: c.inkMuted,
                                 ),
                               ),
@@ -224,8 +226,8 @@ class _DayCell extends StatelessWidget {
   }
 }
 
-/// 10×10 day mark: solid for a Payment, 40% for an upcoming / awaiting period, 2px outline for a
-/// Skipped period; `tile-ring` keeps dark colours edged on dark surfaces.
+/// Legend swatch (13×13, design `.ml`): solid = paid, 40% with an edge = expected, 1.5px outline =
+/// skipped. Mirrors how [MiniLogo] draws the same states with the real logo.
 class EventMark extends StatelessWidget {
   const EventMark({super.key, required this.color, required this.kind});
 
@@ -234,28 +236,64 @@ class EventMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ring = context.colors.tileRing;
-    const r = BorderRadius.all(Radius.circular(3));
-    final mark = switch (kind) {
-      CalendarEntryKind.skipped => DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: r,
-          border: Border.all(color: color, width: 2),
-        ),
+    const r = BorderRadius.all(Radius.circular(4));
+    final box = switch (kind) {
+      CalendarEntryKind.skipped => BoxDecoration(
+        borderRadius: r,
+        border: Border.all(color: color, width: 1.5),
       ),
-      _ => DecoratedBox(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: r,
-          border: Border.all(color: ring),
-        ),
+      CalendarEntryKind.upcoming || CalendarEntryKind.awaiting => BoxDecoration(
+        color: color.withValues(alpha: .25),
+        borderRadius: r,
+        border: Border.all(color: color.withValues(alpha: .6)),
       ),
+      CalendarEntryKind.paid => BoxDecoration(color: color, borderRadius: r),
     };
-    return SizedBox(
-      width: 10,
-      height: 10,
-      child: kind == CalendarEntryKind.upcoming ? Opacity(opacity: .4, child: mark) : mark,
+    return SizedBox.square(
+      dimension: MiniLogo.size,
+      child: DecoratedBox(decoration: box),
     );
+  }
+}
+
+/// A day's mini logo in the month grid (design `.ml`, 13px): the real service logo — full for a
+/// Payment, faded for an expected period, with an amber edge while awaiting confirmation, and an
+/// empty outline for a Skipped period.
+class MiniLogo extends StatelessWidget {
+  const MiniLogo({super.key, required this.entry});
+
+  final CalendarEntry entry;
+
+  static const size = 13.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final s = entry.subscription;
+    if (entry.kind == CalendarEntryKind.skipped) {
+      return EventMark(color: c.inkMuted, kind: CalendarEntryKind.skipped);
+    }
+    final tile = ServiceTile(
+      name: s.name,
+      colorValue: s.colorValue,
+      iconText: s.iconText,
+      size: size,
+      serviceId: s.serviceId,
+      customLogoFile: s.customLogoFile,
+    );
+    return switch (entry.kind) {
+      CalendarEntryKind.upcoming => Opacity(opacity: .45, child: tile),
+      CalendarEntryKind.awaiting => Container(
+        width: size,
+        height: size,
+        foregroundDecoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          border: Border.all(color: c.warning, width: 1.5, strokeAlign: BorderSide.strokeAlignOutside),
+        ),
+        child: tile,
+      ),
+      _ => tile,
+    };
   }
 }
 

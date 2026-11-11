@@ -6,26 +6,16 @@ import '../../../domain/domain.dart';
 import '../../../domain/stats/calendar_month.dart';
 import 'calendar_labels.dart';
 
-/// One Calendar entry as a list row (day list under the grid and the Agenda): 40px tile (amber
-/// dot while awaiting), name, state line, amount in the subscription's own currency. Agenda rows
-/// lead with the date ([showDate]); day-list rows awaiting confirmation get a small Confirm button.
+/// One Calendar entry as a list row (day list under the grid and the List view, design `evRow`):
+/// 40px logo (amber dot while awaiting), name, state line, amount in the subscription's own currency
+/// with its [CycleChip] underneath. List rows lead with the date ([showDate]).
 class CalendarEntryRow extends StatelessWidget {
-  const CalendarEntryRow({
-    super.key,
-    required this.entry,
-    required this.today,
-    this.showDate = false,
-    this.onTap,
-    this.onConfirm,
-  });
+  const CalendarEntryRow({super.key, required this.entry, required this.today, this.showDate = false, this.onTap});
 
   final CalendarEntry entry;
   final LocalDate today;
   final bool showDate;
   final VoidCallback? onTap;
-
-  /// Shown only for awaiting entries.
-  final VoidCallback? onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -66,18 +56,6 @@ class CalendarEntryRow extends StatelessWidget {
     // "Monthly" / "Yearly" under the amount — a bare price left the period unclear (2026-11-10 (2) #7).
     final cycleChip = CycleChip(cycle: s.cycle);
 
-    final confirm = kind == CalendarEntryKind.awaiting && onConfirm != null
-        // The 40px pill sits in a 48px-high hit area (S-50).
-        ? GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onConfirm,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: AppButton.tonal(label: l.calendarConfirm, small: true, onPressed: onConfirm),
-            ),
-          )
-        : null;
-
     final date = showDate
         ? ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 32),
@@ -107,7 +85,7 @@ class CalendarEntryRow extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4, vertical: 12),
             child: LayoutBuilder(
               builder: (context, box) {
-                // Narrow row (360dp, VI, large text): the amount (+ Confirm) drops under the state
+                // Narrow row (360dp, VI, large text): the amount + cycle chip drop under the state
                 // line so the badge never gets squeezed — badges and amounts never truncate.
                 final scaler = MediaQuery.textScalerOf(context);
                 double w(String t, TextStyle st) => (TextPainter(
@@ -117,10 +95,7 @@ class CalendarEntryRow extends StatelessWidget {
                   maxLines: 1,
                 )..layout()).width;
                 final fixed = (date != null ? 32 + AppSpace.s3 : 0) + 40 + AppSpace.s3 * 2;
-                final right = [
-                  w(amount.data!, amount.style!),
-                  if (confirm != null) w(l.calendarConfirm, AppType.label) + 32,
-                ].reduce((a, b) => a > b ? a : b);
+                final right = w(amount.data!, amount.style!);
                 final needed = kind == CalendarEntryKind.awaiting
                     ? w(l.commonStatusAwaiting, AppType.caption.copyWith(letterSpacing: 0)) + 31
                     : w(s.name.length > 8 ? s.name.substring(0, 8) : s.name, AppType.titleSm);
@@ -143,7 +118,7 @@ class CalendarEntryRow extends StatelessWidget {
                       Wrap(
                         spacing: AppSpace.s3,
                         crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [amount, cycleChip, ?confirm],
+                        children: [amount, cycleChip],
                       ),
                     ],
                   ],
@@ -166,12 +141,7 @@ class CalendarEntryRow extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                          amount,
-                          const SizedBox(height: 2),
-                          cycleChip,
-                          if (confirm != null) ...[const SizedBox(height: 2), confirm],
-                        ],
+                        children: [amount, const SizedBox(height: 2), cycleChip],
                       ),
                     ],
                   ],

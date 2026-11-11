@@ -1,6 +1,11 @@
 {
   "calendarViewMonth": "Month",
-  "calendarViewAgenda": "Agenda",
+  "calendarViewAgenda": "List",
+  "calendarMonthColon": "{name}:",
+  "@calendarMonthColon": {"description": "Label above the month's real-money total. name = month name (EN), number = month number (VI).", "placeholders": {"name": {"type": "String"}, "number": {"type": "String"}}},
+  "calendarToCome": "{count} to come",
+  "@calendarToCome": {"placeholders": {"count": {"type": "int"}}},
+  "calendarExpected": "Expected",
   "calendarMonthYear": "{name} {year}",
   "@calendarMonthYear": {"description": "Month navigator title. name = month name (EN), number = month number (VI).", "placeholders": {"name": {"type": "String"}, "number": {"type": "String"}, "year": {"type": "String"}}},
   "calendarMonthName": "{name}",

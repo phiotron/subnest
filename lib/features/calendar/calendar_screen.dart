@@ -15,12 +15,12 @@ import 'widgets/month_grid.dart';
 /// Month grid or Agenda list (S8 toggle).
 enum CalendarView { month, agenda }
 
-/// S8 Calendar (design png 41 month, 42 past month, 43 agenda).
+/// S8 Calendar (mockup v14: 071 month, 072 list, 073 past month).
 ///
-/// Header: month navigator + Month/Agenda toggle (drops under the month name when there is no
-/// room), month total — past months total the Payments made, the current and later months add the
-/// periods still expected. Month view: [MonthGrid] + the selected day's entries. Agenda: the
-/// month's entries in sections. Numbers come from [CalendarMonth] (lib/domain/stats).
+/// Header: month navigator + Month/List toggle (drops under the month name when there is no
+/// room), the month's real money ([MonthCashFlow]: Paid + Still to pay). Month view: [MonthGrid]
+/// with mini logos + the selected day's rows (price + cycle chip). List: what is still ahead —
+/// To confirm · This week · Later this month · next month. Entries come from [CalendarMonth].
 class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key, this.initialView = CalendarView.month, this.initialMonthOffset = 0});
 
@@ -93,7 +93,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 onView: (v) => setState(() => _view = v),
               ),
             ),
-            pad(_MonthTotal(month: month, primary: calc.primaryCurrency)),
+            pad(_MonthTotal(month: month, cash: ref.watch(monthCashFlowProvider(month.month)))),
             if (_view == CalendarView.month) ...[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: gridGutter),
@@ -130,22 +130,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
         _EmptyCard(text: l.calendarNothingDue)
       else
         AppGroup(
-          children: [
-            for (final e in entries)
-              CalendarEntryRow(
-                entry: e,
-                today: month.today,
-                onTap: () => _open(e),
-                onConfirm: () => context.push(AppRoutes.confirm(e.subscription.id)),
-              ),
-          ],
+          children: [for (final e in entries) CalendarEntryRow(entry: e, today: month.today, onTap: () => _open(e))],
         ),
     ];
   }
 
   List<Widget> _agenda(BuildContext context, CalendarMonth month, CalendarMonth? next) {
     final l = context.l10n;
-    final groups = month.agenda(next: next);
+    // The list is a timeline of what is still ahead: this month's Payments stay in the grid.
+    final groups = month.agenda(next: next).where((g) => g.kind != AgendaGroupKind.earlier).toList();
     if (groups.isEmpty) return [const SizedBox(height: AppSpace.s3), _EmptyCard(text: l.calendarEmpty)];
     String title(AgendaGroupKind k) => switch (k) {
       AgendaGroupKind.toConfirm => l.commonStatusAwaiting,
@@ -227,11 +220,13 @@ class _Toolbar extends StatelessWidget {
   }
 }
 
+/// "November:" · "≈ $116.57" — the real money leaving in the month (Paid + Still to pay, product.md
+/// §4.8, the same [MonthCashFlow] as Insights) · "2 paid · 5 to come" (past months: "5 paid").
 class _MonthTotal extends StatelessWidget {
-  const _MonthTotal({required this.month, required this.primary});
+  const _MonthTotal({required this.month, required this.cash});
 
   final CalendarMonth month;
-  final String primary;
+  final MonthCashFlow? cash;
 
   @override
   Widget build(BuildContext context) {
@@ -241,31 +236,34 @@ class _MonthTotal extends StatelessWidget {
     final parts = <String>[];
     if (month.entries.isEmpty) {
       parts.add(l.calendarCountPayments(0));
-    } else if (month.isPast) {
+    } else {
       parts.add(l.calendarCountPaid(month.paidCount));
       if (month.skippedCount > 0) parts.add(l.calendarCountSkipped(month.skippedCount));
-      if (month.awaitingCount > 0) parts.add(l.calendarCountToConfirm(month.awaitingCount));
-    } else {
-      parts.add(l.calendarCountPayments(month.paymentCount));
-      if (month.awaitingCount > 0) parts.add(l.calendarCountToConfirm(month.awaitingCount));
+      final ahead = month.awaitingCount + month.upcomingCount;
+      if (ahead > 0) parts.add(l.calendarToCome(ahead));
     }
+    final cash = this.cash;
+    final total = cash == null
+        ? l.amount(month.total, month.currency, approx: true)
+        : l.money(Money(cash.totalMinor, cash.currency), approx: true);
+    final missing = {...month.missingRates, ...?cash?.missingRates}.toList()..sort();
     return Padding(
       padding: const EdgeInsets.only(top: AppSpace.s2, bottom: AppSpace.s3),
       child: MergeSemantics(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(month.isPast ? l.calPaidIn(month.month) : l.calMonthTotal(month.month), style: muted),
+            Text(l.calMonthColon(month.month), style: muted),
             Text(
-              l.amount(month.total, primary, approx: month.approx),
-              semanticsLabel: l.spokenLabel(l.amount(month.total, primary, approx: month.approx)),
+              total,
+              semanticsLabel: l.spokenLabel(total),
               style: AppType.title.copyWith(color: c.ink).tabular,
             ),
             Text(parts.join(' · '), style: muted),
-            if (month.missingRates.isNotEmpty)
+            if (missing.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 2),
-                child: Text(l.calendarMissingRates((month.missingRates.toList()..sort()).join(', ')), style: muted),
+                child: Text(l.calendarMissingRates(missing.join(', ')), style: muted),
               ),
           ],
         ),
