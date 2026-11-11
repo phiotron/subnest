@@ -538,7 +538,10 @@ class _MonthColumns extends StatelessWidget {
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 34), child: bar),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 34),
+                child: SizedBox(width: double.infinity, child: bar),
+              ),
             ),
           ),
           const SizedBox(height: 4),
