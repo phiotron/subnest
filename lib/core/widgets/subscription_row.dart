@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 
+import '../../domain/domain.dart';
 import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
 import 'app_icons.dart';
@@ -17,7 +18,7 @@ enum SubscriptionRowState {
   normal,
 
   /// A period is awaiting confirmation: warning dot on the tile + "To confirm" badge (+ "×N").
-  /// Never shows a date beside the badge (VI/360 rule).
+  /// [meta] (mockup v14: "8 Nov · Visa") follows the badge and wraps under it when space is tight.
   awaiting,
 
   /// Free trial: neutral hourglass "Trial" badge + "ends in 2 days".
@@ -47,6 +48,7 @@ enum SubscriptionRowState {
 ///   has passed). Its colour follows [state] (trial / awaiting / cancelled = off) unless
 ///   [progressTone] is given (e.g. `off` for a paused subscription).
 /// * [nameBadge] (e.g. "Auto") after the name, [metaExtras] (label chip, "+2") after the second line.
+/// * [cycle] → cycle chip under the amount; [priceRiseLabel] → ↑ before the amount.
 ///
 /// Put rows in an `AppGroup(dividerIndent: 68)`. Strings for meta lines come from the caller —
 /// build them with `AppDates.relative`, `l10n.category`, `perCycle`, `l10n.corePlanPrice`.
@@ -74,6 +76,8 @@ class SubscriptionRow extends StatelessWidget {
     this.progressTone,
     this.nameBadge,
     this.metaExtras = const [],
+    this.cycle,
+    this.priceRiseLabel,
   });
 
   final String name;
@@ -130,6 +134,13 @@ class SubscriptionRow extends StatelessWidget {
   /// Extra pieces at the end of the second line (label chip, "+2"…); they wrap with it.
   final List<Widget> metaExtras;
 
+  /// Billing cycle → a [CycleChip] under the amount (mockup v14 `row()`; decision 2026-11-10 (2) #7).
+  final BillingCycle? cycle;
+
+  /// Non-null → `warning-ink` ↑ before the amount (price went up in the last 90 days); the text is
+  /// what a screen reader says ("Price went up").
+  final String? priceRiseLabel;
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
@@ -151,6 +162,7 @@ class SubscriptionRow extends StatelessWidget {
                 '×$awaitingCount',
                 style: AppType.meta.copyWith(fontWeight: FontWeight.w600, color: c.warningInk),
               ),
+            if (meta != null) Text(meta!, style: AppType.meta.copyWith(color: c.inkMuted)),
             ...metaExtras,
           ],
         );
@@ -195,6 +207,20 @@ class SubscriptionRow extends StatelessWidget {
 
     final amountStyle = AppType.titleSm.copyWith(color: c.ink).tabular;
     final amountMetaStyle = AppType.meta.copyWith(color: c.inkMuted).tabular;
+    final rise = priceRiseLabel;
+    final amountText = rise == null
+        ? Text(amount, maxLines: 1, softWrap: false, style: amountStyle)
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Semantics(
+                label: rise,
+                child: Icon(LucideIcons.arrowUp, size: 14, color: c.warningInk),
+              ),
+              const SizedBox(width: 2),
+              Text(amount, maxLines: 1, softWrap: false, style: amountStyle),
+            ],
+          );
 
     Widget layout(bool stacked) => ConstrainedBox(
       constraints: const BoxConstraints(minHeight: AppSize.rowH),
@@ -258,7 +284,8 @@ class SubscriptionRow extends StatelessWidget {
                       runSpacing: 2,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Text(amount, style: amountStyle),
+                        amountText,
+                        if (cycle != null) CycleChip(cycle: cycle!),
                         if (amountMeta != null)
                           Text(
                             amountMeta!,
@@ -277,7 +304,8 @@ class SubscriptionRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(amount, maxLines: 1, softWrap: false, style: amountStyle),
+                  amountText,
+                  if (cycle != null) ...[const SizedBox(height: 3), CycleChip(cycle: cycle!)],
                   if (amountMeta != null) ...[
                     const SizedBox(height: 3),
                     Text(
@@ -312,8 +340,10 @@ class SubscriptionRow extends StatelessWidget {
         }
 
         final amountW = [
-          width(amount, amountStyle),
+          width(amount, amountStyle) + (priceRiseLabel == null ? 0 : 16),
           if (amountMeta != null) width(amountMeta!, amountMetaStyle),
+          if (cycle != null)
+            width(l.cycle(cycle!), AppType.caption.copyWith(letterSpacing: 0, fontWeight: FontWeight.w500)) + 18,
         ].reduce((a, b) => a > b ? a : b);
         // Room for the name column if the amounts stay on the right.
         final room = box.maxWidth - AppSpace.s4 * 2 - 40 - AppSpace.s3 * 2 - amountW;

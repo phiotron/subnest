@@ -26,14 +26,14 @@ void main() {
     // SubnestApp pushes the notification's route (`/confirm/:id`) on top of the current screen.
     final app = await pumpApp(tester, push: '/confirm/netflix');
     expect(find.text('Did you pay Netflix?'), findsOneWidget);
-    await tester.tap(find.text('Paid'));
+    await tester.tap(find.text('Paid').last); // the sheet's button (the cost card's "Paid" is under it)
     await settle(tester);
     expect(find.text('Payment saved'), findsOneWidget);
     await tester.tap(find.text('Done'));
     await settle(tester);
     expect(find.byType(ConfirmSheet), findsNothing);
     expect(find.text('1 payment to confirm'), findsOneWidget);
-    expect(find.text('₫150,000 · Viettel 5G'), findsOneWidget);
+    expect(find.text('₫150,000'), findsOneWidget);
     expect((await app.sub('netflix'))!.dueDate, const LocalDate(2026, 12, 4));
     await closeApp(tester);
   });
@@ -72,13 +72,14 @@ void main() {
     await tester.tap(find.text('See cancelled'));
     await settle(tester);
     expect(find.byKey(const ValueKey('row-canva')), findsOneWidget);
-    expect(find.text('₫2,869,000/year'), findsOneWidget); // savings card on the Cancelled tab
+    expect(find.text('You’re saving ₫2,869,000 a year'), findsOneWidget); // saving line on the Cancelled tab
     expect((await app.sub('canva'))!.status, SubscriptionStatus.cancelled);
     await closeApp(tester);
   });
 
   testWidgets('flow 6: trial card → S5 → How to cancel / Keep it', (tester) async {
     await pumpApp(tester);
+    await scrollToFinder(tester, find.text('Spotify trial ends in 2 days'));
     await tester.tap(find.text('Spotify trial ends in 2 days'));
     await settle(tester);
     expect(find.text('Trial ends Fri, 6 Nov'), findsOneWidget);
@@ -93,15 +94,17 @@ void main() {
     await closeApp(tester);
   });
 
-  testWidgets('trial card: savings line + Keep it / View subscription / How to cancel', (tester) async {
+  testWidgets('trial card: savings line + Keep it / View / How to cancel', (tester) async {
     await pumpApp(tester);
-    expect(find.textContaining('Cancel before the first charge to save'), findsOneWidget);
+    await scrollToFinder(tester, find.text('Keep it'));
+    expect(find.textContaining('Cancel before it charges to save'), findsOneWidget);
     expect(find.text('How to cancel'), findsOneWidget);
-    await tester.tap(find.text('View subscription'));
+    await tester.tap(find.text('View'));
     await settle(tester);
     expect(find.text('Trial ends Fri, 6 Nov'), findsOneWidget); // S5 Detail
     await tester.pageBack();
     await settle(tester);
+    await scrollToFinder(tester, find.text('Keep it'));
     await tester.tap(find.text('Keep it'));
     await tester.pumpAndSettle();
     expect(find.text('Spotify trial ends in 2 days'), findsNothing);

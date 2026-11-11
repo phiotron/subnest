@@ -5,14 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/subscription_repository.dart' show DetectionReport;
 import '../../domain/domain.dart';
 
-/// Which list the Overview shows (segmented control).
-enum HomeTab { active, trials, cancelled }
+/// Which list the Overview shows (segmented control, mockup v14 png 014/026/027).
+enum HomeTab { active, trials, paused, cancelled }
 
 /// Sort order of the Overview list (sort sheet). Remembered as its [name] (`settings.homeSort`).
 enum HomeSort {
   dueDate,
   price,
-  name;
+  name,
+
+  /// Newest `createdAt` first (png 023 "Recently added").
+  recent;
 
   static HomeSort parse(String? value) => values.where((e) => e.name == value).firstOrNull ?? HomeSort.dueDate;
 }
@@ -31,8 +34,9 @@ class HomeTabRequest extends Notifier<HomeTab?> {
 }
 
 HomeTab tabOf(Subscription s, LocalDate today) => switch (BillingRules.effectiveStatus(s, today)) {
-  // Paused rows are listed with Active (muted, "Paused"); the filter can pick them on their own.
-  SubscriptionStatus.active || SubscriptionStatus.paused => HomeTab.active,
+  SubscriptionStatus.active => HomeTab.active,
+  // A pause scheduled from a later Due date stays under Active ("Pauses 21 Nov") until then.
+  SubscriptionStatus.paused => (s.pausedFrom?.isAfter(today) ?? false) ? HomeTab.active : HomeTab.paused,
   SubscriptionStatus.trial => HomeTab.trials,
   SubscriptionStatus.cancelled => HomeTab.cancelled,
 };
@@ -49,7 +53,8 @@ HomeStatus statusOf(Subscription s, LocalDate today) => switch (BillingRules.eff
 
 /// The tab a status is listed under.
 HomeTab tabOfStatus(HomeStatus s) => switch (s) {
-  HomeStatus.active || HomeStatus.paused => HomeTab.active,
+  HomeStatus.active => HomeTab.active,
+  HomeStatus.paused => HomeTab.paused,
   HomeStatus.trial => HomeTab.trials,
   HomeStatus.cancelled => HomeTab.cancelled,
 };
@@ -180,7 +185,8 @@ class HomeAutoUndo extends Notifier<DetectionReport?> {
 
 /// Subscriptions of [tab] matching [filter], sorted. Whatever the order, rows awaiting confirmation
 /// stay on top (oldest due first). Due date: then soonest, Paused last; cancelled ones by
-/// cancellation date, newest first. Price: highest Monthly cost first. Name: A → Z.
+/// cancellation date, newest first. Price: highest Monthly cost first. Name: A → Z. Recent: newest
+/// added first.
 List<Subscription> listFor(
   Iterable<Subscription> all,
   HomeTab tab,
@@ -230,6 +236,13 @@ List<Subscription> listFor(
       );
     case HomeSort.name:
       list.sort((a, b) => awaitingFirst(a, b, byName));
+    case HomeSort.recent:
+      list.sort(
+        (a, b) => awaitingFirst(a, b, (a, b) {
+          final c = b.createdAt.compareTo(a.createdAt);
+          return c != 0 ? c : byName(a, b);
+        }),
+      );
   }
   return list;
 }

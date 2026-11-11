@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:subnest/core/l10n/l10n.dart';
@@ -339,6 +340,7 @@ Future<TestApp> pumpApp(
 
   /// Extra data written before the app is built (labels, budgets, settings…).
   Future<void> Function(ProviderContainer container)? seed,
+  List<Override> overrides = const [],
 }) async {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   launched.clear();
@@ -380,6 +382,7 @@ Future<TestApp> pumpApp(
       primaryCurrencyProvider.overrideWithValue('VND'),
       catalogProvider.overrideWith((ref) async => _catalog!),
       notificationsEnabledProvider.overrideWith((ref) async => remindersOn),
+      ...overrides,
     ],
   );
   await tester.runAsync(() async {

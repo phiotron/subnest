@@ -11,10 +11,26 @@ import 'package:subnest/features/home/home_list.dart';
 
 import 'ui_harness.dart';
 
-// S2 Overview, mockup v13 additions (png 14–20; product.md §10.2): row extras, filter, budget bar,
-// due-this-week, auto Undo, Paused / pausing rows, tab bar hidden on scroll.
+// S2 Overview extras (mockup v13 png 14–20, carried into v14 png 014/022/024/027/028): row extras,
+// filter, budget card, auto Undo, Paused tab / pausing rows, tab bar hidden on scroll.
 
 Finder row(String id) => find.byKey(ValueKey('row-$id'));
+
+Finder segment(String label) => find.textContaining(RegExp('^$label [0-9]'), findRichText: true);
+
+final filterButton = find.byIcon(LucideIcons.slidersHorizontal);
+
+Future<void> openFilter(WidgetTester tester) async {
+  await scrollToFinder(tester, filterButton);
+  await tester.tap(filterButton);
+  await tester.pumpAndSettle();
+}
+
+Future<void> openTab(WidgetTester tester, String label) async {
+  await scrollToFinder(tester, segment(label));
+  await tester.tap(segment(label).last);
+  await tester.pumpAndSettle();
+}
 
 String location(WidgetTester tester) {
   final config = GoRouter.of(tester.element(find.byType(Navigator).first)).routerDelegate.currentConfiguration;
@@ -116,12 +132,14 @@ void main() {
       // iCloud+ pauses later: still looks Active, says when, keeps its bar.
       expect(find.descendant(of: row('icloud'), matching: find.text('Pauses 15 Nov')), findsOneWidget);
       expect(find.descendant(of: row('icloud'), matching: find.byType(CycleProgressBar)), findsOneWidget);
-      // Canva is paused now: muted, "Paused" + since, no bar, listed after the rest.
+      // Canva is paused now: on the Paused tab (png 027), muted, "Paused" + since, no bar.
+      expect(row('canva'), findsNothing);
+      await openTab(tester, 'Paused');
       await scrollToFinder(tester, row('canva'));
       expect(find.descendant(of: row('canva'), matching: find.text('Paused')), findsOneWidget);
       expect(find.descendant(of: row('canva'), matching: find.text('since 1 Nov')), findsOneWidget);
       expect(find.descendant(of: row('canva'), matching: find.byType(CycleProgressBar)), findsNothing);
-      expect(tester.getTopLeft(row('canva')).dy, greaterThan(tester.getTopLeft(row('youtube')).dy));
+      expect(row('youtube'), findsNothing);
       await closeApp(tester);
     });
 
@@ -132,6 +150,7 @@ void main() {
       expect(find.bySemanticsLabel(RegExp('ChatGPT Plus.*Auto-detected', dotAll: true)), findsOneWidget);
       expect(find.bySemanticsLabel(RegExp('YouTube.*Work.*1 more label', dotAll: true)), findsOneWidget);
       expect(find.bySemanticsLabel(RegExp('iCloud.*Pauses 15 Nov', dotAll: true)), findsOneWidget);
+      await openTab(tester, 'Paused');
       await scrollToFinder(tester, row('canva'));
       expect(find.bySemanticsLabel(RegExp('Canva.*Paused.*since 1 Nov', dotAll: true)), findsOneWidget);
       handle.dispose();
@@ -140,9 +159,7 @@ void main() {
 
     testWidgets('filter sheet → filtered list with chips, remembered, Clear (png 16–17)', (tester) async {
       final app = await pumpRich(tester);
-      await scrollToFinder(tester, find.text('Filter'));
-      await tester.tap(find.text('Filter'));
-      await tester.pumpAndSettle();
+      await openFilter(tester);
       expect(find.text('STATUS'), findsOneWidget);
       expect(find.text('LABELS'), findsOneWidget);
       expect(find.text('Subnest remembers your filter and sort order next time.'), findsOneWidget);
@@ -175,21 +192,23 @@ void main() {
           await s.setHomeSort('name');
         },
       );
-      await scrollToFinder(tester, row('canva'));
+      final handle = tester.ensureSemantics();
+      await scrollToFinder(tester, row('icloud'));
       expect(find.bySemanticsLabel('Remove filter Paused'), findsOneWidget);
-      expect(find.text('Name'), findsOneWidget); // sort button label
-      expect(row('canva'), findsOneWidget);
+      expect(find.bySemanticsLabel('Sort by Name'), findsOneWidget); // sort pill
+      expect(find.bySemanticsLabel('Filter, 1 selected'), findsOneWidget);
+      // iCloud+ pauses on 15 Nov: still on Active; Canva (paused now) on the Paused tab.
       expect(row('icloud'), findsOneWidget);
       expect(row('youtube'), findsNothing);
-      expect(tester.getTopLeft(row('canva')).dy, lessThan(tester.getTopLeft(row('icloud')).dy));
+      await openTab(tester, 'Paused');
+      expect(row('canva'), findsOneWidget);
+      handle.dispose();
       await closeApp(tester);
     });
 
     testWidgets('status filter Cancelled from the Active tab jumps to Cancelled; × removes it', (tester) async {
       await pumpRich(tester);
-      await scrollToFinder(tester, find.text('Filter'));
-      await tester.tap(find.text('Filter'));
-      await tester.pumpAndSettle();
+      await openFilter(tester);
       await tester.tap(find.text('Cancelled').last);
       await tester.pumpAndSettle();
       await tester.tap(find.text('Show 2 subscriptions'));
@@ -202,22 +221,22 @@ void main() {
       await closeApp(tester);
     });
 
-    testWidgets('budget bar: ₫1,200,000 + % used, opens Budgets (png 08)', (tester) async {
+    testWidgets('budget card: spent of ₫1,200,000 + %, opens Budgets (png 013)', (tester) async {
       await pumpRich(tester);
-      expect(find.text('Budget ₫1,200,000'), findsOneWidget);
-      // Canva and iCloud+ are Paused → their cost leaves the total (75 %, below the amber 85 %).
-      final pct = find.textContaining('% used');
-      expect(pct, findsOneWidget);
-      await tester.tap(find.text('Budget ₫1,200,000'));
+      final of = find.textContaining(' of ₫1,200,000');
+      await scrollToFinder(tester, of);
+      expect(find.text('Budget'), findsOneWidget);
+      expect(find.textContaining(RegExp(r'^[0-9]+%$')), findsOneWidget);
+      await tester.tap(of);
       await settle(tester);
       expect(location(tester), '/settings/budgets');
       await closeApp(tester);
     });
 
-    testWidgets('no budget → colour strip, no budget bar', (tester) async {
+    testWidgets('no total budget → no budget card', (tester) async {
       await pumpRich(tester, budget: false);
-      expect(find.textContaining('Budget '), findsNothing);
-      expect(find.byType(SpendStrip), findsOneWidget);
+      await scrollThrough(tester);
+      expect(find.textContaining(' of ₫'), findsNothing);
       await closeApp(tester);
     });
 
@@ -256,7 +275,8 @@ void main() {
 
     testWidgets('Vietnamese: labels, Auto, Paused, budget', (tester) async {
       await pumpRich(tester, setup: const Setup(locale: 'vi'));
-      expect(find.text('Ngân sách 1.200.000đ'), findsOneWidget);
+      await scrollToFinder(tester, find.textContaining(' / 1.200.000đ'));
+      expect(find.text('Ngân sách'), findsOneWidget);
       await scrollToFinder(tester, row('youtube'));
       expect(find.descendant(of: row('chatgpt'), matching: find.text('Tự động')), findsOneWidget);
       expect(find.descendant(of: row('icloud'), matching: find.text('Dừng từ 15/11')), findsOneWidget);
@@ -267,9 +287,7 @@ void main() {
     testWidgets('touch targets ≥ 48dp and labelled with filter on (S-50)', (tester) async {
       final handle = tester.ensureSemantics();
       await pumpRich(tester);
-      await scrollToFinder(tester, find.text('Filter'));
-      await tester.tap(find.text('Filter'));
-      await tester.pumpAndSettle();
+      await openFilter(tester);
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
       await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
       await tester.tap(find.text('Work').last);

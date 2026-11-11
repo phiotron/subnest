@@ -8,37 +8,44 @@ String sortLabel(AppLocalizations l, HomeSort s) => switch (s) {
   HomeSort.dueDate => l.homeSortDue,
   HomeSort.price => l.homeSortPrice,
   HomeSort.name => l.homeSortName,
+  HomeSort.recent => l.homeSortRecent,
 };
 
-/// S2 sort sheet (png 15): flat radio rows in a group + "Done". Each tap applies at once
-/// ([onChanged]); "Done", a scrim tap or a drag closes it.
+IconData _sortIcon(HomeSort s) => switch (s) {
+  HomeSort.dueDate => LucideIcons.calendarDays,
+  HomeSort.price => LucideIcons.coins,
+  HomeSort.name => LucideIcons.arrowDownAZ,
+  HomeSort.recent => LucideIcons.clock,
+};
+
+/// S2 sort sheet (mockup v14 png 023, `sortSheet()`): "Sort by", flat radio rows — Next payment ·
+/// Price · Name · Recently added — each with its icon. A tap applies ([onChanged]) and closes.
 Future<void> showSortSheet(
   BuildContext context, {
   required HomeSort current,
   required ValueChanged<HomeSort> onChanged,
 }) {
   final l = context.l10n;
-  var value = current;
   return showAppSheet<void>(
     context,
-    builder: (ctx) => StatefulBuilder(
-      builder: (ctx, setState) => AppSheet(
-        title: l.homeSortTitle,
-        actions: [AppButton.tonal(label: l.homeSortDone, expand: true, onPressed: () => Navigator.pop(ctx))],
-        child: SingleChildScrollView(
-          child: RadioRowGroup<HomeSort>(
-            style: RadioRowStyle.flat,
-            value: value,
-            onChanged: (v) {
-              setState(() => value = v);
-              onChanged(v);
-            },
-            options: [
-              RadioOption(value: HomeSort.dueDate, title: l.homeSortDue, subtitle: l.homeSortDueHint),
-              RadioOption(value: HomeSort.price, title: l.homeSortPrice, subtitle: l.homeSortPriceHint),
-              RadioOption(value: HomeSort.name, title: l.homeSortName, subtitle: l.homeSortNameHint),
-            ],
-          ),
+    builder: (ctx) => AppSheet(
+      title: l.homeSortTitle,
+      child: SingleChildScrollView(
+        child: RadioRowGroup<HomeSort>(
+          style: RadioRowStyle.flat,
+          value: current,
+          onChanged: (v) {
+            onChanged(v);
+            Navigator.pop(ctx);
+          },
+          options: [
+            for (final s in HomeSort.values)
+              RadioOption(
+                value: s,
+                title: sortLabel(l, s),
+                trailing: Icon(_sortIcon(s), size: 20, color: ctx.colors.inkMuted),
+              ),
+          ],
         ),
       ),
     ),

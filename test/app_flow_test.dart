@@ -113,7 +113,7 @@ void main() {
     await tester.tap(find.text('See cancelled'));
     await settle();
     expect(find.text('Gym'), findsOneWidget);
-    expect(find.text('You’re saving'), findsOneWidget);
+    expect(find.textContaining('You’re saving'), findsOneWidget);
 
     // Insights tab shows numbers.
     await tester.tap(find.text('Insights'));

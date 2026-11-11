@@ -67,8 +67,8 @@ Uri? cancelLink(Subscription s, Map<String, CatalogService> catalog) {
 /// "netflix.com" from a link.
 String linkHost(Uri uri) => uri.host.startsWith('www.') ? uri.host.substring(4) : uri.host;
 
-/// Amount column of a subscription row (design `row()`): foreign currency → full price +
-/// "≈ converted"; shared → My share + "plan …"; otherwise price + "/month".
+/// Amount column of a subscription row (mockup v14 `row()`): My share in the subscription's own
+/// currency (the cycle chip goes under it), plus "≈ $X" in the Primary currency when it differs.
 (String, String?) rowAmounts(
   AppLocalizations l,
   Subscription s, {
@@ -77,10 +77,9 @@ String linkHost(Uri uri) => uri.host.startsWith('www.') ? uri.host.substring(4) 
 }) {
   if (s.currency != primary) {
     final converted = calc.periodCost(s);
-    return (l.money(s.myShare), converted == null ? perCycle(l, s.cycle) : l.amount(converted, primary, approx: true));
+    return (l.money(s.myShare), converted == null ? null : l.amount(converted, primary, approx: true));
   }
-  if (s.isShared) return (l.money(s.myShare), l.corePlanPrice(l.money(s.price)));
-  return (l.money(s.price), perCycle(l, s.cycle));
+  return (l.money(s.myShare), null);
 }
 
 /// Price with its cycle suffix: "₫59,000/month".
@@ -111,15 +110,40 @@ String categoryLabel(AppLocalizations l, Subscription s, Map<String, Category> c
   return c != null ? l.categoryName(c) : l.commonCategory(SubscriptionCategory.fromKey(s.categoryId).key);
 }
 
-/// Second line of a row: "in 3 days · AI" / "2 Feb 2027 · Software" / "ends in 2 days" /
-/// "Cancelled 12 Oct 2026" / "since 1 Nov" (Paused). Awaiting rows show only the badge; a pausing
-/// row only its "Pauses 15 Nov" badge (added by the Overview).
-String? rowMeta(AppLocalizations l, Subscription s, LocalDate today, {Map<String, Category> categories = const {}}) {
+/// "Visa" from "Visa ••4821" — the first word of the subscription's Payment method (mockup row).
+String? methodShort(Subscription s, Map<String, PaymentMethod> methods) {
+  final m = s.paymentMethodId == null ? null : methods[s.paymentMethodId];
+  final name = m?.name.trim();
+  if (name == null || name.isEmpty) return null;
+  return name.split(RegExp(r'\s+')).first;
+}
+
+/// "21 days left · 1 Dec" — relative within 30 days (Today / Tomorrow / N days left), then the date.
+String dueWhen(AppLocalizations l, LocalDate due, LocalDate today) {
+  final n = today.daysUntil(due);
+  final date = AppDates.short(l, due, today: today);
+  if (n < 0) return '${AppDates.relative(l, due, today: today)} · $date';
+  if (n <= 30) return '${l.homeDaysLeft(n)} · $date';
+  return date;
+}
+
+/// Second line of a row (mockup v14 `row()`): "2 days left · 12 Nov · Visa" / trial "3 days left ·
+/// 13 Nov" (next to the Trial badge) / awaiting "8 Nov · Visa" (next to the To confirm badge) /
+/// "Cancelled 04/11/2026" / "since 1 Nov" (after the Paused badge) / pausing: just "PayPal" (after "Pauses 21 Nov").
+String? rowMeta(
+  AppLocalizations l,
+  Subscription s,
+  LocalDate today, {
+  Map<String, Category> categories = const {},
+  Map<String, PaymentMethod> methods = const {},
+}) {
+  final method = methodShort(s, methods);
+  String join(List<String?> parts) => parts.whereType<String>().join(' · ');
   switch (rowState(s, today)) {
     case SubscriptionRowState.awaiting:
-      return null;
+      return join([AppDates.short(l, s.dueDate, today: today), method]);
     case SubscriptionRowState.trial:
-      return l.homeTrialEndsWhen(AppDates.relative(l, s.dueDate, today: today));
+      return dueWhen(l, s.dueDate, today);
     case SubscriptionRowState.cancelled:
       final on = s.cancelledOn;
       return on == null ? l.homeTabCancelled : l.homeCancelledOn(AppDates.full(l, on));
@@ -127,12 +151,8 @@ String? rowMeta(AppLocalizations l, Subscription s, LocalDate today, {Map<String
       final from = s.pausedFrom;
       return from == null ? null : l.homePausedSince(AppDates.short(l, from, today: today));
     case SubscriptionRowState.normal:
-      if (pausesOn(s, today) != null) return null;
-      final days = today.daysUntil(s.dueDate);
-      final when = days <= 30
-          ? AppDates.relative(l, s.dueDate, today: today)
-          : AppDates.short(l, s.dueDate, today: today);
-      return '$when · ${categoryLabel(l, s, categories)}';
+      if (pausesOn(s, today) != null) return method;
+      return join([dueWhen(l, s.dueDate, today), method]);
   }
 }
 
