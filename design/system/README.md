@@ -1,40 +1,45 @@
-Subnest tracks every subscription a person pays for, warns them before a charge or a trial ends, and asks them to confirm each period. The UI is calm and exact: the monthly total is the hero, each service's own colour is the accent, and the app chrome stays neutral so those colours can carry the screen.
+Subnest tracks every subscription a person pays for, warns them before a charge or a trial ends, shows **price rises** and the **next 12 months**, and asks them to confirm each period. The money is the hero, every price carries its cycle, and the app chrome stays neutral so the services' own colours carry the screen.
 
-Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dark. Two themes, `light` and `dark`, both first-class.
+**Version 2 — 10 Nov 2026**, redrawn end to end from product.md v2. Brand stays **Teal “Nest”** (`brand` `#0e6b63` light / `#46cdb9` dark), Be Vietnam Pro, Lucide, 4/8 grid — the v13 tokens hold up, so nothing in `tokens.json` changed; v2 adds components and usage rules. Light and dark are both first-class.
 
 ## What's on this page
 
-- **Components** — ServiceTile, SubscriptionRow, SummaryCard, Button, ChipBadge, SegmentedControl, ToggleStepper, Banner, EmptyState, BottomSheet, Dialog, DatePicker, TabBar. Each card shows light and dark.
-- **Screens S0–S13** at 390 × 844, light and dark side by side, one card per state: data, empty, many awaiting, offline, reminders off, trial, cancelled, validation, dialogs and sheets. S2, S4 and S6 also have a Vietnamese card for overflow. Lists scroll inside the phone.
-- **Tiếng Việt (VI)** — every screen state again in Vietnamese, light and dark, to catch overflow.
-- **360 × 800 check** — 16 key views on the smallest Android frame, in Vietnamese (the worst case), light and dark.
-- **Large text 130%** — 8 key views at system text size 130% (iOS Dynamic Type / Android font scale), in Vietnamese, light and dark.
-- **Prototype** — the six flows of product spec §6 plus flow 7 (screenshot scan, §10.6) and flow 8 (price change notice), clickable. Tap the dashed control on the phone or jump with the step list; switch light/dark and English/Tiếng Việt beside it.
-- **Version 1.0 extended (spec §10)**:
-  - S2: rows carry a period progress bar, days left, label chips and an Auto badge; filter by category, label, status (incl. Paused) and payment method; “Due this week” 7-day strip with the week total; budget bar; Undo snackbar after automatic adds; tab bar hidden on scroll.
-  - S3: General / Vietnam library tabs (Vietnam shows only on VN phones), US prices with ≈ VND, “Reference price” chip on unverified prices.
-  - S4/S5: labels (multi), payment method picked from a list with quick add, several reminder offsets, Worth it? (3 levels + not rated), Pause from next due date / Resume with a chosen date, history rows tagged with their source (scan, notification) with Undo.
-  - S9: History / Forecast (30 days, 12 months) / Budgets per category; cost per day, week, month, year; “drop Not worth it” saving.
-  - S10: Organize (Categories with colour + icon and delete-and-move, Labels, Payment methods, Budget) and Automation (Pro): screenshot scan 1.0, bank/wallet notifications 1.1 Android, Gmail 1.2. Pro price is not shown — it is decided later.
-  - S13 Screenshot scan: how it works → on-device reading → “Added 4, confirmed 1” with Undo per row.
-  - S11 widgets v2: iOS large, Android small + medium, light and dark.
-  - From CONTEXT.md and ADR 0003: price change notice (Overview card, detail banner, compare sheet), Service library link row, discontinued plan note, auto-detected detail with Remove (remembered), About (library freshness, price lists, legal, Logo.dev credit), label edit, Pro early-access sheet (no price), scan edge states (photo access, receipt camera, needs your check / amount differs / not added, nothing found), Android large widget and small-widget states.
-  - Service logos come from Logo.dev at runtime; the mocks show the monogram fallback, which is what the app shows when a logo is missing or offline. Vietnam-tab prices are illustrative.
-- **Brand** — app icon (1024 PNG + SVG in the Brand assets) and the splash.
-- Every mock is rendered by `components/bundle.js` from one copy of the §8 sample data, so numbers agree across screens: active total ≈ ₫1,074,467/month, savings ₫1,479,000/year, two periods awaiting (Viettel 5G 1 Nov, Netflix 4 Nov).
+- **Components** (top) — Service logo plate, cycle chip + change chip + tags, Cost card, Paid / Still to pay bar + month picker + 12-month bars, Subscription row, Trial card (3 buttons) + price notice, Upcoming strip, Price rises + Next 12 months, Price history row, controls, banners + snackbar, sheet + dialog, empty state + tab bar. Each in light and dark.
+- **Screens by section of the spec** — 4.0–4.1 Launch & onboarding · 4.2 Overview · 4.3–4.4 Library & form · 4.5–4.7 Detail & confirm · 4.8 Calendar · 4.9 Insights · 4.10 Settings · 4.11 Scan (Pro) · 4.12–4.13 Widgets & notifications. 390 × 844, light and dark side by side, one card per state. Every card's notes start with **NEW**, **CHANGED** or **KEPT** compared with v13.
+- **Tiếng Việt (VI)** — Overview, Insights, Form and Confirm sheet in Vietnamese with the VND sample set.
+- **360 × 800 check** — Overview, Insights and Form at 360, in Vietnamese (the worst case).
+- **320 dp × 200% text** — Overview, list, Form and Insights at the spec's hardest accessibility check.
+- **Prototype** — all 11 flows of §5, clickable, with light/dark and English/Tiếng Việt switches.
+- **Brand** — app icon and splash (unchanged).
+- Every mock is drawn by `components/bundle.js` from the §6 sample data with the §3 rules implemented in code (month spend, month cash flow, price history, forecast), so numbers agree everywhere: November ≈ $144.89 (10 active, ≈ $4.83 a day), Paid $41.99, Still to pay $74.58, 7 charges ≈ $116.57 in the next 30 days, price rises +$3.50/month, savings $191.87/year.
+
+## What's new in v2
+
+- **Cost card** replaces the big header: Monthly | Yearly, change chip, ≈ total with (i), per-day line, Paid / Still to pay, month range and 6 columns that open Insights on that month.
+- **Insights by selected month or year** — every card follows `‹ November 2026 ›`; future months are tagged Projected.
+- **Price history + price rises** — timeline on Detail; Insights card “+$3.50 more a month than a year ago”; ↑ on rows that rose in the last 90 days; the edit-price dialog writes to history.
+- **Next 12 months** — projected vs last 12 months with a breakdown that always adds up (new, price rises, cancelled or paused, other). The spec's example figures were replaced by figures computed from the §6 data so every screen agrees.
+- **Cycle chip next to every price.**
+- **Trial card with 3 buttons** (Keep it · View · How to cancel) and the yearly saving.
+- **Upcoming payments strip** (merges “Due this week”).
+- **Service logos** on a plate; custom monogram or the user's own photo (choose, crop square).
+- Gathered in from after v13: language step, automatic backup (`.subnest`, password, 21:00, keep 2), restore = replace all, erase all data (2 steps), PIN lock + hide content, widgets small/medium/large incl. PIN-locked, scan states.
+
+## Service logos
+
+- Library services show their **real logo, bundled with the app** (no network), centred at 64% of a squircle plate (radius 28%) tinted from the brand colour. The plate makes black, white and transparent logos readable in both themes and keeps 10+ logos even.
+- **These mockups use a stand-in mark (initials in the brand colour) where the bundled logo goes** — Claude doesn't reproduce real trademarks. Build with the logo files from the catalog; keep the plate exactly as specified.
+- Custom services: monogram (1–2 letters or an emoji) in white on a palette colour, or the user's photo filling the same squircle. Sizes 24 · 32 · 40 · 56 · 80. Badges bottom-right: hourglass (trial), clock (waiting), pause.
+- About carries the line “Service names and logos belong to their respective owners.”
 
 ## Content fundamentals
 
-- Two languages, designed in English, checked in Vietnamese (strings run ~30% longer). Names may ellipsize; amounts and status never do. Rules that came out of the VI and 360 checks:
-  - Awaiting rows show only the badge (no date beside it).
-  - Shared rows say “gói 260.000đ” / “plan ₫260,000”.
-  - The four cycle quick-chips are single words in VI (Tuần · Tháng · Quý · Năm) so they stay on one row at 360.
-  - Banners let their action drop under the text when the line is too narrow; meta pairs (like the hero's two facts) wrap as whole phrases.
-  - The calendar's Month/List toggle moves under the month name when there's no room.
-- Voice: plain, calm, second person. “Did you pay Netflix?” / “Bạn đã trả Netflix chưa?”. No urgency words, no exclamation marks, no guilt. Emoji only in a celebratory empty state (“You're all caught up 🎉”).
-- Product terms: *Subscription*, *To confirm / Chờ xác nhận* (awaiting confirmation), *Payment*, *Next renewal / Gia hạn tiếp theo*, *Your share / Phần của bạn*, *plan ₫260,000 / gói 260.000đ*.
-- Money by locale: `₫260,000` (EN) · `260.000đ` (VI) · `$20.00`. A converted amount is prefixed `≈ ` and set in `ink-muted` when secondary.
-- Dates: relative up to 30 days (“in 3 days”, “còn 3 ngày”, “today”), then a date (“2 Feb 2027”, “2/2/2027”). Weeks start on Monday.
+- English first (new phones open in English + USD); Vietnamese checked with the VND set (strings ~30% longer). Names may ellipsize; amounts, cycle chips and status never do.
+- Every price has its cycle: chip text Weekly · Monthly · Quarterly · Yearly · Every N days/weeks/months (VI Hằng tuần · Hằng tháng · Hằng quý · Hằng năm · Mỗi N …).
+- Converted amounts start with `≈`; each line is rounded and totals add the rounded lines.
+- Increases are `warning-ink` with ↑ and +, decreases `success` with ↓ and − — never colour alone.
+- Voice: plain, calm, second person; no urgency, no guilt. Money: `$17.99`, `₫260,000` (EN), `260.000 ₫` (VI). Dates: “6 days left · 15 Nov”, then dates; weeks start Monday.
+- Pro is explained without a price (“Early access — we'll tell you the price before Pro starts charging”).
 
 ## Colour
 
@@ -43,8 +48,8 @@ Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dar
 - `brand` for the one primary action per view (FAB, main button), the selected chip, an on toggle, links and today in calendars. Text on it is `on-brand`. Selected tabs and segments use `brand-soft` with `on-brand-soft`.
 - **To confirm** is amber, never red: `warning-soft` fill, `warning-ink` text and icon, `warning` for the 12px dot on the tile and the calendar clock. Always colour + clock icon + words, everywhere the subscription appears.
 - Paid and savings: `success` on `success-soft`. `danger` appears only for delete and validation errors.
-- Charts: categories take `chart-1`…`chart-6` in a fixed order (AI, Storage, Telecom, Software, Video, Music; the rest fold into `chart-other`) — colour follows the category, never its rank. Light slots 3–5 are under 3:1 on white, so a chart always shows its full legend with labels and values. Paid vs expected in the bar chart is `brand` solid vs a `brand` hatch on `brand-soft`.
-- Service tiles carry the library colour or a custom `tile-*`; the letter is `on-tile-light` or `on-tile-dark`, whichever reaches 4.5:1; `tile-ring` keeps dark tiles edged on dark surfaces.
+- Charts: categories take `chart-1`…`chart-6` in a fixed order (AI, Storage, Telecom, Software, Video, Music; the rest fold into `chart-other`) — colour follows the category, never its rank. Light slots 3–5 are under 3:1 on white, so a chart always shows its full legend with labels and values. **Paid vs Still to pay** and actual vs projected are always `brand` solid vs a 135° `brand` hatch — readable in greyscale and for colour-blind users. Category colours in v2: AI `chart-1`, Storage `chart-2`, Health `chart-3`, Software `chart-4`, Video `chart-5`, Music `tile-violet`, Telecom `tile-sky`, the rest `chart-other`.
+- Logo plates are tinted from the service's brand colour (13% over `surface` in light, 26% in dark, 1px ring at 22%). Custom monograms use the `tile-*` palette with white letters.
 - Focus: 2px solid `focus` (alias of `brand`) outline, 2px offset.
 
 ## Type
@@ -52,7 +57,7 @@ Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dar
 - One family: **Be Vietnam Pro** (Google Fonts, full Vietnamese diacritics), 400–700. Flutter: `google_fonts` or bundled TTFs.
 - Money always uses tabular figures (`font-variant-numeric: tabular-nums`; Flutter `FontFeature.tabularFigures()`).
 - `display` for the total-spend hero; `amount-lg` for editable amounts; `headline` for tab-level titles; `title` for sheets and sections; `title-sm` for row names and amounts; `body`; `label` for buttons, chips, segments; `meta` for second lines; `caption` uppercase for eyebrows and badges.
-- Layouts hold at 130% system text (see the Large text cards): text grows, tiles/icons/tab bar don't, and `display`, `amount-lg` and `headline` grow less (to 44/38/32px) so the big numbers stay on one line. Rows get taller; a row's second line and a settings value may wrap to two lines; names ellipsize; amounts and badges never truncate. In code, scale only text styles by the system factor — never the layout grid.
+- Layouts hold at 130–200% system text (see the 320 dp × 200% cards): text grows, tiles/icons/tab bar don't, and `display`, `amount-lg` and `headline` grow less (to 44/38/32px) so the big numbers stay on one line. Rows get taller; a row's second line and a settings value may wrap to two lines; names ellipsize; amounts and badges never truncate. In code, scale only text styles by the system factor — never the layout grid.
 
 ## Space, shape, elevation
 
@@ -69,13 +74,13 @@ Brand direction: **Teal “Nest”** — `brand` `#0e6b63` light / `#46cdb9` dar
 
 ## Motion
 
-150–250 ms, ease-out, each with a reason: the total counts up when switching Month ↔ Year (240 ms); sheets slide up (240 ms) over a fading `scrim`; dialogs scale in (200 ms); Paid pops a `success` check (220 ms) with a light haptic; a new row flashes `brand-soft` once; cancelling earns a 1.4 s confetti fall. Nothing loops (prototype tap targets aside). Reduce-motion cuts to the end state.
+150–250 ms, ease-out, each with a reason: the cost number counts up when switching Monthly ↔ Yearly or the selected month (200 ms); sheets slide up (240 ms) over a fading `scrim`; dialogs scale in (200 ms); Paid pops a `success` check (220 ms) with a light haptic; a new row flashes `brand-soft` once; cancelling earns a 1.4 s confetti fall. Nothing loops (prototype tap targets aside). Reduce-motion cuts to the end state.
 
 ## Iconography
 
 - **Lucide** (ISC), 24px grid, 2px stroke, round caps; Flutter `lucide_icons_flutter`. Sizes 13–16 inline and in badges, 20 rows and buttons, 22 tab bar, 24–26 top bar and FAB. The SVGs used are in the Icons asset group (single ink, `currentColor` — inline them; inside `<img>` they render black).
 - Meanings are fixed: `clock` to confirm · `hourglass` trial · `users` shared · `ban` cancelled / didn't pay · `circle-check` paid · `piggy-bank` savings · `wifi-off` offline rates · `bell-off` reminders off · `lock` privacy · `external-link` leaves the app.
-- No real service logos in v1: services are always monogram tiles.
+- Service logos: see **Service logos** above. Icons never stand in for a service.
 
 ## App icon and splash
 
