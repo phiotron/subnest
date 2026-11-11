@@ -99,7 +99,7 @@ void main() {
     await settle();
     expect(find.text('Gym'), findsWidgets);
 
-    // Detail → mark as cancelled → celebration → See cancelled → Cancelled tab.
+    // Detail → mark as cancelled → celebration (063) → Done → the detail, now cancelled → Overview.
     await tester.ensureVisible(find.text('Gym').last);
     await tester.tap(find.text('Gym').last);
     await settle();
@@ -109,11 +109,14 @@ void main() {
     await settle();
     await tester.tap(find.text('Mark as cancelled').last); // dialog
     await settle();
-    expect(find.text('Gym cancelled'), findsOneWidget);
-    await tester.tap(find.text('See cancelled'));
+    expect(find.textContaining('a year saved'), findsOneWidget);
+    expect(find.text('Total saving'), findsOneWidget);
+    await tester.tap(find.text('Done'));
     await settle();
-    expect(find.text('Gym'), findsOneWidget);
-    expect(find.textContaining('You’re saving'), findsOneWidget);
+    expect(find.text('Cancelled'), findsOneWidget); // detail status chip
+    expect(find.textContaining('Saving'), findsOneWidget); // savings banner
+    await tester.pageBack();
+    await settle();
 
     // Insights tab shows numbers.
     await tester.tap(find.text('Insights'));
