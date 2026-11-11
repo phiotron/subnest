@@ -46,8 +46,9 @@ pausedFrom = Due date lúc dừng). Gỡ tự phát hiện = `repo.delete` (đã
 - **Đỏ không do phần của tôi:** `test/a11y/approx_spoken_test.dart` (/home, /insights — chữ ≈ trong thẻ Chi phí/Sắp tới của UH/UI),
   `test/a11y/semantics_tap_action_test.dart` (overview_cards.dart:113, upcoming_budget.dart:246, insights stats_parts.dart:273).
 - **Đỏ do đổi chữ của tôi, file ngoài phạm vi (cần sửa):**
-  - `test/app_flow_test.dart` dòng 102–116: "Gym cancelled" + "See cancelled" → nay "Nice — that’s … a year saved", thẻ
-    "Total saving", nút "Done"/"Undo" (Done về lại Chi tiết). File đang có sửa chưa commit của phiên khác nên tôi không đụng.
+  - ✅ `test/app_flow_test.dart` dòng 102–116 đã sửa (điều phối đồng ý, commit riêng): màn ăn mừng → **Done về lại Chi tiết
+    đã huỷ** (chip "Cancelled" + banner Tiết kiệm) → `pageBack` về Tổng quan. Bỏ kiểm tab Đã huỷ ("You’re saving") — thuộc UH.
+    Test còn dừng ở dòng Thống kê "This month" (~124, của phiên UI), không phải phần UD.
   - `test/features/home/flows_test.dart:28`, `home_screen_test.dart:287` — "Did you pay Netflix?" → tiêu đề sheet nay là tên
     gói ("Netflix Premium"; dùng `find.descendant(of: find.byType(ConfirmSheet), …)` vì Tổng quan phía sau cũng có tên).
   - `flows_test.dart:72`, `home_screen_test.dart:291–309` — "… cancelled" / "See cancelled" như trên.
